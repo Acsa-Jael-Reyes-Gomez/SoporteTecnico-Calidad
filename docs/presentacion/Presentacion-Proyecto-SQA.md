@@ -1,67 +1,86 @@
-# Proyecto final: CI/CD con aseguramiento de calidad
+# Presentación del proyecto SQA
 
-**Esquema para presentación académica de 10 diapositivas.** Los resultados marcados como no disponibles no deben representarse con gráficos de rendimiento. La copia no contiene evidencia visual de una ejecución remota o de SonarCloud.
+**Guion de 10 diapositivas en español.** El contenido está redactado para una exposición de estudiante y sigue el orden indicado en el enunciado. Este guion todavía debe maquetarse y exportarse a PDF; las capturas marcadas como pendientes deben sustituirse por imágenes reales del repositorio.
 
 ## 1. Portada
 
 **Pipeline CI/CD con aseguramiento de calidad integrado**  
-Sistema existente: Soporte Técnico · Proyecto final universitario · Autor y fecha de exposición: completar.
+Sistema: soporte técnico
+Estudiante: Acsa Jael Reyes Gómez · Curso: Aseguramiento de la Calidad del Software · Fecha: 27 de octubre de 2026
 
 ## 2. Objetivo y alcance
 
-- Reutilizar una aplicación existente y mantener sus funciones.
-- Añadir controles de construcción, pruebas, análisis y reporte antes de integrar cambios.
-- Alcance: Electron, TypeScript/JavaScript, servicios, ODBC/MySQL y GitHub Actions.
-- No se migra a React/Express porque no corresponde a la arquitectura de origen.
+- El proyecto parte de una aplicación de escritorio que ya estaba desarrollada.
+- El objetivo fue agregar controles automáticos para revisar los cambios antes de integrarlos.
+- El trabajo cubre compilación, pruebas, cobertura, análisis estático, documentación y flujo de CI.
+- No se cambió la arquitectura funcional del sistema ni se conectaron las pruebas a datos reales.
 
-## 3. Stack tecnológico real
+## 3. Sistema y herramientas
 
-- Electron 45, TypeScript 5.9 y Node.js 22 para desarrollo y CI.
-- Renderer JavaScript/CSS; no React.
-- MySQL por ODBC; no Express/API HTTP.
-- `node:test` y cobertura V8; no Jest/Istanbul.
+- La aplicación usa Electron: Renderer para la interfaz, Preload como puente y Main para la lógica del sistema.
+- La interfaz está hecha con JavaScript y CSS; el código principal usa TypeScript.
+- La información se guarda en MySQL mediante ODBC de Windows.
+- Se usan `node:test`, cobertura V8, TypeScript, ESLint, Prettier y GitHub Actions.
+- No se migró a React ni Express porque no forman parte de la aplicación existente.
 
-## 4. Arquitectura y flujo CI/CD
+## 4. Diagrama del pipeline
 
-Diagrama editable sugerido: Renderer → Preload (`window.api`) → Main/IPC → Servicios y validación → MySQL por ODBC. Bajo el diagrama: push/PR → BUILD → TEST → ANALYZE → REPORT.
+`push` o `pull_request` → **CONSTRUIR** → **PROBAR** → **ANALIZAR** → **REPORTAR**
+
+- GitHub Actions ejecuta el workflow en Windows con Node.js 22.
+- `npm ci` instala las dependencias fijadas en el lockfile.
+- La etapa de pruebas ejecuta casos y calcula cobertura; el reporte se conserva como artefacto.
+- El workflow se ejecuta en los eventos configurados. Que el check sea obligatorio para fusionar depende de la protección de rama en GitHub.
 
 ## 5. Línea base
 
-- 2 archivos de prueba y 28 declaraciones `test()` observadas.
-- 28/28 pruebas aprobadas en la verificación local.
-- Cobertura medida: 95.65% líneas, 80.60% ramas y 90.54% funciones.
-- ESLint y SonarCloud no estaban configurados localmente.
-- Explicar que el primer intento del sandbox dio `EPERM`, pero las verificaciones posteriores con acceso al runtime sí pasaron.
+| Dato inicial documentado               | Resultado                          |
+| -------------------------------------- | ---------------------------------- |
+| Casos de prueba registrados            | 25                                 |
+| Cobertura de líneas, ramas y funciones | No medida                          |
+| Resultado histórico aprobado/fallido   | No conservado                      |
+| Ejecución del pipeline inicial         | No se guardó evidencia verificable |
 
-## 6. Controles finales agregados
+La información inicial disponible es incompleta. Por eso se conserva como línea base histórica y no se calculan porcentajes de mejora que no se pueden comprobar.
 
-- Pipeline configurado para compilar, probar, medir cobertura, verificar TypeScript y guardar reportes.
-- Umbrales configurados: 75% líneas, 60% ramas, 55% funciones.
-- **Resultado local:** 28/28 pruebas; TypeScript sin errores; cobertura superior a los umbrales configurados.
-- Resultado de GitHub Actions todavía pendiente de una ejecución remota.
+## 6. Resultado posterior
 
-## 7. Evidencia del pipeline
+| Métrica                |         Resultado actual | Criterio del proyecto |
+| ---------------------- | -----------------------: | --------------------: |
+| Casos automatizados    | 28 aprobados, 0 fallidos |   Todos deben aprobar |
+| Cobertura de líneas    |                   95.65% |                   75% |
+| Cobertura de ramas     |                   80.60% |                   60% |
+| Cobertura de funciones |                   90.54% |                   55% |
+| Errores de TypeScript  |                        0 |                     0 |
 
-Captura auténtica pendiente: GitHub Actions → ejecución real del workflow → etapas y estado. No existe evidencia remota en esta copia. Sustituir esta diapositiva por una captura sin datos sensibles cuando se ejecute el workflow.
+Estos valores corresponden a la ejecución local registrada el 27 de octubre de 2026. Como la cobertura inicial no se midió, no se presenta como un aumento frente a la línea base.
 
-## 8. Dashboard y métricas
+## 7. Captura real del pipeline
 
-No hay dashboard SonarCloud accesible ni configurado. Presentar las métricas locales verificadas y explicar que bugs, vulnerabilidades y code smells remotos están pendientes; no crear datos sintéticos.
+**Evidencia que debe insertarse:** captura de GitHub Actions donde se vea el nombre del workflow, la rama o pull request, la fecha y el resultado de las etapas.
 
-## 9. Conclusiones
+El propietario informó que vio una ejecución en verde el 27 de octubre de 2026, pero la captura de esa ejecución no está guardada en este repositorio. No usar una imagen ilustrativa como si fuera evidencia del run.
 
-- Se conserva el sistema de tickets Electron existente.
-- Los controles académicos se adaptan a tecnologías reales.
-- La verificación reproducible requiere resolver permisos Node, configurar el repositorio Git y ejecutar el workflow remoto.
+## 8. Dashboard o reporte de calidad
+
+**Evidencia disponible:** el proyecto guarda informes de pruebas y cobertura como artefactos de GitHub Actions. Inserta aquí una captura auténtica del artefacto o del reporte generado.
+
+SonarCloud está condicionado a configurar la organización, la clave del proyecto y el token. No hay un análisis ni dashboard SonarCloud registrado, así que no se reportan bugs, vulnerabilidades o code smells.
+
+## 9. Conclusiones y aprendizajes
+
+- Aprendí que se puede agregar un flujo de calidad a una aplicación existente sin reescribirla.
+- Las pruebas y los umbrales permiten detectar fallos de compilación, regresiones y formato antes de integrar cambios.
+- Las pruebas de base de datos usan dobles; todavía hace falta validar contra una instancia aislada de MySQL y probar la interfaz en Electron.
+- Para cerrar la entrega faltan las capturas auténticas, confirmar la protección de `main`, exportar la presentación y grabar el video.
 
 ## 10. Referencias
 
-- `docs/Diagnostico-Inicial.md`
-- `docs/SQA-Plan.md`
-- `docs/Linea-Base-Calidad.md`
-- `docs/Reporte-Mejora.md`
-- Workflow `.github/workflows/quality.yml`
+- [ISO/IEC/IEEE 29119-2:2021, procesos de prueba](https://www.iso.org/standard/79428.html).
+- [ISO/IEC/IEEE 29119-3:2021, documentación de pruebas](https://www.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/07/94/79429.html).
+- [ISO/IEC 25010:2023, modelo de calidad del producto](https://www.iso.org/standard/78176.html).
+- Repositorio del proyecto: `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad`.
 
-## Estado del archivo de presentación
+## Archivos pendientes
 
-Este archivo es el contenido editable de las diapositivas. No se generaron archivos PPTX/PDF porque el runtime local `@oai/artifact-tool` y su cargador de dependencias, requeridos por la herramienta de presentaciones disponible, no están instalados ni expuestos en este entorno. No se simulan capturas de pipeline o dashboards.
+Este documento es el guion, no el PDF/PPTX final. Para completar la presentación hay que maquetar las 10 diapositivas, insertar las capturas reales de las diapositivas 7 y 8 y exportar el archivo final. El video también requiere una grabación real de 4 a 5 minutos.
