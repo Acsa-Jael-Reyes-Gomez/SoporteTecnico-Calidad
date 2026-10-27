@@ -1,6 +1,6 @@
-// src/main/ipc_core.ts
+﻿// src/main/ipc_core.ts
 import type { IpcMain } from "electron";
-import type { RowDataPacket } from "mysql2/promise";
+type RowDataPacket = Record<string, any>;
 import { withConn } from "./db/db";
 import { hasPerm, requireTrustedSession } from "./session_store";
 import { APPLICATION_VERSION, DATABASE_SCHEMA_VERSION } from "../shared/version";
@@ -132,7 +132,7 @@ export function registerCoreHandlers(ipcMain: IpcMain) {
       return { ok: true, data };
     } catch {
       catalogCachePromise = null;
-      return { ok: false, message: "Error cargando catálogos." };
+      return { ok: false, message: "Error cargando catÃ¡logos." };
     }
   });
 
@@ -160,3 +160,4 @@ export function registerCoreHandlers(ipcMain: IpcMain) {
     }
   });
 }
+
