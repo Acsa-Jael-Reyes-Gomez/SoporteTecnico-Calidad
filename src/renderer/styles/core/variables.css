@@ -1,0 +1,99 @@
+/* ==========================
+   CORE / VARIABLES
+   Base visual unica del sistema
+========================== */
+:root{
+  --bg:#eef2f6;
+  --panel:#f7f9fb;
+  --panel2:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+
+  --uiAccent:#0f6d74;
+  --uiAccent2:#0b5b61;
+
+  --danger:#dc2626;
+  --ok:#0aa86b;
+
+  --border:rgba(15,23,42,.10);
+  --input:rgba(255,255,255,.589);
+  --shadow:0 10px 30px rgba(15,23,42,.10);
+  --shadow-module:0 8px 32px rgba(0,0,0,0.12);
+
+  --glowAccent:0 0 0 2px rgba(15,109,116,.22), 0 10px 24px rgba(15,109,116,.10);
+  --glowCyan:0 0 0 2px rgba(15,109,116,.16), 0 8px 20px rgba(15,109,116,.08);
+
+  --selBorder:rgba(15,109,116,.55);
+  --selBg:rgba(15,109,116,.10);
+  --selGlow:0 0 0 2px rgba(15,109,116,.20), 0 8px 20px rgba(15,109,116,.08);
+
+  --tabBg:rgba(0,0,0,.03);
+  --tabActiveBg:rgba(15,109,116,.12);
+  --tabActiveBorder:rgba(15,109,116,.45);
+
+  --radius:16px;
+  --radiusSm:12px;
+
+  --heroGlowOpacity:.09;
+  --heroLineOpacity:.16;
+  --heroLineBlur:0px;
+
+  --color-tickets:#1D8CF8;
+  --color-rutas:#7C4DFF;
+  --color-equipos:#14B8A6;
+  --color-reportes:#0f6d74;
+  --color-proyectos_especiales:#0f6d74;
+  --tint-reportes:rgba(15,109,116,0.05);
+  --tint-proyectos_especiales:rgba(15,109,116,0.04);
+  --tint-tickets:rgba(29,140,248,0.04);
+  --tint-rutas:rgba(124,77,255,0.04);
+  --tint-equipos:rgba(20,184,166,0.04);
+
+  --app-font-ui:"Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
+  --app-text-size:14px;
+  --app-title-size:clamp(20px, 1vw + 17px, 24px);
+  --app-subtitle-size:13px;
+  --app-label-size:12px;
+  --app-table-head-size:12px;
+  --app-table-text-size:13px;
+  --app-button-size:13px;
+  --app-badge-size:12px;
+
+  --app-color-title:#0f1f2f;
+  --app-color-subtitle:#526579;
+  --app-color-module-heading:#13283a;
+  --app-color-table-heading:#193145;
+  --app-color-label:#53677d;
+  --app-color-text:#1e293b;
+  --app-color-text-secondary:#64748b;
+  --app-color-text-soft:#64748b;
+  --app-color-icon:#0f6d74;
+  --app-color-border-strong:rgba(15,23,42,.10);
+  --app-color-divider:rgba(15,23,42,.08);
+  --app-color-surface:linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.98));
+  --app-color-surface-soft:rgba(255,255,255,.84);
+  --app-color-filter-surface:rgba(255,255,255,.90);
+  --app-color-filter-border:rgba(15,23,42,.08);
+  --app-color-input-surface:rgba(255,255,255,.96);
+  --app-color-input-border:rgba(15,23,42,.10);
+  --app-color-input-placeholder:rgba(100,116,139,.78);
+
+  --app-table-surface:linear-gradient(180deg, rgba(255,255,255,.99), rgba(247,250,255,.99));
+  --app-table-border:rgba(59,130,246,.28);
+  --app-table-divider:rgba(96,165,250,.24);
+  --app-table-divider-strong:rgba(148,163,184,.58);
+  --app-table-head-bg:rgba(59,130,246,.14);
+  --app-table-head-bg2:rgba(191,219,254,.34);
+  --app-table-row-even:rgba(59,130,246,.038);
+  --app-table-row-hover:rgba(59,130,246,.082);
+  --app-table-actions-bg:rgba(247,250,255,.99);
+
+  --app-shell-pad-x:clamp(14px, 1.6vw, 24px);
+  --app-shell-pad-y:clamp(12px, 1vw, 18px);
+  --app-card-pad-y:clamp(14px, 1.2vw, 20px);
+  --app-card-pad-x:clamp(14px, 1.5vw, 22px);
+  --app-field-min:220px;
+  --app-table-min:760px;
+  --app-table-min-wide:940px;
+  --app-modal-safe-gap:clamp(16px, 3vw, 32px);
+}

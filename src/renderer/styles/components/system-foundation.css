@@ -1,0 +1,724 @@
+﻿/* ==========================
+   COMPONENTS / SYSTEM FOUNDATION
+========================== */
+
+/* =========================================================
+   MÓDULOS: TICKETS / EQUIPOS / PROYECTOS ESPECIALES
+   CORRECCIÓN REAL DE ANCHO Y RESPONSIVE
+   ========================================================= */
+
+.module-tickets,
+.module-rutas,
+.module-equipos,
+.module-proyectos-especiales{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  overflow:visible;
+}
+
+/* Card principal y cards internas ocupan ancho real */
+.module-tickets > .card:first-child,
+.module-rutas > .card:first-child,
+.module-equipos > .card:first-child,
+.module-proyectos-especiales > .card:first-child,
+.module-tickets .card,
+.module-rutas .card,
+.module-equipos .card,
+.module-proyectos-especiales .card{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  overflow:visible;
+  margin-left:0;
+  margin-right:0;
+}
+
+/* Header del módulo */
+.module-tickets .titleRow,
+.module-rutas .titleRow,
+.module-equipos .titleRow,
+.module-proyectos-especiales .titleRow{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+/* ==========================
+   TABLAS
+========================== */
+
+.module-tickets .module-table,
+.module-equipos .module-table,
+.module-proyectos-especiales .module-table,
+.module-tickets .tableWrap,
+.module-equipos .tableWrap,
+.module-proyectos-especiales .tableWrap{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  overflow-x:auto;
+  overflow-y:hidden;
+  margin-top:0;
+}
+
+.module-tickets .module-table table,
+.module-equipos .module-table table,
+.module-proyectos-especiales .module-table table{
+  width:100%;
+  min-width:820px;
+  table-layout:auto;
+  border-collapse:collapse;
+}
+
+.module-tickets .module-table th,
+.module-equipos .module-table th,
+.module-proyectos-especiales .module-table th{
+  white-space:nowrap;
+  padding:10px 8px;
+}
+
+.module-tickets .module-table td,
+.module-equipos .module-table td,
+.module-proyectos-especiales .module-table td{
+  padding:10px 8px;
+  vertical-align:top;
+}
+
+.module-tickets .module-table td.wrap,
+.module-equipos .module-table td.wrap,
+.module-proyectos-especiales .module-table td.wrap{
+  white-space:normal;
+  word-break:break-word;
+}
+
+/* Columna de acciones
+   ⚠️ Importante: solo aplicar sticky/width a celdas de tabla (th/td.actions),
+   no a contenedores genéricos .actions (se usan en muchos lugares para grupos de botones). */
+.module-tickets .module-table th.actions,
+.module-tickets .module-table td.actions,
+.module-equipos .module-table th.actions,
+.module-equipos .module-table td.actions,
+.module-proyectos-especiales .module-table th.actions,
+.module-proyectos-especiales .module-table td.actions{
+  position:sticky;
+  right:0;
+  z-index:5;
+  min-width:92px;
+  width:92px;
+  background:inherit;
+  box-sizing:border-box;
+}
+
+.module-tickets .module-table td.actions .btn,
+.module-equipos .module-table td.actions .btn,
+.module-proyectos-especiales .module-table td.actions .btn{
+  width:100%;
+  min-width:0;
+  justify-content:center;
+  white-space:nowrap;
+  padding:6px 6px !important;
+  font-size:11px !important;
+}
+
+.module-tickets .module-table th.actions,
+.module-tickets .module-table td.actions,
+.module-equipos .module-table th.actions,
+.module-equipos .module-table td.actions,
+.module-proyectos-especiales .module-table th.actions,
+.module-proyectos-especiales .module-table td.actions{
+  background:#fff;
+}
+
+/* ==========================
+   BREAKPOINTS REALES
+========================== */
+
+@media (max-width: 1280px){
+  .module-tickets .module-table table,
+  .module-equipos .module-table table,
+  .module-proyectos-especiales .module-table table{
+    min-width:780px;
+  }
+}
+
+@media (max-width: 992px){
+  .module-tickets .module-table table,
+  .module-equipos .module-table table,
+  .module-proyectos-especiales .module-table table{
+    min-width:720px;
+  }
+}
+
+@media (max-width: 768px){
+  .module-tickets .module-table table,
+  .module-equipos .module-table table,
+  .module-proyectos-especiales .module-table table{
+    min-width:640px;
+  }
+
+  .module-tickets .module-table th,
+  .module-equipos .module-table th,
+  .module-proyectos-especiales .module-table th,
+  .module-tickets .module-table td,
+  .module-equipos .module-table td,
+  .module-proyectos-especiales .module-table td{
+    padding:8px 6px;
+    font-size:12px;
+  }
+
+  .module-tickets .module-table th.actions,
+  .module-tickets .module-table td.actions,
+  .module-equipos .module-table th.actions,
+  .module-equipos .module-table td.actions,
+  .module-proyectos-especiales .module-table th.actions,
+  .module-proyectos-especiales .module-table td.actions{
+    min-width:84px;
+    width:84px;
+  }
+}
+
+@media (max-width: 480px){
+  .content{
+    padding:8px;
+  }
+
+  .module-tickets .card,
+  .module-equipos .card,
+  .module-proyectos-especiales .card{
+    padding:12px;
+  }
+
+  .module-tickets .module-table table,
+  .module-equipos .module-table table,
+  .module-proyectos-especiales .module-table table{
+    min-width:580px;
+  }
+
+  .module-tickets .module-table th,
+  .module-equipos .module-table th,
+  .module-proyectos-especiales .module-table th,
+  .module-tickets .module-table td,
+  .module-equipos .module-table td,
+  .module-proyectos-especiales .module-table td{
+    padding:6px 4px;
+    font-size:11px;
+  }
+
+  .module-tickets .module-table th.actions,
+  .module-tickets .module-table td.actions,
+  .module-equipos .module-table th.actions,
+  .module-equipos .module-table td.actions,
+  .module-proyectos-especiales .module-table th.actions,
+  .module-proyectos-especiales .module-table td.actions{
+    min-width:78px;
+    width:78px;
+  }
+
+  .module-tickets .module-table td.actions .btn,
+  .module-equipos .module-table td.actions .btn,
+  .module-proyectos-especiales .module-table td.actions .btn{
+    font-size:10px !important;
+    padding:5px 4px !important;
+  }
+}
+
+
+/* ==========================
+   MODULE CONTAINERS + DEPTH
+========================== */
+.module-tickets,
+.module-rutas,
+.module-equipos,
+.module-reportes,
+.module-proyectos-especiales {
+  /* Fondo sutil + mejor sombra */
+  --local-bg: var(--panel);
+  --local-shadow: var(--shadow-module);
+}
+
+/* Cards mejoradas */
+.module-tickets .card,
+.module-rutas .card,
+.module-equipos .card,
+.module-reportes .card,
+.module-proyectos-especiales .card {
+  background: linear-gradient(180deg, 
+    var(--tint-tickets, var(--tint-rutas), var(--tint-equipos), var(--tint-reportes), var(--tint-proyectos_especiales), var(--panel)), 
+    var(--panel2)
+  ) !important;
+  box-shadow: var(--shadow-module) !important;
+}
+
+/* ==========================
+   MODULE HEADERS PROMINENTES
+========================== */
+.module-header-tickets .titleRow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--color-tickets), rgba(29,140,248,0.6));
+  border-radius: 3px 0 0 3px;
+  z-index: 1;
+}
+
+.module-header-rutas .titleRow::before {
+  background: linear-gradient(180deg, var(--color-rutas), rgba(124,77,255,0.6));
+}
+
+.module-header-equipos .titleRow::before {
+  background: linear-gradient(180deg, var(--color-equipos), rgba(20,184,166,0.6));
+}
+
+.module-header-reportes .titleRow::before {
+  background: linear-gradient(180deg, var(--color-reportes), rgba(15,118,110,0.6));
+}
+
+.module-header-proyectos .titleRow::before {
+  background: linear-gradient(180deg, var(--color-proyectos_especiales), rgba(15,109,116,0.6));
+}
+
+/* Iconos de header con glow */
+.module-header-tickets .h1 i,
+.module-header-rutas .h1 i,
+.module-header-equipos .h1 i,
+.module-header-reportes .h1 i {
+  text-shadow: 0 0 8px rgba(29,140,248,0.4);
+}
+
+/* Título más bold */
+.module-header-tickets .h1,
+.module-header-rutas .h1,
+.module-header-equipos .h1,
+.module-header-reportes .h1 {
+  font-weight: 950 !important;
+  font-size: 20px !important;
+}
+
+/* ==========================
+   MODULE FILTERS MEJORADOS
+========================== */
+.module-filters {
+  background: rgba(248, 252, 255, 0.8);
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  margin: 12px 0;
+
+  /* Compatibilidad */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Inputs/selects mejorados */
+.module-tickets .field input,
+.module-tickets .field select,
+.module-tickets .field .searchable-select-main {
+  border-color: rgba(29,140,248,0.3);
+}
+
+.module-tickets .field input:focus,
+.module-tickets .field select:focus,
+.module-tickets .field .searchable-select-main:focus {
+  border-color: var(--color-tickets);
+  box-shadow: 0 0 0 3px rgba(29,140,248,0.15);
+}
+
+/* Similar para otros módulos */
+.module-rutas .field input:focus,
+.module-rutas .field select:focus,
+.module-rutas .field .searchable-select-main:focus {
+  border-color: var(--color-rutas);
+  box-shadow: 0 0 0 3px rgba(124,77,255,0.15);
+}
+
+.module-equipos .field input:focus,
+.module-equipos .field select:focus,
+.module-equipos .field .searchable-select-main:focus {
+  border-color: var(--color-equipos);
+  box-shadow: 0 0 0 3px rgba(20,184,166,0.15);
+}
+
+.module-reportes .field input:focus,
+.module-reportes .field select:focus,
+.module-reportes .field .searchable-select-main:focus {
+  border-color: var(--color-reportes);
+  box-shadow: 0 0 0 3px rgba(15,118,110,0.15);
+}
+
+/* Labels más visibles */
+.module-filters label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ==========================
+   BOTONES - BUSCAR (module color), LIMPIAR (neutro)
+========================== */
+.module-tickets .btn[onclick*="load()"]:not(.btn-primary-neutral),
+.module-rutas .btn[onclick*="load()"]:not(.btn-primary-neutral),
+.module-equipos .btn[onclick*="load()"]:not(.btn-primary-neutral),
+.module-reportes .btn[onclick*="load()"]:not(.btn-primary-neutral) {
+  /* Buscar = color del módulo */
+  background: linear-gradient(135deg, var(--color-tickets, var(--uiAccent)), rgba(29,140,248,0.8)) !important;
+  border-color: transparent !important;
+  color: white !important;
+}
+
+.module-tickets .btn[onclick*="load()"]:not(.btn-primary-neutral):hover {
+  filter: brightness(1.05);
+}
+
+.module-rutas .btn[onclick*="load()"]:not(.btn-primary-neutral) {
+  background: linear-gradient(135deg, var(--color-rutas), rgba(124,77,255,0.8)) !important;
+}
+
+.module-equipos .btn[onclick*="load()"]:not(.btn-primary-neutral) {
+  background: linear-gradient(135deg, var(--color-equipos), rgba(20,184,166,0.8)) !important;
+}
+
+.module-reportes .btn[onclick*="load()"]:not(.btn-primary-neutral) {
+  background: linear-gradient(135deg, var(--color-reportes), rgba(15,118,110,0.8)) !important;
+}
+
+/* Limpiar = neutro elegante */
+.module-filters .btn:not([onclick*="load()"]) {
+  background: rgba(0,0,0,0.06) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: var(--text) !important;
+}
+
+.module-filters .btn:not([onclick*="load()"]):hover {
+  background: rgba(0,0,0,0.10) !important;
+}
+
+/* ==========================
+   MODULE TABLES MODERNAS
+========================== */
+.module-table table {
+  background: white;
+}
+
+.module-table thead th {
+  /* thead con tint module */
+  background: linear-gradient(180deg, 
+    rgba(29,140,248,0.06), 
+    rgba(29,140,248,0.02)
+  ) !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  border-bottom: 2px solid rgba(0,0,0,0.08) !important;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.module-tickets .module-table thead th {
+  background: linear-gradient(180deg, rgba(29,140,248,0.08), rgba(29,140,248,0.03)) !important;
+}
+
+.module-rutas .module-table thead th {
+  background: linear-gradient(180deg, rgba(124,77,255,0.08), rgba(124,77,255,0.03)) !important;
+}
+
+.module-equipos .module-table thead th {
+  background: linear-gradient(180deg, rgba(20,184,166,0.08), rgba(20,184,166,0.03)) !important;
+}
+
+.module-reportes .module-table thead th {
+  background: linear-gradient(180deg, rgba(15,118,110,0.08), rgba(15,118,110,0.03)) !important;
+}
+
+/* Zebra MUY sutil */
+.module-table tbody tr:nth-child(even) td {
+  background: rgba(0,0,0,0.015) !important;
+}
+
+/* Hover module */
+.module-table tbody tr:hover td {
+  background: rgba(29,140,248,0.06) !important;
+}
+
+.module-rutas .module-table tbody tr:hover td {
+  background: rgba(124,77,255,0.06) !important;
+}
+
+.module-equipos .module-table tbody tr:hover td {
+  background: rgba(20,184,166,0.06) !important;
+}
+
+.module-reportes .module-table tbody tr:hover td {
+  background: rgba(15,118,110,0.06) !important;
+}
+
+/* Primera columna + acciones mejor legibilidad */
+.module-table td:first-child,
+.module-table td:last-child {
+  font-weight: 600;
+}
+
+/* Columna acciones sticky */
+.module-table .actions {
+  position: sticky;
+  right: 0;
+  background: white;
+  border-radius: 6px;
+  z-index: 5;
+}
+
+/* ==========================
+   BADGES COMPLETOS + ESTADOS
+========================== */
+.badge.abierto {
+  background: rgba(46,229,157,0.12);
+  border-color: rgba(46,229,157,0.4);
+  color: #22C55E;
+}
+
+.badge.cerrado {
+  background: rgba(255,77,109,0.12);
+  border-color: rgba(255,77,109,0.4);
+  color: var(--danger);
+}
+
+.badge.pendiente {
+  background: rgba(245,158,11,0.12);
+  border-color: rgba(245,158,11,0.4);
+  color: #F59E0B;
+}
+
+.badge.entregado {
+  background: rgba(46,229,157,0.12);
+  border-color: rgba(46,229,157,0.4);
+  color: #22C55E;
+}
+
+.badge.con-solucion {
+  background: rgba(46,229,157,0.15);
+  border-color: rgba(46,229,157,0.35);
+  color: #27AE60;
+}
+
+.badge.sin-solucion {
+  background: rgba(239,68,68,0.15);
+  border-color: rgba(239,68,68,0.35);
+  color: #EF4444;
+}
+
+/* Module tints en badges (opcional sutil) */
+.module-tickets .badge { box-shadow: 0 2px 8px rgba(29,140,248,0.15); }
+.module-rutas .badge { box-shadow: 0 2px 8px rgba(124,77,255,0.15); }
+.module-equipos .badge { box-shadow: 0 2px 8px rgba(20,184,166,0.15); }
+.module-reportes .badge { box-shadow: 0 2px 8px rgba(15,118,110,0.15); }
+
+/* ==========================
+   BASE
+========================== */
+*{box-sizing:border-box}
+html,body{height:100%}
+
+/* ✅ Fondo inicial sin flash - evitar pantallazo azul */
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  position:relative; /* para stacking estable */
+}
+
+.noselect{-webkit-user-select:none; user-select:none;}
+a{color:var(--uiAccent)}
+hr{border:none;border-top:1px solid var(--border);margin:12px 0}
+
+/* ✅ Scrollbar minimal (Electron) */
+*::-webkit-scrollbar{height:10px;width:10px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.10);
+  border:1px solid var(--border);
+  border-radius:999px;
+}
+*::-webkit-scrollbar-thumb{background:rgba(0,0,0,.08)}
+
+/* ==========================
+   TABS
+========================== */
+.tabBar{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  padding:8px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--tabBg);
+}
+.tab{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:var(--radiusSm);
+  cursor:pointer;
+  font-weight:800;
+  transition:background .15s ease, border-color .15s ease, box-shadow .15s ease, transform .05s ease;
+}
+.tab:hover{border-color:var(--uiAccent)}
+.tab:active{transform:scale(.99)}
+.tab.active{
+  background:var(--tabActiveBg);
+  border-color:var(--tabActiveBorder);
+  box-shadow:var(--glowAccent);
+}
+
+/* ==========================
+   SELECTED TECH (chips)
+========================== */
+.selectedTechWrap{margin-top:8px}
+.selectedTechBox{
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:12px;
+  padding:8px 10px;
+  background:rgba(255,255,255,0.02);
+}
+.selectedTechBox{
+  border:1px dashed rgba(15,109,116,.22);
+  background:rgba(255,255,255,.55);
+}
+.selectedTechEmpty{color:var(--muted); font-size:12px}
+.selectedTechChips{display:flex; flex-wrap:wrap; gap:8px}
+.selectedTechChip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--selBorder);
+  background:var(--selBg);
+  color:var(--text);
+  font-weight:900;
+  line-height:1;
+}
+.selectedTechChip:hover{box-shadow:var(--selGlow);}
+.chipX{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  opacity:.85;
+}
+.selectedTechChip:hover .chipX{opacity:1}
+
+/* Single select: usa acento */
+select.techSelectSingle:not([value=""]){
+  border-color:rgba(15,109,116,.55);
+  box-shadow:var(--glowAccent);
+}
+select.techSelectSingle:not([value=""]){
+  border-color:rgba(15,109,116,.45);
+  box-shadow:var(--glowAccent);
+}
+
+/* ==========================
+
+/* ==========================
+   ICONS (✅ todos al mismo color)
+   - En botones: heredan color del botón
+========================== */
+.fa, .fas, .far, .fal, .fab{ color:var(--uiAccent); }
+.btn .fa, .btn .fas, .btn .far, .btn .fab{ color:inherit; }
+.badge .fa, .badge .fas{ color:inherit; }
+
+/* ==========================
+   CHECKBOX GROUP
+========================== */
+.checkboxGroupWrap{ display:flex; flex-direction:column; gap:4px; }
+.checkboxGroup{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:8px;
+  background:rgba(255,255,255,0.02);
+  border-radius:var(--radiusSm);
+  border:1px solid var(--border);
+}
+.checkboxGroup{ background:rgba(255,255,255,0.55); }
+
+.checkboxItem,
+.checkboxItem-highlight{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.03);
+  border:1px solid transparent;
+  transition:all 0.15s ease;
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+.checkboxItem:hover,
+.checkboxItem-highlight:hover{
+  background:rgba(15,109,116,0.10);
+  border-color:rgba(15,109,116,0.30);
+}
+
+.checkboxItem:has(input:checked),
+.checkboxItem-highlight:has(input:checked){
+  background:rgba(255,255,255,0.03);
+  border-color:transparent;
+  box-shadow:none;
+}
+
+.checkboxItem::before,
+.checkboxItem::after,
+.checkboxItem-highlight::before,
+.checkboxItem-highlight::after{
+  content:none !important;
+  display:none !important;
+}
+
+.checkboxItem input[type="checkbox"],
+.checkboxItem-highlight input[type="checkbox"]{
+  width:20px;
+  height:20px;
+  margin:0;
+  padding:0;
+  cursor:pointer;
+  accent-color:var(--ok);
+}
+.checkboxItem input[type="checkbox"],
+.checkboxItem-highlight input[type="checkbox"]{
+  accent-color:var(--uiAccent);
+}
+
+.checkboxItem span,
+.checkboxItem-highlight span{
+  font-size:13px;
+  color:var(--text);
+  font-weight:500;
+}
+.checkboxItem:has(input:checked) span,
+.checkboxItem-highlight:has(input:checked) span{
+  font-weight:700;
+}
+
+/* ==========================
+

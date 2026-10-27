@@ -1,0 +1,758 @@
+﻿/* ==========================
+   MODULES / EQUIPOS
+========================== */
+
+/* EQUIPOS - NUEVOS ESTILOS DE INDICADORES
+   Paleta suave y legible */
+
+/* Badge EN_TALLER - Amarillo suave */
+.badge.en-taller {
+  color: #f1c40f;
+  background: rgba(241, 196, 15, 0.15);
+  border-color: rgba(241, 196, 15, 0.4);
+}
+
+/* Badge ENTREGADO - Verde turquesa suave */
+.badge.entregado {
+  color: #1abc9c;
+  background: rgba(26, 188, 156, 0.15);
+  border-color: rgba(26, 188, 156, 0.4);
+}
+
+/* Badge CON_SOLUCION - Verde suave */
+.badge.con-solucion {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.15);
+  border-color: rgba(46, 204, 113, 0.4);
+}
+
+/* Badge SIN_SOLUCION - Naranja suave */
+.badge.sin-solucion {
+  color: #e67e22;
+  background: rgba(230, 126, 34, 0.15);
+  border-color: rgba(230, 126, 34, 0.4);
+}
+
+/* Badge PENDIENTE - Gris suave */
+.badge.pendiente {
+  color: #95a5a6;
+  background: rgba(149, 165, 166, 0.15);
+  border-color: rgba(149, 165, 166, 0.4);
+}
+
+/* Indicador visual de equipo en taller - para el ticket */
+.equipo-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.equipo-indicator.en-taller {
+  color: #f1c40f;
+  background: rgba(241, 196, 15, 0.12);
+  border: 1px solid rgba(241, 196, 15, 0.25);
+}
+
+.equipo-indicator.entregado {
+  color: #1abc9c;
+  background: rgba(26, 188, 156, 0.12);
+  border: 1px solid rgba(26, 188, 156, 0.25);
+}
+
+/* Ajustes para indicadores de equipos */
+.badge.en-taller {
+  color: #b7950b;
+  background: rgba(241, 196, 15, 0.2);
+}
+
+.badge.entregado {
+  color: #16a085;
+  background: rgba(26, 188, 156, 0.2);
+}
+
+.badge.con-solucion {
+  color: #27ae60;
+  background: rgba(46, 204, 113, 0.2);
+}
+
+.badge.sin-solucion {
+  color: #d35400;
+  background: rgba(230, 126, 34, 0.2);
+}
+
+.equipo-indicator.en-taller {
+  color: #b7950b;
+  background: rgba(241, 196, 15, 0.15);
+}
+
+.equipo-indicator.entregado {
+  color: #16a085;
+  background: rgba(26, 188, 156, 0.15);
+}
+
+/* ==========================
+   EQUIPOS - INDICADORES VISUALES MEJORADOS
+   (Solo módulo Equipos - paleta suave)
+========================== */
+
+/* EN_TALLER - Amarillo suave */
+.badge.en-taller,
+.badge-equipo.en-taller,
+.badge-equipos.en-taller {
+  color: #f1c40f;
+  background: rgba(241, 196, 15, .15);
+  border-color: rgba(241, 196, 15, .35);
+}
+
+/* ENTREGADO - Verde azulado suave */
+.badge.entregado,
+.badge-equipo.entregado,
+.badge-equipos.entregado {
+  color: #1abc9c;
+  background: rgba(26, 188, 156, .15);
+  border-color: rgba(26, 188, 156, .35);
+}
+
+/* CON_SOLUCION - Verde suave */
+.badge.con-solucion,
+.badge-equipo.con-solucion,
+.badge-equipos.con-solucion {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, .15);
+  border-color: rgba(46, 204, 113, .35);
+}
+
+/* SIN_SOLUCION - Naranja suave */
+.badge.sin-solucion,
+.badge-equipo.sin-solucion,
+.badge-equipos.sin-solucion {
+  color: #e67e22;
+  background: rgba(230, 126, 34, .15);
+  border-color: rgba(230, 126, 34, .35);
+}
+
+/* PENDIENTE - Gris suave */
+.badge.pendiente,
+.badge-equipo.pendiente,
+.badge-equipos.pendiente {
+  color: #95a5a6;
+  background: rgba(149, 165, 166, .15);
+  border-color: rgba(149, 165, 166, .35);
+}
+
+/* CANCELADO - Rojo suave */
+.badge.cancelado,
+.badge-equipo.cancelado,
+.badge-equipos.cancelado {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, .15);
+  border-color: rgba(231, 76, 60, .35);
+}
+
+/* Indicador de equipo en taller dentro del ticket */
+.equipo-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.equipo-indicator.en-taller {
+  background: rgba(241, 196, 15, .15);
+  color: #f1c40f;
+  border: 1px solid rgba(241, 196, 15, .35);
+}
+
+.equipo-indicator.entregado {
+  background: rgba(26, 188, 156, .15);
+  color: #1abc9c;
+  border: 1px solid rgba(26, 188, 156, .35);
+}
+
+/* ==========================
+   EQUIPO SECTION - TicketModal (aligned)
+========================== */
+.equipo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid var(--border);
+  border-radius: var(--radiusSm);
+  margin-top: 8px;
+  position: relative;
+}
+
+.equipo-section.has-pending {
+  border-color: rgba(241, 196, 15, 0.4);
+  background: rgba(241, 196, 15, 0.06);
+  box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.15);
+}
+
+.equipo-header.prominent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: rgba(15, 109, 116, 0.1);
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.equipo-resultado.readonly {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(46, 204, 113, 0.08);
+  border: 1px solid rgba(46, 204, 113, 0.25);
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+
+.equipo-section {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.equipo-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.equipo-preview {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: var(--text);
+}
+
+.equipo-preview i {
+  color: var(--uiAccent);
+}
+
+/* Inline resultado radios - integrated form control */
+.equipo-result-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background: rgba(241, 196, 15, 0.08);
+  border: 1px solid rgba(241, 196, 15, 0.25);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.equipo-result-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.equipo-result-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--uiAccent);
+  cursor: pointer;
+}
+
+.equipo-result-group {
+  background: rgba(241, 196, 15, 0.12);
+  border-color: rgba(241, 196, 15, 0.3);
+}
+
+/* Warning integrated - subtle */
+.equipo-pending-integrated {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+  color: #f1c40f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.equipo-pending-integrated {
+  background: rgba(255, 193, 7, 0.15);
+  border-color: rgba(255, 193, 7, 0.35);
+  color: #b7950b;
+}
+
+.equipo-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* ==========================
+   VIEW CLOSE BUTTON - X ROJA
+========================== */
+.modal-close-btn {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  min-width: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  margin-left: 8px !important;
+  font-size: 14px !important;
+  z-index: 10 !important;
+}
+
+.view-close-btn:hover {
+  color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.20) !important;
+  border-color: rgba(220, 38, 38, 0.4) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25) !important;
+  transform: scale(1.05) !important;
+}
+
+.titleRow {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.view-close-btn:hover {
+  color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.20) !important;
+  border-color: rgba(220, 38, 38, 0.4) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25) !important;
+  transform: scale(1.05) !important;
+}
+
+.view-close-btn:active {
+  transform: scale(0.98) !important;
+}
+
+.view-close-btn {
+  color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.12) !important;
+  border-color: rgba(220, 38, 38, 0.25) !important;
+}
+
+.view-close-btn:hover {
+  background: rgba(220, 38, 38, 0.18) !important;
+  border-color: rgba(220, 38, 38, 0.35) !important;
+}
+
+/* ==========================
+
+EQUIPO TICKET - COMPACTO (OPTIMIZADO)
+========================== */
+
+/* Contenedor principal - ULTRA COMPACTO */
+.equipo-ticket-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 8px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.equipo-ticket-box.has-pending {
+  border-color: rgba(241, 196, 15, 0.45);
+  background: rgba(241, 196, 15, 0.08);
+  box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.15);
+}
+
+/* Header - ULTRA COMPACTO */
+.equipo-ticket-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(15, 109, 116, 0.08);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.equipo-ticket-header i {
+  color: var(--uiAccent);
+}
+
+/* Badges - ULTRA COMPACTOS */
+.equipo-ticket-badges {
+  display: flex;
+  gap: 4px;
+  margin-top: 0;
+}
+
+.equipo-ticket-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  border: 1px solid;
+  min-width: 70px;
+  text-align: center;
+}
+
+/* Tamaños badges reducidos */
+.equipo-ticket-badge-estado {
+  min-width: 95px;
+}
+
+.equipo-ticket-badge-resultado {
+  min-width: 105px;
+}
+
+/* Body - ULTRA COMPACTO */
+.equipo-ticket-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.015);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.equipo-ticket-numero,
+.equipo-ticket-tipo {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.equipo-ticket-label {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 600;
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.equipo-ticket-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+
+/* Resultado - ULTRA COMPACTO */
+.equipo-ticket-result {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(241, 196, 15, 0.06);
+  border: 1px solid rgba(241, 196, 15, 0.18);
+  border-radius: 8px;
+}
+
+.equipo-ticket-result-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.equipo-ticket-result-badges {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.equipo-ticket-result-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  border: 2px solid;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+/* Radios - COMPACTOS */
+.equipo-ticket-radios {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.equipo-ticket-radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.equipo-ticket-radio-item:hover {
+  border-color: rgba(15, 109, 116, 0.5);
+  background: rgba(15, 109, 116, 0.1);
+}
+
+.equipo-ticket-radio-item input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--uiAccent);
+  cursor: pointer;
+}
+
+/* Acciones - ULTRA COMPACTAS */
+.equipo-ticket-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.equipo-ticket-actions .btn {
+  min-width: 100px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+/* Sin equipo - ULTRA COMPACTO */
+.equipo-ticket-empty {
+  text-align: center;
+  padding: 8px 12px;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 4px 0;
+}
+
+.equipo-ticket-empty-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.equipo-ticket-btn-ingresar {
+  background: linear-gradient(135deg, var(--uiAccent), var(--uiAccent2));
+  color: white;
+  border: none;
+  height: 34px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.equipo-ticket-btn-ingresar:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--glowAccent);
+}
+
+/* Modo agregar inline - COMPACTO */
+.equipo-add-actions {
+  margin-top: 8px !important;
+  gap: 8px !important;
+}
+
+.equipo-add-actions .btn {
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 12px;
+  min-width: auto;
+  flex: 1;
+}
+
+/* Selector inline - COMPACTO */
+.equipo-ticket-empty .searchable-select {
+  margin-top: 4px;
+}
+
+.equipo-ticket-empty .searchable-select-main {
+  height: 32px !important;
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+}
+
+.equipo-ticket-empty .searchable-select-toggle {
+  width: 32px !important;
+}
+
+.equipo-ticket-empty label {
+  font-size: 11px !important;
+  margin-bottom: 2px;
+}
+
+/* Ajuste base */
+.equipo-ticket-box {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.equipo-ticket-body {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.equipo-ticket-header {
+  background: rgba(15, 109, 116, 0.06);
+}
+
+.equipo-ticket-result {
+  background: rgba(251, 241, 199, 0.4);
+  border-color: rgba(241, 196, 15, 0.2);
+}
+
+.equipo-ticket-radio-item {
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.equipo-ticket-radio-item:hover {
+  border-color: rgba(15, 109, 116, 0.3);
+  background: rgba(15, 109, 116, 0.06);
+}
+
+.equipo-ticket-radio-item {
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.equipo-ticket-radio-item:hover {
+  border-color: rgba(15, 109, 116, 0.4);
+  background: rgba(15, 109, 116, 0.08);
+}
+
+/* Modal tipo equipo - COMPACTO + Modal equipo sections */
+.ticket-section,
+.equipo-section,
+.historial-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--uiAccent);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid rgba(15,109,116,0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ticket-grid,
+.historial-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.info-item,
+.historial-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.info-item.fullwidth {
+  grid-column: 1 / -1;
+}
+
+.info-label,
+.historial-label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.info-value,
+.historial-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.historial-item.resultado-item .historial-value {
+  font-size: 13px !important;
+}
+
+.info-value.mono {
+  font-family: ui-monospace, monospace;
+}
+
+.info-item,
+.historial-item {
+  background: rgba(0,0,0,0.03);
+  border-color: rgba(0,0,0,0.08);
+}
+
+.tipo-equipo-modal {
+  max-width: 360px !important;
+}
+
+.tipo-equipo-modal .field {
+  padding: 12px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .equipo-ticket-radios {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .equipo-ticket-actions {
+    flex-direction: column;
+  }
+}
+

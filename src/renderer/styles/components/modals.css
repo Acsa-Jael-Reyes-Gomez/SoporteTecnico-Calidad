@@ -1,0 +1,299 @@
+/* ==========================
+   COMPONENTS / MODALS
+========================== */
+.modalBack{
+  position:fixed;
+  inset:0;
+  background:transparent;
+  display:block;
+  padding:0;
+  z-index:9999;
+  pointer-events:none;
+}
+
+.modal{
+  width:min(1050px, 100%);
+  max-height:90vh;
+  overflow:auto;
+}
+
+.modalBack{
+  padding:0;
+  background:transparent;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+
+.modalBack{
+  background:transparent;
+}
+
+.modalBack.is-minimized{
+  background:transparent !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+  pointer-events:none !important;
+  padding:0 !important;
+}
+
+.modalBack.is-minimized .modal{
+  display:none !important;
+}
+
+.modal{
+  width:min(1240px, calc(100vw - (var(--app-modal-safe-gap) * 2))) !important;
+  max-width:calc(100vw - (var(--app-modal-safe-gap) * 2)) !important;
+  max-height:calc(100vh - (var(--app-modal-safe-gap) * 2)) !important;
+}
+
+.modalBack .modal{
+  position:absolute;
+  top:clamp(58px, 8vh, 86px);
+  left:50%;
+  transform:translateX(-50%);
+  pointer-events:auto;
+  border-radius:14px !important;
+  border:1px solid rgba(100,116,139,.28);
+  box-shadow:
+    0 22px 52px rgba(15,23,42,.26),
+    0 0 0 1px rgba(255,255,255,.64) inset;
+}
+
+.modalBack .modal.is-dragging{
+  -webkit-user-select:none;
+  user-select:none;
+  cursor:grabbing;
+}
+
+.modalBack .modal-titlebar{
+  cursor:grab;
+  border-radius:14px 14px 0 0;
+  background:linear-gradient(180deg, rgba(248,250,252,.98), rgba(241,245,249,.94));
+  margin:calc(var(--app-card-pad-y) * -1) calc(var(--app-card-pad-x) * -1) 0;
+  padding:12px var(--app-card-pad-x);
+  border-bottom:1px solid rgba(148,163,184,.18);
+}
+
+.modalBack .modal-titlebar .actions,
+.modalBack .modal-titlebar button{
+  cursor:auto;
+}
+
+.modalBack .modal hr{
+  display:none;
+  margin:0;
+  border:none;
+  border-top:1px solid var(--app-color-divider);
+}
+
+.modalBack .modal .titleRow{
+  align-items:flex-start;
+}
+
+.modalBack .modal .titleRow > div:first-child{
+  min-width:0;
+}
+
+.modalBack .modal .titleRow .small{
+  margin-top:2px;
+}
+
+.confirmBack{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.55);
+  display:grid;
+  place-items:center;
+  padding:16px;
+  z-index:9999;
+  opacity:0;
+  transition:opacity .2s ease;
+}
+
+.confirmBack.show{opacity:1;}
+
+.confirmCard{
+  background:linear-gradient(180deg, var(--panel), var(--panel2));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px 24px;
+  max-width:400px;
+  width:100%;
+  box-shadow:var(--shadow);
+  transform:scale(0.95);
+  transition:transform .2s ease;
+}
+
+.confirmBack.show .confirmCard{transform:scale(1);}
+
+.confirmIcon{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  margin:0 auto 16px;
+}
+
+.confirmCard.danger .confirmIcon{
+  background:rgba(255,77,109,0.15);
+  color:var(--danger);
+}
+
+.confirmCard.info .confirmIcon{
+  background:rgba(15,109,116,0.15);
+  color:var(--uiAccent);
+}
+
+.confirmCard.success .confirmIcon{
+  background:rgba(46,229,157,0.15);
+  color:var(--ok);
+}
+
+.confirmTitle{
+  font-size:16px;
+  font-weight:800;
+  color:var(--text);
+  text-align:center;
+  margin-bottom:8px;
+}
+
+.confirmMessage{
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+  line-height:1.5;
+  margin-bottom:20px;
+}
+
+.confirmActions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+}
+
+.confirmActions .btn{
+  min-width:100px;
+  text-align:center;
+  justify-content:center;
+}
+
+.modalBack .modal-close-btn{
+  width:34px;
+  min-width:34px;
+  height:34px;
+  min-height:34px;
+  padding:0 !important;
+  border-radius:12px !important;
+  box-shadow:none !important;
+}
+
+.modalBack .modal-minimize-btn{
+  width:34px;
+  min-width:34px;
+  height:34px;
+  min-height:34px;
+  padding:0 !important;
+  border-radius:12px !important;
+  box-shadow:none !important;
+}
+
+.modalBack .actions .btn{
+  height:36px;
+  min-height:36px;
+  border-radius:12px;
+  box-shadow:none;
+}
+
+.modalBack .detail-read-modal{
+  width:min(820px, calc(100vw - 40px)) !important;
+}
+
+.modalBack .detail-read-view{
+  gap:14px;
+  padding:16px 18px 20px;
+}
+
+.modalBack .detail-read-hero{
+  padding:13px 15px;
+  border-radius:15px;
+}
+
+.modalBack .detail-read-panel{
+  padding:14px 16px;
+  border-radius:15px;
+}
+
+.modal-dock-root{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:10020;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
+  pointer-events:none;
+}
+
+.modal-dock-root.is-empty{
+  display:none;
+}
+
+.modal-dock-item{
+  min-width:260px;
+  max-width:min(420px, calc(100vw - 40px));
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(148,163,184,.20);
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,245,249,.96));
+  box-shadow:0 14px 28px rgba(15,23,42,.14);
+  color:var(--text);
+  pointer-events:auto;
+  cursor:pointer;
+}
+
+.modal-dock-item:hover{
+  border-color:rgba(15,109,116,.30);
+  box-shadow:0 16px 30px rgba(15,23,42,.16);
+}
+
+.modal-dock-item > i{
+  flex:0 0 auto;
+  color:var(--uiAccent);
+}
+
+.modal-dock-item-title{
+  min-width:0;
+  flex:1 1 auto;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:13px;
+  font-weight:800;
+}
+
+.modal-dock-item-close{
+  width:28px;
+  min-width:28px;
+  height:28px;
+  min-height:28px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(239,68,68,.20);
+  border-radius:10px;
+  background:rgba(239,68,68,.06);
+  color:#dc2626;
+  cursor:pointer;
+}
+
+.modal-dock-item-close:hover{
+  background:rgba(239,68,68,.12);
+  border-color:rgba(239,68,68,.32);
+}

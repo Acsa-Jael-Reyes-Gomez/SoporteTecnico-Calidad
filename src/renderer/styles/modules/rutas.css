@@ -1,0 +1,167 @@
+﻿/* ==========================
+   MODULES / RUTAS
+========================== */
+.content > .module-rutas .tableWrap.rutas-excel th:nth-child(3),
+.content > .module-rutas .tableWrap.rutas-excel td:nth-child(3){
+  text-align:center !important;
+  white-space:nowrap !important;
+}
+
+.content > .module-rutas .tableWrap.rutas-excel td:nth-child(4),
+.content.report-module .tableWrap.reportes-excel tbody td.wrap{
+  text-align:left !important;
+}
+
+.ruta-review-summary{
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 1px 0 rgba(15, 23, 42, 0.03);
+}
+
+.ruta-review-summary-head{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px 10px;
+  align-items:center;
+  justify-content:space-between;
+  padding:6px 10px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(20, 125, 132, 0.08), rgba(20, 125, 132, 0.025));
+}
+
+.ruta-review-summary-title{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  min-width:190px;
+  color:var(--text);
+  font-size:11.5px;
+  font-weight:900;
+}
+
+.ruta-review-summary-title i{
+  color:var(--brand);
+}
+
+.ruta-review-summary-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+  color:var(--muted);
+  font-size:10.5px;
+  font-weight:800;
+}
+
+.ruta-review-summary-meta i{
+  color:var(--brand);
+}
+
+.ruta-review-summary-meta span{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  min-height:20px;
+  padding:1px 7px;
+  border:1px solid rgba(20, 125, 132, 0.16);
+  border-radius:999px;
+  background:rgba(255, 255, 255, 0.72);
+}
+
+.ruta-review-summary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(106px, 1fr));
+  gap:6px;
+  padding:7px;
+  background:rgba(15, 23, 42, 0.025);
+}
+
+.ruta-review-summary-item{
+  display:grid;
+  grid-template-rows:auto 1fr;
+  min-height:52px;
+  border:1px solid rgba(15, 23, 42, 0.09);
+  border-radius:6px;
+  background:#fff;
+  overflow:hidden;
+}
+
+.ruta-review-summary-name{
+  min-width:0;
+  min-height:0;
+  padding:6px 7px 2px;
+  border-bottom:0;
+  color:var(--text);
+  font-size:9px;
+  line-height:1.08;
+  font-weight:800;
+  text-transform:uppercase;
+  overflow-wrap:anywhere;
+}
+
+.ruta-review-summary-body{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:5px;
+  padding:3px 7px 6px;
+}
+
+.ruta-review-summary-value{
+  min-width:30px;
+  min-height:26px;
+  display:grid;
+  place-items:center;
+  border-radius:6px;
+  background:rgba(15, 23, 42, 0.045);
+  color:var(--text);
+  font-size:15px;
+  line-height:1;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+
+.ruta-review-summary-check{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  width:24px;
+  min-width:24px;
+  height:24px;
+  min-height:24px;
+  padding:0;
+  border:1px solid rgba(15, 23, 42, 0.1);
+  border-radius:999px;
+  background:#f8fafc;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+}
+
+.ruta-review-summary-check span{
+  display:none;
+}
+
+.ruta-review-summary-check.ok{
+  border-color:rgba(20, 125, 132, 0.2);
+  background:rgba(20, 125, 132, 0.08);
+  color:var(--brand);
+}
+
+@media (max-width: 760px){
+  .ruta-review-summary-head{
+    align-items:flex-start;
+  }
+
+  .ruta-review-summary-title{
+    min-width:0;
+  }
+
+  .ruta-review-summary-grid{
+    grid-template-columns:repeat(auto-fit, minmax(104px, 1fr));
+  }
+}
+

@@ -1,0 +1,356 @@
+﻿/* ==========================
+   CORE / SHELL
+========================== */
+
+/* 🔧 PRIORIDAD 1: Window controls SIEMPRE visibles, z-index máximo, no overlap */
+.topbar .window-controls {
+  z-index: 10000 !important;
+}
+
+.topbar .window-controls .window-btn {
+  min-height: 36px !important;
+}
+
+/* Small screens: topbar más alto + padding seguro */
+@media (max-height: 600px) {
+  .topbar {
+    padding: 8px 16px !important;
+    min-height: 56px !important;
+  }
+  
+  .window-btn {
+    height: 36px !important;
+    width: 40px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* 🔧 Layout base: content NO se monta sobre topbar */
+.main {
+  padding-top: 0 !important;
+  min-height: calc(100vh - 60px);
+}
+
+.content {
+  padding: clamp(12px, 3vw, 20px);
+  min-height: calc(100vh - 120px);
+}
+
+/* 🔧 Sidebar: enhance existing, NO squeeze */
+@media (max-width: 900px) {
+  /* En pantallas angostas ocultamos el sidebar docked, pero permitimos abrirlo
+     como offcanvas cuando body.sidebar-open está activo. */
+  body:not(.sidebar-open) .sidebar{ display: none !important; }
+  body.sidebar-open .sidebar{ display: block !important; }
+  
+  .container {
+    flex-direction: column !important;
+  }
+  
+  .main {
+    width: 100vw !important;
+    min-width: 100vw !important;
+  }
+}
+
+/* 🔧 Filtros/Forms: stack safe */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  
+  .field {
+    min-width: 100% !important;
+  }
+  
+  .module-filters {
+    padding: 12px !important;
+  }
+}
+
+/* 🔧 Dashboard: grid responsive conservador */
+@media (max-width: 1200px) {
+  .dashboardMetricGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboardMetricGrid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  
+  .dashboardHero {
+    flex-direction: column !important;
+    gap: 16px !important;
+    padding: 20px 16px !important;
+  }
+  
+  .dashboardHeroLeft {
+    text-align: center !important;
+    width: 100% !important;
+  }
+  
+  .dashboardHeroRight {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* 🔧 Cards: safe responsive */
+@media (max-width: 480px) {
+  .card {
+    padding: 12px !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .titleRow {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  
+  .titleRow .actions {
+    order: 3;
+    width: 100% !important;
+    justify-content: flex-end !important;
+  }
+}
+
+/* 🔧 Breakpoints completos (conservadores) */
+@media (max-width: 480px) {
+  html, body {
+    font-size: 14px !important;
+  }
+  
+  .content {
+    padding: 8px !important;
+  }
+  
+  .h1 {
+    font-size: 16px !important;
+  }
+}
+
+@media (min-width: 1441px){
+  .content{
+    width:100%;
+    max-width:100%;
+    margin:0;
+    padding:20px 24px;
+  }
+}
+
+/* 🔧 Prevent body scroll issues */
+html, body {
+  overflow-x: hidden !important;
+}
+
+@media (max-width:640px){
+  .loginGrid{grid-template-columns:1fr;}
+  table{min-width:760px}
+}
+
+/* ==========================
+   1) SIDEBAR MÁS “PRO” (espaciado + bloques)
+========================== */
+.sidebar{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  padding:18px;
+}
+
+/* Sidebar colapsado: icon-only */
+.sidebar-collapsed .sidebar{
+  width:76px;
+  min-width:76px;
+  padding:18px 10px;
+}
+
+.sidebar-collapsed .sidebar .brand{
+  justify-content:center;
+}
+
+.sidebar-collapsed .sidebar .brand span{
+  display:none;
+}
+
+.sidebar-collapsed .sidebar .sub{
+  display:none;
+}
+
+.sidebar-collapsed .sidebar .nav{
+  gap:10px;
+}
+
+.sidebar-collapsed .sidebar .nav .btn{
+  justify-content:center !important;
+  padding-left:0 !important;
+  padding-right:0 !important;
+}
+
+.sidebar-collapsed .sidebar .nav .btn span{
+  display:none;
+}
+
+.sidebar-collapsed .sidebar .nav .btn i{
+  margin-right:0 !important;
+  width:auto !important;
+}
+
+@media (max-width:940px){
+  body.sidebar-collapsed .sidebar{
+    position: fixed;
+    left: 12px;
+    top: 74px;
+    bottom: 12px;
+    width: auto;
+    min-width: 260px;
+    height: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(148,163,184,.18);
+    box-shadow: 0 18px 60px rgba(0,0,0,.45);
+    transform: translateX(calc(-100% - 16px));
+    transition: transform .18s ease;
+    z-index: 90;
+    padding: 18px;
+  }
+
+  body.sidebar-collapsed.sidebar-open .sidebar{
+    transform: translateX(0);
+  }
+
+  body.sidebar-collapsed .sidebar .brand span,
+  body.sidebar-collapsed .sidebar .sub,
+  body.sidebar-collapsed .sidebar .nav .btn span{
+    display: initial;
+  }
+
+  body.sidebar-collapsed .sidebar .nav .btn{
+    justify-content:flex-start !important;
+    padding-left:20px !important;
+    padding-right:16px !important;
+  }
+}
+
+/* Brand más respirado */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 10px 6px;
+}
+
+/* Separador sutil bajo el header */
+.sub{
+  margin-top:6px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+
+/* Nav como lista real */
+/* ✅ Sidebar - alineación izquierda uniforme */
+.nav{
+  margin-top:14px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* Botones sidebar: left-aligned uniform */
+.nav .btn { 
+  justify-content: flex-start !important; 
+  padding-left: 20px !important; 
+  padding-right: 16px !important; 
+  text-align: left; 
+  gap: 12px !important;
+  position: relative;
+}
+
+.nav .btn i {
+  margin-right: 12px !important;
+  width: 16px !important;
+  flex-shrink: 0;
+}
+
+/* Icono + texto perfectly aligned */
+.nav .btn span {
+  flex: 1;
+  text-align: left;
+}
+
+/* Botones del sidebar con “tarjeta” */
+.nav .btn{
+  padding:12px 14px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-align:left;
+  line-height:1.1;
+}
+
+/* Mantener color en hover/active */
+.nav .btn:hover{ filter:brightness(1.06); transform:translateY(-1px); }
+.nav .btn:active{ transform:translateY(0) scale(.99); }
+
+/* ==========================
+   2) CONTENIDO MÁS “AIRE” (no todo pegado)
+========================== */
+.content{
+  padding:18px;
+}
+
+.card{
+  padding:16px;
+  margin-bottom:14px;
+}
+
+/* Títulos con separación real */
+.h1{
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.titleRow{
+  gap:14px;
+  padding-bottom:6px;
+}
+
+/* Filtros: que no se vean apretados */
+.row{ gap:12px; }
+.field{ min-width:220px; }
+input, select, textarea{ padding:11px 12px; }
+
+/* ==========================
+   3) TABLA MÁS LEGIBLE (menos “apretada”)
+========================== */
+.tableWrap{
+  border-radius:16px;
+}
+
+th, td{
+  padding:12px 12px;
+}
+
+th{
+  font-size:12px;
+  letter-spacing:.2px;
+}
+
+td{
+  font-size:13px;
+}
+
+/* (Opcional) filas un poco más altas en pantallas grandes */
+@media (min-width: 1200px){
+  th, td{ padding:13px 14px; }
+}
+
+/* ==========================
+

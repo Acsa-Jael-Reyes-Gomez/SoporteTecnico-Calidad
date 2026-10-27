@@ -1,0 +1,127 @@
+/* ==========================
+   COMPNENTES / TARJETAS
+========================== */
+.card{
+  background:linear-gradient(180deg, var(--panel), var(--panel2));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px;
+  box-shadow:var(--shadow);
+  margin-bottom:12px;
+  -webkit-backdrop-filter:saturate(1.08) blur(10px);
+  backdrop-filter:saturate(1.08) blur(10px);
+  position:relative;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  left:10px;
+  right:10px;
+  top:0;
+  height:1px;
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+}
+
+.card::before{background:rgba(0,0,0,.06);}
+
+.content > :not(.dashboardWrap) .card,
+.modalBack .card{
+  background:var(--app-color-surface);
+  border-color:var(--app-color-border-strong);
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.content > :not(.dashboardWrap) .card,
+.modalBack .card{
+  box-shadow:
+    0 14px 30px rgba(15,23,42,.08),
+    inset 0 1px 0 rgba(255,255,255,.78);
+}
+
+.content > :not(.dashboardWrap) .card::before,
+.modalBack .card::before{
+  background:var(--app-color-divider);
+}
+
+.content > :not(.dashboardWrap) hr,
+.modalBack hr{
+  border-top-color:var(--app-color-divider);
+}
+
+.content > .card:first-child > .titleRow::before,
+.content > .module-tickets > .card:first-child > .titleRow::before,
+.content > .module-rutas > .card:first-child > .titleRow::before,
+.content > .module-equipos > .card:first-child > .titleRow::before,
+.content #proyectos-content .module-proyectos-especiales > .card:first-child > .titleRow::before,
+.content > .calificacion-module > .card:first-child > .titleRow::before{
+  background:linear-gradient(180deg, var(--app-color-icon), rgba(15,109,116,.92));
+}
+
+.content > :not(.dashboardWrap) .card .h1 > i,
+.modalBack .card .h1 > i{
+  color:var(--app-color-icon) !important;
+  background:linear-gradient(135deg, rgba(15,109,116,.20), rgba(11,91,97,.06));
+  border-color:rgba(15,109,116,.20);
+  box-shadow:
+    0 0 0 2px rgba(15,109,116,.08),
+    0 10px 22px rgba(15,109,116,.10);
+}
+
+.content > :not(.dashboardWrap) .card,
+.content > :not(.dashboardWrap) .field,
+.content > :not(.dashboardWrap) .field *:not(.badge):not(.pill):not([class*="badge-"]):not([class$="-badge"]),
+.modalBack .card,
+.modalBack .field{
+  color:var(--app-color-text);
+}
+
+.content > :not(.dashboardWrap) .card,
+.content > .dashboardWrap .dashboardSection,
+.content > .dashboardWrap .dashboardHero,
+.content > .dashboardWrap .dashboardMetricCard,
+.content > .dashboardWrap .dashboardMiniCard{
+  border-radius:14px;
+}
+
+.content > :not(.dashboardWrap) .card{
+  padding:8px 10px;
+}
+
+.content > .card:first-child,
+.content > .module-tickets > .card:first-child,
+.content > .module-rutas > .card:first-child,
+.content > .module-equipos > .card:first-child,
+.content > .module-validacion-rutas > .card:first-child,
+.content > .report-module > .card:first-child,
+.content #proyectos-content .module-proyectos-especiales > .card:first-child{
+  padding:8px 12px 7px !important;
+}
+
+.titleRow{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.titleRow .actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.titleRow .modal-close-btn{
+  order:2;
+  margin-left:8px;
+  flex-shrink:0;
+}
+
+.content > :not(.dashboardWrap) .titleRow,
+.content > .dashboardWrap .dashboardSectionHead{
+  gap:8px;
+}

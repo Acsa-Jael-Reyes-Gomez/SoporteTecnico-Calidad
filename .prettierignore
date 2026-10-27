@@ -1,0 +1,8 @@
+node_modules/
+dist/
+release/
+coverage/
+src/renderer/vendor/
+src/renderer/styles/app.bundle.css
+appsettings.json
+package-lock.json

@@ -1,0 +1,49 @@
+/* ==========================
+   COMPONENTS / BADGES
+========================== */
+.pill{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  border:1px solid var(--border);
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  color:var(--muted);
+  background:rgba(255,255,255,.03);
+}
+
+.pill{background:rgba(255,255,255,.55)}
+
+.badge{
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  font-size:12px;
+  font-weight:800;
+  background:rgba(255,255,255,.03);
+}
+
+.badge{background:rgba(0,0,0,.02);}
+
+.badge.open{
+  border-color:var(--ok);
+  color:var(--ok);
+  background:rgba(46,229,157,.08);
+}
+
+.badge.closed{
+  border-color:var(--danger);
+  color:var(--danger);
+  background:rgba(255,77,109,.08);
+}
+
+.content > :not(.dashboardWrap) .badge,
+.content > :not(.dashboardWrap) .pill,
+.content > :not(.dashboardWrap) .ruta-clasif-pill,
+.content > :not(.dashboardWrap) [class*="badge-"],
+.content > :not(.dashboardWrap) [class$="-badge"]{
+  font-size:var(--app-badge-size);
+  font-weight:800;
+  letter-spacing:.025em;
+}

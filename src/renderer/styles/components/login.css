@@ -1,0 +1,261 @@
+﻿/* ==========================
+   COMPONENTS / LOGIN
+========================== */
+.bootFallback{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:24px;
+}
+
+.bootFallbackCard{
+  width:min(560px, 100%);
+  padding:24px;
+  border-radius:16px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(15,23,42,.12);
+  box-shadow:0 18px 48px rgba(15,23,42,.12);
+  text-align:center;
+  color:var(--text);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.bootFallbackTitle{
+  font-size:24px;
+  font-weight:800;
+}
+
+.bootFallbackText{
+  margin-top:10px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.loginWrap{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:22px;
+  background: transparent;
+}
+
+.loginCard {
+  position: relative;
+}
+.loginWrap{
+  background: transparent;
+}
+
+/* Marca inferior izquierda en Login */
+.loginWrap::after{
+  content:"";
+  position:fixed;
+  left:26px;
+  bottom:26px;
+  width:clamp(110px, 9vw, 180px);
+  height:clamp(110px, 9vw, 180px);
+  pointer-events:none;
+  z-index:9999;
+  background-image:url("../../../../assets/marca.png");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  opacity:.55;
+  filter:
+    drop-shadow(0 0 24px rgba(15,109,116,.28))
+    drop-shadow(0 0 60px rgba(15,109,116,.18));
+}
+
+.loginWrap::after{
+  opacity:.40;
+  filter:
+    drop-shadow(0 0 18px rgba(2,6,23,.16))
+    drop-shadow(0 0 46px rgba(15,109,116,.12));
+}
+
+.loginCard{
+  width:min(560px, 100%);
+  padding:18px 18px 16px;
+
+  /* glass */
+  background: rgba(10, 18, 28, .42);
+  border: 1px solid rgba(255,255,255,.14);
+  -webkit-backdrop-filter: blur(16px) saturate(1.18);
+  backdrop-filter: blur(16px) saturate(1.18);
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.32),
+    0 0 0 1px rgba(255,255,255,.04) inset;
+}
+.loginCard{
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(15,23,42,.12);
+  -webkit-backdrop-filter: blur(18px) saturate(1.12);
+  backdrop-filter: blur(18px) saturate(1.12);
+  box-shadow:
+    0 22px 60px rgba(15,23,42,.14),
+    0 0 0 1px rgba(255,255,255,.45) inset;
+}
+
+.loginHeader{display:flex; align-items:center; gap:12px}
+.loginLogo{
+  width:44px;height:44px;border-radius:14px;
+  border:1px solid var(--border);
+  background:linear-gradient(135deg, rgba(15,109,116,.35), rgba(125,211,216,.16));
+  box-shadow:var(--glowCyan);
+}
+.loginLogo{
+  background:linear-gradient(135deg, rgba(15,109,116,.18), rgba(15,109,116,.10));
+  box-shadow:var(--glowAccent);
+}
+
+.loginTitle{font-size:22px; font-weight:900; margin:0;}
+.loginHint{color:var(--muted); font-size:13px; margin-top:4px}
+
+.loginGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+.loginActions{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+  align-items:center;
+  justify-content:space-between;
+}
+.loginBtn{
+  height: 44px;
+  width:160px; 
+  text-align:center;
+  padding: 0 20px;
+}
+.loginMeta{display:flex; gap:8px; align-items:center}
+
+/* Inputs del login: glass */
+.loginWrap input,
+.loginWrap select,
+.loginWrap textarea{
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  color: var(--text);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+}
+.loginWrap input,
+.loginWrap select,
+.loginWrap textarea{
+  background: rgba(255,255,255,.58);
+  border: 1px solid rgba(15,23,42,.14);
+  color: var(--text);
+}
+.loginWrap input:focus,
+.loginWrap select:focus,
+.loginWrap textarea:focus{
+  border-color: rgba(15,109,116,.55);
+  box-shadow: 0 0 0 2px rgba(15,109,116,.18), 0 10px 24px rgba(15,109,116,.10);
+}
+
+/* ==========================
+   PASSWORD INPUT TOGGLE (OJITO)
+========================== */
+.password-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  width: 100%;
+  padding-right: 40px !important;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: transparent !important;
+  border: none !important;
+  color: var(--muted) !important;
+  padding: 0 12px !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color .15s ease;
+  z-index: 5;
+}
+
+.password-toggle-btn:hover {
+  color: var(--text) !important;
+}
+
+.password-toggle-btn.active {
+  color: var(--uiAccent) !important;
+}
+
+.password-toggle-btn i {
+  font-size: 14px;
+}
+
+/* ==========================
+   LOGIN HEADER: logo arriba centrado + titulo abajo
+========================== */
+.loginHeader{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.loginLogo{
+  width:54px;
+  height:54px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  display:grid;
+  place-items:center;
+  background: linear-gradient(135deg, rgba(47,137,255,.35), rgba(32,214,255,.18));
+  box-shadow: var(--glowCyan);
+}
+
+.loginLogo{
+  background: linear-gradient(135deg, rgba(15,109,116,.18), rgba(15,109,116,.10));
+  box-shadow: var(--glowAccent);
+}
+
+/* Texto título */
+.loginTitle{
+  font-size:22px;
+  font-weight:900;
+  margin:0;
+  letter-spacing:.3px;
+  width:100%;
+  text-align:center;
+}
+
+/* ✅ Estilo del “stack” computadora + wifi (NO se toca aquí porque tú pediste solo el fondo del sistema) */
+.loginLogo .fa-stack{
+  font-size:20px;
+  line-height:1;
+}
+.loginLogo .fa-computer{ opacity:.95; }
+.loginLogo .fa-wifi{
+  transform: translateY(6px) scale(.9);
+  opacity:.95;
+}
+
+/* En botón login ya lo centrabas inline; mejor en CSS limpio */
+.loginActions{
+  margin-top:16px;
+  display:flex;
+  justify-content:center;
+}
+.loginBtn{
+  width:150px;
+  text-align:center;
+}
