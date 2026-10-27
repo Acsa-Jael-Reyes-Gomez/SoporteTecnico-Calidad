@@ -1,0 +1,26 @@
+/* ==========================
+   CORE / RESET
+========================== */
+*{box-sizing:border-box}
+html,body{height:100%}
+
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  position:relative;
+}
+
+.noselect{-webkit-user-select:none; user-select:none;}
+a{color:var(--uiAccent)}
+hr{border:none; border-top:1px solid var(--border); margin:12px 0}
+
+*::-webkit-scrollbar{height:10px; width:10px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.10);
+  border:1px solid var(--border);
+  border-radius:999px;
+}

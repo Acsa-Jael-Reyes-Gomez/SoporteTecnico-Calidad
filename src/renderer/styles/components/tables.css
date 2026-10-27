@@ -1,0 +1,580 @@
+/* ==========================
+   COMPONENTS / TABLES
+========================== */
+.tableWrap{
+  overflow-x:auto;
+  overflow-y:hidden;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:rgba(255,255,255,0.02);
+  width:100%;
+  max-width:100%;
+}
+
+.tableWrap.has-footer{
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.tableWrap.has-footer .table-scroll{
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  overflow-x:auto;
+  overflow-y:auto;
+}
+
+.table-footer-host{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+}
+
+.table-footer-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px 12px;
+  padding:6px 10px;
+  border-top:1px solid var(--app-table-divider, var(--border));
+  background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
+}
+
+.table-footer-bar{
+  background:linear-gradient(180deg, rgba(248,250,252,.98), rgba(255,255,255,.99));
+}
+
+.table-footer-meta{
+  font-size:11.5px;
+  line-height:1.2;
+  font-weight:600;
+  color:var(--muted);
+}
+
+.table-footer-controls{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.table-pager{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  flex-wrap:wrap;
+}
+
+.table-page-btn{
+  min-height:26px !important;
+  height:26px !important;
+  padding:0 8px !important;
+  border-radius:9px !important;
+  font-size:11px !important;
+  font-weight:800 !important;
+  line-height:1 !important;
+}
+
+.table-page-btn.is-active{
+  border-color:transparent !important;
+  background:linear-gradient(135deg, #0d7b9f, #1678b7) !important;
+  color:#fff !important;
+  box-shadow:0 10px 20px rgba(13, 123, 159, .18);
+}
+
+.table-page-btn:disabled{
+  opacity:.58;
+  cursor:not-allowed;
+}
+
+.table-page-dots{
+  min-width:16px;
+  text-align:center;
+  font-size:12px;
+  font-weight:800;
+  color:var(--muted);
+}
+
+.table-page-size{
+  min-width:116px;
+  min-height:26px;
+  height:26px;
+  padding:0 8px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:700;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:0;
+  table-layout:auto;
+}
+
+th,td{
+  padding:2px 6px;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+  vertical-align:middle;
+  line-height:1.02;
+}
+
+th{
+  color:var(--muted);
+  text-align:left;
+  background:rgba(255,255,255,0.03);
+  position:sticky;
+  top:0;
+  z-index:2;
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  box-shadow:0 1px 0 rgba(255,255,255,.06);
+}
+
+th{box-shadow:0 1px 0 rgba(0,0,0,.06);}
+
+tbody tr:nth-child(even) td{background:rgba(255,255,255,0.015);}
+tbody tr:nth-child(even) td{background:rgba(0,0,0,.015);}
+
+tr:hover td{background:rgba(255,255,255,0.03);}
+tr:hover td{background:rgba(15,109,116,.06);}
+
+td.wrap{
+  max-width:420px;
+  white-space:normal;
+  word-break:break-word;
+}
+
+.table-sticky th:last-child,
+.table-sticky td:last-child{
+  position:sticky;
+  right:0;
+  background:rgba(14,26,38,.86);
+  z-index:1;
+}
+
+.table-sticky th:last-child,
+.table-sticky td:last-child{
+  background:rgba(247,249,251,.95);
+}
+
+.content > :not(.dashboardWrap) .tableWrap{
+  border-radius:18px;
+  background:var(--app-table-surface) !important;
+  border:1px solid var(--app-table-border) !important;
+  box-shadow:
+    0 16px 36px rgba(0,0,0,.14),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.content > :not(.dashboardWrap) .tableWrap{
+  box-shadow:
+    0 16px 32px rgba(15,23,42,.08),
+    inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+.content > :not(.dashboardWrap) .tableWrap.has-footer,
+.content.calif-module .calif-tab-content.active .tableWrap.has-footer{
+  overflow:hidden !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap table{
+  border-collapse:separate;
+  border-spacing:0;
+  width:max-content;
+  min-width:100%;
+  table-layout:auto;
+}
+
+.content > :not(.dashboardWrap) .tableWrap th,
+.content > :not(.dashboardWrap) .tableWrap td{
+  padding:2px 6px;
+  border-right:1px solid var(--app-table-divider) !important;
+  border-bottom:1px solid var(--app-table-divider) !important;
+  vertical-align:middle;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.content > :not(.dashboardWrap) .tableWrap th:last-child,
+.content > :not(.dashboardWrap) .tableWrap td:last-child{
+  border-right:none !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap th{
+  font-size:var(--app-table-head-size);
+  font-weight:800;
+  line-height:1;
+  letter-spacing:.025em;
+  color:var(--app-color-table-heading);
+  background:linear-gradient(180deg, var(--app-table-head-bg), var(--app-table-head-bg2)) !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap td{
+  font-size:var(--app-table-text-size);
+  font-weight:500;
+  line-height:1.02;
+  color:var(--app-color-text);
+}
+
+.content > :not(.dashboardWrap) .tableWrap tbody tr:nth-child(even) td{
+  background:var(--app-table-row-even) !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap tbody tr:hover td{
+  background:var(--app-table-row-hover) !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap td.actions,
+.content > :not(.dashboardWrap) .tableWrap th.actions{
+  background:var(--app-table-actions-bg) !important;
+  box-shadow:-10px 0 18px rgba(2,6,23,.06);
+}
+
+.content > :not(.dashboardWrap) .tableWrap > .actions{
+  border-top:1px solid var(--app-table-divider);
+  background:transparent;
+}
+
+.content > :not(.dashboardWrap) .tableWrap::-webkit-scrollbar,
+.content > :not(.dashboardWrap) .tableWrap.has-footer .table-scroll::-webkit-scrollbar{
+  height:12px;
+  width:12px;
+}
+
+.content > :not(.dashboardWrap) .tableWrap::-webkit-scrollbar-track,
+.content > :not(.dashboardWrap) .tableWrap.has-footer .table-scroll::-webkit-scrollbar-track{
+  background:rgba(15,109,116,.18);
+  border-radius:999px;
+}
+
+.content > :not(.dashboardWrap) .tableWrap::-webkit-scrollbar-thumb,
+.content > :not(.dashboardWrap) .tableWrap.has-footer .table-scroll::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.10);
+  border:1px solid var(--border);
+  border-radius:999px;
+}
+
+.content > :not(.dashboardWrap) .tableWrap::-webkit-scrollbar-thumb,
+.content > :not(.dashboardWrap) .tableWrap.has-footer .table-scroll::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,.08);
+  border-color:rgba(0,0,0,.06);
+}
+
+.content > :not(.dashboardWrap) .tableWrap.rutas-excel,
+.content > :not(.dashboardWrap) .tableWrap.tickets-excel,
+.content > :not(.dashboardWrap) .tableWrap.equipos-excel,
+.content > :not(.dashboardWrap) .tableWrap.proyectos-excel,
+.content > :not(.dashboardWrap) .tableWrap.reportes-excel{
+  background:var(--app-table-surface) !important;
+  border-color:var(--app-table-border) !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap.rutas-excel th,
+.content > :not(.dashboardWrap) .tableWrap.tickets-excel th,
+.content > :not(.dashboardWrap) .tableWrap.equipos-excel th,
+.content > :not(.dashboardWrap) .tableWrap.proyectos-excel th,
+.content > :not(.dashboardWrap) .tableWrap.reportes-excel th{
+  background:linear-gradient(180deg, var(--app-table-head-bg), var(--app-table-head-bg2)) !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap.rutas-excel td.actions,
+.content > :not(.dashboardWrap) .tableWrap.tickets-excel td.actions,
+.content > :not(.dashboardWrap) .tableWrap.equipos-excel td.actions,
+.content > :not(.dashboardWrap) .tableWrap.proyectos-excel td.actions,
+.content > :not(.dashboardWrap) .tableWrap.reportes-excel td.actions{
+  background:var(--app-table-actions-bg) !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap.rutas-excel td.actions,
+.content > :not(.dashboardWrap) .tableWrap.tickets-excel td.actions,
+.content > :not(.dashboardWrap) .tableWrap.equipos-excel td.actions,
+.content > :not(.dashboardWrap) .tableWrap.proyectos-excel td.actions,
+.content > :not(.dashboardWrap) .tableWrap.reportes-excel td.actions{
+  background:#ffffff;
+}
+
+.content > :not(.dashboardWrap) .tableWrap table.excel-resizable-table thead th,
+.content > :not(.dashboardWrap) .calif-table.excel-resizable-table thead th,
+.modalBack .tableWrap table.excel-resizable-table thead th{
+  position:relative;
+}
+
+.content > :not(.dashboardWrap) .tableWrap table.excel-resizable-table tbody td,
+.content > :not(.dashboardWrap) .calif-table.excel-resizable-table tbody td,
+.modalBack .tableWrap table.excel-resizable-table tbody td{
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.content > :not(.dashboardWrap) .tableWrap table.excel-resizable-table tbody td.wrap,
+.content > :not(.dashboardWrap) .calif-table.excel-resizable-table tbody td.wrap,
+.modalBack .tableWrap table.excel-resizable-table tbody td.wrap{
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  word-break:break-word !important;
+  text-overflow:clip;
+}
+
+.content > :not(.dashboardWrap) .tableWrap table.excel-resizable-table thead th .excel-resize-handle,
+.content > :not(.dashboardWrap) .calif-table.excel-resizable-table thead th .excel-resize-handle,
+.modalBack .tableWrap table.excel-resizable-table thead th .excel-resize-handle{
+  position:absolute;
+  top:0;
+  right:-7px;
+  width:14px;
+  height:100%;
+  padding:0;
+  border:none;
+  background:transparent;
+  cursor:col-resize;
+  touch-action:none;
+  z-index:4;
+}
+
+.content > :not(.dashboardWrap) .tableWrap table.excel-resizable-table thead th .excel-resize-handle::after,
+.content > :not(.dashboardWrap) .calif-table.excel-resizable-table thead th .excel-resize-handle::after,
+.modalBack .tableWrap table.excel-resizable-table thead th .excel-resize-handle::after{
+  content:"";
+  position:absolute;
+  top:18%;
+  bottom:18%;
+  left:50%;
+  width:2px;
+  border-radius:999px;
+  transform:translateX(-50%);
+  background:transparent;
+  transition:background-color .18s ease, box-shadow .18s ease;
+}
+
+.content > :not(.dashboardWrap) .tableWrap table.excel-resizable-table thead th:hover .excel-resize-handle::after,
+.content > :not(.dashboardWrap) .tableWrap table.excel-resizable-table thead th .excel-resize-handle:hover::after,
+.content > :not(.dashboardWrap) .calif-table.excel-resizable-table thead th:hover .excel-resize-handle::after,
+.content > :not(.dashboardWrap) .calif-table.excel-resizable-table thead th .excel-resize-handle:hover::after,
+.modalBack .tableWrap table.excel-resizable-table thead th:hover .excel-resize-handle::after,
+.modalBack .tableWrap table.excel-resizable-table thead th .excel-resize-handle:hover::after,
+body.excel-columns-resizing .excel-resize-handle::after{
+  background:rgba(15,109,116,.55);
+  box-shadow:0 0 0 1px rgba(15,109,116,.12);
+}
+
+body.excel-columns-resizing,
+body.excel-columns-resizing *{
+  cursor:col-resize !important;
+  -webkit-user-select:none !important;
+  user-select:none !important;
+}
+
+.content > .module-tickets .tableWrap,
+.content > .module-rutas .tableWrap,
+.content > .module-equipos .tableWrap,
+.content > .module-validacion-rutas .tableWrap,
+#proyectos-especiales-content.module-proyectos-especiales .tableWrap,
+.content.report-module .tableWrap,
+.content.calif-module .calif-tab-content.active .tableWrap{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-x:auto !important;
+  overflow-y:auto !important;
+}
+
+.content > .module-tickets > .card:first-child,
+.content > .module-rutas > .card:first-child,
+.content > .module-equipos > .card:first-child{
+  flex:0 0 auto;
+  margin-bottom:10px;
+}
+
+.content > .module-tickets .tableWrap.has-footer,
+.content > .module-rutas .tableWrap.has-footer,
+.content > .module-equipos .tableWrap.has-footer{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  overflow:hidden !important;
+}
+
+.content > .module-tickets .tableWrap.has-footer .table-scroll,
+.content > .module-rutas .tableWrap.has-footer .table-scroll,
+.content > .module-equipos .tableWrap.has-footer .table-scroll{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-x:auto !important;
+  overflow-y:auto !important;
+}
+
+.content > .module-tickets .tableWrap.has-footer .table-footer-host,
+.content > .module-rutas .tableWrap.has-footer .table-footer-host,
+.content > .module-equipos .tableWrap.has-footer .table-footer-host{
+  flex:0 0 auto;
+}
+
+.content > :not(.dashboardWrap) .tableWrap thead th,
+.content.calif-module .calif-table thead th{
+  position:sticky;
+  top:0;
+  z-index:6;
+  box-shadow:inset 0 -1px 0 rgba(148,163,184,.20);
+}
+
+.content > :not(.dashboardWrap) .tableWrap thead th.actions,
+.content.calif-module .calif-table thead th.actions{
+  z-index:8;
+}
+
+.content > :not(.dashboardWrap) .tableWrap table,
+.content > :not(.dashboardWrap) .calif-table,
+.dashboardTechTable,
+.dashboardFollowTable{
+  font-size:11px !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap th,
+.content > :not(.dashboardWrap) .tableWrap td,
+.content > :not(.dashboardWrap) .calif-table th,
+.content > :not(.dashboardWrap) .calif-table td,
+.dashboardTechTable th,
+.dashboardTechTable td,
+.dashboardFollowTable th,
+.dashboardFollowTable td{
+  padding:1px 6px !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap thead th,
+.content > :not(.dashboardWrap) .calif-table thead th,
+.dashboardTechTable th,
+.dashboardFollowTable th{
+  min-height:24px;
+  height:auto;
+  font-size:10.25px;
+  line-height:1;
+}
+
+.content > :not(.dashboardWrap) .tableWrap thead th i,
+.content > :not(.dashboardWrap) .calif-table thead th i{
+  font-size:10.5px !important;
+  margin-right:4px !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap tbody td,
+.content > :not(.dashboardWrap) .calif-table tbody td,
+.dashboardTechTable td,
+.dashboardFollowTable td{
+  font-size:11px;
+  line-height:1.02;
+}
+
+.content > :not(.dashboardWrap) .tableWrap td .btn.small,
+.content > :not(.dashboardWrap) .tableWrap td.actions .btn,
+.content > :not(.dashboardWrap) .calif-table td .btn.small,
+.content > :not(.dashboardWrap) .calif-table td.actions .btn{
+  width:22px !important;
+  min-width:22px !important;
+  height:22px !important;
+  min-height:22px !important;
+}
+
+.content > :not(.dashboardWrap) .tableWrap .badge,
+.content > :not(.dashboardWrap) .tableWrap .pill,
+.content > :not(.dashboardWrap) .tableWrap .ruta-clasif-pill,
+.content > :not(.dashboardWrap) .tableWrap [class*="badge-"],
+.content > :not(.dashboardWrap) .tableWrap [class$="-badge"],
+.content > :not(.dashboardWrap) .calif-table .badge,
+.content > :not(.dashboardWrap) .calif-table .pill,
+.content > :not(.dashboardWrap) .calif-table .ruta-clasif-pill,
+.content > :not(.dashboardWrap) .calif-table [class*="badge-"],
+.content > :not(.dashboardWrap) .calif-table [class$="-badge"]{
+  min-height:14px;
+  padding:0 4px;
+  font-size:10px !important;
+  line-height:1 !important;
+}
+
+.content > .module-tickets .tableWrap,
+.content > .module-rutas .tableWrap,
+.content > .module-equipos .tableWrap,
+#proyectos-especiales-content.module-proyectos-especiales .tableWrap{
+  max-height:calc(100vh - 150px);
+}
+
+.content > .module-validacion-rutas .tableWrap{
+  max-height:calc(100vh - 156px);
+}
+
+.content.report-module .tableWrap{
+  max-height:calc(100vh - 190px);
+}
+
+.content.calif-module .calif-tab-content.active .tableWrap{
+  max-height:calc(100vh - 186px);
+}
+
+#proyectos-especiales-content.module-proyectos-especiales .tableWrap.has-footer,
+.content.calif-module .calif-tab-content.active .tableWrap.has-footer{
+  overflow:hidden !important;
+}
+
+#proyectos-especiales-content.module-proyectos-especiales .tableWrap.has-footer .table-scroll,
+.content.calif-module .calif-tab-content.active .tableWrap.has-footer .table-scroll{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-x:auto !important;
+  overflow-y:auto !important;
+}
+
+@media (max-width:1366px){
+  .content > :not(.dashboardWrap) .tableWrap thead th,
+  .content > :not(.dashboardWrap) .calif-table thead th,
+  .dashboardTechTable th,
+  .dashboardFollowTable th{
+    font-size:10px;
+  }
+
+  .content > :not(.dashboardWrap) .tableWrap tbody td,
+  .content > :not(.dashboardWrap) .calif-table tbody td,
+  .dashboardTechTable td,
+  .dashboardFollowTable td{
+    font-size:10.75px;
+  }
+}
+
+@media (max-width:980px){
+  .table-footer-bar{
+    align-items:flex-start;
+    flex-direction:column;
+    padding:8px 10px;
+  }
+
+  .table-footer-controls{
+    width:100%;
+    justify-content:space-between;
+  }
+}
+
+@media (max-width:640px){
+  .table-footer-controls{
+    align-items:stretch;
+    flex-direction:column-reverse;
+  }
+
+  .table-pager{
+    justify-content:flex-start;
+  }
+
+  .table-page-btn{
+    min-height:26px !important;
+    height:26px !important;
+    font-size:10.75px !important;
+  }
+
+  .table-page-size{
+    min-width:0;
+    width:100%;
+    min-height:26px;
+    height:26px;
+  }
+}

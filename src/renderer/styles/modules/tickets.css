@@ -1,0 +1,28 @@
+﻿/* ==========================
+   MODULES / TICKETS
+========================== */
+.content > .module-tickets .tableWrap.tickets-excel th:nth-child(5),
+.content > .module-tickets .tableWrap.tickets-excel td:nth-child(5){
+  width:76px !important;
+  min-width:76px !important;
+  max-width:76px !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+}
+
+.content > .module-tickets .tableWrap.tickets-excel td:nth-child(5){
+  padding-left:4px !important;
+  padding-right:4px !important;
+}
+
+.content > .module-tickets .ticket-clasificacion-text{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:100% !important;
+  text-align:center !important;
+  font-size:11px !important;
+  line-height:1 !important;
+  letter-spacing:0 !important;
+}
+

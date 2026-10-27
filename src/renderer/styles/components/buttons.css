@@ -1,0 +1,112 @@
+/* ==========================
+  COMPONENTES / BOTONES
+========================== */
+.actions{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+
+.btn{
+  height:40px;
+  min-height:40px;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+  color:var(--text);
+  border-radius:var(--radiusSm);
+  cursor:pointer;
+  text-align:center;
+  font-weight:600;
+  transition:all .15s ease;
+  font-size:14px;
+}
+
+.btn i{
+  font-size:14px !important;
+  flex-shrink:0;
+}
+
+.btn{background:rgba(0,0,0,.02);}
+
+.btn:hover{
+  border-color:var(--uiAccent);
+  background:rgba(255,255,255,.05);
+  box-shadow:var(--shadow);
+}
+
+.btn:hover{background:rgba(0,0,0,.04);}
+
+.btn:active{transform:scale(.97);}
+
+.btn:disabled{
+  cursor:not-allowed;
+  opacity:.82;
+  box-shadow:none;
+}
+
+.btn:disabled{opacity:.88;}
+
+.btn.primary{
+  background:linear-gradient(135deg, var(--uiAccent), var(--uiAccent2));
+  border-color:transparent;
+  color:#fff;
+  font-weight:800;
+  box-shadow:var(--glowAccent);
+}
+
+.btn.primary:hover{filter:brightness(1.05);}
+
+.btn.primary:active,
+.btn.primary:focus,
+.btn.primary:focus-visible{
+  background:linear-gradient(135deg, rgba(15,109,116,.75), rgba(11,91,97,.65));
+  border-color:rgba(15,109,116,.35);
+  color:#fff;
+  box-shadow:0 0 0 2px rgba(15,109,116,.25), 0 6px 18px rgba(15,109,116,.15);
+}
+
+.btn.primary:active,
+.btn.primary:focus,
+.btn.primary:focus-visible{
+  background:linear-gradient(135deg, rgba(15,109,116,.70), rgba(11,91,97,.60));
+  border-color:rgba(15,109,116,.30);
+  color:#fff;
+}
+
+.btn.primary:disabled{
+  background:linear-gradient(135deg, rgba(15,109,116,.55), rgba(11,91,97,.45));
+  border-color:rgba(15,109,116,.22);
+  color:rgba(255,255,255,.9);
+  box-shadow:none;
+}
+
+.btn.danger{
+  border-color:var(--danger);
+  color:var(--danger);
+}
+
+.btn.ok{
+  border-color:var(--ok);
+  color:var(--ok);
+}
+
+.btn.small{
+  height:36px;
+  min-height:36px;
+  padding:0 14px;
+  font-size:13px;
+  border-radius:10px;
+}
+
+.btn.right{text-align:center;}
+
+.content > :not(.dashboardWrap) .btn,
+.loginWrap .btn,
+.topbar .btn,
+.sidebar .btn,
+.modalBack .btn{
+  font-size:var(--app-button-size);
+  font-weight:700;
+  letter-spacing:.01em;
+}

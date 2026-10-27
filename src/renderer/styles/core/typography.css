@@ -1,0 +1,147 @@
+/* ==========================
+   CORE / TYPOGRAPHY
+========================== */
+*::-webkit-scrollbar-thumb{background:rgba(0,0,0,.08)}
+
+.brand{font-weight:900; letter-spacing:.4px; font-size:15px}
+.sub{color:var(--muted); font-size:12px; margin-top:6px}
+.h1{font-size:18px; font-weight:900}
+.small{font-size:12px; color:var(--muted)}
+label{font-size:12px; color:var(--muted)}
+
+td.mono{
+  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.sidebar,
+.topbar,
+.loginWrap,
+.modalBack,
+.toastRoot,
+.content > :not(.dashboardWrap){
+  font-family:var(--app-font-ui);
+}
+
+.sidebar button,
+.topbar button,
+.loginWrap button,
+.loginWrap input,
+.loginWrap select,
+.loginWrap textarea,
+.modalBack button,
+.modalBack input,
+.modalBack select,
+.modalBack textarea,
+.content > :not(.dashboardWrap) button,
+.content > :not(.dashboardWrap) input,
+.content > :not(.dashboardWrap) select,
+.content > :not(.dashboardWrap) textarea{
+  font-family:inherit;
+}
+
+body{
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.topbar,
+.loginWrap,
+.modalBack,
+.toastRoot,
+.content > :not(.dashboardWrap){
+  font-size:var(--app-text-size);
+  line-height:1.5;
+  color:var(--app-color-text);
+}
+
+.sidebar{
+  font-size:13.5px;
+  line-height:1.45;
+}
+
+.content > :not(.dashboardWrap) .h1,
+.modalBack .h1{
+  font-size:var(--app-title-size);
+  font-weight:800;
+  line-height:1.16;
+  letter-spacing:-.025em;
+  color:var(--app-color-title);
+}
+
+.content > :not(.dashboardWrap) .titleRow .h1,
+.content > :not(.dashboardWrap) .module-header-tickets .h1,
+.content > :not(.dashboardWrap) .module-header-rutas .h1,
+.content > :not(.dashboardWrap) .module-header-equipos .h1,
+.content > :not(.dashboardWrap) .module-header-reportes .h1,
+.content > :not(.dashboardWrap) .module-header-proyectos .h1,
+.content > :not(.dashboardWrap) .module-header-calif .h1{
+  color:var(--app-color-module-heading);
+}
+
+.content > :not(.dashboardWrap) .small,
+.modalBack .small,
+.loginHint,
+.brand-tagline,
+.topbar-user .small{
+  font-size:var(--app-subtitle-size);
+  font-weight:500;
+  line-height:1.45;
+  letter-spacing:.01em;
+  color:var(--app-color-subtitle);
+}
+
+.content > :not(.dashboardWrap) label,
+.loginWrap label,
+.modalBack label{
+  font-size:var(--app-label-size);
+  font-weight:700;
+  line-height:1.25;
+  letter-spacing:.015em;
+  color:var(--app-color-label);
+}
+
+.content > :not(.dashboardWrap) input,
+.content > :not(.dashboardWrap) select,
+.content > :not(.dashboardWrap) textarea,
+.loginWrap input,
+.loginWrap select,
+.loginWrap textarea,
+.modalBack input,
+.modalBack select,
+.modalBack textarea{
+  font-size:13.5px;
+  line-height:1.4;
+  color:var(--app-color-text);
+}
+
+.content > :not(.dashboardWrap) .titleRow .h1{
+  font-size:16px !important;
+  line-height:1.04;
+}
+
+.content > :not(.dashboardWrap) .titleRow .small,
+.modalBack .titleRow .small{
+  font-size:10.5px !important;
+  line-height:1.08;
+}
+
+.content > .module-tickets .small,
+.content > .module-rutas .small,
+.content > .module-equipos .small,
+#proyectos-especiales-content.module-proyectos-especiales .small,
+.content .calif-info-line,
+.report-module .small,
+.report-module .report-empty-state{
+  margin-top:0 !important;
+  font-size:11px !important;
+  line-height:1.1;
+}
+
+@media (max-width:1366px){
+  .content > :not(.dashboardWrap) .titleRow .h1{
+    font-size:15px !important;
+  }
+}

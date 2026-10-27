@@ -1,0 +1,280 @@
+/* ==========================
+   COMPONENTS / DROPDOWNS
+========================== */
+.content > :not(.dashboardWrap) .searchable-select,
+.modalBack .searchable-select{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  width:100% !important;
+  min-width:0 !important;
+  min-height:40px !important;
+  height:40px !important;
+  border:1px solid var(--border) !important;
+  border-radius:12px !important;
+  background:var(--input) !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  cursor:text !important;
+  box-sizing:border-box !important;
+  transition:border-color .15s ease, box-shadow .15s ease !important;
+}
+
+.content > :not(.dashboardWrap) .searchable-select:focus-within,
+.modalBack .searchable-select:focus-within{
+  border-color:rgba(15,109,116,.45) !important;
+  box-shadow:var(--glowAccent) !important;
+}
+
+.content > :not(.dashboardWrap) .searchable-select-main,
+.modalBack .searchable-select-main{
+  flex:1 1 auto !important;
+  width:100% !important;
+  min-width:0 !important;
+  min-height:100% !important;
+  height:100% !important;
+  padding:0 34px 0 12px !important;
+  border:none !important;
+  border-radius:12px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  color:var(--text) !important;
+  font-size:13px !important;
+  font-weight:600 !important;
+  line-height:1.2 !important;
+  outline:none !important;
+  box-sizing:border-box !important;
+}
+
+.content > :not(.dashboardWrap) .searchable-select-main::placeholder,
+.modalBack .searchable-select-main::placeholder{
+  color:var(--muted) !important;
+  opacity:.85 !important;
+}
+
+.content > :not(.dashboardWrap) .searchable-select-main:focus,
+.modalBack .searchable-select-main:focus{
+  border:none !important;
+  box-shadow:none !important;
+}
+
+.content > :not(.dashboardWrap) .searchable-select-toggle,
+.modalBack .searchable-select-toggle{
+  position:absolute !important;
+  top:50% !important;
+  right:12px !important;
+  width:10px !important;
+  min-width:10px !important;
+  height:10px !important;
+  padding:0 !important;
+  border:none !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  transform:translateY(-50%) !important;
+  pointer-events:none !important;
+  color:var(--muted) !important;
+}
+
+.content > :not(.dashboardWrap) .searchable-select-toggle i,
+.modalBack .searchable-select-toggle i{
+  color:inherit !important;
+  font-size:10px !important;
+  transform:none !important;
+}
+
+.searchable-select-dropdown{
+  position:fixed !important;
+  background:var(--panel2) !important;
+  border:1px solid var(--border) !important;
+  border-radius:var(--radiusSm) !important;
+  z-index:2147483647 !important;
+  display:none;
+  max-height:240px;
+  overflow-y:auto;
+  box-shadow:var(--shadow) !important;
+  pointer-events:auto !important;
+}
+
+.searchable-select-dropdown.show{
+  display:block;
+}
+
+.searchable-select-options{
+  max-height:200px;
+  overflow-y:auto;
+  padding:4px;
+  pointer-events:auto;
+}
+
+.searchable-select-options::-webkit-scrollbar{
+  width:10px !important;
+  height:10px !important;
+}
+
+.searchable-select-options::-webkit-scrollbar-track{
+  background:transparent !important;
+}
+
+.searchable-select-options::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.10) !important;
+  border:1px solid var(--border) !important;
+  border-radius:999px !important;
+}
+
+.searchable-select-options::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,.08) !important;
+}
+
+.searchable-select-option{
+  padding:10px 12px !important;
+  cursor:pointer;
+  border-radius:8px !important;
+  transition:background .1s ease, color .1s ease !important;
+  color:var(--text) !important;
+  font-size:13px !important;
+}
+
+.searchable-select-option:hover,
+.searchable-select-option.hover-active{
+  background:rgba(15,109,116,.2) !important;
+}
+
+.searchable-select-option.selected{
+  background:rgba(15,109,116,.25) !important;
+  font-weight:600 !important;
+  color:var(--text) !important;
+}
+
+.searchable-select-option.active{
+  background:rgba(15,109,116,.3) !important;
+  font-weight:700 !important;
+  color:var(--text) !important;
+}
+
+.searchable-select-option.active:hover{
+  background:rgba(15,109,116,.4) !important;
+}
+
+.searchable-select-no-results{
+  padding:16px 12px !important;
+  text-align:center;
+  color:var(--muted) !important;
+  font-size:13px !important;
+}
+
+.content > .module-tickets .module-filters .searchable-select,
+.content > .module-rutas .module-filters .searchable-select,
+.content > .module-equipos .module-filters .searchable-select,
+#proyectos-especiales-content.module-proyectos-especiales .module-filters .searchable-select,
+.content .calif-filters .searchable-select,
+.report-module .report-filters-card .searchable-select,
+.module-validacion-rutas .module-filters .searchable-select{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  width:100% !important;
+  height:40px !important;
+  min-height:40px !important;
+  background:var(--input) !important;
+  border:1px solid var(--border) !important;
+  border-radius:12px !important;
+  overflow:hidden !important;
+  box-shadow:none !important;
+  transition:border-color .15s ease, box-shadow .15s ease !important;
+}
+
+.content > .module-tickets .module-filters .searchable-select:focus-within,
+.content > .module-rutas .module-filters .searchable-select:focus-within,
+.content > .module-equipos .module-filters .searchable-select:focus-within,
+#proyectos-especiales-content.module-proyectos-especiales .module-filters .searchable-select:focus-within,
+.content .calif-filters .searchable-select:focus-within,
+.report-module .report-filters-card .searchable-select:focus-within,
+.module-validacion-rutas .module-filters .searchable-select:focus-within{
+  border-color:rgba(15,109,116,.45) !important;
+  box-shadow:var(--glowAccent) !important;
+}
+
+.content > .module-tickets .module-filters .searchable-select-main,
+.content > .module-rutas .module-filters .searchable-select-main,
+.content > .module-equipos .module-filters .searchable-select-main,
+#proyectos-especiales-content.module-proyectos-especiales .module-filters .searchable-select-main,
+.content .calif-filters .searchable-select-main,
+.report-module .report-filters-card .searchable-select-main,
+.module-validacion-rutas .module-filters .searchable-select-main{
+  flex:1 1 auto !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:100% !important;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  outline:none !important;
+  padding:0 34px 0 12px !important;
+  border-radius:12px !important;
+  font-size:13px !important;
+  font-weight:600 !important;
+  line-height:1.2 !important;
+}
+
+.content > .module-tickets .module-filters .searchable-select-main:focus,
+.content > .module-rutas .module-filters .searchable-select-main:focus,
+.content > .module-equipos .module-filters .searchable-select-main:focus,
+#proyectos-especiales-content.module-proyectos-especiales .module-filters .searchable-select-main:focus,
+.content .calif-filters .searchable-select-main:focus,
+.report-module .report-filters-card .searchable-select-main:focus,
+.module-validacion-rutas .module-filters .searchable-select-main:focus{
+  border:none !important;
+  box-shadow:none !important;
+}
+
+.content > .module-tickets .module-filters .searchable-select-toggle,
+.content > .module-rutas .module-filters .searchable-select-toggle,
+.content > .module-equipos .module-filters .searchable-select-toggle,
+#proyectos-especiales-content.module-proyectos-especiales .module-filters .searchable-select-toggle,
+.content .calif-filters .searchable-select-toggle,
+.report-module .report-filters-card .searchable-select-toggle,
+.module-validacion-rutas .module-filters .searchable-select-toggle{
+  position:absolute !important;
+  top:50% !important;
+  right:12px !important;
+  bottom:auto !important;
+  width:10px !important;
+  min-width:10px !important;
+  height:10px !important;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  transform:translateY(-50%) !important;
+}
+
+.content > .module-tickets .module-filters .searchable-select-toggle:hover,
+.content > .module-rutas .module-filters .searchable-select-toggle:hover,
+.content > .module-equipos .module-filters .searchable-select-toggle:hover,
+#proyectos-especiales-content.module-proyectos-especiales .module-filters .searchable-select-toggle:hover,
+.content .calif-filters .searchable-select-toggle:hover,
+.report-module .report-filters-card .searchable-select-toggle:hover,
+.module-validacion-rutas .module-filters .searchable-select-toggle:hover{
+  background:transparent !important;
+  color:var(--uiAccent) !important;
+}
+
+.content > .module-tickets .module-filters .searchable-select-toggle i,
+.content > .module-rutas .module-filters .searchable-select-toggle i,
+.content > .module-equipos .module-filters .searchable-select-toggle i,
+#proyectos-especiales-content.module-proyectos-especiales .module-filters .searchable-select-toggle i,
+.content .calif-filters .searchable-select-toggle i,
+.report-module .report-filters-card .searchable-select-toggle i,
+.module-validacion-rutas .module-filters .searchable-select-toggle i{
+  color:var(--uiAccent) !important;
+  font-size:10px !important;
+  transform:none !important;
+}

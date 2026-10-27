@@ -1,0 +1,79 @@
+name: Quality Gate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Build, tests and quality checks
+    runs-on: windows-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: BUILD - compile application
+        run: npm run build
+
+      - name: TEST - unit, integration doubles and regression checks
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force coverage | Out-Null
+          npm test 2>&1 | Tee-Object -FilePath coverage/test-results.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: TEST - measure coverage and enforce thresholds
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force coverage | Out-Null
+          npm run test:coverage 2>&1 | Tee-Object -FilePath coverage/coverage.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: ANALYZE - strict TypeScript check
+        run: npm run typecheck
+
+      - name: ANALYZE - ESLint
+        run: npm run lint
+
+      - name: ANALYZE - Prettier format check
+        run: npm run format:check
+
+      - name: ANALYZE - SonarCloud (when configured)
+        if: ${{ vars.SONAR_ORGANIZATION != '' && vars.SONAR_PROJECT_KEY != '' && env.SONAR_TOKEN != '' }}
+        uses: SonarSource/sonarqube-scan-action@v8.3.0
+        with:
+          args: >-
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+
+      - name: ANALYZE - report unavailable SonarCloud configuration
+        if: ${{ vars.SONAR_ORGANIZATION == '' || vars.SONAR_PROJECT_KEY == '' || env.SONAR_TOKEN == '' }}
+        run: >-
+          Write-Output 'SonarCloud skipped: configure SONAR_ORGANIZATION and SONAR_PROJECT_KEY repository variables and SONAR_TOKEN secret.'
+
+      - name: REPORT - upload test and coverage reports
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: quality-reports
+          path: |
+            coverage/coverage.txt
+            coverage/test-results.log
+          if-no-files-found: warn

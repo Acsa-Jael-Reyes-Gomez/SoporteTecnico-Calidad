@@ -1,0 +1,378 @@
+﻿/* ==========================
+   MODULES / PROYECTOS ESPECIALES
+========================== */
+
+/* PROYECTOS ESPECIALES
+   AJUSTES VISUALES FINALES */
+
+/* Header del módulo */
+.module-proyectos-especiales .module-header-proyectos{
+  position: relative;
+  padding-left: 12px;
+}
+
+.module-proyectos-especiales .module-header-proyectos::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--uiAccent), var(--uiAccent2));
+  opacity: .95;
+}
+
+.module-proyectos-especiales .module-title-block{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.module-proyectos-especiales .h1{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+}
+
+.module-proyectos-especiales .module-title-icon{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, rgba(15,109,116,.25), rgba(11,91,97,.15));
+  border:1px solid rgba(15,109,116,.35);
+  box-shadow:
+    0 0 0 2px rgba(15,109,116,.15),
+    0 8px 20px rgba(15,109,116,.12);
+}
+
+.module-proyectos-especiales .module-title-icon i{
+  color:var(--uiAccent);
+  font-size:15px;
+}
+
+/* Card y tabla del módulo */
+.module-proyectos-especiales{
+  position:relative;
+  overflow:hidden;
+}
+
+.module-proyectos-especiales::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg, rgba(15,109,116,.04), transparent 45%);
+  border-radius:inherit;
+}
+
+.module-proyectos-especiales .module-table thead th{
+  background:linear-gradient(
+    180deg,
+    rgba(15,109,116,.08),
+    rgba(15,109,116,.03)
+  ) !important;
+}
+
+.module-proyectos-especiales .module-table tbody tr:hover td{
+  background:rgba(15,109,116,.06) !important;
+}
+
+/* Acciones y botones */
+.module-proyectos-especiales td .actions{
+  justify-content:center;
+}
+
+.module-proyectos-especiales .proyecto-doc-btn,
+.module-proyectos-especiales .proyecto-action-btn,
+.module-proyectos-especiales .proyecto-approve-btn{
+  min-width:78px;
+  justify-content:center;
+  font-weight:700;
+  /* Más sutil que el glow original (se veía muy “pesado”) */
+  box-shadow: 0 4px 10px rgba(15,109,116,.10);
+}
+
+.module-proyectos-especiales .proyecto-doc-btn.proyecto-doc-locked{
+  background:linear-gradient(135deg, rgba(100,116,139,.16), rgba(100,116,139,.08)) !important;
+  border:1px solid rgba(100,116,139,.24) !important;
+  color:#5f6f84 !important;
+  box-shadow:none !important;
+  cursor:not-allowed !important;
+  opacity:1 !important;
+}
+
+.module-proyectos-especiales .proyecto-doc-btn.proyecto-doc-locked:disabled{
+  color:#5f6f84 !important;
+  border-color:rgba(100,116,139,.24) !important;
+  background:linear-gradient(135deg, rgba(100,116,139,.16), rgba(100,116,139,.08)) !important;
+}
+
+.module-proyectos-especiales .proyecto-action-btn{
+  min-width:84px;
+}
+
+.module-proyectos-especiales .proyecto-doc-btn i,
+.module-proyectos-especiales .proyecto-action-btn i,
+.module-proyectos-especiales .proyecto-approve-btn i{
+  color:inherit;
+  font-size:10px !important;
+  opacity:.9;
+}
+
+/* Badges de estado */
+.module-proyectos-especiales .proyecto-badge-aprobado{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  color:#22c55e;
+  background:rgba(34,197,94,.14);
+  border:1px solid rgba(34,197,94,.35);
+  box-shadow:0 2px 10px rgba(34,197,94,.10);
+}
+
+.module-proyectos-especiales .proyecto-badge-pendiente{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  color:#f59e0b;
+  background:rgba(245,158,11,.14);
+  border:1px solid rgba(245,158,11,.35);
+  box-shadow:0 2px 10px rgba(245,158,11,.10);
+}
+
+.module-proyectos-especiales .proyecto-badge-aprobado i,
+.module-proyectos-especiales .proyecto-badge-pendiente i{
+  color:inherit;
+}
+
+/* Ajuste base */
+.module-proyectos-especiales .module-title-icon{
+  background:linear-gradient(135deg, rgba(15,109,116,.10), rgba(15,109,116,.06));
+  border-color:rgba(15,109,116,.18);
+  box-shadow:
+    0 0 0 2px rgba(15,109,116,.10),
+    0 8px 18px rgba(15,109,116,.08);
+}
+
+.module-proyectos-especiales::after{
+  background:linear-gradient(180deg, rgba(15,109,116,.03), transparent 45%);
+}
+
+.module-proyectos-especiales .proyecto-badge-aprobado{
+  color:#15803d;
+  background:rgba(34,197,94,.12);
+  border-color:rgba(34,197,94,.24);
+}
+
+.module-proyectos-especiales .proyecto-badge-pendiente{
+  color:#b45309;
+  background:rgba(245,158,11,.12);
+  border-color:rgba(245,158,11,.24);
+}
+.module-proyectos-especiales .module-header-proyectos .h1{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.module-proyectos-especiales .module-header-proyectos .h1 > i{
+  color:var(--uiAccent) !important;
+  font-size:18px !important;
+  display:inline-block !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+
+/* ==========================
+   PROYECTOS ESPECIALES (SOLO VISUAL)
+   Nota: el módulo se monta dentro de #proyectos-content
+========================== */
+#proyectos-content .module-title-block{
+  /* Igualar tamaño del icono del header al estándar del sistema
+     (ver .content .card .h1 > i). */
+  padding-left:0;
+}
+
+#proyectos-content .module-header-proyectos .h1 > i{
+  position: static !important;
+  left: auto;
+  top: auto;
+  transform: none !important;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  font-size: 15px !important;
+}
+
+/* Scroll interno estable para tablas del módulo de proyectos */
+#proyectos-especiales-content.module-proyectos-especiales {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#proyectos-especiales-content.module-proyectos-especiales .module-table,
+#proyectos-especiales-content.module-proyectos-especiales .tableWrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+}
+
+#proyectos-especiales-content.module-proyectos-especiales .tableWrap.has-footer {
+  overflow: hidden !important;
+}
+
+#proyectos-especiales-content.module-proyectos-especiales .tableWrap.has-footer .table-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+
+#proyectos-especiales-content.module-proyectos-especiales .module-table table {
+  min-width: 100%;
+}
+
+
+@media (max-width: 980px){
+  #proyectos-content .module-title-block{ padding-left:0; }
+}
+
+.module-proyectos-especiales th{
+  white-space: nowrap;
+}
+
+.module-proyectos-especiales th i{
+  color: var(--uiAccent) !important;
+  font-size: 12px !important;
+  margin-right: 6px;
+  vertical-align: middle;
+  opacity: 1 !important;
+  display: inline-block !important;
+}
+
+.dashboardSection table thead tr {
+  position: relative;
+}
+
+.dashboardSection table thead tr::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border),
+    transparent
+  );
+}
+
+/* =========================================================
+   FIX EXTRA: evitar traslapes en tablas
+   ========================================================= */
+
+/* Las tablas de estos módulos no deben recortar contenido */
+.module-tickets .module-table table,
+.module-equipos .module-table table,
+.module-proyectos-especiales .module-table table {
+  table-layout: auto !important;
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+/* Celdas base */
+.module-tickets .module-table th,
+.module-tickets .module-table td,
+.module-equipos .module-table th,
+.module-equipos .module-table td,
+.module-proyectos-especiales .module-table th,
+.module-proyectos-especiales .module-table td {
+  vertical-align: top !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* Headers sí pueden ir en una línea */
+.module-tickets .module-table th,
+.module-equipos .module-table th,
+.module-proyectos-especiales .module-table th {
+  white-space: nowrap !important;
+}
+
+/* Celdas de contenido NO */
+.module-tickets .module-table td,
+.module-equipos .module-table td,
+.module-proyectos-especiales .module-table td {
+  white-space: normal !important;
+}
+
+/* Proyectos Especiales: columnas problemáticas */
+.module-proyectos-especiales .module-table td:nth-child(2),  /* Título */
+.module-proyectos-especiales .module-table td:nth-child(3),  /* Unidad */
+.module-proyectos-especiales .module-table td:nth-child(4),  /* Participantes */
+.module-proyectos-especiales .module-table td:nth-child(7),  /* Aprobado por */
+.module-proyectos-especiales .module-table td:nth-child(8),  /* Fecha aprobación */
+.module-proyectos-especiales .module-table td:nth-child(9) { /* Fecha registro */
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Dar respiración real a participantes y aprobador */
+.module-proyectos-especiales .module-table td:nth-child(4),
+.module-proyectos-especiales .module-table td:nth-child(7) {
+  min-width: 160px !important;
+  line-height: 1.35 !important;
+}
+
+/* Fechas no deben empujar de más */
+.module-proyectos-especiales .module-table td:nth-child(8),
+.module-proyectos-especiales .module-table td:nth-child(9) {
+  min-width: 110px !important;
+  white-space: nowrap !important;
+}
+
+/* Botones de acciones siempre visibles (solo celdas th/td.actions) */
+.module-proyectos-especiales .module-table th.actions,
+.module-proyectos-especiales .module-table td.actions,
+.module-tickets .module-table th.actions,
+.module-tickets .module-table td.actions,
+.module-equipos .module-table th.actions,
+.module-equipos .module-table td.actions {
+  position: sticky !important;
+  right: 0 !important;
+  z-index: 6 !important;
+}
+
+/* Fondo sólido para evitar que se mezcle visualmente con otras columnas */
+.module-proyectos-especiales .module-table th.actions,
+.module-proyectos-especiales .module-table td.actions,
+.module-tickets .module-table th.actions,
+.module-tickets .module-table td.actions,
+.module-equipos .module-table th.actions,
+.module-equipos .module-table td.actions {
+  background: #fff !important;
+}
+
+/* ==========================
+

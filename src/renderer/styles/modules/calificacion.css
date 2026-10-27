@@ -1,0 +1,316 @@
+﻿/* ==========================
+   MODULES / CALIFICACION
+========================== */
+
+/* MODULO CALIFICACION - ESTILOS ESPECIFICOS */
+
+/* Contenedor principal del módulo */
+.calificacion-module {
+  --calif-gold: #f1c40f;
+  --calif-orange: #f97316;
+  --calif-red: #ef4444;
+  --calif-green: #22c55e;
+}
+
+/* Header del módulo - barra lateral izquierda */
+.calificacion-module .module-header-calif .titleRow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #fbbf24, #f59e0b);
+  border-radius: 3px 0 0 3px;
+  z-index: 1;
+}
+
+/* Icono estrella dorada */
+.calificacion-module .h1 i {
+  color: var(--calif-gold) !important;
+  text-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
+  font-size: 20px !important;
+}
+
+/* Pestañas principales - grandes y prominentes */
+.calif-tabs {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 4px;
+  border-radius: 16px;
+  background: var(--tabBg);
+  border: 1px solid var(--border);
+}
+
+.calif-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.calif-tab:hover {
+  border-color: var(--uiAccent);
+  background: rgba(15, 109, 116, 0.1);
+  transform: translateY(-1px);
+}
+
+.calif-tab.active {
+  background: linear-gradient(135deg, var(--calif-gold), #f59e0b);
+  border-color: var(--calif-gold);
+  color: #000;
+  box-shadow: 0 8px 24px rgba(241, 196, 15, 0.3);
+  font-weight: 900;
+}
+
+/* Contenido de tabs - hidden/shown */
+.calif-tab-content {
+  display: none;
+}
+
+.calif-tab-content.active {
+  display: block;
+}
+
+/* Tablas específicas */
+.calif-table {
+  margin-top: 16px;
+}
+
+.calif-table th {
+  font-weight: 800 !important;
+  background: rgba(241, 196, 15, 0.1) !important;
+  color: #000 !important;
+  border-bottom: 2px solid rgba(241, 196, 15, 0.3) !important;
+}
+
+.calif-table th:nth-child(7),
+.calif-table th:nth-child(8),
+.calif-table th:nth-child(9),
+.calif-table td:nth-child(7),
+.calif-table td:nth-child(8),
+.calif-table td:nth-child(9) {
+  text-align: center !important;
+}
+
+.calif-table td:nth-child(6) {
+  text-align: center !important;
+}
+
+.calif-table .complexity-chips {
+  justify-content: center !important;
+  gap: 4px !important;
+}
+
+.calif-table .calif-eye-btn {
+  margin: 0 auto !important;
+  display: block !important;
+}
+
+/* Chips de complejidad - FILA COMPACTA */
+.complexity-chips {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 4px 8px;
+}
+
+.complexity-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.complexity-chip:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Colores EXACTOS del task */
+.complexity-chip.basico {
+  background: #10b981;
+  border-color: #059669;
+}
+
+.complexity-chip.intermedio {
+  background: #f59e0b;
+  border-color: #d97706;
+}
+
+.complexity-chip.complejo {
+  background: #ef4444;
+  border-color: #dc2626;
+}
+
+.complexity-chip.extraordinario {
+  background: #8b5cf6;
+  border-color: #7c3aed;
+}
+
+/* Icono ojo - pequeño y claro */
+.calif-eye-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(15, 109, 116, 0.2);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.calif-eye-btn:hover {
+  background: rgba(15, 109, 116, 0.4);
+  transform: scale(1.05);
+}
+
+/* Variante "editar" para columna Acciones (lapicito) */
+.calif-edit-btn{
+  background: rgba(96,165,250,.18);
+  color: #60a5fa;
+}
+.calif-edit-btn:hover{
+  background: rgba(96,165,250,.30);
+}
+
+/* Grupo de iconos en celda (Acciones / Documento / etc.) */
+.action-icons{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  white-space:nowrap;
+}
+
+/* Checkbox elegante ☑ - custom styled */
+/* Botón aprobar (calificación proyectos): mismo tamaño que el ojito, pero verde */
+.calif-approve-btn{
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(34, 197, 94, 0.18);
+  color: #22c55e;
+  margin: 0 auto;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.calif-approve-btn:hover{
+  background: rgba(34, 197, 94, 0.30);
+  transform: scale(1.05);
+}
+
+.calif-approve-btn:disabled{
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.calif-approve-btn i{
+  font-size: 15px !important; /* círculo-check legible */
+}
+
+.calif-checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.calif-checkbox:checked {
+  background: linear-gradient(135deg, var(--uiAccent), var(--uiAccent2));
+  border-color: rgba(15, 109, 116, 0.45);
+}
+
+.calif-checkbox:checked::after {
+  content: "☑";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  font-size: 14px;
+  font-weight: 900;
+  color: #fff;
+}
+
+/* Hover checkbox */
+.calif-checkbox:hover {
+  border-color: var(--uiAccent);
+  box-shadow: 0 0 0 3px rgba(15, 109, 116, 0.2);
+}
+
+.calif-checkbox:hover:checked {
+  box-shadow: 0 0 0 3px rgba(15, 109, 116, 0.25);
+}
+
+/* Scroll interno estable para tablas en el módulo */
+.calif-module .calif-tab-content.active {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.calif-module .calif-tab-content.active .tableWrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  overflow: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.calif-module .calif-tab-content.active .tableWrap table {
+  min-width: 100%;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .calif-tabs {
+    flex-direction: column;
+  }
+  
+  .calif-filters {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
