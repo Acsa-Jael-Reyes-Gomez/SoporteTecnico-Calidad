@@ -18,7 +18,7 @@ Se añadió una puerta de calidad automatizada al sistema Electron existente. El
 | Verificación TypeScript              |               No medida |                                 0 errores | `npm run typecheck` aprobado localmente                                      |
 | Análisis ESLint                      |          No configurado |                    Configurado y aprobado | `npm run lint` aprobado localmente                                           |
 | Verificación de formato              |           No registrada |                                  Aprobada | `npm run format:check` aprobado localmente                                   |
-| Integración continua                 |              No existía | GitHub Actions en `push` y `pull_request` | PR #1 y runs 40971764858/40971771341 aprobados en la revisión SQLite actual  |
+| Integración continua                 |              No existía | GitHub Actions en `push` y `pull_request` | PR #1 y runs 40973155260/40973160326 aprobados en la revisión SQLite actual  |
 | Bugs, vulnerabilidades y code smells |              No medidos |                                No medidos | Sin análisis SonarCloud registrado; no se asigna diferencia                  |
 | Protección de `main`                 |           No verificada |                             No verificada | Requiere reglas externas del repositorio                                     |
 

@@ -18,7 +18,7 @@ Se reutilizó la aplicación Electron existente y se añadieron controles de cal
 - TypeScript: 0 errores.
 - ESLint: sin errores bloqueantes.
 - Prettier: todos los archivos seleccionados aprobados.
-- GitHub Actions: los runs 40971764858 (`push`) y 40971771341 (`pull_request`) pasaron con 33 pruebas y cobertura 96.16% / 81.55% / 92.31%.
+- GitHub Actions: los runs 40973155260 (`push`) y 40973160326 (`pull_request`) pasaron con 33 pruebas y cobertura 96.16% / 81.55% / 92.31%.
 
 Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. No se hizo una prueba manual de arranque de Electron ni hay pruebas E2E.
 
@@ -27,7 +27,7 @@ Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. No se hizo un
 | Requisito                                                       | Estado                 | Evidencia o acción pendiente                                                                         |
 | --------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------- |
 | Aplicación existente con operaciones de soporte/CRUD            | Cumplido               | Sistema Electron descrito en README y manuales                                                       |
-| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido               | PR #1, runs 40971764858 (`push`) y 40971771341 (`pull_request`) aprobados                            |
+| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido               | PR #1, runs 40973155260 (`push`) y 40973160326 (`pull_request`) aprobados                            |
 | Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente  | 33 casos; algunas regresiones inspeccionan código fuente                                             |
 | Integración automatizada con base de datos                      | Cumplido parcialmente  | Cinco pruebas ejercitan SQLite en memoria y la semilla; falta validar el ciclo de inicio de Electron |
 | Matriz de pruebas                                               | Cumplido               | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                                |
