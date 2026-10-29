@@ -43,27 +43,24 @@ Estudiante: Acsa Jael Reyes Gómez · Curso: Aseguramiento de la Calidad del Sof
 
 La información inicial disponible es incompleta. Por eso se conserva como línea base histórica y no se calculan porcentajes de mejora que no se pueden comprobar.
 
-## 6. Resultado posterior
+## 6. Métricas antes y después de integrar SQLite
 
-| Métrica                |         Resultado actual | Criterio del proyecto |
-| ---------------------- | -----------------------: | --------------------: |
-| Casos automatizados    | 33 aprobados, 0 fallidos |   Todos deben aprobar |
-| Cobertura de líneas    |                   96.16% |                   75% |
-| Cobertura de ramas     |                   81.55% |                   60% |
-| Cobertura de funciones |                   92.31% |                   55% |
-| Errores de TypeScript  |                        0 |                     0 |
+| Métrica                | Antes (run 40599606066) | Actual (run 40969867766) |   Cambio |
+| ---------------------- | ----------------------: | -----------------------: | -------: |
+| Pruebas aprobadas      |                   28/28 |                    33/33 | +5 casos |
+| Cobertura de líneas    |                  95.65% |                   96.16% | +0.51 pp |
+| Cobertura de ramas     |                  80.60% |                   81.55% | +0.95 pp |
+| Cobertura de funciones |                  90.54% |                   92.31% | +1.77 pp |
 
-Estos valores corresponden a la ejecución local registrada el 29 de octubre de 2026 tras integrar SQLite. Como la cobertura inicial no se midió, no se presenta como un aumento frente a la línea base. El run remoto 40599606066 es anterior y cubrió 28 casos.
+Los dos runs usaron Node 22 y los mismos umbrales. Esta comparación corresponde a la versión anterior y la actual; no se presenta como una mejora desde el inicio del proyecto SQA. La línea base original registró 25 casos, pero no conservó cobertura ni tasa de aprobación.
 
 ## 7. Captura real del pipeline
 
-La revisión actual pasó en el PR #1. Los runs 40969600668 (`push`) y 40969607082 (`pull_request`) aprobaron. Inserta una captura auténtica de GitHub Actions donde se vean el nombre del workflow, la rama, el ID y el resultado; no uses el run histórico 40599606066 como evidencia de la versión SQLite.
-
-El usuario confirmó el run remoto 40599606066 en verde. Inserta una captura auténtica de GitHub Actions donde se vea el nombre del workflow, la rama, el ID y el resultado. Este run es previo a SQLite; cuando se publique la revisión actual debe reemplazarse o añadirse evidencia de su propio run.
+La revisión actual pasó en el PR #1. Los runs [40969860747](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969860747) (`push`) y [40969867766](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969867766) (`pull_request`) aprobaron. Inserta una captura auténtica de GitHub Actions donde se vean el nombre del workflow, la rama, el ID y el resultado.
 
 ## 8. Dashboard o reporte de calidad
 
-**Evidencia disponible:** el artefacto del run de PR está guardado en `docs/calidad/evidencias/run-40969607082/` y contiene los resultados reales. Inserta aquí una captura auténtica del artefacto o del reporte generado.
+**Evidencia disponible:** el artefacto del run de PR está guardado en `docs/calidad/evidencias/run-40969607082/` y contiene los resultados de la misma versión funcional. Inserta aquí una captura auténtica del artefacto o del reporte generado.
 
 SonarCloud está condicionado a configurar la organización, la clave del proyecto y el token. No hay un análisis ni dashboard SonarCloud registrado, así que no se reportan bugs, vulnerabilidades o code smells.
 

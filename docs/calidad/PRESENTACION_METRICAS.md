@@ -2,6 +2,17 @@
 
 # Resumen de métricas para exponer
 
+## Comparacion verificable entre versiones
+
+| Indicador              | Antes de integrar SQLite (27/10, run 40599606066) | Version actual (29/10, run 40969867766) |          Cambio observado |
+| ---------------------- | ------------------------------------------------: | --------------------------------------: | ------------------------: |
+| Pruebas aprobadas      |                                             28/28 |                                   33/33 |                  +5 casos |
+| Cobertura de lineas    |                                            95.65% |                                  96.16% | +0.51 puntos porcentuales |
+| Cobertura de ramas     |                                            80.60% |                                  81.55% | +0.95 puntos porcentuales |
+| Cobertura de funciones |                                            90.54% |                                  92.31% | +1.77 puntos porcentuales |
+
+Ambos reportes usan Node 22 y los mismos umbrales. La tabla compara dos revisiones consecutivas, antes y despues de integrar SQLite; no representa una medicion del estado anterior a la adopcion de SQA. La linea base historica original de 25 pruebas no conserva cobertura ni resultado de ejecucion.
+
 ## Estado inicial documentado
 
 - 25 casos de prueba anotados en el registro histórico.

@@ -1,5 +1,13 @@
 # Estado de cumplimiento del enunciado
 
+## Alcance y cierre de requisitos de la alternativa 1
+
+El enunciado presenta tres alternativas independientes. Esta entrega corresponde a **Pipeline CI/CD con Aseguramiento de Calidad Integrado**; el evaluador ISO/IEC 25010 y el gestor de defectos son opciones separadas, no requisitos acumulativos.
+
+La evidencia remota mas reciente es el run [40969860747](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969860747) (`push`) y el run [40969867766](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969867766) (`pull_request`); ambos pasaron. El artefacto de reportes local corresponde al run anterior [40969607082](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969607082), con el mismo codigo funcional.
+
+La revision tecnica local se registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. No equivale a una aprobacion independiente: el PR #1 sigue en borrador y requiere que otra persona revise el cambio. La presentacion final exportada sigue pendiente. La comparacion debe mostrar que la cobertura inicial no se midio; no hay un porcentaje previo verificable para calcular mejora.
+
 Actualizado: 29 de octubre de 2026. Este registro distingue lo que existe en el repositorio de lo que requiere una ejecucion o configuracion externa. No se marca como evidencia algo que no se ha podido reproducir.
 
 ## Requisitos obligatorios
