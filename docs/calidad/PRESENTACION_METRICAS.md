@@ -26,7 +26,7 @@
 - No se midió cobertura en la línea base, por lo que no existe una diferencia porcentual inicial/final.
 - La medición de esta tabla precede a SQLite; el run 40599606066 fue exitoso en el commit publicado anterior.
 - SonarCloud, métricas de bugs/code smells y protección de `main` no están verificados. La medición local posterior a SQLite está disponible más abajo; el run remoto archivado es de la versión previa.
-- El artefacto del run está archivado en `docs/calidad/evidencias/run-40599606066/`. La revisión actual también pasó en el PR #1; sus artefactos están en `docs/calidad/evidencias/run-40969163670/quality-reports/`.
+- El artefacto del run está archivado en `docs/calidad/evidencias/run-40599606066/`. La revisión actual también pasó en el PR #1; sus artefactos están en `docs/calidad/evidencias/run-40969607082/`.
 
 ## Medición local actual (29 de octubre de 2026)
 
