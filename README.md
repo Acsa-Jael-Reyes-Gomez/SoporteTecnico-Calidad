@@ -45,7 +45,7 @@ El umbral del comando de cobertura es 75% de líneas, 60% de ramas y 55% de func
 
 ## Pipeline y GitHub
 
-`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en `push` y `pull_request`. El PR #1 y sus runs 40969600668 (`push`) y 40969607082 (`pull_request`) pasaron con 33 pruebas; artefactos en `docs/calidad/evidencias/run-40969607082/`. La ejecución local dio 33/33 y cobertura de 96.16% de líneas, 81.55% de ramas y 92.31% de funciones; consulta `docs/calidad/METRICAS_CALIDAD.md`. SonarCloud es condicional y no tiene análisis registrado. GitHub denegó la protección de `main` con HTTP 403 porque el repositorio privado requiere Pro; el detalle está en `docs/Flujo-GitHub.md`.
+`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en `push` y `pull_request`. Los runs [40971764858](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40971764858) (`push`) y [40971771341](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40971771341) (`pull_request`) pasaron con 33 pruebas; el artefacto más reciente está en `docs/calidad/evidencias/run-40971771341/quality-reports/`. La ejecución local dio 33/33 y cobertura de 96.16% de líneas, 81.55% de ramas y 92.31% de funciones; consulta `docs/calidad/METRICAS_CALIDAD.md`. SonarCloud es condicional y no tiene análisis registrado. La protección de `main` no está habilitada; consulta `docs/Flujo-GitHub.md`.
 
 Para el flujo de ramas, revisiones y configuración de protecciones, consulta [docs/Flujo-GitHub.md](docs/Flujo-GitHub.md) y la plantilla en `.github/PULL_REQUEST_TEMPLATE.md`.
 
