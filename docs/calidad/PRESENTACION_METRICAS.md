@@ -26,7 +26,7 @@ El run [40599606066](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Cal
 
 ## Evidencia actual
 
-Los runs [40973155260](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973155260) (`push`) y [40973160326](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973160326) (`pull_request`) pasaron. El artefacto de cobertura está en `docs/calidad/evidencias/run-40973160326/quality-reports/`. El workflow actualizado también guarda logs de análisis estático en nuevas ejecuciones.
+Los runs [40974922468](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974922468) (`push`) y [40974928285](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974928285) (`pull_request`) pasaron. El artefacto con cobertura y logs de análisis estático está en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
 
 ## Límites de interpretación
 
