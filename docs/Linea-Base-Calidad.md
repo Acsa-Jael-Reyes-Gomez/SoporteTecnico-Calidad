@@ -4,7 +4,7 @@
 
 ## Criterio de comparación
 
-La línea base representa el estado inicial documentado antes de incorporar controles de SQA. Los valores iniciales provienen del registro histórico de `docs/calidad/METRICAS_CALIDAD.md`; no se inventan resultados que no fueron medidos. El estado posterior actual se midió localmente el **29 de octubre de 2026** con Node.js 22.16.0.
+La línea base representa el estado inicial documentado antes de incorporar controles de SQA. Los valores iniciales provienen del registro histórico de `docs/calidad/METRICAS_CALIDAD.md`; no se inventan resultados que no fueron medidos. El historial Git disponible no conserva una revisión ejecutable de la aplicación anterior al pipeline, así que no es posible repetir las mismas mediciones sobre ese estado. El estado posterior actual se midió localmente el **29 de octubre de 2026** con Node.js 22.16.0.
 
 ## Comparación
 
