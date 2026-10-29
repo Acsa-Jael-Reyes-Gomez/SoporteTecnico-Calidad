@@ -166,8 +166,6 @@ function translateCommonErrorMessageSafe(message: string) {
     lower.includes("timed out") ||
     lower.includes("timeout") ||
     lower.includes("socket hang up") ||
-    lower.includes("can't connect to mysql server") ||
-    lower.includes("can not connect to mysql server") ||
     lower.includes("connection refused")
   ) {
     return "No fue posible conectarse al sistema o a la base de datos.";

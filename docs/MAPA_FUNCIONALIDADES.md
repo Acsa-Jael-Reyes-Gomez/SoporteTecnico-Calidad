@@ -17,34 +17,33 @@ El proyecto es una aplicacion Electron con tres capas principales:
 6. El backend valida sesion, permisos, datos y ejecuta SQL.
 7. La respuesta vuelve al renderer y la pantalla actualiza la interfaz.
 
-
 ## Archivos base
 
-| Archivo | Para que sirve |
-| --- | --- |
-| `src/main/main.ts` | Crea la ventana principal, registra IPC base, seguridad de navegacion y carga los handlers del backend. |
-| `src/preload/preload.ts` | Expone `window.api` al renderer. Si falta una funcion en la pantalla, normalmente hay que agregarla aqui. |
-| `src/main/db/db.ts` | Configura la conexion a MySQL, migraciones ligeras y helpers de base de datos. |
-| `src/main/session_store.ts` | Maneja sesiones confiables del usuario dentro de Electron. |
-| `src/renderer/index.html` | Contenedor inicial de la interfaz. |
-| `src/renderer/modulos/cargador-renderer.js` | Carga los modulos JS del renderer segun la ruta. |
-| `src/renderer/modulos/compartido.js` | Funciones compartidas de UI: tablas, modales, fechas, exportacion y mensajes. |
+| Archivo                                        | Para que sirve                                                                                             |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `src/main/main.ts`                             | Crea la ventana principal, registra IPC base, seguridad de navegacion y carga los handlers del backend.    |
+| `src/preload/preload.ts`                       | Expone `window.api` al renderer. Si falta una funcion en la pantalla, normalmente hay que agregarla aqui.  |
+| `src/main/db/db.ts`                            | Inicializa SQLite integrado, funciones compatibles y la cola de operaciones de la base local.              |
+| `src/main/session_store.ts`                    | Maneja sesiones confiables del usuario dentro de Electron.                                                 |
+| `src/renderer/index.html`                      | Contenedor inicial de la interfaz.                                                                         |
+| `src/renderer/modulos/cargador-renderer.js`    | Carga los modulos JS del renderer segun la ruta.                                                           |
+| `src/renderer/modulos/compartido.js`           | Funciones compartidas de UI: tablas, modales, fechas, exportacion y mensajes.                              |
 | `src/renderer/modulos/estructura-principal.js` | Layout principal despues del login: sidebar, topbar, rutas, permisos visibles y campana de notificaciones. |
 
 ## Login y sesion
 
 ### Pantalla
 
-| Archivo | Funcion |
-| --- | --- |
+| Archivo                                 | Funcion                                                                     |
+| --------------------------------------- | --------------------------------------------------------------------------- |
 | `src/renderer/modulos/autenticacion.js` | Muestra login, valida credenciales desde la UI y carga catalogos iniciales. |
 
 ### Backend
 
-| Archivo | Canales principales |
-| --- | --- |
+| Archivo                | Canales principales                                                    |
+| ---------------------- | ---------------------------------------------------------------------- |
 | `src/main/ipc_auth.ts` | `auth:login`, `auth:logout`, `auth:revokeUserSessions`, `auth:health`. |
-| `src/main/main.ts` | `session:clear`, `session:status`. |
+| `src/main/main.ts`     | `session:clear`, `session:status`.                                     |
 
 ### Donde revisar si falla
 
@@ -54,11 +53,11 @@ El proyecto es una aplicacion Electron con tres capas principales:
 
 ## Catalogos, usuarios y permisos
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `src/main/ipc_core.ts` | Carga version, catalogos y usuarios. |
-| `src/renderer/modulos/compartido.js` | Guarda catalogos en memoria y los usa en formularios/tablas. |
-| `database.sql` | Datos base de roles, permisos, puestos, unidades, servicios y tipos de equipo. |
+| Archivo                              | Responsabilidad                                                                |
+| ------------------------------------ | ------------------------------------------------------------------------------ |
+| `src/main/ipc_core.ts`               | Carga version, catalogos y usuarios.                                           |
+| `src/renderer/modulos/compartido.js` | Guarda catalogos en memoria y los usa en formularios/tablas.                   |
+| `database.sql`                       | Datos base de roles, permisos, puestos, unidades, servicios y tipos de equipo. |
 
 Canales:
 
@@ -70,10 +69,10 @@ core:usuarios
 
 ## Navegacion y estructura principal
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                                        | Responsabilidad                                                                           |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `src/renderer/modulos/estructura-principal.js` | Dibuja sidebar, barra superior, control de ventana, cambio de modulo y permisos de rutas. |
-| `src/renderer/modulos/cargador-renderer.js` | Decide que archivo JS se carga por cada ruta. |
+| `src/renderer/modulos/cargador-renderer.js`    | Decide que archivo JS se carga por cada ruta.                                             |
 
 Rutas principales:
 
@@ -100,14 +99,14 @@ Si quieres agregar un modulo nuevo:
 
 ### Pantalla
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                                  | Responsabilidad                                                                                            |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `src/renderer/modulos/modulo-tickets.js` | Listado, filtros, crear, editar, cerrar, reabrir, eliminar, asignar tecnicos y manejar equipo relacionado. |
 
 ### Backend
 
-| Archivo | Canales |
-| --- | --- |
+| Archivo                   | Canales                                                                                                                                                                           |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/main/ipc_tickets.ts` | `tickets:list`, `tickets:create`, `tickets:update`, `tickets:close`, `tickets:reopen`, `tickets:delete`, `tickets:setClasificacion`, `tickets:calificar`, `tickets:calificarAll`. |
 
 ### Tablas usadas
@@ -139,14 +138,14 @@ TICKET_ASSIGNED
 
 ### Pantalla
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                                    | Responsabilidad                                               |
+| ------------------------------------------ | ------------------------------------------------------------- |
 | `src/renderer/modulos/rutas-y-reportes.js` | Modulo de rutas, validacion de rutas y reportes relacionados. |
 
 ### Backend
 
-| Archivo | Canales |
-| --- | --- |
+| Archivo                 | Canales                                                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `src/main/ipc_rutas.ts` | `rutas:list`, `rutas:create`, `rutas:update`, `rutas:close`, `rutas:reopen`, `rutas:validar`, `rutas:calificar`, `rutas:calificarAll`, `rutas:delete`. |
 
 ### Tablas usadas
@@ -175,10 +174,10 @@ ROUTE_VALIDATED
 
 ## Validacion de rutas
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `src/renderer/modulos/rutas-y-reportes.js` | Vista y formulario de validacion. |
-| `src/main/ipc_rutas.ts` | Logica de `rutas:validar`. |
+| Archivo                                      | Responsabilidad                                   |
+| -------------------------------------------- | ------------------------------------------------- |
+| `src/renderer/modulos/rutas-y-reportes.js`   | Vista y formulario de validacion.                 |
+| `src/main/ipc_rutas.ts`                      | Logica de `rutas:validar`.                        |
 | `src/renderer/styles/modules/validacion.css` | Estilos principales de la pantalla de validacion. |
 
 La validacion guarda:
@@ -194,50 +193,50 @@ equipos_revisados_rutas
 
 ### Pantalla
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                                        | Responsabilidad                                        |
+| ---------------------------------------------- | ------------------------------------------------------ |
 | `src/renderer/modulos/calificacion-y-panel.js` | Dashboard, calificacion de tickets, rutas y proyectos. |
 
 ### Backend
 
-| Archivo | Canales |
-| --- | --- |
-| `src/main/ipc_reports.ts` | `dashboard:operacion_mensual`, resumenes y consultas de reportes. |
-| `src/main/ipc_tickets.ts` | `tickets:calificar`, `tickets:calificarAll`. |
-| `src/main/ipc_rutas.ts` | `rutas:calificar`, `rutas:calificarAll`. |
-| `src/main/ipc_proyectos_especiales.ts` | `proyectos_especiales:approve`. |
+| Archivo                                | Canales                                                           |
+| -------------------------------------- | ----------------------------------------------------------------- |
+| `src/main/ipc_reports.ts`              | `dashboard:operacion_mensual`, resumenes y consultas de reportes. |
+| `src/main/ipc_tickets.ts`              | `tickets:calificar`, `tickets:calificarAll`.                      |
+| `src/main/ipc_rutas.ts`                | `rutas:calificar`, `rutas:calificarAll`.                          |
+| `src/main/ipc_proyectos_especiales.ts` | `proyectos_especiales:approve`.                                   |
 
 ## Reportes
 
 ### Pantalla
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                                    | Responsabilidad                                      |
+| ------------------------------------------ | ---------------------------------------------------- |
 | `src/renderer/modulos/rutas-y-reportes.js` | Pantallas de reportes de tickets, rutas y proyectos. |
-| `src/renderer/modulos/compartido.js` | Exportacion a Excel y helpers de tablas. |
+| `src/renderer/modulos/compartido.js`       | Exportacion a Excel y helpers de tablas.             |
 
 ### Backend
 
-| Archivo | Canales |
-| --- | --- |
-| `src/main/ipc_reports.ts` | `reports:build`, `reports:monthly`, `reports:tickets`, `reports:rutas`, `reports:tickets_summary`, `reports:rutas_summary`, `reports:proyectos_summary`, `reports:export_excel`, `reports:export_excel_multi`. |
-| `src/main/services/report_query_service.ts` | Construccion de consultas para reportes. |
-| `src/main/services/report_export_service.ts` | Apoyo para exportacion. |
-| `src/main/ticket_excel_export.ts` | Exportacion especifica de tickets. |
+| Archivo                                      | Canales                                                                                                                                                                                                        |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/main/ipc_reports.ts`                    | `reports:build`, `reports:monthly`, `reports:tickets`, `reports:rutas`, `reports:tickets_summary`, `reports:rutas_summary`, `reports:proyectos_summary`, `reports:export_excel`, `reports:export_excel_multi`. |
+| `src/main/services/report_query_service.ts`  | Construccion de consultas para reportes.                                                                                                                                                                       |
+| `src/main/services/report_export_service.ts` | Apoyo para exportacion.                                                                                                                                                                                        |
+| `src/main/ticket_excel_export.ts`            | Exportacion especifica de tickets.                                                                                                                                                                             |
 
 ## Equipos en taller
 
 ### Pantalla
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                                    | Responsabilidad                                                                                                       |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
 | `src/renderer/modulos/equipos-y-envios.js` | Vista de equipos y envios. En la parte de equipos maneja ingreso a taller, resultado, entrega, cancelacion y filtros. |
-| `src/renderer/modulos/modulo-tickets.js` | Tambien interactua con equipos cuando un ticket ingresa equipo al taller. |
+| `src/renderer/modulos/modulo-tickets.js`   | Tambien interactua con equipos cuando un ticket ingresa equipo al taller.                                             |
 
 ### Backend
 
-| Archivo | Canales |
-| --- | --- |
+| Archivo                   | Canales                                                                                                                                                                                                                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `src/main/ipc_equipos.ts` | `equipos:ticketsAbiertos`, `equipos:create`, `equipos:list`, `equipos:updateResultado`, `equipos:byTicket`, `equipos:checkActivoEnTaller`, `equipos:checkPendiente`, `equipos:cerrarRelacionados`, `equipos:entregar`, `equipos:cancelar`, `equipos:delete`, `equipos:update`. |
 
 ### Tablas usadas
@@ -254,14 +253,14 @@ usuario
 
 ### Pantalla
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                                    | Responsabilidad                                                                  |
+| ------------------------------------------ | -------------------------------------------------------------------------------- |
 | `src/renderer/modulos/equipos-y-envios.js` | Registro de envios, historial, cambio de estado, asignacion de ticket y filtros. |
 
 ### Backend
 
-| Archivo | Canales |
-| --- | --- |
+| Archivo                        | Canales                                                                                                                                                                |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/main/ipc_envio_equipo.ts` | `envio_equipo:list`, `envio_equipo:create`, `envio_equipo:ticketsDisponibles`, `envio_equipo:assignTicket`, `envio_equipo:updateEstado`, `envio_equipo:notifications`. |
 
 ### Tablas usadas
@@ -282,25 +281,25 @@ usuario
 
 ### Pantalla
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `src/renderer/modulos/estructura-principal.js` | Crea la campana, el contador, el panel desplegable y el sondeo cada 15 segundos. |
+| Archivo                                               | Responsabilidad                                                                                                             |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `src/renderer/modulos/estructura-principal.js`        | Crea la campana, el contador, el panel desplegable y el sondeo cada 15 segundos.                                            |
 | `src/renderer/styles/components/system-overrides.css` | Estilos de `.notification-center`, `.notification-bell`, `.notification-badge`, `.notification-panel` y elementos internos. |
 
 ### Puente
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                  | Responsabilidad                                                                       |
+| ------------------------ | ------------------------------------------------------------------------------------- |
 | `src/preload/preload.ts` | Expone `envio_equipo_notifications`, que llama el canal `envio_equipo:notifications`. |
 
 ### Backend
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `src/main/ipc_envio_equipo.ts` | Consulta las notificaciones segun rol y devuelve eventos nuevos desde el cursor. |
-| `src/main/db/db.ts` | Crea la tabla `notificacion_asignacion` si no existe. |
-| `src/main/ipc_tickets.ts` | Inserta notificaciones cuando se asignan tickets. |
-| `src/main/ipc_rutas.ts` | Inserta notificaciones cuando se asignan rutas o cuando Gerencial valida una ruta. |
+| Archivo                        | Responsabilidad                                                                    |
+| ------------------------------ | ---------------------------------------------------------------------------------- |
+| `src/main/ipc_envio_equipo.ts` | Consulta las notificaciones segun rol y devuelve eventos nuevos desde el cursor.   |
+| `src/main/db/db.ts`            | Crea la tabla `notificacion_asignacion` si no existe.                              |
+| `src/main/ipc_tickets.ts`      | Inserta notificaciones cuando se asignan tickets.                                  |
+| `src/main/ipc_rutas.ts`        | Inserta notificaciones cuando se asignan rutas o cuando Gerencial valida una ruta. |
 
 ### Tipos de notificacion
 
@@ -327,17 +326,17 @@ Si llegan eventos nuevos, aumenta el contador de la campana.
 
 ### Pantalla
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `src/renderer/modulos/proyectos-especiales/cargador-proyectos-especiales.js` | Une los archivos del modulo. |
-| `src/renderer/modulos/proyectos-especiales/vista-proyectos-especiales.js` | Lista, filtros y vista principal. |
-| `src/renderer/modulos/proyectos-especiales/modales-proyectos-especiales.js` | Formularios y modales. |
-| `src/renderer/modulos/proyectos-especiales/utilidades-documento.js` | Apertura segura de documentos externos. |
+| Archivo                                                                      | Responsabilidad                         |
+| ---------------------------------------------------------------------------- | --------------------------------------- |
+| `src/renderer/modulos/proyectos-especiales/cargador-proyectos-especiales.js` | Une los archivos del modulo.            |
+| `src/renderer/modulos/proyectos-especiales/vista-proyectos-especiales.js`    | Lista, filtros y vista principal.       |
+| `src/renderer/modulos/proyectos-especiales/modales-proyectos-especiales.js`  | Formularios y modales.                  |
+| `src/renderer/modulos/proyectos-especiales/utilidades-documento.js`          | Apertura segura de documentos externos. |
 
 ### Backend
 
-| Archivo | Canales |
-| --- | --- |
+| Archivo                                | Canales                                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------- |
 | `src/main/ipc_proyectos_especiales.ts` | `proyectos_especiales:list`, `proyectos_especiales:create`, `proyectos_especiales:approve`. |
 
 ### Tabla usada
@@ -348,20 +347,20 @@ proyecto_especial
 
 ## Exportacion a Excel
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `src/renderer/modulos/compartido.js` | Botones y llamadas de exportacion desde la UI. |
-| `src/main/ipc_reports.ts` | Canales `reports:export_excel` y `reports:export_excel_multi`. |
-| `src/main/services/export_security.ts` | Sanea nombres y valores para evitar formulas peligrosas. |
-| `src/main/ticket_excel_export.ts` | Exportacion detallada para tickets. |
+| Archivo                                | Responsabilidad                                                |
+| -------------------------------------- | -------------------------------------------------------------- |
+| `src/renderer/modulos/compartido.js`   | Botones y llamadas de exportacion desde la UI.                 |
+| `src/main/ipc_reports.ts`              | Canales `reports:export_excel` y `reports:export_excel_multi`. |
+| `src/main/services/export_security.ts` | Sanea nombres y valores para evitar formulas peligrosas.       |
+| `src/main/ticket_excel_export.ts`      | Exportacion detallada para tickets.                            |
 
 ## Fechas y periodo 26-25
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `src/main/services/domain_utils.ts` | Helpers de dominio, fechas y normalizacion usada por servicios. |
-| `src/main/services/validation_service.ts` | Validaciones como rangos invertidos y cierre antes de apertura. |
-| `tests/core-services.test.js` | Pruebas que verifican periodo mensual 26-25 y validaciones de fechas. |
+| Archivo                                   | Responsabilidad                                                       |
+| ----------------------------------------- | --------------------------------------------------------------------- |
+| `src/main/services/domain_utils.ts`       | Helpers de dominio, fechas y normalizacion usada por servicios.       |
+| `src/main/services/validation_service.ts` | Validaciones como rangos invertidos y cierre antes de apertura.       |
+| `tests/core-services.test.js`             | Pruebas que verifican periodo mensual 26-25 y validaciones de fechas. |
 
 Scripts creados para actualizar datos existentes:
 
@@ -372,13 +371,13 @@ scripts/actualizar-fechas-todos-los-tickets-2026-06-26_2026-07-25.sql
 
 ## Estilos
 
-| Archivo o carpeta | Responsabilidad |
-| --- | --- |
-| `src/renderer/styles/app.css` | Importa todos los CSS fuente. |
-| `src/renderer/styles/app.bundle.css` | Archivo generado para distribucion. No editar a mano. |
-| `src/renderer/styles/core` | Variables, reset, tipografia, layout y base del shell. |
-| `src/renderer/styles/components` | Botones, tablas, modales, sidebar, toasts y ajustes globales. |
-| `src/renderer/styles/modules` | Estilos especificos por modulo. |
+| Archivo o carpeta                    | Responsabilidad                                               |
+| ------------------------------------ | ------------------------------------------------------------- |
+| `src/renderer/styles/app.css`        | Importa todos los CSS fuente.                                 |
+| `src/renderer/styles/app.bundle.css` | Archivo generado para distribucion. No editar a mano.         |
+| `src/renderer/styles/core`           | Variables, reset, tipografia, layout y base del shell.        |
+| `src/renderer/styles/components`     | Botones, tablas, modales, sidebar, toasts y ajustes globales. |
+| `src/renderer/styles/modules`        | Estilos especificos por modulo.                               |
 
 Para cambios visuales:
 
@@ -388,9 +387,9 @@ Para cambios visuales:
 
 ## Base de datos
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `database.sql` | Estructura y datos semilla. |
+| Archivo             | Responsabilidad                                                |
+| ------------------- | -------------------------------------------------------------- |
+| `database.sql`      | Estructura y datos semilla.                                    |
 | `src/main/db/db.ts` | Conexion, migraciones ligeras y creacion de tablas auxiliares. |
 
 Tablas principales:
@@ -415,10 +414,10 @@ notificacion_asignacion
 
 ## Pruebas
 
-| Archivo | Responsabilidad |
-| --- | --- |
+| Archivo                       | Responsabilidad                                                                          |
+| ----------------------------- | ---------------------------------------------------------------------------------------- |
 | `tests/core-services.test.js` | Pruebas de servicios, validaciones, reportes, notificaciones y seguridad de exportacion. |
-| `tests/envio-history.test.js` | Pruebas relacionadas con historial/resumen de envios. |
+| `tests/envio-history.test.js` | Pruebas relacionadas con historial/resumen de envios.                                    |
 
 Comando:
 
@@ -430,22 +429,22 @@ El comando compila el proyecto, genera CSS y ejecuta las pruebas.
 
 ## Guia rapida para ubicar cambios
 
-| Quiero cambiar... | Empieza aqui |
-| --- | --- |
-| Login o permisos de entrada | `src/main/ipc_auth.ts` y `src/renderer/modulos/autenticacion.js` |
-| Menu lateral o rutas visibles | `src/renderer/modulos/estructura-principal.js` |
-| Campana de notificaciones | `src/renderer/modulos/estructura-principal.js` y `src/main/ipc_envio_equipo.ts` |
-| Crear/editar/cerrar tickets | `src/renderer/modulos/modulo-tickets.js` y `src/main/ipc_tickets.ts` |
-| Crear/editar/validar rutas | `src/renderer/modulos/rutas-y-reportes.js` y `src/main/ipc_rutas.ts` |
-| Equipos en taller | `src/renderer/modulos/equipos-y-envios.js` y `src/main/ipc_equipos.ts` |
-| Envios de equipo | `src/renderer/modulos/equipos-y-envios.js` y `src/main/ipc_envio_equipo.ts` |
-| Reportes | `src/renderer/modulos/rutas-y-reportes.js` y `src/main/ipc_reports.ts` |
-| Dashboard/calificacion | `src/renderer/modulos/calificacion-y-panel.js` |
-| Proyectos especiales | `src/renderer/modulos/proyectos-especiales` y `src/main/ipc_proyectos_especiales.ts` |
-| Exportar Excel | `src/renderer/modulos/compartido.js` y `src/main/ipc_reports.ts` |
-| Conexion a base de datos | `src/main/db/db.ts` |
-| Estilos visuales | `src/renderer/styles` |
-| Datos iniciales | `database.sql` |
+| Quiero cambiar...             | Empieza aqui                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------ |
+| Login o permisos de entrada   | `src/main/ipc_auth.ts` y `src/renderer/modulos/autenticacion.js`                     |
+| Menu lateral o rutas visibles | `src/renderer/modulos/estructura-principal.js`                                       |
+| Campana de notificaciones     | `src/renderer/modulos/estructura-principal.js` y `src/main/ipc_envio_equipo.ts`      |
+| Crear/editar/cerrar tickets   | `src/renderer/modulos/modulo-tickets.js` y `src/main/ipc_tickets.ts`                 |
+| Crear/editar/validar rutas    | `src/renderer/modulos/rutas-y-reportes.js` y `src/main/ipc_rutas.ts`                 |
+| Equipos en taller             | `src/renderer/modulos/equipos-y-envios.js` y `src/main/ipc_equipos.ts`               |
+| Envios de equipo              | `src/renderer/modulos/equipos-y-envios.js` y `src/main/ipc_envio_equipo.ts`          |
+| Reportes                      | `src/renderer/modulos/rutas-y-reportes.js` y `src/main/ipc_reports.ts`               |
+| Dashboard/calificacion        | `src/renderer/modulos/calificacion-y-panel.js`                                       |
+| Proyectos especiales          | `src/renderer/modulos/proyectos-especiales` y `src/main/ipc_proyectos_especiales.ts` |
+| Exportar Excel                | `src/renderer/modulos/compartido.js` y `src/main/ipc_reports.ts`                     |
+| Conexion a base de datos      | `src/main/db/db.ts`                                                                  |
+| Estilos visuales              | `src/renderer/styles`                                                                |
+| Datos iniciales               | `database.sql`                                                                       |
 
 ## Reglas practicas para modificar el sistema
 

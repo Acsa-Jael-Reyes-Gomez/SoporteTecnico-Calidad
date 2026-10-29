@@ -1,53 +1,56 @@
-# Informe final de auditoría y adaptación SQA
+> **Actualización del 29/10/2026:** la ejecución local actual de la suite y las métricas ya está reproducida tras la integración de SQLite. Sigue pendiente publicar estos cambios y obtener un run remoto de esta revisión, comprobar la protección de `main`, exportar la presentación a PDF e incorporar el video MP4.
 
-**Fecha:** 26 de octubre de 2026  
-**Copia inspeccionada:** `C:\Users\IT\Desktop\COPIA_TICKETS_CALIDAD\SoporteTecnico-main`
+# Informe final del proyecto SQA
 
-## Resumen
+**Fecha de actualización:** 29 de octubre de 2026
+**Repositorio:** `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad`
 
-Se reutilizó el sistema de tickets Electron existente; no se migró a React/Express ni se cambió la base de datos. Se añadieron documentación académica y técnica, README, plantilla de pull request y una configuración CI/CD con las etapas BUILD, TEST, ANALYZE y REPORT. No se modificó la lógica funcional de la aplicación.
+## Resumen ejecutivo
 
-## Verificación local
+Se reutilizó la aplicación Electron existente y se añadieron controles de calidad continuos. La persistencia integrada usa SQLite con `node:sqlite`; la interfaz permanece en JavaScript/CSS y el proceso principal en TypeScript. GitHub Actions se configura para `push` y `pull_request`. El run remoto 40599606066 terminó en verde, pero es anterior a los cambios locales de SQLite.
 
-- `npm test`: 28 aprobadas, 0 fallidas; incluye compilación y generación del CSS.
-- `npm run test:coverage`: 95.65% líneas, 80.60% ramas y 90.54% funciones; umbrales satisfechos.
-- `npm run typecheck`: código de salida 0, sin errores.
-- Node.js 22.16.0. No se ejecutó `npm ci`; se actualizaron dependencias de desarrollo y package-lock.json en la instalación existente.
-- `npm run lint` y `npm run format:check`: aprobados.
-- `npm audit`: 0 vulnerabilidades reportadas tras fijar Electron 45.0.0 y corregir dependencias transitivas.
-- No se conectó ODBC/MySQL ni se inició la interfaz. La descarga del binario Electron 45 no concluyó en este entorno; la carga de ODBC bajo Electron queda pendiente.
+## Resultados reproducidos
 
-## Requisitos y estado
+- Build: aprobado.
+- Suite local actual: 33 aprobadas y 0 fallidas.
+- Cobertura local actual: 96.16% de líneas, 81.55% de ramas y 92.31% de funciones.
+- Umbrales: 75% de líneas, 60% de ramas y 55% de funciones.
+- TypeScript: 0 errores.
+- ESLint: sin errores bloqueantes.
+- Prettier: todos los archivos seleccionados aprobados.
+- Ejecución remota 40599606066: verde; 28/28 pruebas y cobertura 95.65% / 80.60% / 90.54% en la revisión publicada anterior a SQLite.
 
-| Requisito                                | Estado                                                         | Evidencia o pendiente                                                                                                                                          |
-| ---------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Reutilizar aplicación existente          | Implementado y verificado                                      | Electron existente; sin reescritura arquitectónica                                                                                                             |
-| Diagnóstico inicial                      | Implementado y verificado                                      | `docs/Diagnostico-Inicial.md`                                                                                                                                  |
-| Operaciones CRUD y funciones conservadas | Implementado y verificado por inspección                       | Tickets, rutas, equipos, envíos y proyectos descritos en el mapa funcional                                                                                     |
-| Persistencia y protección de datos       | Documentado; integración real pendiente                        | MySQL/ODBC, DSN externo; no se usó DB productiva ni de pruebas                                                                                                 |
-| Plan SQA                                 | Implementado y verificado                                      | `docs/SQA-Plan.md`                                                                                                                                             |
-| Línea base                               | Implementada y verificada                                      | 28/28 pruebas; 95.65/80.60/90.54% cobertura; 0 errores TypeScript                                                                                              |
-| Pruebas unitarias/regresión              | Implementadas y verificadas                                    | 28 pruebas existentes, todas aprobadas                                                                                                                         |
-| Pruebas de integración con dobles        | Implementadas y verificadas                                    | No sustituye integración con una DB MySQL de pruebas                                                                                                           |
-| Cobertura mínima 60% líneas              | Implementada y verificada                                      | Gate 75% líneas, 60% ramas, 55% funciones; medida 95.65%/80.60%/90.54%                                                                                         |
-| ESLint / Prettier                        | Implementados y verificados                                    | ESLint y Prettier configurados; `npm run lint` y `npm run format:check` aprobados                                                                              |
-| Workflow CI/CD                           | Implementado; pendiente verificación remota                    | `.github/workflows/quality.yml`; no hubo ejecución en GitHub                                                                                                   |
-| SonarCloud                               | Pendiente de configuración externa                             | Faltan organización, project key y secreto `SONAR_TOKEN`                                                                                                       |
-| GitHub, PR y protección de rama          | Documentación implementada; pendiente de configuración externa | `.git` vacío, Git no disponible y no hubo acceso a configuración remota                                                                                        |
-| Manual técnico y de usuario              | Implementados y verificados                                    | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                                                                                             |
-| Reporte de mejora                        | Implementado y verificado                                      | `docs/Reporte-Mejora.md`; valores no disponibles no se inventaron                                                                                              |
-| README profesional                       | Implementado y verificado                                      | `README.md`; sin badges de servicios no verificados                                                                                                            |
-| Presentación 8–10 diapositivas           | Esquema de 10 diapositivas implementado                        | `docs/presentacion/Presentacion-Proyecto-SQA.md`; PPTX/PDF no generados: falta runtime `@oai/artifact-tool`                                                    |
-| Guion de video                           | Implementado y verificado                                      | `docs/video/Guion-Video-4-5-Minutos.md`; el video no está grabado                                                                                              |
-| Docker                                   | No implementado, opcional                                      | La conexión Windows ODBC/DSN externa no se ha aislado con una configuración segura y reproducible                                                              |
-| Revisión de secretos                     | Revisión heurística implementada y verificada                  | 0 coincidencias de asignaciones inline en fuentes, pruebas, scripts, SQL, workflow y documentos; `appsettings.json` ignorado; no equivale a auditoría completa |
-| Estado de Git                            | No disponible                                                  | `.git` vacío y ejecutable no disponible; no se publicaron cambios                                                                                              |
+Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. No se hizo una prueba manual de arranque de Electron ni hay pruebas E2E.
 
-## Acciones personales para cerrar el proyecto
+## Estado frente al enunciado
 
-1. Abrir esta copia en una instalación Git funcional y revisar los cambios antes de inicializar o asociar un repositorio.
-2. Crear o seleccionar repositorio GitHub autorizado; subir los cambios solo cuando se decida publicarlos.
-3. Ejecutar el workflow y guardar capturas auténticas; exigir el status check y revisión en reglas de la rama principal.
-4. Configurar SonarCloud, ESLint y credenciales como variables/secreto del repositorio si la rúbrica lo exige.
-5. Preparar la instancia MySQL de pruebas y un DSN aislado si se requiere integración real.
-6. Exportar el esquema de presentación a PPTX/PDF en una estación con el runtime de presentaciones disponible y grabar el video de 4–5 minutos.
+| Requisito                                                       | Estado                     | Evidencia o acción pendiente                                                                         |
+| --------------------------------------------------------------- | -------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Aplicación existente con operaciones de soporte/CRUD            | Cumplido                   | Sistema Electron descrito en README y manuales                                                       |
+| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido                   | `.github/workflows/quality.yml`; ejecución verde informada por el propietario                        |
+| Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente      | 28 casos; algunas regresiones inspeccionan código fuente                                             |
+| Integración automatizada con base de datos                      | Cumplido parcialmente      | Cinco pruebas ejercitan SQLite en memoria y la semilla; falta validar el ciclo de inicio de Electron |
+| Matriz de pruebas                                               | Cumplido                   | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                                |
+| Cobertura y umbrales mínimos                                    | Cumplido                   | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                     |
+| Análisis estático                                               | Cumplido parcialmente      | TypeScript y ESLint activos; SonarCloud no tiene resultado registrado                                |
+| Plan SQA, línea base y reporte de mejora                        | Cumplido                   | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                           |
+| Manuales técnicos y de usuario                                  | Cumplido                   | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                                   |
+| README con descripción, stack e instrucciones                   | Cumplido                   | `README.md`; incluye badge de GitHub Actions                                                         |
+| Protección de la rama principal                                 | Pendiente de verificación  | Exigir PR y el job `Compilar, probar y verificar calidad`; guardar evidencia                         |
+| Revisión del docente                                            | Pendiente de configuración | Invitar al docente si el repositorio permanece privado                                               |
+| Presentación final exportada a PDF/PPTX                         | Pendiente                  | El repositorio contiene guiones en Markdown; falta exportar el archivo final                         |
+| Video de 4–5 minutos                                            | Pendiente                  | El repositorio contiene el guion; falta grabar la demostración real y la narración                   |
+| SonarCloud y dashboard de métricas                              | Opcional/no verificado     | Requiere organización, clave de proyecto y secreto; no presentar datos no medidos                    |
+| Despliegue en nube y Docker                                     | Opcional                   | No implementados; no son necesarios para los controles básicos solicitados                           |
+
+## Interpretación de métricas
+
+El registro histórico indica 25 casos iniciales sin resultado aprobado/fallido conservado. La ejecución actual contiene 33 pruebas aprobadas. La cobertura inicial no fue medida, por lo que no se afirma una mejora porcentual respecto a una base cuantificada. La cobertura local actual es 96.16% / 81.55% / 92.31%. El run remoto 40599606066 sigue siendo evidencia de la revisión anterior, no de los cambios locales SQLite. No se cuantifican bugs, vulnerabilidades ni code smells sin un análisis SonarCloud registrado.
+
+## Pendientes para la entrega académica
+
+1. Confirmar en GitHub la regla de protección de `main` y guardar evidencia.
+2. Dar acceso al docente al repositorio privado o confirmar que el enlace público es aceptable.
+3. Exportar la presentación de 8–10 diapositivas a PDF.
+4. Grabar el video de 4–5 minutos con una ejecución real del flujo de pull request y Actions.
+5. Si se requiere dashboard SonarCloud, configurar sus valores en GitHub y registrar el resultado real.

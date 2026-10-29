@@ -1,11 +1,11 @@
 import type { IpcMain } from "electron";
-import { ensureAssignmentNotificationSchema, withConn } from "./db/db";
-import { requirePerm, requireTrustedSession } from "./session_store";
+import { ensureAssignmentNotificationSchema, withConn, type DbConnection } from "./db/db";
+import { requirePerm, requireTrustedSession, type TrustedSession } from "./session_store";
 import { normalizeCatalogKey } from "./services/domain_utils";
 import { buildPaginationClause } from "./services/pagination_service";
 
-type EnvioEstado = string;
-type EnvioMedio = string;
+type DbRow = Record<string, unknown>;
+type IpcPayload = Record<string, unknown>;
 
 type EnvioCatalogItem = {
   id: number;
@@ -23,6 +23,23 @@ type EnvioCatalogSet = {
   estadosByKey: Map<string, EnvioCatalogItem>;
 };
 
+type EnvioCreateInput = {
+  idUnidad: number;
+  idTipoEquipo: number;
+  motivoEnvioInput: unknown;
+  observaciones: string;
+  medioEnvioInput: unknown;
+  nombrePiloto: string;
+  telefonoPiloto: string;
+  placaVehiculo: string;
+  nombrePersonalSucursal: string;
+  idPuestoPersonalSucursal: number;
+  idTecnicoPersonalIT: number;
+  nombreSolicitanteEnvio: string;
+  requestedPuestoSolicitanteId: number;
+  fechaEnvio: string | null;
+};
+
 const PUESTO_CANDIDATES_BY_ROLE: Record<string, string[]> = {
   GERENCIAL: ["Gerente", "Gerente Regional", "Gerente Aperturas"],
   ANALISTA: ["Analista", "Analista Elite"],
@@ -31,30 +48,44 @@ const PUESTO_CANDIDATES_BY_ROLE: Record<string, string[]> = {
   ADMIN: ["Analista", "Programador Externo", "Gerente"]
 };
 
-function toIntSafe(v: any, def = 0) {
+function toIntSafe(v: unknown, def = 0) {
   const n = Number(v);
   if (!Number.isFinite(n)) return def;
   return Math.trunc(n);
 }
 
-async function loadEnvioCatalogItems(conn: any, tableName: string, idField: string) {
-  const [rows]: any = await conn.execute(
+function errorMessage(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
+
+function safeText(value: unknown): string {
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "bigint") return String(value);
+  return "";
+}
+
+function toIpcPayload(value: unknown): IpcPayload {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as IpcPayload) : {};
+}
+
+async function loadEnvioCatalogItems(conn: DbConnection, tableName: string, idField: string) {
+  const [rows] = await conn.execute<DbRow[]>(
     `SELECT ${idField} AS id, clave, nombre, activo
      FROM ${tableName}`
   );
 
   return (rows || [])
-    .map((row: any) => ({
+    .map((row: DbRow) => ({
       id: Number(row?.id || 0),
       clave: normalizeCatalogKey(row?.clave || row?.nombre || ""),
-      nombre: String(row?.nombre || "").trim(),
+      nombre: safeText(row?.nombre).trim(),
       activo: Number(row?.activo ?? 0) === 1
     }))
     .filter((item: EnvioCatalogItem) => item.id > 0 && item.clave);
 }
 
-async function loadEnvioCatalogSet(conn: any): Promise<EnvioCatalogSet> {
-  // ODBC 3.51 no soporta consultas simultáneas sobre la misma conexión.
+async function loadEnvioCatalogSet(conn: DbConnection): Promise<EnvioCatalogSet> {
+  // Use the shared SQLite connection sequentially.
   const motivos = await loadEnvioCatalogItems(conn, "des_motivo_envio", "idMotivoEnvio");
   const medios = await loadEnvioCatalogItems(conn, "des_medio_envio", "idMedioEnvio");
   const estados = await loadEnvioCatalogItems(conn, "des_estado_envio", "idEstadoEnvio");
@@ -69,8 +100,8 @@ async function loadEnvioCatalogSet(conn: any): Promise<EnvioCatalogSet> {
   };
 }
 
-function normalizeMysqlDateTime(value: any, fallbackNow = false) {
-  const raw = String(value || "").trim();
+function normalizeMysqlDateTime(value: unknown, fallbackNow = false) {
+  const raw = safeText(value).trim();
   if (!raw) return fallbackNow ? "__NOW__" : null;
   if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(raw)) return raw;
   if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(raw)) return `${raw}:00`;
@@ -80,7 +111,7 @@ function normalizeMysqlDateTime(value: any, fallbackNow = false) {
 }
 
 function resolveCatalogItemByValue(
-  value: any,
+  value: unknown,
   byId: Map<number, EnvioCatalogItem>,
   byKey: Map<string, EnvioCatalogItem>
 ) {
@@ -95,41 +126,41 @@ function requireCatalogItemId(id: number | null, label: string) {
   return id;
 }
 
-function resolveMotivoId(catalogSet: EnvioCatalogSet, value: any, requireActive = false): number | null {
+function resolveMotivoId(catalogSet: EnvioCatalogSet, value: unknown, requireActive = false): number | null {
   const item = resolveCatalogItemByValue(value, catalogSet.motivosById, catalogSet.motivosByKey);
   if (!item || (requireActive && !item.activo)) return null;
   return item.id;
 }
 
-function resolveMedioKey(catalogSet: EnvioCatalogSet, value: any, requireActive = false): EnvioMedio | null {
+function resolveMedioKey(catalogSet: EnvioCatalogSet, value: unknown, requireActive = false): string | null {
   const item = resolveCatalogItemByValue(value, catalogSet.mediosById, catalogSet.mediosByKey);
   if (!item || (requireActive && !item.activo)) return null;
   return item.clave;
 }
 
-function resolveEstadoKey(catalogSet: EnvioCatalogSet, value: any, requireActive = false): EnvioEstado | null {
+function resolveEstadoKey(catalogSet: EnvioCatalogSet, value: unknown, requireActive = false): string | null {
   const item = resolveCatalogItemByValue(value, catalogSet.estadosById, catalogSet.estadosByKey);
   if (!item || (requireActive && !item.activo)) return null;
   return item.clave;
 }
 
-function getMedioId(catalogSet: EnvioCatalogSet, key: EnvioMedio, requireActive = false) {
+function getMedioId(catalogSet: EnvioCatalogSet, key: string, requireActive = false) {
   const item = catalogSet.mediosByKey.get(normalizeCatalogKey(key));
   if (!item || (requireActive && !item.activo)) return 0;
   return item.id;
 }
 
-function getEstadoId(catalogSet: EnvioCatalogSet, key: EnvioEstado, requireActive = false) {
+function getEstadoId(catalogSet: EnvioCatalogSet, key: string, requireActive = false) {
   const item = catalogSet.estadosByKey.get(normalizeCatalogKey(key));
   if (!item || (requireActive && !item.activo)) return 0;
   return item.id;
 }
 
-function isGerencial(session: any) {
+function isGerencial(session: TrustedSession) {
   return String(session?.rol || "").trim().toUpperCase() === "GERENCIAL";
 }
 
-function getAllowedNextStates(current: EnvioEstado): EnvioEstado[] {
+function getAllowedNextStates(current: string): string[] {
   switch (current) {
     case "ENVIADO":
       return ["RECIBIDO", "EXTRAVIADO"];
@@ -144,9 +175,9 @@ function getAllowedNextStates(current: EnvioEstado): EnvioEstado[] {
   }
 }
 
-async function assertUnidadPermitida(conn: any, session: any, idUnidad: number) {
+async function assertUnidadPermitida(conn: DbConnection, session: TrustedSession, idUnidad: number) {
   if (!isGerencial(session)) return;
-  const [rows]: any = await conn.execute(
+  const [rows] = await conn.execute<DbRow[]>(
     `SELECT 1
      FROM usuario_unidad uu
      WHERE uu.idUsuario = ?
@@ -157,8 +188,8 @@ async function assertUnidadPermitida(conn: any, session: any, idUnidad: number) 
   if (!rows?.length) throw new Error("Solo puedes trabajar con tus unidades asignadas.");
 }
 
-async function assertCatalogs(conn: any, idUnidad: number, idTipoEquipo: number) {
-  const [unidadRows]: any = await conn.execute(
+async function assertCatalogs(conn: DbConnection, idUnidad: number, idTipoEquipo: number) {
+  const [unidadRows] = await conn.execute<DbRow[]>(
     `SELECT idUnidad
      FROM unidad
      WHERE idUnidad = ?
@@ -168,7 +199,7 @@ async function assertCatalogs(conn: any, idUnidad: number, idTipoEquipo: number)
   );
   if (!unidadRows?.length) throw new Error("Unidad inválida.");
 
-  const [tipoRows]: any = await conn.execute(
+  const [tipoRows] = await conn.execute<DbRow[]>(
     `SELECT idTipoEquipo
      FROM tipo_equipo
      WHERE idTipoEquipo = ?
@@ -179,8 +210,8 @@ async function assertCatalogs(conn: any, idUnidad: number, idTipoEquipo: number)
   if (!tipoRows?.length) throw new Error("Tipo de equipo inválido.");
 }
 
-async function assertPuestoActivo(conn: any, idPuesto: number) {
-  const [rows]: any = await conn.execute(
+async function assertPuestoActivo(conn: DbConnection, idPuesto: number) {
+  const [rows] = await conn.execute<DbRow[]>(
     `SELECT idPuesto
      FROM puesto
      WHERE idPuesto = ?
@@ -191,8 +222,8 @@ async function assertPuestoActivo(conn: any, idPuesto: number) {
   if (!rows?.length) throw new Error("Puesto inválido.");
 }
 
-async function assertTecnicoActivo(conn: any, idUsuario: number) {
-  const [rows]: any = await conn.execute(
+async function assertTecnicoActivo(conn: DbConnection, idUsuario: number) {
+  const [rows] = await conn.execute<DbRow[]>(
     `SELECT u.idUsuario
      FROM usuario u
      JOIN rol r ON r.idRol = u.idRol
@@ -205,7 +236,7 @@ async function assertTecnicoActivo(conn: any, idUsuario: number) {
   if (!rows?.length) throw new Error("Técnico inválido.");
 }
 
-async function resolveSolicitantePuestoId(conn: any, session: any, requestedId: number) {
+async function resolveSolicitantePuestoId(conn: DbConnection, session: TrustedSession, requestedId: number) {
   const directId = Number(requestedId || 0);
   if (directId > 0) {
     await assertPuestoActivo(conn, directId);
@@ -216,21 +247,21 @@ async function resolveSolicitantePuestoId(conn: any, session: any, requestedId: 
   const candidateNames = PUESTO_CANDIDATES_BY_ROLE[roleKey] || [];
   if (!candidateNames.length) return null;
 
-  const normalizedCandidates = candidateNames.map((name) => normalizeCatalogKey(name));
-  const [rows]: any = await conn.execute(
+  const normalizedCandidates = new Set(candidateNames.map((name) => normalizeCatalogKey(name)));
+  const [rows] = await conn.execute<DbRow[]>(
     `SELECT idPuesto, nombre
      FROM puesto
      WHERE activo = 1`
   );
 
-  const match = (rows || []).find((row: any) =>
-    normalizedCandidates.includes(normalizeCatalogKey(row?.nombre))
+  const match = (rows || []).find((row: DbRow) =>
+    normalizedCandidates.has(normalizeCatalogKey(row?.nombre))
   );
 
   return match ? Number(match.idPuesto || 0) : null;
 }
 
-async function buildNumeroEquipo(conn: any, idEnvioEquipo: number) {
+async function buildNumeroEquipo(conn: DbConnection, idEnvioEquipo: number) {
   const numeroEquipo = `EE-${String(idEnvioEquipo).padStart(6, "0")}`;
   await conn.execute(
     `UPDATE envio_equipo
@@ -242,6 +273,121 @@ async function buildNumeroEquipo(conn: any, idEnvioEquipo: number) {
   return numeroEquipo;
 }
 
+function readEnvioCreateInput(data: IpcPayload): EnvioCreateInput {
+  const input: EnvioCreateInput = {
+    idUnidad: Number(data.idUnidad || 0),
+    idTipoEquipo: Number(data.idTipoEquipo || 0),
+    motivoEnvioInput: data.idMotivoEnvio ?? data.motivoEnvio,
+    observaciones: safeText(data.observaciones).trim(),
+    medioEnvioInput: data.idMedioEnvio ?? data.medioEnvio,
+    nombrePiloto: safeText(data.nombrePiloto).trim(),
+    telefonoPiloto: safeText(data.telefonoPiloto).trim(),
+    placaVehiculo: safeText(data.placaVehiculo).trim(),
+    nombrePersonalSucursal: safeText(data.nombrePersonalSucursal).trim(),
+    idPuestoPersonalSucursal: Number(data.idPuestoPersonalSucursal || 0),
+    idTecnicoPersonalIT: Number(data.idTecnicoPersonalIT || 0),
+    nombreSolicitanteEnvio: safeText(data.nombreSolicitanteEnvio).trim(),
+    requestedPuestoSolicitanteId: Number(data.idPuestoSolicitante || 0),
+    fechaEnvio: normalizeMysqlDateTime(data.fechaEnvio, true)
+  };
+  const requiredFields: [unknown, string][] = [
+    [input.nombreSolicitanteEnvio, "Solicitante requerido."],
+    [input.idUnidad, "Unidad requerida."],
+    [input.idTipoEquipo, "Tipo de equipo requerido."],
+    [input.fechaEnvio, "Fecha de envío requerida."]
+  ];
+  const missing = requiredFields.find(([value]) => !value);
+  if (missing) throw new Error(missing[1]);
+  return input;
+}
+
+function assertEnvioMethodRequirements(medioEnvio: string, input: EnvioCreateInput) {
+  const requiredByMethod: Record<string, [unknown, string][]> = {
+    CAMION: [
+      [input.nombrePiloto, "Nombre del piloto requerido para CAMIÓN."],
+      [input.telefonoPiloto, "Teléfono del piloto requerido para CAMIÓN."],
+      [input.placaVehiculo, "Placa del vehículo requerida para CAMIÓN."]
+    ],
+    PERSONAL_SUCURSAL: [
+      [input.nombrePersonalSucursal, "Nombre requerido para Personal sucursal."],
+      [input.idPuestoPersonalSucursal, "Puesto requerido para Personal sucursal."]
+    ],
+    PERSONAL_IT: [[input.idTecnicoPersonalIT, "Debes seleccionar un técnico de IT."]]
+  };
+  const missing = requiredByMethod[medioEnvio]?.find(([value]) => !value);
+  if (missing) throw new Error(missing[1]);
+}
+
+async function createEnvioEquipoRecord(
+  conn: DbConnection,
+  session: TrustedSession,
+  input: EnvioCreateInput
+) {
+  const envioCatalogs = await loadEnvioCatalogSet(conn);
+  const idMotivoEnvio = resolveMotivoId(envioCatalogs, input.motivoEnvioInput, true);
+  const medioEnvio = resolveMedioKey(envioCatalogs, input.medioEnvioInput, true);
+  const idMedioEnvio = requireCatalogItemId(
+    medioEnvio ? getMedioId(envioCatalogs, medioEnvio, true) : 0,
+    "el medio de envío seleccionado"
+  );
+  const idEstadoEnviado = requireCatalogItemId(
+    getEstadoId(envioCatalogs, "ENVIADO"),
+    "el estado ENVIADO"
+  );
+  if (!idMotivoEnvio) throw new Error("Motivo de envío requerido.");
+  if (!medioEnvio) throw new Error("Medio de envío requerido.");
+  assertEnvioMethodRequirements(medioEnvio, input);
+
+  await assertCatalogs(conn, input.idUnidad, input.idTipoEquipo);
+  await assertUnidadPermitida(conn, session, input.idUnidad);
+  if (medioEnvio === "PERSONAL_SUCURSAL") {
+    await assertPuestoActivo(conn, input.idPuestoPersonalSucursal);
+  }
+  if (medioEnvio === "PERSONAL_IT") await assertTecnicoActivo(conn, input.idTecnicoPersonalIT);
+
+  const idPuestoSolicitante = await resolveSolicitantePuestoId(
+    conn,
+    session,
+    input.requestedPuestoSolicitanteId
+  );
+  if (!idPuestoSolicitante) throw new Error("No se pudo determinar el puesto del solicitante.");
+
+  const tempNumeroEquipo = buildTempNumeroEquipo();
+  const [insertRes] = await conn.execute<{ insertId: number }>(
+    `INSERT INTO envio_equipo (
+       numeroEquipo, idUnidad, idTipoEquipo, nombreSolicitanteEnvio, idPuestoSolicitante,
+       idMotivoEnvio, observaciones, idMedioEnvio, nombrePiloto, telefonoPiloto, placaVehiculo,
+       nombrePersonalSucursal, idPuestoPersonalSucursal, idTecnicoPersonalIT, fechaEnvio,
+       idEstadoEnvio, creadoPor, actualizadoPor, createdAt, updatedAt
+     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ${input.fechaEnvio === "__NOW__" ? "NOW()" : "?"}, ?, ?, ?, NOW(), NOW())`,
+    [
+      tempNumeroEquipo,
+      input.idUnidad,
+      input.idTipoEquipo,
+      input.nombreSolicitanteEnvio.slice(0, 100),
+      idPuestoSolicitante,
+      idMotivoEnvio,
+      input.observaciones || null,
+      idMedioEnvio,
+      medioEnvio === "CAMION" ? input.nombrePiloto.slice(0, 100) : null,
+      medioEnvio === "CAMION" ? input.telefonoPiloto.slice(0, 30) : null,
+      medioEnvio === "CAMION" ? input.placaVehiculo.slice(0, 30) : null,
+      medioEnvio === "PERSONAL_SUCURSAL" ? input.nombrePersonalSucursal.slice(0, 100) : null,
+      medioEnvio === "PERSONAL_SUCURSAL" ? input.idPuestoPersonalSucursal : null,
+      medioEnvio === "PERSONAL_IT" ? input.idTecnicoPersonalIT : null,
+      ...(input.fechaEnvio === "__NOW__" ? [] : [input.fechaEnvio]),
+      idEstadoEnviado,
+      session.idUsuario,
+      session.idUsuario
+    ]
+  );
+
+  const idEnvioEquipo = Number(insertRes?.insertId || 0);
+  if (!idEnvioEquipo) throw new Error("No se pudo crear el envío.");
+  const numeroEquipo = await buildNumeroEquipo(conn, idEnvioEquipo);
+  return { idEnvioEquipo, numeroEquipo };
+}
+
 function buildTempNumeroEquipo() {
   const now = Date.now();
   const rand = Math.floor(Math.random() * 100000)
@@ -251,21 +397,22 @@ function buildTempNumeroEquipo() {
 }
 
 export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
-  ipcMain.handle("envio_equipo:notifications", async (event, _sessionArg: any, data: any) => {
+  ipcMain.handle("envio_equipo:notifications", async (event, ...args: unknown[]) => {
+    const data = toIpcPayload(args[1]);
     try {
       const session = requireTrustedSession(event);
       const roleKey = normalizeCatalogKey(session.rol || "");
       if (roleKey !== "TECNICO" && roleKey !== "SUPERVISOR") requirePerm(session, "ENVIO_EQUIPO_VIEW");
 
       const since = normalizeMysqlDateTime(data?.since, false);
-      const result = await withConn(async (conn: any) => {
-        const [clockRows]: any = await conn.execute("SELECT NOW() AS serverTime");
+      const result = await withConn(async (conn: DbConnection) => {
+        const [clockRows] = await conn.execute<DbRow[]>("SELECT NOW() AS serverTime");
         const serverTime = clockRows?.[0]?.serverTime || null;
         if (!since) return { serverTime, rows: [] };
         if (roleKey === "TECNICO" || roleKey === "SUPERVISOR") {
           await ensureAssignmentNotificationSchema(conn);
           const allowedEventType = roleKey === "SUPERVISOR" ? "RUTA_VALIDADA" : null;
-          const [assignmentRows]: any = await conn.execute(
+          const [assignmentRows] = await conn.execute<DbRow[]>(
             `SELECT
                 na.idNotificacion,
                 na.idReferencia,
@@ -291,11 +438,11 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
         const eventColumn = isManagerNotification ? "ee.updatedAt" : "ee.createdAt";
         const actorColumn = isManagerNotification ? "ua.nombre" : "uc.nombre";
         const where: string[] = [`${eventColumn} > ?`];
-        const params: any[] = [since];
+        const params: unknown[] = [since];
         if (isManagerNotification) {
-          where.push("UPPER(ra.nombre) = 'ANALISTA'");
-          where.push("ee.updatedAt > ee.createdAt");
           where.push(
+            "UPPER(ra.nombre) = 'ANALISTA'",
+            "ee.updatedAt > ee.createdAt",
             `EXISTS (
                SELECT 1
                  FROM usuario_unidad uu
@@ -308,7 +455,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
           where.push("UPPER(rc.nombre) = 'GERENCIAL'");
         }
 
-        const [rows]: any = await conn.execute(
+        const [rows] = await conn.execute<DbRow[]>(
           `SELECT
               ee.idEnvioEquipo,
               ee.numeroEquipo,
@@ -337,12 +484,13 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
       });
 
       return { ok: true, serverTime: result.serverTime, data: result.rows };
-    } catch (err: any) {
-      return { ok: false, message: err?.message || "No se pudieron consultar las notificaciones." };
+    } catch (err: unknown) {
+      return { ok: false, message: errorMessage(err, "No se pudieron consultar las notificaciones.") };
     }
   });
 
-  ipcMain.handle("envio_equipo:list", async (event, _sessionArg: any, filtros: any) => {
+  ipcMain.handle("envio_equipo:list", async (event, ...args: unknown[]) => {
+    const filtros = toIpcPayload(args[1]);
     try {
       const session = requireTrustedSession(event);
       requirePerm(session, "ENVIO_EQUIPO_VIEW");
@@ -351,15 +499,15 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
       const pageSize = Math.min(100, Math.max(5, toIntSafe(filtros?.pageSize, 25)));
       const offset = (page - 1) * pageSize;
 
-      const q = filtros?.q ? String(filtros.q).trim() : null;
+      const q = filtros?.q ? safeText(filtros.q).trim() : null;
       const idUnidad = filtros?.idUnidad ? Number(filtros.idUnidad) : null;
       const idTipoEquipo = filtros?.idTipoEquipo ? Number(filtros.idTipoEquipo) : null;
       const estadoActualInput = filtros?.estadoActual;
 
-      const desde = filtros?.desde ? String(filtros.desde) : null;
-      const hasta = filtros?.hasta ? String(filtros.hasta) : null;
+      const desde = filtros?.desde ? safeText(filtros.desde) : null;
+      const hasta = filtros?.hasta ? safeText(filtros.hasta) : null;
 
-      const result = await withConn(async (conn: any) => {
+      const result = await withConn(async (conn: DbConnection) => {
         const envioCatalogs = await loadEnvioCatalogSet(conn);
         const estadoActual = resolveEstadoKey(envioCatalogs, estadoActualInput);
         const idEstadoEnviado = requireCatalogItemId(getEstadoId(envioCatalogs, "ENVIADO"), "el estado ENVIADO");
@@ -368,7 +516,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
         const idEstadoReparado = requireCatalogItemId(getEstadoId(envioCatalogs, "REPARADO"), "el estado REPARADO");
         const idEstadoExtraviado = requireCatalogItemId(getEstadoId(envioCatalogs, "EXTRAVIADO"), "el estado EXTRAVIADO");
         const where: string[] = [];
-        const params: any[] = [];
+        const params: unknown[] = [];
 
         if (isGerencial(session)) {
           where.push(
@@ -417,7 +565,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
 
         const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
-        const [summaryRows]: any = await conn.execute(
+        const [summaryRows] = await conn.execute<DbRow[]>(
           `SELECT
              ee.idEstadoEnvio,
              COUNT(*) AS total
@@ -430,7 +578,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
           params
         );
 
-        const [rows]: any = await conn.execute(
+        const [rows] = await conn.execute<DbRow[]>(
           `SELECT
              ee.idEnvioEquipo,
              ee.numeroEquipo,
@@ -517,148 +665,27 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
       });
 
       return { ok: true, ...result };
-    } catch (err: any) {
-      return { ok: false, message: err?.message || "Error listando envíos." };
+    } catch (err: unknown) {
+      return { ok: false, message: errorMessage(err, "Error listando envíos.") };
     }
   });
 
-  ipcMain.handle("envio_equipo:create", async (event, _sessionArg: any, data: any) => {
+  ipcMain.handle("envio_equipo:create", async (event, ...args: unknown[]) => {
+    const data = toIpcPayload(args[1]);
     try {
       const session = requireTrustedSession(event);
       requirePerm(session, "ENVIO_EQUIPO_CREATE");
-
-      const idUnidad = Number(data?.idUnidad || 0);
-      const idTipoEquipo = Number(data?.idTipoEquipo || 0);
-      const motivoEnvioInput = data?.idMotivoEnvio ?? data?.motivoEnvio;
-      const observaciones = String(data?.observaciones || "").trim();
-      const medioEnvioInput = data?.idMedioEnvio ?? data?.medioEnvio;
-      const nombrePiloto = String(data?.nombrePiloto || "").trim();
-      const telefonoPiloto = String(data?.telefonoPiloto || "").trim();
-      const placaVehiculo = String(data?.placaVehiculo || "").trim();
-      const nombrePersonalSucursal = String(data?.nombrePersonalSucursal || "").trim();
-      const idPuestoPersonalSucursal = Number(data?.idPuestoPersonalSucursal || 0);
-      const idTecnicoPersonalIT = Number(data?.idTecnicoPersonalIT || 0);
-      const nombreSolicitanteEnvio = String(data?.nombreSolicitanteEnvio || "").trim();
-      const requestedPuestoSolicitanteId = Number(data?.idPuestoSolicitante || 0);
-      const fechaEnvio = normalizeMysqlDateTime(data?.fechaEnvio, true);
-      if (!nombreSolicitanteEnvio) throw new Error("Solicitante requerido.");
-
-      if (!idUnidad) throw new Error("Unidad requerida.");
-      if (!idTipoEquipo) throw new Error("Tipo de equipo requerido.");
-      if (!fechaEnvio) throw new Error("Fecha de envío requerida.");
-
-      const result = await withConn(async (conn: any) => {
-        const envioCatalogs = await loadEnvioCatalogSet(conn);
-        const idMotivoEnvio = resolveMotivoId(envioCatalogs, motivoEnvioInput, true);
-        const medioEnvio = resolveMedioKey(envioCatalogs, medioEnvioInput, true);
-        const idMedioEnvio = requireCatalogItemId(
-          medioEnvio ? getMedioId(envioCatalogs, medioEnvio, true) : 0,
-          "el medio de envío seleccionado"
-        );
-        const idEstadoEnviado = requireCatalogItemId(
-          getEstadoId(envioCatalogs, "ENVIADO"),
-          "el estado ENVIADO"
-        );
-
-        if (!idMotivoEnvio) throw new Error("Motivo de envío requerido.");
-        if (!medioEnvio) throw new Error("Medio de envío requerido.");
-
-        if (medioEnvio === "CAMION") {
-          if (!nombrePiloto) throw new Error("Nombre del piloto requerido para CAMIÓN.");
-          if (!telefonoPiloto) throw new Error("Teléfono del piloto requerido para CAMIÓN.");
-          if (!placaVehiculo) throw new Error("Placa del vehículo requerida para CAMIÓN.");
-        }
-
-        if (medioEnvio === "PERSONAL_SUCURSAL") {
-          if (!nombrePersonalSucursal) throw new Error("Nombre requerido para Personal sucursal.");
-          if (!idPuestoPersonalSucursal) throw new Error("Puesto requerido para Personal sucursal.");
-        }
-
-        if (medioEnvio === "PERSONAL_IT") {
-          if (!idTecnicoPersonalIT) throw new Error("Debes seleccionar un técnico de IT.");
-        }
-
-        await assertCatalogs(conn, idUnidad, idTipoEquipo);
-        await assertUnidadPermitida(conn, session, idUnidad);
-        if (medioEnvio === "PERSONAL_SUCURSAL") {
-          await assertPuestoActivo(conn, idPuestoPersonalSucursal);
-        }
-        if (medioEnvio === "PERSONAL_IT") {
-          await assertTecnicoActivo(conn, idTecnicoPersonalIT);
-        }
-
-        const idPuestoSolicitante = await resolveSolicitantePuestoId(conn, session, requestedPuestoSolicitanteId);
-        if (!idPuestoSolicitante) throw new Error("No se pudo determinar el puesto del solicitante.");
-
-        const tempNumeroEquipo = buildTempNumeroEquipo();
-
-        const [insertRes]: any = await conn.execute(
-          `INSERT INTO envio_equipo (
-             numeroEquipo,
-             idUnidad,
-             idTipoEquipo,
-             nombreSolicitanteEnvio,
-             idPuestoSolicitante,
-             idMotivoEnvio,
-             observaciones,
-             idMedioEnvio,
-             nombrePiloto,
-             telefonoPiloto,
-             placaVehiculo,
-             nombrePersonalSucursal,
-             idPuestoPersonalSucursal,
-             idTecnicoPersonalIT,
-             fechaEnvio,
-             idEstadoEnvio,
-             creadoPor,
-             actualizadoPor,
-             createdAt,
-             updatedAt
-           ) VALUES (
-             ?,
-             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-             ${fechaEnvio === "__NOW__" ? "NOW()" : "?"},
-             ?,
-             ?,
-             ?,
-             NOW(),
-             NOW()
-           )`,
-          [
-            tempNumeroEquipo,
-            idUnidad,
-            idTipoEquipo,
-            nombreSolicitanteEnvio.slice(0, 100),
-            idPuestoSolicitante,
-            idMotivoEnvio,
-            observaciones || null,
-            idMedioEnvio,
-            medioEnvio === "CAMION" ? nombrePiloto.slice(0, 100) : null,
-            medioEnvio === "CAMION" ? telefonoPiloto.slice(0, 30) : null,
-            medioEnvio === "CAMION" ? placaVehiculo.slice(0, 30) : null,
-            medioEnvio === "PERSONAL_SUCURSAL" ? nombrePersonalSucursal.slice(0, 100) : null,
-            medioEnvio === "PERSONAL_SUCURSAL" ? idPuestoPersonalSucursal : null,
-            medioEnvio === "PERSONAL_IT" ? idTecnicoPersonalIT : null,
-            ...(fechaEnvio === "__NOW__" ? [] : [fechaEnvio]),
-            idEstadoEnviado,
-            session.idUsuario,
-            session.idUsuario
-          ]
-        );
-
-        const idEnvioEquipo = Number(insertRes?.insertId || 0);
-        if (!idEnvioEquipo) throw new Error("No se pudo crear el envío.");
-        const numeroEquipo = await buildNumeroEquipo(conn, idEnvioEquipo);
-        return { idEnvioEquipo, numeroEquipo };
-      });
+      const input = readEnvioCreateInput(data);
+      const result = await withConn((conn) => createEnvioEquipoRecord(conn, session, input));
 
       return { ok: true, ...result };
-    } catch (err: any) {
-      return { ok: false, message: err?.message || "Error creando envío." };
+    } catch (err: unknown) {
+      return { ok: false, message: errorMessage(err, "Error creando envío.") };
     }
   });
 
-  ipcMain.handle("envio_equipo:ticketsDisponibles", async (event, _sessionArg: any, data: any) => {
+  ipcMain.handle("envio_equipo:ticketsDisponibles", async (event, ...args: unknown[]) => {
+    const data = toIpcPayload(args[1]);
     try {
       const session = requireTrustedSession(event);
       requirePerm(session, "ENVIO_EQUIPO_UPDATE");
@@ -666,12 +693,12 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
       const idUnidad = Number(data?.idUnidad || 0);
       if (!idUnidad) throw new Error("Unidad requerida.");
 
-      const rows = await withConn(async (conn: any) => {
+      const rows = await withConn(async (conn: DbConnection) => {
         if (isGerencial(session)) {
           await assertUnidadPermitida(conn, session, idUnidad);
         }
 
-        const [ticketRows]: any = await conn.execute(
+        const [ticketRows] = await conn.execute<DbRow[]>(
           `SELECT
              t.idTicket,
              t.nombreSolicitante,
@@ -691,12 +718,13 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
       });
 
       return { ok: true, rows };
-    } catch (err: any) {
-      return { ok: false, message: err?.message || "Error cargando tickets disponibles." };
+    } catch (err: unknown) {
+      return { ok: false, message: errorMessage(err, "Error cargando tickets disponibles.") };
     }
   });
 
-  ipcMain.handle("envio_equipo:assignTicket", async (event, _sessionArg: any, data: any) => {
+  ipcMain.handle("envio_equipo:assignTicket", async (event, ...args: unknown[]) => {
+    const data = toIpcPayload(args[1]);
     try {
       const session = requireTrustedSession(event);
       requirePerm(session, "ENVIO_EQUIPO_UPDATE");
@@ -706,7 +734,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
       if (!idEnvioEquipo) throw new Error("Envío inválido.");
       if (!idTicket) throw new Error("Ticket inválido.");
 
-      await withConn(async (conn: any) => {
+      await withConn(async (conn: DbConnection) => {
         await conn.beginTransaction();
         try {
           const envioCatalogs = await loadEnvioCatalogSet(conn);
@@ -714,7 +742,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
             getEstadoId(envioCatalogs, "EN_REVISION"),
             "el estado EN_REVISION"
           );
-          const [envioRows]: any = await conn.execute(
+          const [envioRows] = await conn.execute<DbRow[]>(
             `SELECT idEnvioEquipo, idUnidad, idTicketAsignado, idEstadoEnvio
              FROM envio_equipo
              WHERE idEnvioEquipo = ?
@@ -740,7 +768,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
             throw new Error("El envío debe estar en estado RECIBIDO antes de asignarle ticket.");
           }
 
-          const [ticketRows]: any = await conn.execute(
+          const [ticketRows] = await conn.execute<DbRow[]>(
             `SELECT idTicket, idUnidad, fechaCierre
              FROM ticket
              WHERE idTicket = ?
@@ -755,7 +783,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
           }
           if (ticket.fechaCierre) throw new Error("No se puede asignar un ticket cerrado.");
 
-          const [linkedRows]: any = await conn.execute(
+          const [linkedRows] = await conn.execute<DbRow[]>(
             `SELECT idEnvioEquipo
              FROM envio_equipo
              WHERE idTicketAsignado = ?
@@ -787,25 +815,26 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
       });
 
       return { ok: true };
-    } catch (err: any) {
-      return { ok: false, message: err?.message || "Error asignando ticket." };
+    } catch (err: unknown) {
+      return { ok: false, message: errorMessage(err, "Error asignando ticket.") };
     }
   });
 
-  ipcMain.handle("envio_equipo:updateEstado", async (event, _sessionArg: any, data: any) => {
+  ipcMain.handle("envio_equipo:updateEstado", async (event, ...args: unknown[]) => {
+    const data = toIpcPayload(args[1]);
     try {
       const session = requireTrustedSession(event);
       requirePerm(session, "ENVIO_EQUIPO_UPDATE");
 
       const idEnvioEquipo = Number(data?.idEnvioEquipo || 0);
       const nuevoEstadoInput = data?.nuevoEstado;
-      const observacionesEstadoActual = String(data?.observacionesEstadoActual || "").trim();
+      const observacionesEstadoActual = safeText(data?.observacionesEstadoActual).trim();
       const fechaEvento = normalizeMysqlDateTime(data?.fechaEvento, true);
 
       if (!idEnvioEquipo) throw new Error("Envío inválido.");
       if (!fechaEvento) throw new Error("Fecha del cambio requerida.");
 
-      await withConn(async (conn: any) => {
+      await withConn(async (conn: DbConnection) => {
         await conn.beginTransaction();
         try {
           const envioCatalogs = await loadEnvioCatalogSet(conn);
@@ -821,7 +850,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
             throw new Error("Debes registrar observaciones al marcar un envío como extraviado.");
           }
 
-          const [rows]: any = await conn.execute(
+          const [rows] = await conn.execute<DbRow[]>(
             `SELECT idEnvioEquipo, idUnidad, idEstadoEnvio, idTicketAsignado, observacionesEstadoActual
              FROM envio_equipo
              WHERE idEnvioEquipo = ?
@@ -844,7 +873,7 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
             throw new Error(`No se puede cambiar de ${currentState} a ${nuevoEstado}.`);
           }
 
-          const dateColumnMap: Record<Exclude<EnvioEstado, "ENVIADO">, string> = {
+          const dateColumnMap: Record<string, string> = {
             RECIBIDO: "fechaRecepcion",
             EN_REVISION: "fechaRevision",
             REPARADO: "fechaReparacion",
@@ -879,8 +908,8 @@ export function registerEnvioEquipoHandlers(ipcMain: IpcMain) {
       });
 
       return { ok: true };
-    } catch (err: any) {
-      return { ok: false, message: err?.message || "Error actualizando envío." };
+    } catch (err: unknown) {
+      return { ok: false, message: errorMessage(err, "Error actualizando envío.") };
     }
   });
 }

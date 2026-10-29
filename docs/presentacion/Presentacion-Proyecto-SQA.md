@@ -6,7 +6,7 @@
 
 **Pipeline CI/CD con aseguramiento de calidad integrado**  
 Sistema: soporte técnico
-Estudiante: Acsa Jael Reyes Gómez · Curso: Aseguramiento de la Calidad del Software · Fecha: 27 de octubre de 2026
+Estudiante: Acsa Jael Reyes Gómez · Curso: Aseguramiento de la Calidad del Software · Fecha: 29 de octubre de 2026
 
 ## 2. Objetivo y alcance
 
@@ -19,7 +19,7 @@ Estudiante: Acsa Jael Reyes Gómez · Curso: Aseguramiento de la Calidad del Sof
 
 - La aplicación usa Electron: Renderer para la interfaz, Preload como puente y Main para la lógica del sistema.
 - La interfaz está hecha con JavaScript y CSS; el código principal usa TypeScript.
-- La información se guarda en MySQL mediante ODBC de Windows.
+- La información se guarda en SQLite mediante node:sqlite; cada instalacion conserva una base local.
 - Se usan `node:test`, cobertura V8, TypeScript, ESLint, Prettier y GitHub Actions.
 - No se migró a React ni Express porque no forman parte de la aplicación existente.
 
@@ -47,19 +47,19 @@ La información inicial disponible es incompleta. Por eso se conserva como líne
 
 | Métrica                |         Resultado actual | Criterio del proyecto |
 | ---------------------- | -----------------------: | --------------------: |
-| Casos automatizados    | 28 aprobados, 0 fallidos |   Todos deben aprobar |
-| Cobertura de líneas    |                   95.65% |                   75% |
-| Cobertura de ramas     |                   80.60% |                   60% |
-| Cobertura de funciones |                   90.54% |                   55% |
+| Casos automatizados    | 33 aprobados, 0 fallidos |   Todos deben aprobar |
+| Cobertura de líneas    |                   96.16% |                   75% |
+| Cobertura de ramas     |                   81.55% |                   60% |
+| Cobertura de funciones |                   92.31% |                   55% |
 | Errores de TypeScript  |                        0 |                     0 |
 
-Estos valores corresponden a la ejecución local registrada el 27 de octubre de 2026. Como la cobertura inicial no se midió, no se presenta como un aumento frente a la línea base.
+Estos valores corresponden a la ejecución local registrada el 29 de octubre de 2026 tras integrar SQLite. Como la cobertura inicial no se midió, no se presenta como un aumento frente a la línea base. El run remoto 40599606066 es anterior y cubrió 28 casos.
 
 ## 7. Captura real del pipeline
 
 **Evidencia que debe insertarse:** captura de GitHub Actions donde se vea el nombre del workflow, la rama o pull request, la fecha y el resultado de las etapas.
 
-El propietario informó que vio una ejecución en verde el 27 de octubre de 2026, pero la captura de esa ejecución no está guardada en este repositorio. No usar una imagen ilustrativa como si fuera evidencia del run.
+El usuario confirmó el run remoto 40599606066 en verde. Inserta una captura auténtica de GitHub Actions donde se vea el nombre del workflow, la rama, el ID y el resultado. Este run es previo a SQLite; cuando se publique la revisión actual debe reemplazarse o añadirse evidencia de su propio run.
 
 ## 8. Dashboard o reporte de calidad
 
@@ -71,7 +71,7 @@ SonarCloud está condicionado a configurar la organización, la clave del proyec
 
 - Aprendí que se puede agregar un flujo de calidad a una aplicación existente sin reescribirla.
 - Las pruebas y los umbrales permiten detectar fallos de compilación, regresiones y formato antes de integrar cambios.
-- Las pruebas de base de datos usan dobles; todavía hace falta validar contra una instancia aislada de MySQL y probar la interfaz en Electron.
+- Cinco pruebas nuevas ejercitan SQLite en memoria y verifican la semilla; aprobaron en la suite local. Falta probar manualmente el arranque de Electron con una carpeta de datos temporal.
 - Para cerrar la entrega faltan las capturas auténticas, confirmar la protección de `main`, exportar la presentación y grabar el video.
 
 ## 10. Referencias

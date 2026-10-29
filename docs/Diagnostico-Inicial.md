@@ -3,6 +3,8 @@
 **Fecha de inspección:** 26 de octubre de 2026  
 **Carpeta verificada:** `C:\Users\IT\Desktop\COPIA_TICKETS_CALIDAD\SoporteTecnico-main`
 
+Este documento es una fotografía del estado inicial y no describe la configuración actual de Git, el repositorio remoto ni los resultados de CI. Consulta `docs/Informe-Final.md` para el estado posterior.
+
 ## Identidad y procedencia
 
 El paquete se llama `soportetecnico` (versión npm `1.0.2`) y su metadato de repositorio apunta a `acsa123/SoporteTecnico`. La versión de aplicación declarada en `appsettings.json` es `1.0.5`. La carpeta contiene el código y los recursos del sistema de soporte, pruebas, configuración de empaquetado Electron, esquema MySQL y documentación funcional. El archivo de configuración local `appsettings.json` no está versionado según `.gitignore`.
@@ -51,6 +53,10 @@ Las validaciones y utilidades incluyen rangos y secuencia de fechas, referencias
 
 No se recomienda migrar a React, Express ni cambiar de base de datos: eso exigiría una reescritura considerable y chocaría con el requisito de reutilizar el sistema. El ajuste adecuado es asegurar la aplicación Electron existente con pruebas compatibles, controles TypeScript, un pipeline para Windows y documentación que exponga claramente sus límites.
 
-## Alcance de los cambios de esta entrega
+## Alcance de la adaptación inicial del 26 de octubre
 
-Se amplió el workflow para distinguir BUILD, TEST, ANALYZE y REPORT y para ejecutar también en ramas distintas de `main`/`master`; se agregaron documentos técnicos/académicos, README y plantilla de pull request. Se actualizaron dependencias de desarrollo, Electron por una corrección de seguridad y el script de copia del Renderer. No se modificaron el modelo de datos, el código funcional ni `appsettings.json`.
+Se amplió el workflow para separar compilación, pruebas, análisis y reportes, y para ejecutarse en `push` y `pull_request`; se agregaron documentos técnicos/académicos, README y plantilla de pull request. Se actualizaron dependencias de desarrollo, Electron por una corrección de seguridad y el script de copia del Renderer. No se modificaron el modelo de datos, el código funcional ni `appsettings.json` en esa adaptación inicial.
+
+## Estado posterior al 27 de octubre de 2026
+
+El repositorio de trabajo está asociado a `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad`, la rama local es `main` y el propietario informó que el workflow terminó en verde. Este dato posterior no cambia el diagnóstico histórico de esta sección.
