@@ -1,0 +1,13 @@
+﻿
+> soportetecnico@1.0.2 build
+> npm run clean && tsc && npm run build:css && node scripts/copy-renderer.js
+
+
+> soportetecnico@1.0.2 clean
+> node -e "require('fs').rmSync('dist',{recursive:true,force:true});"
+
+
+> soportetecnico@1.0.2 build:css
+> node scripts/build-renderer-css.js
+
+CSS bundle generado en src\renderer\styles\app.bundle.css

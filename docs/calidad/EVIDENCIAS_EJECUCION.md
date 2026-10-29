@@ -48,9 +48,30 @@ El artefacto `quality-reports` se descargó en `docs/calidad/evidencias/run-4059
 
 ## Verificación remota de la revisión SQLite (29/10/2026)
 
-Se publicó la rama `codex/cierre-requisitos-sqa` y se abrió el PR en borrador [#1](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/1). El run [40969600668](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969600668) (evento `push`) y el run [40969607082](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969607082) (evento `pull_request`) aprobaron el job `Compilar, probar y verificar calidad`. Ambos ejecutaron build, 33 pruebas, cobertura, TypeScript, ESLint, Prettier y reporte; SonarCloud fue omitido porque no está configurado.
+Se publicó la rama `codex/cierre-requisitos-sqa` y se abrió el PR [#1](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/1), actualmente abierto y sin fusionar. Los runs [40969600668](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969600668) (`push`) y [40969607082](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969607082) (`pull_request`) aprobaron el job `Compilar, probar y verificar calidad`. Ambos ejecutaron build, 33 pruebas, cobertura, TypeScript, ESLint, Prettier y reporte; SonarCloud fue omitido porque no está configurado.
 
 El artefacto `quality-reports` del run de PR se descargó en `docs/calidad/evidencias/run-40969607082/`. Confirma 33 aprobadas, 0 fallidas y 96,16% de líneas, 81,55% de ramas y 92,31% de funciones. El PR está abierto y sin fusionar.
+
+## Verificación remota más reciente (29/10/2026)
+
+Los runs [40971764858](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40971764858) (`push`) y [40971771341](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40971771341) (`pull_request`) aprobaron en GitHub Actions. El artefacto del PR se descargó desde GitHub y quedó archivado en `docs/calidad/evidencias/run-40971771341/quality-reports/`.
+
+`test-results.log` registra las 33 pruebas aprobadas. `coverage.txt` informa 96,16% de líneas, 81,55% de ramas y 92,31% de funciones, por encima de los umbrales 75%, 60% y 55%. Este artefacto respalda la ejecución remota más reciente. SonarCloud se omitió porque no está configurado; el PR sigue abierto sin revisión independiente.
+
+## Reejecución local de cierre (29/10/2026)
+
+Se volvieron a ejecutar los comandos sobre el estado de trabajo después de actualizar la documentación. Todos terminaron con código 0:
+
+| Verificación            | Resultado                                     | Archivo                                                    |
+| ----------------------- | --------------------------------------------- | ---------------------------------------------------------- |
+| `npm run build`         | Aprobado                                      | `evidencias/local-reinicio-20261029/run-build.log`         |
+| `npm test`              | 33 aprobadas, 0 fallidas                      | `evidencias/local-reinicio-20261029/test.log`              |
+| `npm run test:coverage` | 96,16% líneas; 81,55% ramas; 92,31% funciones | `evidencias/local-reinicio-20261029/run-test-coverage.log` |
+| `npm run typecheck`     | Aprobado                                      | `evidencias/local-reinicio-20261029/run-typecheck.log`     |
+| `npm run lint`          | Aprobado                                      | `evidencias/local-reinicio-20261029/run-lint.log`          |
+| `npm run format:check`  | Aprobado                                      | `evidencias/local-reinicio-20261029/run-format-check.log`  |
+
+También pasó `git diff --check`. Estos resultados verifican build, pruebas y controles estáticos automatizados; no equivalen a una revisión humana independiente ni a una prueba manual de la interfaz Electron.
 
 ## Verificación local de cierre (29/10/2026)
 
