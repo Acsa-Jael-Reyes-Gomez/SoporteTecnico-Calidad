@@ -6,7 +6,7 @@ El enunciado presenta tres alternativas independientes. Esta entrega corresponde
 
 La evidencia remota mas reciente es el run [40969860747](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969860747) (`push`) y el run [40969867766](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969867766) (`pull_request`); ambos pasaron. El artefacto de reportes local corresponde al run anterior [40969607082](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969607082), con el mismo codigo funcional.
 
-La revision tecnica local se registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. No equivale a una aprobacion independiente: el PR #1 sigue en borrador y requiere que otra persona revise el cambio. La presentacion final exportada sigue pendiente. La comparacion debe mostrar que la cobertura inicial no se midio; no hay un porcentaje previo verificable para calcular mejora.
+La revision tecnica local se registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. El PR #1 esta abierto y sus checks pasaron; GitHub no registra solicitudes ni aprobaciones de revisores. La presentacion final exportada sigue pendiente. La comparacion debe mostrar que la cobertura original no se midio y distinguirla de la comparacion entre las dos revisiones disponibles.
 
 Actualizado: 29 de octubre de 2026. Este registro distingue lo que existe en el repositorio de lo que requiere una ejecucion o configuracion externa. No se marca como evidencia algo que no se ha podido reproducir.
 
