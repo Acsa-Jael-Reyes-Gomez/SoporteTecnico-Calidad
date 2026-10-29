@@ -1,44 +1,36 @@
-> La tabla histórica corresponde al run remoto anterior a SQLite. La sección final presenta la medición local actual; no confundir ambos commits.
-
 # Resumen de métricas para exponer
 
-## Comparacion verificable entre versiones
+## Comparación de la línea base con el estado actual
 
-| Indicador              | Antes de integrar SQLite (27/10, run 40599606066) | Version actual (29/10, run 40973160326) |          Cambio observado |
-| ---------------------- | ------------------------------------------------: | --------------------------------------: | ------------------------: |
-| Pruebas aprobadas      |                                             28/28 |                                   33/33 |                  +5 casos |
-| Cobertura de lineas    |                                            95.65% |                                  96.16% | +0.51 puntos porcentuales |
-| Cobertura de ramas     |                                            80.60% |                                  81.55% | +0.95 puntos porcentuales |
-| Cobertura de funciones |                                            90.54% |                                  92.31% | +1.77 puntos porcentuales |
+| Indicador                 | Antes de aplicar SQA                       | Estado actual (29/10/2026)                     | Interpretación                                               |
+| ------------------------- | ------------------------------------------ | ---------------------------------------------- | ------------------------------------------------------------ |
+| Casos de prueba anotados  | 25 registrados; sin resultado de ejecución | 33 aprobados, 0 fallidos                       | La suite creció; se desconoce la tasa inicial de aprobación  |
+| Cobertura de líneas       | No medida                                  | 96.16% (umbral 75%)                            | No se calcula variación porcentual sin medición inicial      |
+| Cobertura de ramas        | No medida                                  | 81.55% (umbral 60%)                            | No se calcula variación porcentual sin medición inicial      |
+| Cobertura de funciones    | No medida                                  | 92.31% (umbral 55%)                            | No se calcula variación porcentual sin medición inicial      |
+| Build y análisis estático | No se conserva evidencia inicial           | Build, TypeScript, ESLint y Prettier aprobados | Controles actuales ejecutados localmente y en GitHub Actions |
+| Integración continua      | No había pipeline documentado              | Quality gate en `push` y `pull_request`        | Ejecuciones enlazadas abajo                                  |
 
-Ambos reportes usan Node 22 y los mismos umbrales. La tabla compara dos revisiones consecutivas, antes y despues de integrar SQLite; no representa una medicion del estado anterior a la adopcion de SQA. La linea base historica original de 25 pruebas no conserva cobertura ni resultado de ejecucion.
+El historial Git disponible no contiene una revisión ejecutable del producto anterior al pipeline. Los datos iniciales proceden del registro histórico; no se reconstruyen resultados inexistentes. El run 40599606066 es anterior a SQLite, pero ya corresponde a una revisión que tenía el pipeline y por eso no representa el estado pre-SQA.
 
 ## Estado inicial documentado
 
 - 25 casos de prueba anotados en el registro histórico.
 - No se registró la tasa de pruebas aprobadas.
-- No se medía cobertura ni existía una puerta CI.
+- No se medía cobertura ni había una puerta CI documentada.
 - No había verificación ESLint documentada.
 
-## Evidencia remota histórica (27 de octubre de 2026)
+## Evidencia remota histórica anterior a SQLite
 
-| Indicador                |                                           Resultado |
-| ------------------------ | --------------------------------------------------: |
-| Casos aprobados          |                                               28/28 |
-| Cobertura de líneas      |                                              95.65% |
-| Cobertura de ramas       |                                              80.60% |
-| Cobertura de funciones   |                                              90.54% |
-| Errores TypeScript       |                                                   0 |
-| Build, ESLint y Prettier |                                           Aprobados |
-| GitHub Actions           | Run verde confirmado visualmente por el propietario |
+El run [40599606066](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40599606066) registra 28/28 pruebas y cobertura de 95.65% de líneas, 80.60% de ramas y 90.54% de funciones. Es una medición histórica de una revisión con pipeline, no la línea base pre-SQA.
 
-## Límites que deben mencionarse
+## Evidencia actual
 
-- No se midió cobertura en la línea base, por lo que no existe una diferencia porcentual inicial/final.
-- La medición de esta tabla precede a SQLite; el run 40599606066 fue exitoso en el commit publicado anterior.
-- SonarCloud, métricas de bugs/code smells y protección de `main` no están verificados. La medición local posterior a SQLite está disponible más abajo; el run remoto archivado es de la versión previa.
-- El artefacto del run está archivado en `docs/calidad/evidencias/run-40599606066/`. El artefacto remoto más reciente está en `docs/calidad/evidencias/run-40973160326/quality-reports/`; el workflow pasó en push y pull request.
+Los runs [40973155260](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973155260) (`push`) y [40973160326](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973160326) (`pull_request`) pasaron. El artefacto de cobertura está en `docs/calidad/evidencias/run-40973160326/quality-reports/`. El workflow actualizado también guarda logs de análisis estático en nuevas ejecuciones.
 
-## Medición local actual (29 de octubre de 2026)
+## Límites de interpretación
 
-33/33 pruebas aprobadas; cobertura 96,16% de líneas, 81,55% de ramas y 92,31% de funciones. TypeScript, ESLint, Prettier y build aprobaron. Evidencia local: `docs/calidad/evidencias/local-cierre-20261029/`; evidencia remota más reciente: `docs/calidad/evidencias/run-40973160326/quality-reports/`. La cobertura inicial no se midió, así que no se presenta una diferencia porcentual.
+- No se midió cobertura antes de SQA; por eso no se afirma una mejora porcentual desde la línea base.
+- No hay resultados SonarCloud ni métricas verificadas de bugs, vulnerabilidades o code smells.
+- La protección de `main` no está activa; GitHub rechazó la consulta de reglas para el repositorio privado con HTTP 403.
+- El PR no tiene una revisión independiente registrada.
