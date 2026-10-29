@@ -8,19 +8,19 @@ Se añadió una puerta de calidad automatizada al sistema Electron existente. El
 
 ## Comparación antes y después
 
-| Métrica                              |                   Antes |                                   Después | Cambio comprobable                                                                      |
-| ------------------------------------ | ----------------------: | ----------------------------------------: | --------------------------------------------------------------------------------------- |
-| Casos automatizados declarados       | 25 (registro histórico) |                                        33 | 8 más que el conteo inicial documentado; el resultado inicial no se conserva            |
-| Pruebas aprobadas                    |            Sin registro |                                     33/33 | Suite local completa, 29/10/2026                                                        |
-| Cobertura de líneas                  |               No medida |                                    96.16% | Medición local; supera el umbral de 75%                                                 |
-| Cobertura de ramas                   |               No medida |                                    81.55% | Medición local; supera el umbral de 60%                                                 |
-| Cobertura de funciones               |               No medida |                                    92.31% | Medición local; supera el umbral de 55%                                                 |
-| Verificación TypeScript              |               No medida |                                 0 errores | `npm run typecheck` aprobado localmente                                                 |
-| Análisis ESLint                      |          No configurado |                    Configurado y aprobado | `npm run lint` aprobado localmente                                                      |
-| Verificación de formato              |           No registrada |                                  Aprobada | `npm run format:check` aprobado localmente                                              |
-| Integración continua                 |              No existía | GitHub Actions en `push` y `pull_request` | Run 40599606066 verde en revisión previa; los cambios actuales aún requieren run remoto |
-| Bugs, vulnerabilidades y code smells |              No medidos |                                No medidos | Sin análisis SonarCloud registrado; no se asigna diferencia                             |
-| Protección de `main`                 |           No verificada |                             No verificada | Requiere reglas externas del repositorio                                                |
+| Métrica                              |                   Antes |                                   Después | Cambio comprobable                                                           |
+| ------------------------------------ | ----------------------: | ----------------------------------------: | ---------------------------------------------------------------------------- |
+| Casos automatizados declarados       | 25 (registro histórico) |                                        33 | 8 más que el conteo inicial documentado; el resultado inicial no se conserva |
+| Pruebas aprobadas                    |            Sin registro |                                     33/33 | Suite local completa, 29/10/2026                                             |
+| Cobertura de líneas                  |               No medida |                                    96.16% | Medición local; supera el umbral de 75%                                      |
+| Cobertura de ramas                   |               No medida |                                    81.55% | Medición local; supera el umbral de 60%                                      |
+| Cobertura de funciones               |               No medida |                                    92.31% | Medición local; supera el umbral de 55%                                      |
+| Verificación TypeScript              |               No medida |                                 0 errores | `npm run typecheck` aprobado localmente                                      |
+| Análisis ESLint                      |          No configurado |                    Configurado y aprobado | `npm run lint` aprobado localmente                                           |
+| Verificación de formato              |           No registrada |                                  Aprobada | `npm run format:check` aprobado localmente                                   |
+| Integración continua                 |              No existía | GitHub Actions en `push` y `pull_request` | PR #1 y runs 40969146165/40969163670 aprobados en la revisión SQLite actual  |
+| Bugs, vulnerabilidades y code smells |              No medidos |                                No medidos | Sin análisis SonarCloud registrado; no se asigna diferencia                  |
+| Protección de `main`                 |           No verificada |                             No verificada | Requiere reglas externas del repositorio                                     |
 
 ## Cambios realizados
 

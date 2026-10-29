@@ -45,3 +45,9 @@ La salida `gh run view 40599606066 --verbose` confirma el job `Build, tests and 
 ### Artefactos descargados y verificados
 
 El artefacto `quality-reports` se descargó en `docs/calidad/evidencias/run-40599606066/`. `test-results.log` confirma 28 pruebas aprobadas, 0 fallidas. `coverage.txt` reporta 95,65% de líneas, 80,60% de ramas y 90,54% de funciones. Es evidencia del commit remoto de ese run. La suite local posterior a los cambios SQLite es distinta: 33 pruebas y cobertura de 96,16%, 81,55% y 92,31%, respectivamente; no deben mezclarse ambos resultados.
+
+## Verificación remota de la revisión SQLite (29/10/2026)
+
+Se publicó la rama `codex/cierre-requisitos-sqa` y se abrió el PR en borrador [#1](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/1). El run [40969146165](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969146165) (evento `push`) y el run [40969163670](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969163670) (evento `pull_request`) aprobaron el job `Compilar, probar y verificar calidad`. Ambos ejecutaron build, 33 pruebas, cobertura, TypeScript, ESLint, Prettier y reporte; SonarCloud fue omitido porque no está configurado.
+
+El artefacto `quality-reports` del run de PR se descargó en `docs/calidad/evidencias/run-40969163670/quality-reports/`. Confirma 33 aprobadas, 0 fallidas y 96,16% de líneas, 81,55% de ramas y 92,31% de funciones. El PR queda en borrador, sin fusionar.

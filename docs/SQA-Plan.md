@@ -74,7 +74,7 @@ El workflow falla si `npm run build`, `npm test`, `npm run test:coverage`, `npm 
 
 ## 13. Revisiones automáticas
 
-GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. El run 40599606066 terminó en verde el 27/10/2026 para la revisión publicada anterior a SQLite; la revisión local actual requiere un run remoto propio. El workflow conserva informes de pruebas y cobertura como artefacto. No se documenta un análisis remoto de SonarCloud.
+GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. La revisión SQLite pasó en el PR #1: runs 40969146165 (`push`) y 40969163670 (`pull_request`), con artefacto guardado localmente. SonarCloud se omitió por falta de configuración externa.
 
 ## 14. Revisiones manuales
 
