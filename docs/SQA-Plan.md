@@ -74,7 +74,7 @@ El workflow falla si `npm run build`, `npm test`, `npm run test:coverage`, `npm 
 
 ## 13. Revisiones automáticas
 
-GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. La revisión SQLite pasó en el PR #1: runs 40973155260 (`push`) y 40973160326 (`pull_request`), con artefacto guardado en `docs/calidad/evidencias/run-40973160326/quality-reports/`. SonarCloud se omitió por falta de configuración externa. El PR no tiene aprobación independiente registrada.
+GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. La revisión SQLite pasó en el PR #1: runs 40974922468 (`push`) y 40974928285 (`pull_request`), con artefacto guardado en `docs/calidad/evidencias/run-40974928285/quality-reports/`. SonarCloud se omitió por falta de configuración externa. El PR no tiene aprobación independiente registrada.
 
 ## 14. Revisiones manuales
 

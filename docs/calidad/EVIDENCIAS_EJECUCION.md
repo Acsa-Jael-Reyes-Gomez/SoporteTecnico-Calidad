@@ -54,9 +54,9 @@ El artefacto `quality-reports` del run de PR se descargó en `docs/calidad/evide
 
 ## Verificación remota más reciente (29/10/2026)
 
-Los runs [40973155260](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973155260) (`push`) y [40973160326](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973160326) (`pull_request`) aprobaron en GitHub Actions. El artefacto del PR se descargó desde GitHub y quedó archivado en `docs/calidad/evidencias/run-40973160326/quality-reports/`.
+Los runs [40974922468](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974922468) (`push`) y [40974928285](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974928285) (`pull_request`) aprobaron en GitHub Actions. El artefacto del PR se descargó desde GitHub y quedó archivado en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
 
-`test-results.log` registra las 33 pruebas aprobadas. `coverage.txt` informa 96,16% de líneas, 81,55% de ramas y 92,31% de funciones, por encima de los umbrales 75%, 60% y 55%. Este artefacto no incluye logs de análisis estático; el workflow se actualizó para adjuntarlos en sus próximas ejecuciones. SonarCloud se omitió porque no está configurado; el PR sigue abierto sin revisión independiente. La plantilla ahora reserva un espacio para registrar la revisión y su resultado, pero eso no equivale a una aprobación.
+`test-results.log` registra las 33 pruebas aprobadas. `coverage.txt` informa 96,16% de líneas, 81,55% de ramas y 92,31% de funciones, por encima de los umbrales 75%, 60% y 55%. `typecheck.log`, `eslint.log` y `format-check.log` son los reportes descargables de análisis estático. SonarCloud se omitió porque no está configurado; el PR sigue abierto sin revisión independiente. La plantilla reserva un espacio para registrar la revisión y su resultado, pero eso no equivale a una aprobación.
 
 ## Reejecución local de cierre (29/10/2026)
 
