@@ -57,13 +57,13 @@ Estos valores corresponden a la ejecución local registrada el 29 de octubre de 
 
 ## 7. Captura real del pipeline
 
-**Evidencia que debe insertarse:** captura de GitHub Actions donde se vea el nombre del workflow, la rama o pull request, la fecha y el resultado de las etapas.
+La revisión actual pasó en el PR #1. Los runs 40969146165 (`push`) y 40969163670 (`pull_request`) aprobaron. Inserta una captura auténtica de GitHub Actions donde se vean el nombre del workflow, la rama, el ID y el resultado; no uses el run histórico 40599606066 como evidencia de la versión SQLite.
 
 El usuario confirmó el run remoto 40599606066 en verde. Inserta una captura auténtica de GitHub Actions donde se vea el nombre del workflow, la rama, el ID y el resultado. Este run es previo a SQLite; cuando se publique la revisión actual debe reemplazarse o añadirse evidencia de su propio run.
 
 ## 8. Dashboard o reporte de calidad
 
-**Evidencia disponible:** el proyecto guarda informes de pruebas y cobertura como artefactos de GitHub Actions. Inserta aquí una captura auténtica del artefacto o del reporte generado.
+**Evidencia disponible:** el artefacto del run de PR está guardado en `docs/calidad/evidencias/run-40969163670/quality-reports/` y contiene los resultados reales. Inserta aquí una captura auténtica del artefacto o del reporte generado.
 
 SonarCloud está condicionado a configurar la organización, la clave del proyecto y el token. No hay un análisis ni dashboard SonarCloud registrado, así que no se reportan bugs, vulnerabilidades o code smells.
 
@@ -72,7 +72,7 @@ SonarCloud está condicionado a configurar la organización, la clave del proyec
 - Aprendí que se puede agregar un flujo de calidad a una aplicación existente sin reescribirla.
 - Las pruebas y los umbrales permiten detectar fallos de compilación, regresiones y formato antes de integrar cambios.
 - Cinco pruebas nuevas ejercitan SQLite en memoria y verifican la semilla; aprobaron en la suite local. Falta probar manualmente el arranque de Electron con una carpeta de datos temporal.
-- Para cerrar la entrega faltan las capturas auténticas, confirmar la protección de `main`, exportar la presentación y grabar el video.
+- Para cerrar la entrega faltan las capturas auténticas, resolver el requisito de protección de `main` con el plan de GitHub, exportar la presentación y grabar el video.
 
 ## 10. Referencias
 

@@ -42,6 +42,6 @@ Consulte `docs/Linea-Base-Calidad.md` para la comparación y `docs/Matriz-Prueba
 
 Despues de compilar con `npm test`, la suite registro 33 de 33 casos aprobados. `npm run test:coverage` midio 96,16% de lineas, 81,55% de ramas y 92,31% de funciones. Los tres indicadores superan los umbrales del pipeline (75%, 60% y 55%). TypeScript, ESLint y Prettier finalizaron correctamente. La medicion inicial de cobertura no existe, asi que no se calcula una mejora porcentual antes/despues.
 
-## Diferencia entre evidencia remota y medicion local
+## Diferencia entre evidencia histórica y actual
 
-El artefacto del run remoto `40599606066`, descargado en `docs/calidad/evidencias/run-40599606066/`, confirma 28/28 pruebas y cobertura de 95,65% de lineas, 80,60% de ramas y 90,54% de funciones para el commit publicado de esa ejecucion. La medicion local posterior a los cambios SQLite confirma 33/33 y 96,16%, 81,55% y 92,31%. El run remoto no valida las modificaciones locales sin commit.
+El artefacto histórico `40599606066` confirma 28/28 pruebas antes de SQLite. La medición actual 33/33 y 96,16% / 81,55% / 92,31% también fue verificada por GitHub Actions en los runs 40969146165 (`push`) y 40969163670 (`pull_request`). El artefacto del PR está en `docs/calidad/evidencias/run-40969163670/quality-reports/`.

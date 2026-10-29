@@ -45,7 +45,7 @@ El umbral del comando de cobertura es 75% de líneas, 60% de ramas y 55% de func
 
 ## Pipeline y GitHub
 
-`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en cada `push` y `pull_request`. El run remoto 40599606066 pasó el 27 de octubre de 2026, antes de los cambios SQLite locales. La ejecución local actual del 29/10/2026 dio 33/33 pruebas y cobertura de 96.16% de líneas, 81.55% de ramas y 92.31% de funciones; consulta `docs/calidad/METRICAS_CALIDAD.md`. SonarCloud solo se ejecuta si se configuran `SONAR_ORGANIZATION`, `SONAR_PROJECT_KEY` y el secreto `SONAR_TOKEN`; su análisis no se considera activo hasta comprobar una ejecución real. GitHub denegó la protección de `main` con HTTP 403 porque el repositorio privado requiere Pro para esta función; el detalle está en `docs/Flujo-GitHub.md`.
+`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en `push` y `pull_request`. El PR #1 y sus runs 40969146165 (`push`) y 40969163670 (`pull_request`) pasaron con 33 pruebas; artefactos en `docs/calidad/evidencias/run-40969163670/`. La ejecución local dio 33/33 y cobertura de 96.16% de líneas, 81.55% de ramas y 92.31% de funciones; consulta `docs/calidad/METRICAS_CALIDAD.md`. SonarCloud es condicional y no tiene análisis registrado. GitHub denegó la protección de `main` con HTTP 403 porque el repositorio privado requiere Pro; el detalle está en `docs/Flujo-GitHub.md`.
 
 Para el flujo de ramas, revisiones y configuración de protecciones, consulta [docs/Flujo-GitHub.md](docs/Flujo-GitHub.md) y la plantilla en `.github/PULL_REQUEST_TEMPLATE.md`.
 
@@ -71,4 +71,4 @@ El estado detallado de cada requisito del enunciado, incluidos los pasos externo
 - La base SQLite es local a cada instalación; varias computadoras no comparten automáticamente sus cambios.
 - No hay pruebas end-to-end ni arranque automatizado de Electron. Cinco pruebas del adaptador SQLite y la semilla aprobaron localmente; falta una comprobación manual de arranque de Electron.
 - SonarCloud y las reglas de protección de GitHub requieren configuración adicional.
-- El run remoto archivado es anterior al adaptador SQLite; no valida los cambios locales posteriores. Repite los checks en GitHub al publicar la revisión actual y valida el arranque de Electron antes de la entrega.
+- Las pruebas E2E y el arranque manual de Electron siguen pendientes; el PR #1 sí valida en Actions la revisión SQLite actual.

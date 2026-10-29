@@ -45,7 +45,7 @@ TypeScript estricto y ESLint se ejecutan en CI. ESLint cubre TypeScript, los mó
 
 ## Pipeline CI/CD
 
-`.github/workflows/quality.yml` se dispara en `push` y `pull_request` para Windows con Node 22. Las etapas instalan dependencias fijadas, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. El run remoto 40599606066 terminó en verde el 27/10/2026 sobre una revisión previa a SQLite. La protección de `main` requiere una regla adicional en GitHub y no se ha confirmado.
+`.github/workflows/quality.yml` se dispara en `push` y `pull_request` para Windows con Node 22. Las etapas instalan dependencias fijadas, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. El PR #1 pasó en ambos eventos; runs 40969146165 y 40969163670, con artefactos del PR en `docs/calidad/evidencias/run-40969163670/quality-reports/`. La protección de `main` no está activa: GitHub exige Pro para este repositorio privado.
 
 ## SonarCloud
 
