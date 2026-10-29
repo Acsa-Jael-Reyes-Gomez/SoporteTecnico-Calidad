@@ -45,7 +45,7 @@ La información inicial disponible es incompleta. Por eso se conserva como líne
 
 ## 6. Métricas antes y después de integrar SQLite
 
-| Métrica                | Antes (run 40599606066) | Actual (run 40971771341) |   Cambio |
+| Métrica                | Antes (run 40599606066) | Actual (run 40973160326) |   Cambio |
 | ---------------------- | ----------------------: | -----------------------: | -------: |
 | Pruebas aprobadas      |                   28/28 |                    33/33 | +5 casos |
 | Cobertura de líneas    |                  95.65% |                   96.16% | +0.51 pp |
@@ -56,11 +56,11 @@ Los dos runs usaron Node 22 y los mismos umbrales. Esta comparación corresponde
 
 ## 7. Captura real del pipeline
 
-La revisión actual pasó en el PR #1. Los runs [40971764858](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40971764858) (`push`) y [40971771341](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40971771341) (`pull_request`) aprobaron. Inserta una captura auténtica de GitHub Actions donde se vean el nombre del workflow, la rama, el ID y el resultado.
+La revisión actual pasó en el PR #1. Los runs [40973155260](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973155260) (`push`) y [40973160326](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973160326) (`pull_request`) aprobaron. Inserta una captura auténtica de GitHub Actions donde se vean el nombre del workflow, la rama, el ID y el resultado.
 
 ## 8. Dashboard o reporte de calidad
 
-**Evidencia disponible:** el artefacto del run de PR está guardado en `docs/calidad/evidencias/run-40971771341/quality-reports/`. Inserta aquí una captura auténtica del artefacto o del reporte generado.
+**Evidencia disponible:** el artefacto del run de PR está guardado en `docs/calidad/evidencias/run-40973160326/quality-reports/`. Inserta aquí una captura auténtica del artefacto o del reporte generado.
 
 SonarCloud está condicionado a configurar la organización, la clave del proyecto y el token. No hay un análisis ni dashboard SonarCloud registrado, así que no se reportan bugs, vulnerabilidades o code smells.
 

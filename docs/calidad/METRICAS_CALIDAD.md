@@ -44,4 +44,4 @@ Despues de compilar con `npm test`, la suite registro 33 de 33 casos aprobados. 
 
 ## Diferencia entre evidencia histórica y actual
 
-El artefacto histórico `40599606066` confirma 28/28 pruebas antes de SQLite. La medición actual 33/33 y 96,16% / 81,55% / 92,31% también fue verificada por GitHub Actions en los runs 40971764858 (`push`) y 40971771341 (`pull_request`). El artefacto del PR está en `docs/calidad/evidencias/run-40971771341/quality-reports/`.
+El artefacto histórico `40599606066` confirma 28/28 pruebas antes de SQLite. La medición actual 33/33 y 96,16% / 81,55% / 92,31% también fue verificada por GitHub Actions en los runs 40973155260 (`push`) y 40973160326 (`pull_request`). El artefacto del PR está en `docs/calidad/evidencias/run-40973160326/quality-reports/`.

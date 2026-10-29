@@ -54,7 +54,7 @@ El artefacto `quality-reports` del run de PR se descargó en `docs/calidad/evide
 
 ## Verificación remota más reciente (29/10/2026)
 
-Los runs [40971764858](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40971764858) (`push`) y [40971771341](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40971771341) (`pull_request`) aprobaron en GitHub Actions. El artefacto del PR se descargó desde GitHub y quedó archivado en `docs/calidad/evidencias/run-40971771341/quality-reports/`.
+Los runs [40973155260](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973155260) (`push`) y [40973160326](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40973160326) (`pull_request`) aprobaron en GitHub Actions. El artefacto del PR se descargó desde GitHub y quedó archivado en `docs/calidad/evidencias/run-40973160326/quality-reports/`.
 
 `test-results.log` registra las 33 pruebas aprobadas. `coverage.txt` informa 96,16% de líneas, 81,55% de ramas y 92,31% de funciones, por encima de los umbrales 75%, 60% y 55%. Este artefacto respalda la ejecución remota más reciente. SonarCloud se omitió porque no está configurado; el PR sigue abierto sin revisión independiente.
 
