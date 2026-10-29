@@ -50,4 +50,19 @@ El artefacto `quality-reports` se descargó en `docs/calidad/evidencias/run-4059
 
 Se publicó la rama `codex/cierre-requisitos-sqa` y se abrió el PR en borrador [#1](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/1). El run [40969600668](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969600668) (evento `push`) y el run [40969607082](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969607082) (evento `pull_request`) aprobaron el job `Compilar, probar y verificar calidad`. Ambos ejecutaron build, 33 pruebas, cobertura, TypeScript, ESLint, Prettier y reporte; SonarCloud fue omitido porque no está configurado.
 
-El artefacto `quality-reports` del run de PR se descargó en `docs/calidad/evidencias/run-40969607082/`. Confirma 33 aprobadas, 0 fallidas y 96,16% de líneas, 81,55% de ramas y 92,31% de funciones. El PR queda en borrador, sin fusionar.
+El artefacto `quality-reports` del run de PR se descargó en `docs/calidad/evidencias/run-40969607082/`. Confirma 33 aprobadas, 0 fallidas y 96,16% de líneas, 81,55% de ramas y 92,31% de funciones. El PR está abierto y sin fusionar.
+
+## Verificación local de cierre (29/10/2026)
+
+Se repitieron las verificaciones desde la rama `codex/cierre-requisitos-sqa`, commit `bc1e1ea`:
+
+| Comando                 | Resultado                                                         | Evidencia                                           |
+| ----------------------- | ----------------------------------------------------------------- | --------------------------------------------------- |
+| `npm run build`         | Aprobado                                                          | `evidencias/local-cierre-20261029/build.log`        |
+| `npm test`              | 33 aprobadas, 0 fallidas                                          | `evidencias/local-cierre-20261029/test-results.log` |
+| `npm run test:coverage` | 96,16% líneas; 81,55% ramas; 92,31% funciones; umbrales aprobados | `evidencias/local-cierre-20261029/coverage.txt`     |
+| `npm run typecheck`     | Aprobado, 0 errores                                               | `evidencias/local-cierre-20261029/typecheck.log`    |
+| `npm run lint`          | Aprobado, 0 errores bloqueantes                                   | `evidencias/local-cierre-20261029/lint.log`         |
+| `npm run format:check`  | Aprobado                                                          | `evidencias/local-cierre-20261029/format-check.log` |
+
+Los logs son salidas textuales reproducibles, no capturas de pantalla ni evidencia de una ejecución manual de Electron.
