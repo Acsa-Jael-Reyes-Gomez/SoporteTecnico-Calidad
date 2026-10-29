@@ -1,33 +1,37 @@
+> Actualizado el 29/10/2026: los resultados locales actuales incluyen la integración SQLite. El run remoto 40599606066 es histórico y pertenece al commit publicado anterior.
+
 # Reporte de mejora de calidad
 
-## Criterio de comparación
+## Resumen
 
-Se toma como línea base el código fuente encontrado el 26 de octubre de 2026, antes de modificar la documentación y el workflow. No hubo cambios al código de la aplicación ni a sus pruebas en esta sesión; las mediciones reproducidas describen ese mismo estado funcional.
+Se añadió una puerta de calidad automatizada al sistema Electron existente. El cambio conserva la arquitectura y las funciones del producto y establece controles repetibles para compilación, pruebas, cobertura, tipos, lint y formato. No se afirma una mejora en bugs o vulnerabilidades porque no hay un resultado SonarCloud disponible.
 
-| Métrica                               | Inicial                                      | Final disponible                                        | Diferencia             | Herramienta / evidencia                                       | Interpretación                            |
-| ------------------------------------- | -------------------------------------------- | ------------------------------------------------------- | ---------------------- | ------------------------------------------------------------- | ----------------------------------------- |
-| Casos declarados                      | 28                                           | 28                                                      | 0                      | Conteo de `test()` en los dos archivos                        | No se añadieron ni quitaron pruebas       |
-| Pruebas aprobadas                     | 28/28 declaradas, resultado anterior anotado | 28/28                                                   | Reproducido            | npm test, Node 22.16.0                                        | Ambas suites pasaron                      |
-| Cobertura de líneas                   | 95.62% anotado históricamente                | 95.62%                                                  | 0.00 pp                | npm run test:coverage                                         | Supera 75%                                |
-| Cobertura de ramas                    | 80.60% anotado históricamente                | 80.60%                                                  | 0.00 pp                | npm run test:coverage                                         | Supera 60%                                |
-| Cobertura de funciones                | 90.54% anotado históricamente                | 90.54%                                                  | 0.00 pp                | npm run test:coverage                                         | Supera 55%                                |
-| Errores de TypeScript                 | 0 anotados históricamente                    | 0                                                       | 0                      | npm run typecheck                                             | Ejecución final correcta                  |
-| Errores ESLint                        | No disponible                                | No disponible                                           | No calculable          | ESLint no está instalado                                      | Lint pendiente de dependencia y política  |
-| Bugs / vulnerabilidades / code smells | No disponible                                | No disponible                                           | No calculable          | Sin escáner local ni SonarCloud configurado                   | No se cuantifican                         |
-| Pipeline CI                           | Workflow existente en ramas principales      | BUILD/TEST/ANALYZE/REPORT en push y PR a cualquier rama | Configuración ampliada | .github/workflows/quality.yml; ejecución remota no verificada | Su eficacia debe comprobarse en GitHub    |
-| Estado Git                            | No disponible                                | No disponible                                           | No calculable          | `.git` vacío; ejecutable ausente                              | Historial y cambios previos sin verificar |
+## Comparación antes y después
+
+| Métrica                              |                   Antes |                                   Después | Cambio comprobable                                                                      |
+| ------------------------------------ | ----------------------: | ----------------------------------------: | --------------------------------------------------------------------------------------- |
+| Casos automatizados declarados       | 25 (registro histórico) |                                        33 | 8 más que el conteo inicial documentado; el resultado inicial no se conserva            |
+| Pruebas aprobadas                    |            Sin registro |                                     33/33 | Suite local completa, 29/10/2026                                                        |
+| Cobertura de líneas                  |               No medida |                                    96.16% | Medición local; supera el umbral de 75%                                                 |
+| Cobertura de ramas                   |               No medida |                                    81.55% | Medición local; supera el umbral de 60%                                                 |
+| Cobertura de funciones               |               No medida |                                    92.31% | Medición local; supera el umbral de 55%                                                 |
+| Verificación TypeScript              |               No medida |                                 0 errores | `npm run typecheck` aprobado localmente                                                 |
+| Análisis ESLint                      |          No configurado |                    Configurado y aprobado | `npm run lint` aprobado localmente                                                      |
+| Verificación de formato              |           No registrada |                                  Aprobada | `npm run format:check` aprobado localmente                                              |
+| Integración continua                 |              No existía | GitHub Actions en `push` y `pull_request` | Run 40599606066 verde en revisión previa; los cambios actuales aún requieren run remoto |
+| Bugs, vulnerabilidades y code smells |              No medidos |                                No medidos | Sin análisis SonarCloud registrado; no se asigna diferencia                             |
+| Protección de `main`                 |           No verificada |                             No verificada | Requiere reglas externas del repositorio                                                |
 
 ## Cambios realizados
 
-- Se aclaró en README y manuales que la arquitectura real es Electron/TypeScript/JavaScript con MySQL/ODBC.
-- Se agregaron diagnóstico, plan SQA, línea base, manual técnico/usuario y este reporte.
-- Se amplió el workflow para distinguir BUILD, TEST, ANALYZE y REPORT; se guarda la salida de pruebas y cobertura como artefactos.
-- Se dejó SonarCloud opcional, condicionado a variables y secreto del repositorio.
+- Se añadieron controles automáticos de compilación, pruebas, umbrales de cobertura, TypeScript, ESLint y Prettier.
+- Se guardan los informes de pruebas y cobertura como artefacto de GitHub Actions.
+- Se documentaron estrategia, límites, deuda técnica, línea base y los 33 casos automatizados.
+- Se fijaron finales de línea LF mediante `.gitattributes` para que Prettier valide igual en los equipos Windows y en Actions.
+- Se mantuvo SonarCloud condicional: no bloquea mientras el proyecto externo no esté configurado.
 
-## Evidencia histórica separada
+## Limitaciones y acciones posteriores
 
-El documento METRICAS_CALIDAD.md preexistente registra un resultado del 15 de octubre de 2026. Las métricas de pruebas, cobertura y TypeScript se reprodujeron el 26 de octubre con el código de aplicación sin cambios.
+Las consultas de negocio se prueban con dobles; el adaptador se cubre con SQLite en memoria y la semilla. No hay E2E ni una prueba manual de arranque de Electron. Para completar el quality gate del repositorio, un administrador debe exigir PR y el check exitoso del job `Build, tests and quality checks` en la rama principal. SonarCloud debe habilitarse y medirse antes de presentar métricas de bugs o code smells. La comparación de cobertura inicial no es posible porque no se midió antes.
 
-## Acciones para cerrar la medición
-
-Quedan pendientes la ejecución remota del workflow, el análisis SonarCloud y la configuración de ESLint. La cobertura refleja principalmente servicios y regresiones estáticas; no representa cobertura E2E ni pruebas con una base MySQL.
+El resultado exacto de cobertura y las condiciones de ejecución están en `docs/Linea-Base-Calidad.md` y `docs/calidad/EVIDENCIAS_EJECUCION.md`.

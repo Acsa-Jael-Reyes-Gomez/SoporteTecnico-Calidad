@@ -18,4 +18,10 @@ Se adopta Electron 45.0.0, fijado de forma exacta para que las siguientes instal
 
 ### Validación necesaria
 
-Después de la actualización se ejecutaron build, pruebas (28/28), cobertura (95.65% líneas, 80.60% ramas, 90.54% funciones), typecheck, lint y formato. La descarga del binario para la prueba manual quedó pendiente porque la red no completó la solicitud; tampoco se comprobó la carga de ODBC en runtime. No se inició sesión ni se contactó una base de datos. La revisión manual de la aplicación con su DSN y la validación de instalaciones en sucursales permanecen pendientes.
+Después de la actualización se ejecutaron build, pruebas, cobertura, typecheck, lint y formato. La validación inicial de 28/28 es histórica; tras la migración SQLite, la ejecución local del 29/10/2026 pasó 33/33, con 96.16% de líneas, 81.55% de ramas y 92.31% de funciones. La descarga del binario para la prueba manual quedó pendiente; falta comprobar el arranque de Electron con la base de trabajo.
+
+## Decision: base de datos integrada para desarrollo y distribucion
+
+La aplicacion reutilizada no era React/Express ni estaba aislada de su DSN MySQL/ODBC inicial. Para que la entrega incluya una base local sin depender de servicios instalados por el usuario, el runtime se adapto a SQLite mediante `node:sqlite`, una semilla incluida en `assets/database/seed.db` y una copia de trabajo bajo `userData`. La importacion conserva los datos del volcado recibido, pero los procedimientos almacenados no se migraron. Esta variante no ofrece sincronizacion entre computadoras; esa necesidad requiere un servicio centralizado y queda fuera del alcance actual.
+
+Se agregaron cinco pruebas de integración del adaptador y de la semilla. La suite completa pasó 33/33; los umbrales se superaron y TypeScript reportó cero diagnósticos. El arranque manual de Electron y un run remoto de GitHub Actions correspondiente a la revisión SQLite aún requieren evidencia.

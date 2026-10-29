@@ -39,7 +39,7 @@ async function getTicketTechnicianIds(conn: any, idTicket: number): Promise<numb
 }
 
 async function loadTicketCatalogRefs(conn: any): Promise<TicketCatalogRefs> {
-  // Mantener consultas secuenciales: ODBC 3.51 corrompe la conexión si se reutiliza en paralelo.
+  // Keep operations sequential on the shared SQLite connection.
   const [pendienteRows]: any = await conn.execute(
     `SELECT idUsuario
      FROM usuario

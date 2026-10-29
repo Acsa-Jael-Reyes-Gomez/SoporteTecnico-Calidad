@@ -1,17 +1,19 @@
 # Sistema de soporte técnico
 
+[![Puerta de calidad](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/workflows/quality.yml/badge.svg?branch=main)](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/workflows/quality.yml)
+
 Aplicación de escritorio para gestionar tickets de soporte, rutas, equipos en taller, envíos de equipos, proyectos especiales, calificaciones y reportes. Esta copia conserva como base el sistema existente `SoporteTecnico` identificado en los metadatos del paquete; no es una aplicación creada desde cero.
 
 ## Arquitectura y tecnologías
 
 - Electron con tres capas: interfaz Renderer, puente Preload y lógica Main.
 - Proceso principal en TypeScript estricto; interfaz en JavaScript y CSS.
-- MySQL por ODBC usando un DSN de Windows, con conexión configurable por variable de entorno.
+- SQLite integrado mediante `node:sqlite`; cada instalación conserva su archivo de datos en la carpeta de usuario de Electron.
 - Pruebas con `node:test`; análisis de tipos con TypeScript.
 - ESLint para análisis estático y Prettier para formato de documentación/configuración.
 - CI en GitHub Actions para Windows y Node.js 22.
 
-La aplicación **no** usa React, Express ni una API HTTP. La base de datos tampoco es una base local aislada: `appsettings.json` configura por defecto el DSN `Tickets_IT`. Revisa el manual técnico antes de ejecutar la aplicación para evitar conectar una base inadecuada.
+La aplicación **no** usa React, Express ni una API HTTP. La primera ejecución copia la base inicial incluida en `assets/database/seed.db` a la carpeta de datos de la aplicación. No requiere MySQL, ODBC ni configurar un DSN.
 
 ## Funcionalidades existentes
 
@@ -19,7 +21,7 @@ Inicio de sesión y permisos; creación, consulta, edición, cierre, reapertura 
 
 ## Requisitos e instalación
 
-Se requiere Windows, Node.js 22, npm, un driver ODBC compatible y acceso a una instancia de MySQL de desarrollo configurada para esta aplicación. Desde la raíz del repositorio:
+Se requiere Windows, Node.js 22 y npm. Desde la raíz del repositorio:
 
 ```powershell
 npm ci
@@ -27,7 +29,7 @@ npm run build
 npm start
 ```
 
-Configura `SOPORTE_ODBC_CONNECTION` con la cadena de conexión de desarrollo si no usarás el DSN `Tickets_IT`. `appsettings.json` está excluido de Git. No guardes contraseñas en archivos versionados. Consulta [docs/Manual-Tecnico.md](docs/Manual-Tecnico.md) para detalles.
+La base de datos de trabajo se guarda como `soporte_tecnico.db` en la carpeta de datos de Electron. Puedes definir `SOPORTE_DATABASE_PATH` para elegir otra ubicación. Consulta [docs/Manual-Tecnico.md](docs/Manual-Tecnico.md) para detalles.
 
 ## Calidad
 
@@ -39,11 +41,11 @@ npm test
 npm run test:coverage
 ```
 
-El umbral del comando de cobertura es 75% de líneas, 60% de ramas y 55% de funciones. ESLint bloquea errores; las advertencias por `any` heredados de ODBC y variables globales entre módulos quedan como deuda no bloqueante. Prettier verifica documentos y configuración editados. Las pruebas de consultas usan dobles; no prueban contra MySQL. Revisa el plan SQA y la línea base para límites y evidencia.
+El umbral del comando de cobertura es 75% de líneas, 60% de ramas y 55% de funciones. ESLint bloquea errores; las advertencias por variables globales entre módulos quedan como deuda no bloqueante. Prettier verifica documentos y configuración editados. Revisa el plan SQA y la línea base para límites y evidencia.
 
 ## Pipeline y GitHub
 
-`.github/workflows/quality.yml` ejecuta BUILD, TEST, ANALYZE y REPORT en push y pull request. El análisis SonarCloud es opcional y requiere la variable `SONAR_ORGANIZATION`, la variable `SONAR_PROJECT_KEY` y el secreto `SONAR_TOKEN`. No se han verificado ejecuciones remotas ni protección de ramas. El repositorio local no contiene metadatos Git utilizables en este entorno.
+`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en cada `push` y `pull_request`. El run remoto 40599606066 pasó el 27 de octubre de 2026, antes de los cambios SQLite locales. La ejecución local actual del 29/10/2026 dio 33/33 pruebas y cobertura de 96.16% de líneas, 81.55% de ramas y 92.31% de funciones; consulta `docs/calidad/METRICAS_CALIDAD.md`. SonarCloud solo se ejecuta si se configuran `SONAR_ORGANIZATION`, `SONAR_PROJECT_KEY` y el secreto `SONAR_TOKEN`; su análisis no se considera activo hasta comprobar una ejecución real. GitHub denegó la protección de `main` con HTTP 403 porque el repositorio privado requiere Pro para esta función; el detalle está en `docs/Flujo-GitHub.md`.
 
 Para el flujo de ramas, revisiones y configuración de protecciones, consulta [docs/Flujo-GitHub.md](docs/Flujo-GitHub.md) y la plantilla en `.github/PULL_REQUEST_TEMPLATE.md`.
 
@@ -51,18 +53,22 @@ Para el flujo de ramas, revisiones y configuración de protecciones, consulta [d
 
 - [Diagnóstico inicial](docs/Diagnostico-Inicial.md)
 - [Plan SQA](docs/SQA-Plan.md)
+- [Matriz de pruebas](docs/Matriz-Pruebas.md)
 - [Línea base](docs/Linea-Base-Calidad.md)
 - [Manual técnico](docs/Manual-Tecnico.md)
 - [Manual de usuario](docs/Manual-Usuario.md)
 - [Reporte de mejora](docs/Reporte-Mejora.md)
-- [Evidencias históricas del proyecto](docs/calidad/EVIDENCIAS_EJECUCION.md)
+- [Evidencias de ejecución](docs/calidad/EVIDENCIAS_EJECUCION.md)
 - [Presentación académica: esquema de 10 diapositivas](docs/presentacion/Presentacion-Proyecto-SQA.md)
 - [Guion de video](docs/video/Guion-Video-4-5-Minutos.md)
+- [Presentación de métricas](docs/calidad/PRESENTACION_METRICAS.md)
 
 ## Limitaciones conocidas
 
+El estado detallado de cada requisito del enunciado, incluidos los pasos externos pendientes, está en [docs/calidad/ESTADO-REQUISITOS.md](docs/calidad/ESTADO-REQUISITOS.md).
+
 - La interfaz es Electron con JavaScript, no React; el backend no es Express.
-- MySQL requiere un servidor y un DSN ODBC configurados fuera de la aplicación.
-- No hay pruebas end-to-end de la interfaz ni integración con una instancia de base de datos de pruebas.
+- La base SQLite es local a cada instalación; varias computadoras no comparten automáticamente sus cambios.
+- No hay pruebas end-to-end ni arranque automatizado de Electron. Cinco pruebas del adaptador SQLite y la semilla aprobaron localmente; falta una comprobación manual de arranque de Electron.
 - SonarCloud y las reglas de protección de GitHub requieren configuración adicional.
-- La verificación local se ejecutó con Node 22.16.0: 28/28 pruebas aprobadas, cobertura 95.65% de líneas, 80.60% de ramas, 90.54% de funciones y TypeScript sin errores. El primer intento aislado del sandbox dio EPERM; la ejecución posterior se completó.
+- El run remoto archivado es anterior al adaptador SQLite; no valida los cambios locales posteriores. Repite los checks en GitHub al publicar la revisión actual y valida el arranque de Electron antes de la entrega.

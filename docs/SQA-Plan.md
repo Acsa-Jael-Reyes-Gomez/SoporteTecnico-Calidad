@@ -1,4 +1,4 @@
-# Plan de aseguramiento de la calidad
+# Plan de aseguramiento de la calidad del software
 
 ## 1. Propósito
 
@@ -6,7 +6,7 @@ Prevenir regresiones de la aplicación existente y hacer verificables los cambio
 
 ## 2. Alcance
 
-Incluye el proceso principal Electron, el puente Preload, servicios de negocio, Renderer, acceso MySQL por ODBC, pruebas y pipeline. No incluye infraestructura productiva, verificación de permisos reales en GitHub ni análisis remoto ejecutado.
+Incluye el proceso principal Electron, el puente Preload, servicios de negocio, Renderer, el adaptador SQLite integrado, pruebas y pipeline. No incluye infraestructura productiva, verificación de permisos reales en GitHub ni análisis remoto ejecutado.
 
 ## 3. Descripción del sistema
 
@@ -14,16 +14,24 @@ Aplicación interna de soporte técnico con tickets, rutas, equipos en taller, e
 
 ## 4. Arquitectura
 
-Electron con Renderer JavaScript/CSS, Preload TypeScript, Main TypeScript y persistencia MySQL sobre ODBC. No utiliza React ni Express. La interfaz invoca handlers IPC a través de `window.api`.
+Electron con Renderer JavaScript/CSS, Preload TypeScript, Main TypeScript y persistencia SQLite mediante `node:sqlite`. No utiliza React ni Express. La interfaz invoca handlers IPC a través de `window.api`. La decisión de conservar esta variante se documenta en `docs/Decisiones-Tecnicas.md`; SQLite integrado permite ejecutar una copia sin instalar un servicio de base de datos.
 
 ## 5. Estándares
 
-- TypeScript `strict: true` y `noEmitOnError` en `tsconfig.json`.
-- Consultas parametrizadas para valores variables; identificadores SQL se validan mediante listas permitidas en helpers.
-- Secretos fuera del repositorio; configuración local en `appsettings.json` ignorada por Git.
-- Mantener cambios pequeños, revisables y acompañados de pruebas para reglas de negocio.
+El plan toma como referencia ISO/IEC/IEEE 29119-2:2021 para organizar las actividades de prueba y 29119-3:2021 para documentar casos y resultados. En este proyecto se refleja en el alcance, los tipos de prueba, los criterios de aceptación y la matriz con entradas, resultados esperados y resultados obtenidos. También se usa ISO/IEC 25010:2023 como referencia para hablar de calidad del producto; las métricas que sí se miden aquí son cobertura, compilación y pruebas aprobadas.
 
-Estos son controles observados o criterios del proyecto; no se declara certificación ISO ni cumplimiento formal de una norma externa.
+La aplicación de estas referencias es parcial y adaptada al tamaño del proyecto. No se declara certificación ni cumplimiento completo de las normas. Además, se mantienen estos controles concretos:
+
+- TypeScript `strict: true` y `noEmitOnError` en `tsconfig.json`.
+- Consultas parametrizadas para valores variables; los identificadores SQL se validan mediante listas permitidas en helpers.
+- Secretos fuera del repositorio; la configuración local `appsettings.json` está ignorada por Git.
+- Cambios pequeños, revisables y acompañados de pruebas para las reglas de negocio.
+
+### Referencias consultadas
+
+- [ISO/IEC/IEEE 29119-2:2021 — procesos de prueba](https://www.iso.org/standard/79428.html).
+- [ISO/IEC/IEEE 29119-3:2021 — documentación de pruebas](https://www.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/07/94/79429.html).
+- [ISO/IEC 25010:2023 — modelo de calidad del producto](https://www.iso.org/standard/78176.html).
 
 ## 6. Herramientas
 
@@ -35,17 +43,17 @@ Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Pret
 - **Integración controlada:** servicios y consultas con dobles `DbConnection`; no usar DSN real.
 - **Regresión:** reglas de Renderer/SQL verificadas por los casos existentes.
 - **Interfaz/aceptación:** revisión manual en Windows/Electron y entorno de pruebas separado. No hay E2E automatizado.
-- **Base de datos:** pendiente una instancia MySQL aislada; no usar la base de desarrollo ni producción.
+- **Base de datos:** los casos nuevos ejercitan el adaptador en SQLite en memoria y revisan la semilla incluida. Falta comprobar el arranque completo de Electron con una carpeta de datos temporal.
 
 Framework adaptado al sistema: `node:test` evita introducir Jest/React Testing Library propios de otro stack.
 
 ## 8. Análisis estático
 
-`npm run typecheck` ejecuta TypeScript estricto sin emitir archivos. `npm run lint` ejecuta ESLint sobre Main/Preload, módulos Renderer, pruebas y scripts. Las reglas se adaptan a archivos Renderer que comparten funciones globales, al uso CommonJS de Node y al driver ODBC no tipado; `any` y variables sin uso quedan como advertencias no bloqueantes. `npm run format:check` verifica documentos y configuración editados con Prettier. SonarCloud puede analizar TypeScript/JavaScript cuando se complete su configuración externa.
+`npm run typecheck` ejecuta TypeScript estricto sin emitir archivos. `npm run lint` ejecuta ESLint sobre el proceso principal, Preload, módulos de interfaz, pruebas y scripts. Las reglas se adaptan a módulos de interfaz que comparten funciones globales y al uso CommonJS de Node. `npm run format:check` verifica documentos y configuración con Prettier. SonarCloud puede analizar TypeScript/JavaScript cuando se complete su configuración externa; ESLint y TypeScript son los controles estáticos activos.
 
 ## 9. Cobertura
 
-`npm run test:coverage` utiliza la cobertura V8 incluida en Node. No utiliza Istanbul/Jest. La ejecución local reportó 95.65% de líneas, 80.60% de ramas y 90.54% de funciones, por encima de los umbrales; no se ha configurado exportación LCOV para SonarCloud.
+`npm run test:coverage` utiliza la cobertura V8 incluida en Node. No utiliza Istanbul/Jest. La medición local actual del 29/10/2026 es 96.16% de líneas, 81.55% de ramas y 92.31% de funciones, con 33/33 pruebas. El run remoto 40599606066, con 28 pruebas, corresponde a la revisión anterior a SQLite. No se ha configurado exportación LCOV para SonarCloud.
 
 ## 10. Métricas
 
@@ -60,17 +68,17 @@ Casos aprobados/fallidos, cobertura de líneas/ramas/funciones, errores de compi
 - SonarCloud aprobado cuando el proyecto esté configurado.
 - No introducir secretos en cambios.
 
-## 12. Quality Gates
+## 12. Puertas de calidad
 
-El workflow falla si `npm run build`, `npm test`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. Las advertencias conocidas de ESLint no bloquean. El paso SonarCloud solo se ejecuta si están definidos organización, clave y token; hasta entonces no es un gate activo.
+El workflow falla si `npm run build`, `npm test`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. Las advertencias conocidas de ESLint no bloquean. SonarCloud solo se ejecuta si están definidas la organización, la clave y el token; mientras falte alguno de estos valores, el análisis remoto no es una puerta activa.
 
 ## 13. Revisiones automáticas
 
-GitHub Actions ejecuta las etapas BUILD, TEST, ANALYZE y REPORT en push y pull request. Envío de artefactos de prueba/cobertura y análisis remoto dependen de la ejecución real en GitHub.
+GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. El run 40599606066 terminó en verde el 27/10/2026 para la revisión publicada anterior a SQLite; la revisión local actual requiere un run remoto propio. El workflow conserva informes de pruebas y cobertura como artefacto. No se documenta un análisis remoto de SonarCloud.
 
 ## 14. Revisiones manuales
 
-Revisar modelo de permisos, cambios de esquema, consultas, mensajes de error, interfaz en Electron, configuración ODBC, exclusión de secretos y que las instrucciones del manual correspondan a funciones implementadas.
+Revisar modelo de permisos, cambios de esquema, consultas, mensajes de error, interfaz en Electron, persistencia SQLite, exclusión de secretos y que las instrucciones del manual correspondan a funciones implementadas.
 
 ## 15. Gestión de defectos
 
@@ -82,11 +90,11 @@ Mantener el registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. Priorizar ri
 
 ## 17. Riesgos
 
-Dependencia de Windows/ODBC; DSN externo no reproducible; pruebas de consulta con dobles; ausencia de cobertura E2E; análisis remoto no configurado; estado Git desconocido en la carpeta auditada.
+Dependencia de Electron/Windows; pruebas de consulta con dobles y sin validación de SQLite en runtime Electron; ausencia de cobertura E2E; SonarCloud sin resultado remoto registrado; y protección de la rama principal no confirmada.
 
 ## 18. Control de versiones
 
-Usar ramas cortas sobre la rama principal del repositorio cuando este tenga Git funcional. No reescribir historial ni reemplazar remotos. Actualmente no se pudo verificar rama ni historial: `.git` estaba vacío y Git no está disponible.
+Usar ramas cortas y pull requests hacia `main`. El repositorio tiene Git funcional y el cambio de finales de línea se publicó en el commit `9f5a007`. No reescribir historial ni reemplazar remotos.
 
 ## 19. Pull requests
 
@@ -94,7 +102,7 @@ Cada PR describe motivo, alcance, pruebas realizadas, riesgos y cambios de base/
 
 ## 20. Criterios de aceptación
 
-La aplicación existente conserva sus operaciones principales; compilación, pruebas y cobertura pasan; tipos sin errores; secretos ausentes; documentación y riesgos actualizados; el revisor confirma los cambios. Controles remotos solo se consideran verificados después de una ejecución real.
+La aplicación existente conserva sus operaciones principales; compilación, pruebas y cobertura pasan; tipos sin errores; secretos ausentes; documentación y riesgos actualizados; y el revisor confirma los cambios. El propietario confirmó una ejecución verde de Actions. La protección de rama, SonarCloud y la revisión humana de cada pull request deben comprobarse por separado.
 
 ## 21. Mantenimiento
 

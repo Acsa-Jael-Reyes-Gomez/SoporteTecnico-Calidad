@@ -1,23 +1,25 @@
 {
   "name": "soportetecnico",
   "version": "1.0.2",
-  "description": "Sistema interno de soporte tecnico para tickets, rutas, equipos, proyectos y reportes.",
+  "description": "Sistema interno de soporte técnico para tickets, rutas, equipos, proyectos y reportes.",
   "main": "dist/main/main.js",
   "type": "commonjs",
   "author": "AL",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/acsa123/SoporteTecnico.git"
+    "url": "git+https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad.git"
   },
   "bugs": {
-    "url": "https://github.com/acsa123/SoporteTecnico/issues"
+    "url": "https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/issues"
   },
-  "homepage": "https://github.com/acsa123/SoporteTecnico#readme",
+  "homepage": "https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad#readme",
   "keywords": [],
   "scripts": {
     "prepare:icon": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/build-installer-icon.ps1",
     "build:css": "node scripts/build-renderer-css.js",
+    "db:sqlite:schema": "node scripts/build-sqlite-schema.js",
+    "db:sqlite:import": "node scripts/import-mysql-dump-to-sqlite.js",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true});\"",
     "clean:release": "node -e \"require('fs').rmSync('release',{recursive:true,force:true});\"",
     "sanitize:release": "node -e \"for (const f of ['release/builder-debug.yml','release/builder-effective-config.yaml']) require('fs').rmSync(f,{force:true});\"",
@@ -28,8 +30,8 @@
     "start:build": "npm run build && electron .",
     "test": "npm run build && node --test tests/*.test.js",
     "lint": "eslint src/main src/preload src/renderer/modulos tests scripts --quiet",
-    "format:write": "prettier --write README.md .github/PULL_REQUEST_TEMPLATE.md .github/workflows/quality.yml package.json eslint.config.mjs scripts/copy-renderer.js docs/Diagnostico-Inicial.md docs/Flujo-GitHub.md docs/Informe-Final.md docs/Linea-Base-Calidad.md docs/Manual-Tecnico.md docs/Manual-Usuario.md docs/Reporte-Mejora.md docs/SQA-Plan.md docs/calidad/EVIDENCIAS_EJECUCION.md docs/calidad/METRICAS_CALIDAD.md docs/presentacion/Presentacion-Proyecto-SQA.md docs/video/Guion-Video-4-5-Minutos.md",
-    "format:check": "prettier --check README.md .github/PULL_REQUEST_TEMPLATE.md .github/workflows/quality.yml package.json eslint.config.mjs scripts/copy-renderer.js docs/Diagnostico-Inicial.md docs/Flujo-GitHub.md docs/Informe-Final.md docs/Linea-Base-Calidad.md docs/Manual-Tecnico.md docs/Manual-Usuario.md docs/Reporte-Mejora.md docs/SQA-Plan.md docs/calidad/EVIDENCIAS_EJECUCION.md docs/calidad/METRICAS_CALIDAD.md docs/presentacion/Presentacion-Proyecto-SQA.md docs/video/Guion-Video-4-5-Minutos.md",
+    "format:write": "prettier --write README.md .github/PULL_REQUEST_TEMPLATE.md .github/workflows/quality.yml package.json eslint.config.mjs scripts/copy-renderer.js docs/Diagnostico-Inicial.md docs/Flujo-GitHub.md docs/Informe-Final.md docs/Linea-Base-Calidad.md docs/MAPA_FUNCIONALIDADES.md docs/Matriz-Pruebas.md docs/Manual-Tecnico.md docs/Manual-Usuario.md docs/Reporte-Mejora.md docs/SQA-Plan.md docs/Decisiones-Tecnicas.md docs/calidad/EVIDENCIAS_EJECUCION.md docs/calidad/METRICAS_CALIDAD.md docs/calidad/PRESENTACION_METRICAS.md docs/calidad/PLAN_ASEGURAMIENTO_CALIDAD.md docs/presentacion/Presentacion-Proyecto-SQA.md docs/video/Guion-Video-4-5-Minutos.md",
+    "format:check": "prettier --check README.md .github/PULL_REQUEST_TEMPLATE.md .github/workflows/quality.yml package.json eslint.config.mjs scripts/copy-renderer.js docs/Diagnostico-Inicial.md docs/Flujo-GitHub.md docs/Informe-Final.md docs/Linea-Base-Calidad.md docs/MAPA_FUNCIONALIDADES.md docs/Matriz-Pruebas.md docs/Manual-Tecnico.md docs/Manual-Usuario.md docs/Reporte-Mejora.md docs/SQA-Plan.md docs/Decisiones-Tecnicas.md docs/calidad/EVIDENCIAS_EJECUCION.md docs/calidad/METRICAS_CALIDAD.md docs/calidad/PRESENTACION_METRICAS.md docs/calidad/PLAN_ASEGURAMIENTO_CALIDAD.md docs/presentacion/Presentacion-Proyecto-SQA.md docs/video/Guion-Video-4-5-Minutos.md",
     "typecheck": "tsc --noEmit",
     "test:coverage": "node --experimental-test-coverage --test-coverage-lines=75 --test-coverage-branches=60 --test-coverage-functions=55 --test tests/*.test.js",
     "pack": "npm run clean:release && npm run build:release && electron-builder --dir && npm run sanitize:release",
@@ -39,7 +41,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.2.0",
     "bcryptjs": "^3.0.3",
-    "odbc": "^2.5.0",
     "write-excel-file": "^4.0.2"
   },
   "devDependencies": {
@@ -68,10 +69,6 @@
       {
         "from": "assets",
         "to": "assets"
-      },
-      {
-        "from": "appsettings.json",
-        "to": "appsettings.json"
       }
     ],
     "asar": true,
