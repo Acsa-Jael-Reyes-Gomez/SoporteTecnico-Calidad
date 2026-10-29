@@ -21,7 +21,7 @@ Se inspeccionaron los cambios de mayor riesgo de la rama `codex/cierre-requisito
 | `package.json`                     | Configuracion local fuera del paquete y comandos reproducibles para esquema/importacion SQLite                                            | Sin hallazgos bloqueantes                                                                                                          |
 | `tests/sqlite-connection.test.js`  | CRUD, conflicto, transacciones, parametros, integridad y fechas de la semilla                                                             | Los 5 casos pasan en la suite de 33 pruebas                                                                                        |
 
-Esta inspeccion es evidencia de revision tecnica local, no una aprobacion independiente de pares. El PR #1 permanece en borrador; otra persona debe revisar y aprobar el cambio antes de considerar cumplido el requisito de revision manual independiente.
+Esta inspeccion es evidencia de revision tecnica local, no una aprobacion independiente de pares. El PR #1 esta abierto; al 29/10/2026 GitHub no muestra solicitudes ni aprobaciones de revisores. Otra persona puede dejar constancia de su revision en el PR para completar la revision independiente.
 
 ## Registro de deuda técnica
 
