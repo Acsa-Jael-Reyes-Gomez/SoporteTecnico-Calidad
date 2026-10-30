@@ -166,8 +166,6 @@ function translateCommonErrorMessageSafe(message: string) {
     lower.includes("timed out") ||
     lower.includes("timeout") ||
     lower.includes("socket hang up") ||
-    lower.includes("can't connect to mysql server") ||
-    lower.includes("can not connect to mysql server") ||
     lower.includes("connection refused")
   ) {
     return "No fue posible conectarse al sistema o a la base de datos.";
@@ -537,14 +535,7 @@ mainWindow = new BrowserWindow({
     mainWindow?.show();
   };
 
-  mainWindow.webContents.once("dom-ready", () => {
-    showWindow();
-    setTimeout(() => {
-      void registerDeferredIpcHandlers().catch((error) => {
-        devError("Error cargando handlers diferidos:", error);
-      });
-    }, 800);
-  });
+  mainWindow.webContents.once("dom-ready", showWindow);
   mainWindow.once("ready-to-show", showWindow);
 
   mainWindow.loadFile(indexPath).catch((err) => {
@@ -647,7 +638,7 @@ function registerProcessGuards() {
 /* ======================================================
    APP READY
 ====================================================== */
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   if (isSecondaryInstance) {
     app.exit(0);
     return;
@@ -660,6 +651,7 @@ app.whenReady().then(() => {
   } catch {}
 
   registerIpcHandlers();
+  await registerDeferredIpcHandlers();
   createWindow();
 
   app.on("activate", () => {

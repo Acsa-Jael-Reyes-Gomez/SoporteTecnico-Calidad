@@ -26,6 +26,6 @@ El módulo **Proyectos especiales** permite consultar y registrar proyectos; la 
 - Usa filtros de búsqueda y fechas para acotar listados y reportes.
 - Mantén las credenciales privadas y cierra la sesión al terminar.
 - Si una acción no aparece, consulta al administrador: puede depender del rol.
-- Para errores de conexión, solicita soporte al administrador de la instancia ODBC/MySQL.
+- Para errores de base de datos, solicita soporte al administrador de la instalación y conserva el mensaje de error para el diagnóstico.
 
 Este manual describe funciones documentadas en el mapa del sistema; no supone que la cuenta del usuario tenga todos los permisos.

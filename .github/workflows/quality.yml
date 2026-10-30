@@ -1,4 +1,4 @@
-name: Quality Gate
+name: Puerta de calidad
 
 on:
   push:
@@ -9,73 +9,89 @@ permissions:
 
 jobs:
   quality:
-    name: Build, tests and quality checks
+    name: Compilar, probar y verificar calidad
     runs-on: windows-latest
     env:
-      SONAR_TOKEN: ${{ secrets['SONAR_TOKEN'] }}
-      SONAR_ORGANIZATION: ${{ vars['SONAR_ORGANIZATION'] }}
-      SONAR_PROJECT_KEY: ${{ vars['SONAR_PROJECT_KEY'] }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v7
+      - name: Descargar el código fuente
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Configure Node.js
-        uses: actions/setup-node@v7
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
-      - name: Install locked dependencies
+      - name: Instalar dependencias fijadas
         run: npm ci
 
-      - name: BUILD - compile application
+      - name: CONSTRUIR - compilar la aplicación
         run: npm run build
 
-      - name: TEST - unit, integration doubles and regression checks
+      - name: PROBAR - pruebas unitarias, integración controlada y regresión
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force coverage | Out-Null
           npm test 2>&1 | Tee-Object -FilePath coverage/test-results.log
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-      - name: TEST - measure coverage and enforce thresholds
+      - name: PROBAR - recorrido E2E de Electron con SQLite aislado
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force coverage | Out-Null
+          npm run test:e2e 2>&1 | Tee-Object -FilePath coverage/e2e-electron.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: PROBAR - medir cobertura y aplicar umbrales
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force coverage | Out-Null
           npm run test:coverage 2>&1 | Tee-Object -FilePath coverage/coverage.txt
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-      - name: ANALYZE - strict TypeScript check
-        run: npm run typecheck
+      - name: ANALIZAR - verificación estricta de TypeScript
+        shell: pwsh
+        run: |
+          npm run typecheck 2>&1 | Tee-Object -FilePath coverage/typecheck.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-      - name: ANALYZE - ESLint
-        run: npm run lint
+      - name: ANALIZAR - ESLint
+        shell: pwsh
+        run: |
+          npm run lint 2>&1 | Tee-Object -FilePath coverage/eslint.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-      - name: ANALYZE - Prettier format check
-        run: npm run format:check
+      - name: ANALIZAR - verificar formato con Prettier
+        shell: pwsh
+        run: |
+          npm run format:check 2>&1 | Tee-Object -FilePath coverage/format-check.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-      - name: ANALYZE - SonarCloud (when configured)
-        if: ${{ env.SONAR_ORGANIZATION != '' && env.SONAR_PROJECT_KEY != '' && env.SONAR_TOKEN != '' }}
-        uses: SonarSource/sonarqube-scan-action@v8.3.0
-        with:
-          args: >-
-            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
-
-      - name: ANALYZE - report unavailable SonarCloud configuration
-        if: ${{ env.SONAR_ORGANIZATION == '' || env.SONAR_PROJECT_KEY == '' || env.SONAR_TOKEN == '' }}
-        run: >-
-          Write-Output 'SonarCloud skipped: configure SONAR_ORGANIZATION and SONAR_PROJECT_KEY repository variables and SONAR_TOKEN secret.'
-
-      - name: REPORT - upload test and coverage reports
+      - name: REPORTAR - guardar informes de pruebas y cobertura
         if: always()
-        uses: actions/upload-artifact@v7.0.2
+        uses: actions/upload-artifact@v4
         with:
           name: quality-reports
           path: |
             coverage/coverage.txt
             coverage/test-results.log
+            coverage/e2e-electron.log
+            coverage/typecheck.log
+            coverage/eslint.log
+            coverage/format-check.log
+            coverage/lcov.info
           if-no-files-found: warn
+
+      - name: ANALIZAR - SonarCloud
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}

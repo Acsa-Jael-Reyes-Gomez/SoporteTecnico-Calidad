@@ -1,0 +1,1 @@
+﻿Node: v22.16.0 npm: 11.11.0 Commit: bc1e1ea406d6cddbf9601b0ed9d9cd454dd89b2c

@@ -1,31 +1,47 @@
+## Vigencia despues del cambio a SQLite
+
+La tabla inicial conserva la fotografía histórica del 27/10/2026, anterior al adaptador SQLite. La medición local actual del 29/10/2026 aparece en una sección separada y se acompaña de su log de cobertura.
+
 # Métricas de calidad
 
-## Medición inicial disponible
+## Línea base
 
-No existía una medición automatizada de cobertura ni un pipeline CI antes de este trabajo. Se identificaron 25 pruebas declaradas y no había comandos de cobertura o de análisis TypeScript sin emisión.
+El registro histórico del proyecto indica 25 casos automatizados antes de la intervención. En ese momento no había medición de cobertura, comandos de verificación TypeScript ni pipeline CI. No se registró el resultado aprobado/fallido de aquellos 25 casos; por eso no se compara su tasa de aprobación con la actual.
 
-## Medición posterior
+## Medición posterior reproducida
 
-Medición ejecutada el 15 de octubre de 2026 con Node 22.16.0:
+Ejecución local del **27 de octubre de 2026**, Node.js 22.16.0, después de compilar el código. El comando `npm run test:coverage` produjo:
 
-| Indicador              |                   Antes |                    Después | Evidencia                       |
-| ---------------------- | ----------------------: | -------------------------: | ------------------------------- |
-| Pruebas declaradas     |                      25 |                         28 | `node --test tests/*.test.js`   |
-| Pruebas aprobadas      | Sin medición registrada |                   28 de 28 | Ejecución local verificada      |
-| Cobertura de líneas    |               No medida |                     95.62% | `npm run test:coverage`         |
-| Cobertura de ramas     |               No medida |                     80.60% | `npm run test:coverage`         |
-| Cobertura de funciones |               No medida |                     90.54% | `npm run test:coverage`         |
-| Errores TypeScript     |               No medido |                          0 | `npm run typecheck`             |
-| Pipeline CI            |              No existía | GitHub Actions configurado | `.github/workflows/quality.yml` |
+| Indicador              |                              Resultado |     Umbral del pipeline | Estado   |
+| ---------------------- | -------------------------------------: | ----------------------: | -------- |
+| Casos aprobados        |                               28 de 28 |                28 de 28 | Aprobado |
+| Cobertura de líneas    |                                 95.65% |                     75% | Aprobado |
+| Cobertura de ramas     |                                 80.60% |                     60% | Aprobado |
+| Cobertura de funciones |                                 90.54% |                     55% | Aprobado |
+| TypeScript             |                              0 errores |                       0 | Aprobado |
+| ESLint                 |                Sin errores bloqueantes | Sin errores bloqueantes | Aprobado |
+| Prettier               | Todos los archivos indicados coinciden |         Sin diferencias | Aprobado |
+| Build                  |                 Finalizó correctamente |      Código de salida 0 | Aprobado |
 
-## Umbrales
+La cobertura la informa Node.js con instrumentación V8. No se configuró LCOV y no se envió cobertura a SonarCloud.
 
-Los umbrales de 75% de líneas, 60% de ramas y 55% de funciones se derivan de la primera medición. Quedan por debajo del resultado observado para evitar fallos arbitrarios, pero impiden una caída importante de la cobertura.
+## Ejecución remota
 
-## Interpretación
+El propietario confirmó el run remoto **40599606066**, workflow Quality Gate, en verde en GitHub el 27 de octubre de 2026. El run fue un `push` a `main` para el commit `fix: corregir formato de documentos SQA`; no valida las modificaciones SQLite locales que aún no estaban en ese commit. Se archivó la salida del artefacto en `docs/calidad/evidencias/run-40599606066/`.
 
-La cobertura global incluye archivos de prueba. La métrica más útil para seguimiento está en los servicios cargados: `validation_service`, `pagination_service`, `export_security`, `domain_utils`, `report_query_service` y `session_store`.
+## Interpretación y límites
 
-## Reproducción el 26 de octubre de 2026
+- El aumento de 25 a 28 casos procede del registro histórico frente al conteo actual. No se atribuye una mejora de cobertura porque la cobertura inicial no se midió.
+- Las pruebas cubren principalmente servicios cargados desde `dist`, dobles de consulta y regresiones estáticas. No representan cobertura completa de Electron.
+- Las pruebas SQLite son en memoria y revisan la semilla; no hay prueba E2E de Electron, métricas SonarCloud ni protección de rama verificada.
+- Los umbrales se fijaron por debajo del resultado observado para detectar caídas futuras sin hacer que un cambio pequeño falle de forma arbitraria.
 
-Se volvieron a ejecutar `npm test`, `npm run test:coverage` y `npm run typecheck` sobre el código de aplicación sin cambios. Los tres resultados coinciden con la medición posterior registrada arriba: 28/28 pruebas, 95.62% líneas, 80.60% ramas, 90.54% funciones y 0 errores TypeScript. No se verificó GitHub Actions ni SonarCloud.
+Consulte `docs/Linea-Base-Calidad.md` para la comparación y `docs/Matriz-Pruebas.md` para los casos.
+
+## Medicion actual (29 de octubre de 2026)
+
+Despues de compilar con `npm test`, la suite registro 33 de 33 casos aprobados. `npm run test:coverage` midio 96,16% de lineas, 81,55% de ramas y 92,31% de funciones. Los tres indicadores superan los umbrales del pipeline (75%, 60% y 55%). TypeScript, ESLint y Prettier finalizaron correctamente. La medicion inicial de cobertura no existe, asi que no se calcula una mejora porcentual antes/despues.
+
+## Diferencia entre evidencia histórica y actual
+
+El artefacto histórico `40599606066` confirma 28/28 pruebas antes de SQLite. La medición actual 33/33 y 96,16% / 81,55% / 92,31% también fue verificada por GitHub Actions en los runs 40974922468 (`push`) y 40974928285 (`pull_request`). El artefacto del PR está en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
