@@ -34,7 +34,7 @@
     "format:write": "prettier --write README.md .github/PULL_REQUEST_TEMPLATE.md .github/workflows/quality.yml package.json eslint.config.mjs scripts/copy-renderer.js scripts/test-electron-e2e.js docs/Diagnostico-Inicial.md docs/Flujo-GitHub.md docs/Informe-Final.md docs/Linea-Base-Calidad.md docs/MAPA_FUNCIONALIDADES.md docs/Matriz-Pruebas.md docs/Manual-Tecnico.md docs/Manual-Usuario.md docs/Reporte-Mejora.md docs/SQA-Plan.md docs/Decisiones-Tecnicas.md docs/calidad/EVIDENCIAS_EJECUCION.md docs/calidad/METRICAS_CALIDAD.md docs/calidad/PRESENTACION_METRICAS.md docs/calidad/PLAN_ASEGURAMIENTO_CALIDAD.md docs/presentacion/Presentacion-Proyecto-SQA.md docs/video/Guion-Video-4-5-Minutos.md",
     "format:check": "prettier --check README.md .github/PULL_REQUEST_TEMPLATE.md .github/workflows/quality.yml package.json eslint.config.mjs scripts/copy-renderer.js scripts/test-electron-e2e.js docs/Diagnostico-Inicial.md docs/Flujo-GitHub.md docs/Informe-Final.md docs/Linea-Base-Calidad.md docs/MAPA_FUNCIONALIDADES.md docs/Matriz-Pruebas.md docs/Manual-Tecnico.md docs/Manual-Usuario.md docs/Reporte-Mejora.md docs/SQA-Plan.md docs/Decisiones-Tecnicas.md docs/calidad/EVIDENCIAS_EJECUCION.md docs/calidad/METRICAS_CALIDAD.md docs/calidad/PRESENTACION_METRICAS.md docs/calidad/PLAN_ASEGURAMIENTO_CALIDAD.md docs/presentacion/Presentacion-Proyecto-SQA.md docs/video/Guion-Video-4-5-Minutos.md",
     "typecheck": "tsc --noEmit",
-    "test:coverage": "node --experimental-test-coverage --test-coverage-lines=75 --test-coverage-branches=60 --test-coverage-functions=55 --test tests/*.test.js",
+    "test:coverage": "c8 --reporter=lcovonly --reporter=text --check-coverage --lines 75 --branches 60 --functions 55 node --test tests/*.test.js",
     "pack": "npm run clean:release && npm run build:release && electron-builder --dir && npm run sanitize:release",
     "dist": "npm run clean:release && npm run build:release && electron-builder && npm run sanitize:release && npm run prune:release",
     "dist:portable": "npm run clean:release && npm run build:release && electron-builder -w portable && npm run sanitize:release && npm run prune:release"
@@ -47,6 +47,7 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "^25.3.0",
+    "c8": "^12.0.0",
     "electron": "45.0.0",
     "electron-builder": "^26.8.1",
     "eslint": "10.13.0",
