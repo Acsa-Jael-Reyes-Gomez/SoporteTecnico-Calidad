@@ -87,3 +87,9 @@ Se repitieron las verificaciones desde la rama `codex/cierre-requisitos-sqa`, co
 | `npm run format:check`  | Aprobado                                                          | `evidencias/local-cierre-20261029/format-check.log` |
 
 Los logs son salidas textuales reproducibles, no capturas de pantalla ni evidencia de una ejecución manual de Electron.
+
+## Recorrido E2E de Electron (29/10/2026)
+
+`npm run test:e2e` inició la aplicación Electron real con una base SQLite temporal y datos sintéticos. La prueba verificó la pantalla de inicio y el puente Preload, completó la autenticación, abrió el módulo Tickets, creó un ticket desde el formulario y confirmó que el registro persistió en SQLite con fecha 26/10/2026. La carpeta temporal se eliminó al terminar.
+
+La salida local está en `evidencias/e2e-local-20261029/e2e-electron.log`. El caso E2E-01 está descrito en `docs/Matriz-Pruebas.md`. El workflow adjunta la salida como `coverage/e2e-electron.log`; se debe revisar el run de Actions generado al publicar el cambio para conservar también evidencia remota de esta nueva etapa.

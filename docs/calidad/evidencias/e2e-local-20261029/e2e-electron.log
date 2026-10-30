@@ -1,0 +1,14 @@
+﻿
+> soportetecnico@1.0.2 test:e2e
+> node --disable-warning=ExperimentalWarning scripts/test-electron-e2e.js
+
+E2E: Electron abrió su ventana; conectando con el renderer.
+E2E: inicio y puente Preload listos.
+E2E: autenticación real completada.
+E2E: módulo Tickets cargado.
+E2E: formulario de ticket abierto.
+E2E: datos del formulario completados.
+E2E: envío del formulario solicitado.
+E2E: avisos de interfaz tras guardar: ["✅ Ticket guardado correctamente.","✅ Ticket guardado correctamente.","✅ Ticket guardado correctamente.","✅ Ticket guardado correctamente."]
+E2E: alta guardada y vista actualizada.
+E2E Electron aprobado: inicio, Preload/IPC, login, navegación a Tickets y alta de ticket persistida en SQLite aislado.
