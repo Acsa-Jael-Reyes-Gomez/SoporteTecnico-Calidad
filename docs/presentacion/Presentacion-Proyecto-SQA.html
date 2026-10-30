@@ -1,130 +1,86 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pipeline CI/CD con aseguramiento de calidad integrado</title>
-    <style>
-      :root { --ink:#17212b; --muted:#52616f; --blue:#176b87; --teal:#2a9d8f; --pale:#e8f2f4; --line:#cbd7dc; --white:#fff; --gold:#d89b25; }
-      * { box-sizing:border-box; }
-      body { margin:0; background:#dce4e8; color:var(--ink); font:20px/1.42 "Aptos", "Segoe UI", sans-serif; }
-      .slide { width:1280px; height:720px; margin:24px auto; padding:58px 76px 54px; position:relative; background:var(--white); overflow:hidden; page-break-after:always; break-after:page; }
-      .slide:last-child { page-break-after:auto; break-after:auto; }
-      h1,h2,h3,p { margin-top:0; }
-      h1 { font-size:52px; line-height:1.08; max-width:980px; margin-bottom:24px; }
-      h2 { font-size:39px; line-height:1.1; margin-bottom:26px; color:var(--blue); }
-      h3 { font-size:23px; margin-bottom:9px; }
-      p,li { color:var(--muted); }
-      .kicker { color:var(--teal); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:15px; margin-bottom:22px; }
-      .subtitle { font-size:27px; color:var(--muted); max-width:780px; }
-      .meta { position:absolute; bottom:57px; left:76px; color:var(--muted); font-size:17px; }
-      .num { position:absolute; bottom:56px; right:76px; color:var(--muted); font-size:15px; }
-      .rule { width:100%; height:5px; background:var(--teal); margin:28px 0 34px; }
-      .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:38px; }
-      .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-      .stat { border-top:4px solid var(--teal); padding:16px 12px 8px 0; }
-      .stat strong { display:block; color:var(--blue); font-size:42px; line-height:1.1; }
-      .stat span { color:var(--muted); font-size:17px; }
-      ul { padding-left:25px; margin:0; }
-      li { margin:0 0 14px; }
-      .flow { display:flex; align-items:center; gap:12px; margin:50px 0 35px; }
-      .step { background:var(--pale); border-bottom:4px solid var(--teal); color:var(--blue); font-weight:700; padding:23px 18px; text-align:center; flex:1; }
-      .arrow { color:var(--teal); font-weight:700; font-size:28px; }
-      table { border-collapse:collapse; width:100%; font-size:18px; }
-      th { background:var(--blue); color:white; text-align:left; }
-      th,td { padding:13px 15px; border-bottom:1px solid var(--line); }
-      td { color:var(--muted); }
-      .note { border-left:5px solid var(--gold); padding:12px 18px; margin-top:22px; color:var(--muted); background:#fffaf0; font-size:17px; }
-      .link { color:var(--blue); overflow-wrap:anywhere; }
-      .metric-bars { display:grid; gap:18px; margin-top:20px; }
-      .barrow { display:grid; grid-template-columns:170px 1fr 90px; align-items:center; gap:14px; font-size:17px; color:var(--muted); }
-      .track { height:22px; background:#e6ecef; position:relative; }
-      .bar { height:100%; background:var(--teal); }
-      .bar.old { background:#9eb5bf; }
-      .legend { display:flex; gap:22px; font-size:16px; color:var(--muted); margin-top:20px; }
-      .dot { display:inline-block; width:12px; height:12px; margin-right:7px; background:#9eb5bf; }
-      .dot.current { background:var(--teal); }
-      .end { background:var(--ink); color:white; }
-      .end h2,.end h3 { color:white; }
-      .end p,.end li { color:#d2dde2; }
-      a { color:inherit; }
-      @media print { @page { size:13.333in 7.5in; margin:0; } body { background:white; } .slide { margin:0; width:13.333in; height:7.5in; padding:0.6in 0.8in; } }
-      @media screen and (max-width:1280px) { .slide { transform-origin:top left; margin:12px; } }
-    </style>
-  </head>
-  <body>
-    <section class="slide">
-      <div class="kicker">Aseguramiento de la calidad del software</div>
-      <h1>Pipeline CI/CD con aseguramiento de calidad integrado</h1>
-      <div class="rule"></div>
-      <p class="subtitle">Aplicación de soporte técnico · controles automatizados para cada cambio</p>
-      <div class="meta">Acsa Jael Reyes Gómez · 29 de octubre de 2026</div><div class="num">01 / 10</div>
-    </section>
-    <section class="slide">
-      <div class="kicker">Objetivo y alcance</div><h2>Calidad incorporada al flujo de cambios</h2>
-      <div class="grid2"><div><h3>Objetivo</h3><p>Verificar compilación, pruebas, cobertura y estilo antes de integrar cambios en la aplicación existente.</p></div><div><h3>Alcance implementado</h3><ul><li>Workflow de GitHub Actions para <code>push</code> y <code>pull_request</code>.</li><li>Pruebas unitarias, de integración y regresión en Node.js.</li><li>Puerta de cobertura y controles estáticos.</li><li>Reportes archivados como artefactos reproducibles.</li></ul></div></div>
-      <div class="note">La protección obligatoria de la rama principal requiere una regla de GitHub que aún no está activa en este repositorio privado.</div>
-      <div class="num">02 / 10</div>
-    </section>
-    <section class="slide">
-      <div class="kicker">Sistema y herramientas</div><h2>Aplicación existente: soporte técnico</h2>
-      <div class="grid2"><div><ul><li>Aplicación de escritorio basada en Electron.</li><li>Renderer para interfaz, Preload como puente y Main para lógica del sistema.</li><li>Persistencia SQLite mediante <code>node:sqlite</code>.</li><li>Las pruebas de base de datos usan SQLite en memoria y no datos operativos.</li></ul></div><div class="grid3"><div class="stat"><strong>Node</strong><span>pruebas y cobertura V8</span></div><div class="stat"><strong>TS</strong><span>typecheck estricto</span></div><div class="stat"><strong>CI</strong><span>GitHub Actions</span></div></div></div>
-      <div class="note">Herramientas: ESLint, Prettier, TypeScript, node:test y GitHub Actions. SonarCloud no está configurado y no se presentan métricas de esa plataforma.</div>
-      <div class="num">03 / 10</div>
-    </section>
-    <section class="slide">
-      <div class="kicker">Flujo de integración</div><h2>El mismo control se ejecuta en cada cambio</h2>
-      <div class="flow"><div class="step">push<br>o PR</div><div class="arrow">›</div><div class="step">Instalar<br>dependencias</div><div class="arrow">›</div><div class="step">Build<br>y pruebas</div><div class="arrow">›</div><div class="step">Cobertura<br>y análisis</div><div class="arrow">›</div><div class="step">Artefacto<br>de reportes</div></div>
-      <div class="grid2"><p>El workflow fija Node.js 22 e instala con <code>npm ci</code> usando el lockfile.</p><p>Los umbrales bloquean la ejecución cuando la cobertura cae por debajo de 75% en líneas, 60% en ramas o 55% en funciones.</p></div>
-      <div class="num">04 / 10</div>
-    </section>
-    <section class="slide">
-      <div class="kicker">Pruebas y línea inicial documentada</div><h2>Más casos y pruebas específicas para SQLite</h2>
-      <div class="grid3"><div class="stat"><strong>25</strong><span>casos anotados en el registro inicial</span></div><div class="stat"><strong>28</strong><span>pruebas del run histórico anterior a SQLite</span></div><div class="stat"><strong>33</strong><span>pruebas de la revisión actual</span></div></div>
-      <div class="rule"></div><p>La línea inicial no conserva cobertura ni tasa de aprobación. La comparación verificable usa dos ejecuciones con pipeline, antes y después de la integración SQLite.</p>
-      <div class="note">No se atribuye a la etapa previa a SQA un resultado que no existe en el historial conservado.</div>
-      <div class="num">05 / 10</div>
-    </section>
-    <section class="slide">
-      <div class="kicker">Métricas antes y después de SQLite</div><h2>La cobertura supera los umbrales configurados</h2>
-      <div class="metric-bars">
-        <div class="barrow"><span>Líneas</span><div class="track"><div class="bar old" style="width:95.65%"></div><div class="bar" style="width:96.16%;margin-top:-22px;opacity:.72"></div></div><b>95.65 → 96.16%</b></div>
-        <div class="barrow"><span>Ramas</span><div class="track"><div class="bar old" style="width:80.60%"></div><div class="bar" style="width:81.55%;margin-top:-22px;opacity:.72"></div></div><b>80.60 → 81.55%</b></div>
-        <div class="barrow"><span>Funciones</span><div class="track"><div class="bar old" style="width:90.54%"></div><div class="bar" style="width:92.31%;margin-top:-22px;opacity:.72"></div></div><b>90.54 → 92.31%</b></div>
-      </div>
-      <div class="legend"><span><i class="dot"></i>Run 40599606066</span><span><i class="dot current"></i>Run 40974928285</span></div>
-      <div class="note">Cambio entre revisiones: +0.51, +0.95 y +1.77 puntos porcentuales, respectivamente. No es una medición pre-SQA.</div>
-      <div class="num">06 / 10</div>
-    </section>
-    <section class="slide">
-      <div class="kicker">Ejecución remota</div><h2>El pipeline pasó en push y en pull request</h2>
-      <div class="grid2"><div><h3>Push</h3><p>Run <b>40975157636</b><br>Estado: exitoso</p><a class="link" href="https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40975157636">Abrir ejecución en GitHub Actions</a></div><div><h3>Pull request</h3><p>Run <b>40975163149</b><br>Estado: exitoso</p><a class="link" href="https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40975163149">Abrir ejecución en GitHub Actions</a></div></div>
-      <div class="rule"></div><p>Estos runs corresponden al commit que archivó los reportes. Los enlaces permiten revisar el job y su estado en GitHub.</p>
-      <div class="num">07 / 10</div>
-    </section>
-    <section class="slide">
-      <div class="kicker">Reportes de calidad</div><h2>Evidencia descargable y guardada en el repositorio</h2>
-      <table><thead><tr><th>Reporte</th><th>Contenido</th><th>Resultado</th></tr></thead><tbody>
-        <tr><td>test-results.log</td><td>Suite automatizada</td><td>33 aprobadas · 0 fallidas</td></tr>
-        <tr><td>coverage.txt</td><td>Cobertura V8</td><td>96.16% líneas · 81.55% ramas · 92.31% funciones</td></tr>
-        <tr><td>typecheck.log</td><td>TypeScript</td><td>Aprobado</td></tr>
-        <tr><td>eslint.log / format-check.log</td><td>Análisis estático y formato</td><td>Aprobados</td></tr>
-      </tbody></table>
-      <p class="link">Ruta: docs/calidad/evidencias/run-40974928285/quality-reports/</p>
-      <div class="note">Para una captura de evidencia: abre el run de PR enlazado en la diapositiva anterior y muestra el resumen del job en verde; para los reportes, abre la ruta anterior en el explorador del repositorio.</div>
-      <div class="num">08 / 10</div>
-    </section>
-    <section class="slide">
-      <div class="kicker">Revisión de código y deuda técnica</div><h2>Los controles automáticos están listos; falta el visto bueno independiente</h2>
-      <div class="grid2"><div><h3>Automatización</h3><ul><li>Build, pruebas, cobertura, TypeScript, ESLint y formato aprobados.</li><li>La plantilla de PR solicita revisor independiente y resultado.</li></ul></div><div><h3>Seguimiento</h3><ul><li>Hallazgos, prioridad y acciones documentados en la revisión técnica.</li><li>El PR #1 sigue sin aprobación independiente registrada.</li><li>GitHub restringe la protección de ramas para este repo privado con el plan actual.</li></ul></div></div>
-      <div class="note">La revisión propia documentada no sustituye una aprobación independiente. No se cambia la visibilidad del repositorio para sortear la restricción del plan.</div>
-      <div class="num">09 / 10</div>
-    </section>
-    <section class="slide end">
-      <div class="kicker">Cierre</div><h2>Resultados y siguientes pasos</h2>
-      <ul><li>La suite pasó 33/33 pruebas y el quality gate superó sus umbrales.</li><li>Se archivaron métricas de cobertura y logs de análisis estático de GitHub Actions.</li><li>El plan SQA, matriz de pruebas, línea base y deuda técnica están documentados en el repositorio.</li><li>Quedan fuera del pipeline: aprobación de un revisor independiente, regla de protección de rama y grabación del video narrado.</li></ul>
-      <div class="rule"></div><p>Referencias: <a href="https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40975163149">run de PR</a> · <a href="https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/1">PR #1</a> · docs/SQA-Plan.md · docs/Matriz-Pruebas.md · docs/calidad/REVISION_Y_DEUDA_TECNICA.md</p>
-      <div class="num">10 / 10</div>
-    </section>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>Pipeline CI/CD con aseguramiento de calidad integrado</title>
+  <style>
+    :root { --ink:#17212b; --muted:#52616f; --blue:#176b87; --teal:#2a9d8f; --pale:#e8f2f4; --line:#cbd7dc; --white:#fff; --gold:#d89b25; }
+    * { box-sizing:border-box; } body { margin:0; background:#dce4e8; color:var(--ink); font:20px/1.42 Aptos,"Segoe UI",sans-serif; }
+    .slide { width:1280px; height:720px; margin:24px auto; padding:58px 76px 54px; position:relative; background:white; overflow:hidden; page-break-after:always; }
+    .slide:last-child { page-break-after:auto; } h1,h2,h3,p { margin-top:0; } h1 { font-size:52px; line-height:1.08; margin-bottom:24px; max-width:980px; }
+    h2 { font-size:39px; line-height:1.1; margin-bottom:26px; color:var(--blue); } h3 { font-size:23px; margin-bottom:9px; }
+    p,li { color:var(--muted); } .kicker { color:var(--teal); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:15px; margin-bottom:22px; }
+    .subtitle { font-size:27px; color:var(--muted); max-width:780px; } .meta { position:absolute; bottom:57px; left:76px; color:var(--muted); font-size:17px; }
+    .num { position:absolute; bottom:56px; right:76px; color:var(--muted); font-size:15px; } .rule { height:5px; background:var(--teal); margin:28px 0 34px; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:38px; } .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    ul { padding-left:25px; margin:0; } li { margin:0 0 14px; } .flow { display:flex; align-items:center; gap:12px; margin:50px 0 35px; }
+    .step { background:var(--pale); border-bottom:4px solid var(--teal); color:var(--blue); font-weight:700; padding:23px 18px; text-align:center; flex:1; }
+    .arrow { color:var(--teal); font-size:28px; } table { border-collapse:collapse; width:100%; font-size:18px; } th { background:var(--blue); color:white; text-align:left; }
+    th,td { padding:12px 15px; border-bottom:1px solid var(--line); } td { color:var(--muted); } .stat { border-top:4px solid var(--teal); padding:16px 12px 8px 0; }
+    .stat strong { display:block; color:var(--blue); font-size:42px; line-height:1.1; } .stat span { color:var(--muted); font-size:17px; }
+    .note { border-left:5px solid var(--gold); padding:12px 18px; margin-top:22px; color:var(--muted); background:#fffaf0; font-size:17px; }
+    .end { background:var(--ink); color:white; } .end h2,.end h3 { color:white; } .end p,.end li { color:#d2dde2; }
+    a { color:inherit; }
+    @media print { @page { size:13.333in 7.5in; margin:0; } body { background:white; } .slide { margin:0; width:13.333in; height:7.5in; } }
+  </style>
+</head>
+<body>
+  <section class="slide">
+    <div class="kicker">Aseguramiento de la calidad del software</div><h1>Pipeline CI/CD con aseguramiento de calidad integrado</h1><div class="rule"></div>
+    <p class="subtitle">Aplicación de soporte técnico · controles automatizados para cada cambio</p>
+    <div class="meta">Acsa Jael Reyes Gómez · Curso SQA · 30 de octubre de 2026</div><div class="num">01 / 10</div>
+  </section>
+  <section class="slide">
+    <div class="kicker">Objetivo y alcance</div><h2>Calidad incorporada al flujo de cambios</h2><div class="grid2">
+      <div><h3>Objetivo</h3><p>Verificar compilación, pruebas, cobertura, formato y análisis antes de integrar cambios.</p></div>
+      <div><h3>Alcance implementado</h3><ul><li>GitHub Actions en push y pull request.</li><li>Pruebas unitarias, integración controlada, regresión y E2E.</li><li>Umbrales de cobertura y análisis SonarCloud.</li><li>Reportes y logs archivados como artefactos.</li></ul></div>
+    </div><div class="note">Se reutilizó una aplicación existente; no se creó desde cero ni se cambió su arquitectura funcional.</div><div class="num">02 / 10</div>
+  </section>
+  <section class="slide">
+    <div class="kicker">Sistema y herramientas</div><h2>Aplicación de escritorio Electron</h2><div class="grid2">
+      <div><ul><li>Renderer para la interfaz y Preload como puente.</li><li>Main/IPC procesa la lógica y conecta con SQLite.</li><li>Persistencia local mediante node:sqlite.</li><li>Interfaz JavaScript/CSS y código principal TypeScript.</li></ul></div>
+      <div class="grid3"><div class="stat"><strong>Node</strong><span>pruebas y cobertura</span></div><div class="stat"><strong>TS</strong><span>verificación estricta</span></div><div class="stat"><strong>CI</strong><span>GitHub Actions</span></div></div>
+    </div><div class="note">ESLint, Prettier, c8, SonarCloud, Electron y SQLite forman parte de los controles actuales.</div><div class="num">03 / 10</div>
+  </section>
+  <section class="slide">
+    <div class="kicker">Arquitectura del pipeline</div><h2>Las verificaciones bloquean cambios incompletos</h2>
+    <div class="flow"><div class="step">push<br>o PR</div><div class="arrow">›</div><div class="step">CONSTRUIR</div><div class="arrow">›</div><div class="step">PROBAR<br>incluye E2E</div><div class="arrow">›</div><div class="step">ANALIZAR</div><div class="arrow">›</div><div class="step">REPORTAR</div></div>
+    <div class="grid2"><p>Node.js 22 y <code>npm ci</code> garantizan instalaciones reproducibles en Windows.</p><p>La cobertura requiere 75% de líneas, 60% de ramas y 55% de funciones.</p></div><div class="num">04 / 10</div>
+  </section>
+  <section class="slide">
+    <div class="kicker">Línea base</div><h2>El registro inicial fue incompleto</h2><div class="grid3">
+      <div class="stat"><strong>25</strong><span>casos registrados inicialmente</span></div><div class="stat"><strong>No medido</strong><span>cobertura inicial</span></div><div class="stat"><strong>No conservado</strong><span>resultado aprobado/fallido inicial</span></div>
+    </div><div class="rule"></div><p>No se inventaron métricas iniciales. La documentación separa el registro histórico del resultado actual para no atribuir mejoras no comprobadas.</p><div class="num">05 / 10</div>
+  </section>
+  <section class="slide">
+    <div class="kicker">Métricas finales</div><h2>La revisión actual supera todos los umbrales</h2><table>
+      <tr><th>Métrica</th><th>Resultado</th><th>Umbral</th><th>Estado</th></tr>
+      <tr><td>Pruebas</td><td>33 aprobadas, 0 fallidas</td><td>100% aprobadas</td><td>OK</td></tr>
+      <tr><td>Líneas de cobertura</td><td>96.16%</td><td>75%</td><td>OK</td></tr>
+      <tr><td>Ramas de cobertura</td><td>81.55%</td><td>60%</td><td>OK</td></tr>
+      <tr><td>Funciones cubiertas</td><td>92.31%</td><td>55%</td><td>OK</td></tr>
+    </table><div class="note">SonarCloud reportó Quality Gate OK desde su integración con GitHub Actions.</div><div class="num">06 / 10</div>
+  </section>
+  <section class="slide">
+    <div class="kicker">Pruebas automatizadas</div><h2>Unidad, integración, regresión y E2E</h2><div class="grid2">
+      <div><h3>Pruebas</h3><ul><li>Casos unitarios con node:test.</li><li>Integración controlada del adaptador SQLite.</li><li>Regresión con datos y reglas aisladas.</li><li>E2E de Electron con SQLite temporal.</li></ul></div>
+      <div><h3>Resultado E2E</h3><ul><li>Electron inicia correctamente.</li><li>Completa autenticación.</li><li>Navega a Tickets.</li><li>Crea un ticket persistido en datos temporales.</li></ul></div>
+    </div><div class="num">07 / 10</div>
+  </section>
+  <section class="slide">
+    <div class="kicker">Evidencia remota</div><h2>GitHub Actions y protección de main</h2><div class="grid2">
+      <div><h3>GitHub Actions</h3><p>El run final de <code>main</code> aprobado fue 41095687713. Incluyó compilación, pruebas, E2E, cobertura, TypeScript, ESLint, Prettier y SonarCloud.</p></div>
+      <div><h3>Protección de rama</h3><ul><li>Pull request obligatorio.</li><li>Revisión independiente.</li><li>Conversaciones resueltas.</li><li>Check obligatorio aprobado.</li></ul></div>
+    </div><div class="num">08 / 10</div>
+  </section>
+  <section class="slide">
+    <div class="kicker">Calidad y resultados</div><h2>Mejora comprobable y límites claros</h2><ul>
+      <li>Workflow activo para push y pull request.</li><li>33 pruebas automatizadas y cobertura por encima de los umbrales.</li><li>SonarCloud conectado y Quality Gate OK.</li><li>Línea base incompleta conservada sin inventar comparaciones.</li><li>Docker, despliegue cloud y notificaciones quedan fuera como opcionales.</li>
+    </ul><div class="note">Las capturas de este proyecto deben tomarse desde GitHub Actions y SonarCloud antes de la exposición.</div><div class="num">09 / 10</div>
+  </section>
+  <section class="slide end">
+    <div class="kicker">Cierre</div><h2>Conclusiones</h2><ul><li>Automatizar controles reduce riesgos antes de integrar cambios.</li><li>Las métricas deben conservarse con su contexto histórico.</li><li>SonarCloud complementa, pero no sustituye, las pruebas ni la revisión.</li><li>El video de 4–5 minutos será el último entregable pendiente.</li></ul>
+    <p style="margin-top:42px">Repositorio público: <strong>Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad</strong></p><div class="num">10 / 10</div>
+  </section>
+</body>
 </html>
