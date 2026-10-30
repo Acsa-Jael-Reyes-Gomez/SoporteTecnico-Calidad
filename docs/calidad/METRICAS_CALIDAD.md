@@ -32,8 +32,8 @@ El propietario confirmó el run remoto **40599606066**, workflow Quality Gate, e
 ## Interpretación y límites
 
 - El aumento de 25 a 28 casos procede del registro histórico frente al conteo actual. No se atribuye una mejora de cobertura porque la cobertura inicial no se midió.
-- Las pruebas cubren principalmente servicios cargados desde `dist`, dobles de consulta y regresiones estáticas. No representan cobertura completa de Electron.
-- Las pruebas SQLite son en memoria y revisan la semilla; no hay prueba E2E de Electron, métricas SonarCloud ni protección de rama verificada.
+- Las pruebas cubren principalmente servicios cargados desde `dist`, dobles de consulta, regresiones estáticas y SQLite aislado.
+- Existe una prueba E2E de Electron que valida inicio, login, navegación y creación de un ticket. SonarCloud está conectado y la rama `main` cuenta con protección.
 - Los umbrales se fijaron por debajo del resultado observado para detectar caídas futuras sin hacer que un cambio pequeño falle de forma arbitraria.
 
 Consulte `docs/Linea-Base-Calidad.md` para la comparación y `docs/Matriz-Pruebas.md` para los casos.
@@ -44,4 +44,4 @@ Despues de compilar con `npm test`, la suite registro 33 de 33 casos aprobados. 
 
 ## Diferencia entre evidencia histórica y actual
 
-El artefacto histórico `40599606066` confirma 28/28 pruebas antes de SQLite. La medición actual 33/33 y 96,16% / 81,55% / 92,31% también fue verificada por GitHub Actions en los runs 40974922468 (`push`) y 40974928285 (`pull_request`). El artefacto del PR está en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
+El artefacto histórico `40599606066` confirma 28/28 pruebas antes de SQLite. La medición actual corresponde a 33/33 pruebas y 96,16% / 81,55% / 92,31% de cobertura. SonarCloud registró un Quality Gate `OK`.

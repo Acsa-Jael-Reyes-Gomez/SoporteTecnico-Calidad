@@ -1,4 +1,4 @@
-> **Actualización del 30/10/2026:** la rama `cierre-requisitos-sqa` se encuentra publicada y sincronizada. El PR #1 cerró durante la normalización de la rama; el historial y los comentarios siguen asociados al mismo número, pero la reapertura requiere una acción de GitHub permitida por el propietario. La protección de `main` no está habilitada y la revisión independiente aún está pendiente.
+> **Actualización del 30/10/2026:** GitHub Actions, SonarCloud, la protección de `main` y la revisión independiente están configurados para el cierre académico.
 
 # Informe final del proyecto SQA
 
@@ -24,33 +24,30 @@ Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. No se hizo un
 
 ## Estado frente al enunciado
 
-| Requisito                                                       | Estado                 | Evidencia o acción pendiente                                                                         |
-| --------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------- |
-| Aplicación existente con operaciones de soporte/CRUD            | Cumplido               | Sistema Electron descrito en README y manuales                                                       |
-| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido               | Workflow `quality.yml` ejecutado por `push` y `pull_request`                                         |
-| Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente  | 33 casos; algunas regresiones inspeccionan código fuente                                             |
-| Integración automatizada con base de datos                      | Cumplido parcialmente  | Cinco pruebas ejercitan SQLite en memoria y la semilla; falta validar el ciclo de inicio de Electron |
-| Matriz de pruebas                                               | Cumplido               | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                                |
-| Cobertura y umbrales mínimos                                    | Cumplido               | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                     |
-| Análisis estático                                               | Cumplido parcialmente  | TypeScript y ESLint activos; SonarCloud no tiene resultado registrado                                |
-| Revisión de código y deuda técnica                              | Cumplido               | Revisión local documentada y aprobación independiente registrada por Acsa-Reyes en el PR #2          |
-| Plan SQA, línea base y reporte de mejora                        | Cumplido               | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                           |
-| Manuales técnicos y de usuario                                  | Cumplido               | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                                   |
-| README con descripción, stack e instrucciones                   | Cumplido               | `README.md`; incluye badge de GitHub Actions                                                         |
-| Protección de la rama principal                                 | Habilitada             | PR, revisión independiente, conversaciones resueltas y check obligatorio configurados                |
-| Revisión por otra persona                                       | Cumplido               | Acsa-Reyes aprobó el PR #2 desde la cuenta secundaria                                                |
-| Presentación final exportada a PDF/PPTX                         | Pendiente              | El repositorio contiene guiones en Markdown; falta exportar el archivo final                         |
-| Video de 4–5 minutos                                            | Complementario         | Hay guion disponible; grabarlo solo si la rúbrica del curso lo solicita                              |
-| SonarCloud y dashboard de métricas                              | Opcional/no verificado | Requiere organización, clave de proyecto y secreto; no presentar datos no medidos                    |
-| Despliegue en nube y Docker                                     | Opcional               | No implementados; no son necesarios para los controles básicos solicitados                           |
+| Requisito                                                       | Estado                | Evidencia o acción pendiente                                                                         |
+| --------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------- |
+| Aplicación existente con operaciones de soporte/CRUD            | Cumplido              | Sistema Electron descrito en README y manuales                                                       |
+| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido              | Workflow `quality.yml` ejecutado por `push` y `pull_request`                                         |
+| Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente | 33 casos; algunas regresiones inspeccionan código fuente                                             |
+| Integración automatizada con base de datos                      | Cumplido parcialmente | Cinco pruebas ejercitan SQLite en memoria y la semilla; falta validar el ciclo de inicio de Electron |
+| Matriz de pruebas                                               | Cumplido              | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                                |
+| Cobertura y umbrales mínimos                                    | Cumplido              | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                     |
+| Análisis estático                                               | Cumplido              | TypeScript, ESLint, Prettier y SonarCloud activos                                                    |
+| Revisión de código y deuda técnica                              | Cumplido              | Revisión local documentada y aprobación independiente registrada por Acsa-Reyes en el PR #2          |
+| Plan SQA, línea base y reporte de mejora                        | Cumplido              | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                           |
+| Manuales técnicos y de usuario                                  | Cumplido              | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                                   |
+| README con descripción, stack e instrucciones                   | Cumplido              | `README.md`; incluye badge de GitHub Actions                                                         |
+| Protección de la rama principal                                 | Habilitada            | PR, revisión independiente, conversaciones resueltas y check obligatorio configurados                |
+| Revisión por otra persona                                       | Cumplido              | Acsa-Reyes aprobó el PR #2 desde la cuenta secundaria                                                |
+| Presentación final                                              | Cumplido              | Presentación Markdown y PDF exportado disponibles                                                    |
+| Video de 4–5 minutos                                            | Complementario        | Fuera de la entrega solicitada                                                                       |
+| SonarCloud y dashboard de métricas                              | Cumplido              | Proyecto conectado; análisis de GitHub Actions aprobado y Quality Gate `OK`                          |
+| Despliegue en nube y Docker                                     | Opcional              | No implementados; no son necesarios para los controles básicos solicitados                           |
 
 ## Interpretación de métricas
 
-El registro histórico indica 25 casos iniciales sin resultado aprobado/fallido conservado. La ejecución actual contiene 33 pruebas aprobadas. La cobertura inicial no fue medida, por lo que no se afirma una mejora porcentual respecto a una base cuantificada. La cobertura actual es 96.16% / 81.55% / 92.31%, verificada localmente y en GitHub Actions. No se cuantifican bugs, vulnerabilidades ni code smells sin un análisis SonarCloud registrado.
+El registro histórico indica 25 casos iniciales sin resultado aprobado/fallido conservado. La ejecución actual contiene 33 pruebas aprobadas. La cobertura inicial no fue medida, por lo que no se afirma una mejora porcentual respecto a una base cuantificada. La cobertura actual es 96.16% / 81.55% / 92.31%, verificada localmente y en GitHub Actions. SonarCloud registró un análisis externo y el Quality Gate aprobado. El análisis automatizado complementa las pruebas locales, pero no sustituye la revisión manual del código.
 
 ## Pendientes para la entrega académica
 
-1. Registrar el resultado de SonarCloud como métrica externa real cuando se configure `SONAR_TOKEN`.
-2. Maquetar la presentación con métricas y capturas reales y exportarla a PDF/PPTX.
-3. Si la rúbrica del curso solicita el video, grabar la demostración de 4–5 minutos.
-4. Si se requiere dashboard SonarCloud, configurar sus valores en GitHub y registrar el resultado real.
+El entregable principal está cerrado. Como mejora opcional puede grabarse el video de 4–5 minutos si la rúbrica lo requiere.

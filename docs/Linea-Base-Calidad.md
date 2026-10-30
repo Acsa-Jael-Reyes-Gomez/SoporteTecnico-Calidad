@@ -19,13 +19,13 @@ La línea base representa el estado inicial documentado antes de incorporar cont
 | Linter                         |                            No configurado |                              ESLint configurado; sin errores bloqueantes | `npm run lint` terminó correctamente; las advertencias se silencian con `--quiet`                                      |
 | Formato                        | Sin verificación automatizada documentada |                                                        Prettier aprobado | `npm run format:check` terminó correctamente                                                                           |
 | Pipeline CI                    |                                No existía | Configurado para push y pull_request; ejecución local y remota aprobadas | Workflow activo en la rama normalizada `cierre-requisitos-sqa`                                                         |
-| Análisis SonarCloud            |                                 No medido |                                 Condicional; no hay resultado registrado | Requiere las dos variables y el secreto indicados en README                                                            |
-| Protección de rama             |                             No verificada |                                               Reglas activadas en `main` | Se exigen PR, aprobación independiente, resolución de conversaciones y el check `Compilar, probar y verificar calidad` |
+| Análisis SonarCloud            |                                 No medido |                                             Conectado; Quality Gate `OK` | Organización, clave de proyecto y secreto configurados                                                                 |
+| Protección de rama             |               No configurada inicialmente |                                               Reglas activadas en `main` | Se exigen PR, aprobación independiente, resolución de conversaciones y el check `Compilar, probar y verificar calidad` |
 
 ## Alcance de las pruebas
 
-La suite contiene pruebas unitarias, integración controlada con dobles, pruebas del adaptador SQLite en memoria y regresiones de código fuente. No ejecuta Electron ni incluye pruebas E2E. La matriz de casos está en `docs/Matriz-Pruebas.md`.
+La suite contiene pruebas unitarias, integración controlada con dobles, pruebas del adaptador SQLite en memoria, regresiones de código fuente y una prueba E2E que inicia Electron con una base temporal. La matriz de casos está en `docs/Matriz-Pruebas.md`.
 
 ## Interpretación
 
-La mejora demostrable es automatizar 33 casos, compilar y revisar tipos, exigir umbrales de cobertura, ejecutar ESLint/Prettier y conservar reportes. Los runs 40974922468 y 40974928285 validan la revisión actual; el run remoto 40599606066 de 28 casos es histórico. No se atribuye una reducción de bugs o code smells porque SonarCloud no tiene una medición final registrada. La cobertura inicial no se midió; por ello no se calcula una diferencia de cobertura.
+La mejora demostrable es automatizar 33 casos, compilar y revisar tipos, exigir umbrales de cobertura, ejecutar ESLint/Prettier y conservar reportes. SonarCloud aporta análisis automático adicional y su última revisión aprobó el Quality Gate. La cobertura inicial no se midió; por ello no se calcula una diferencia de cobertura.
