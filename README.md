@@ -69,6 +69,6 @@ El estado detallado de cada requisito del enunciado, incluidos los pasos externo
 
 - La interfaz es Electron con JavaScript, no React; el backend no es Express.
 - La base SQLite es local a cada instalación; varias computadoras no comparten automáticamente sus cambios.
-- No hay pruebas end-to-end ni arranque automatizado de Electron. Cinco pruebas del adaptador SQLite y la semilla aprobaron localmente; falta una comprobación manual de arranque de Electron.
+- Hay una prueba end-to-end automatizada que inicia Electron con una base temporal aislada, valida Preload/IPC, login, navegación y la creación persistida de un ticket.
 - SonarCloud y las reglas de protección de GitHub requieren configuración adicional.
-- Las pruebas E2E y el arranque manual de Electron siguen pendientes; el PR #1 sí valida en Actions la revisión SQLite actual.
+- Las revisiones independientes y manuales requieren un aprobador externo; el pipeline automático ya valida en `push` y `pull_request`.

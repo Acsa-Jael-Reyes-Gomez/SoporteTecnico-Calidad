@@ -50,7 +50,7 @@ El artefacto `quality-reports` se descargó en `docs/calidad/evidencias/run-4059
 
 Se publicó la rama `cierre-requisitos-sqa` y se abrió el PR [#1](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/1), actualmente abierto y sin fusionar. Los runs [40969600668](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969600668) (`push`) y [40969607082](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40969607082) (`pull_request`) aprobaron el job `Compilar, probar y verificar calidad`. Ambos ejecutaron build, 33 pruebas, cobertura, TypeScript, ESLint, Prettier y reporte; SonarCloud fue omitido porque no está configurado.
 
-El artefacto `quality-reports` del run de PR se descargó en `docs/calidad/evidencias/run-40969607082/`. Confirma 33 aprobadas, 0 fallidas y 96,16% de líneas, 81,55% de ramas y 92,31% de funciones. El PR está abierto y sin fusionar.
+El artefacto histórico `quality-reports` del run de PR se conserva en `docs/calidad/evidencias/run-40969607082/`. Confirma 33 aprobadas, 0 fallidas y 96,16% de líneas, 81,55% de ramas y 92,31% de funciones. La normalización posterior dejó el PR #1 cerrado; esa evidencia histórica no representa el estado actual del PR.
 
 ## Verificación remota más reciente (29/10/2026)
 
