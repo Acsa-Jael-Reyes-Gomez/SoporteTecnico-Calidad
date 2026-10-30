@@ -24,25 +24,25 @@ Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. No se hizo un
 
 ## Estado frente al enunciado
 
-| Requisito                                                       | Estado                | Evidencia o acción pendiente                                                                         |
-| --------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------- |
-| Aplicación existente con operaciones de soporte/CRUD            | Cumplido              | Sistema Electron descrito en README y manuales                                                       |
-| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido              | Workflow `quality.yml` ejecutado por `push` y `pull_request`                                         |
-| Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente | 33 casos; algunas regresiones inspeccionan código fuente                                             |
-| Integración automatizada con base de datos                      | Cumplido parcialmente | Cinco pruebas ejercitan SQLite en memoria y la semilla; falta validar el ciclo de inicio de Electron |
-| Matriz de pruebas                                               | Cumplido              | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                                |
-| Cobertura y umbrales mínimos                                    | Cumplido              | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                     |
-| Análisis estático                                               | Cumplido              | TypeScript, ESLint, Prettier y SonarCloud activos                                                    |
-| Revisión de código y deuda técnica                              | Cumplido              | Revisión local documentada y aprobación independiente registrada por Acsa-Reyes en el PR #2          |
-| Plan SQA, línea base y reporte de mejora                        | Cumplido              | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                           |
-| Manuales técnicos y de usuario                                  | Cumplido              | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                                   |
-| README con descripción, stack e instrucciones                   | Cumplido              | `README.md`; incluye badge de GitHub Actions                                                         |
-| Protección de la rama principal                                 | Habilitada            | PR, revisión independiente, conversaciones resueltas y check obligatorio configurados                |
-| Revisión por otra persona                                       | Cumplido              | Acsa-Reyes aprobó el PR #2 desde la cuenta secundaria                                                |
-| Presentación final                                              | Cumplido              | Presentación Markdown y PDF exportado disponibles                                                    |
-| Video de 4–5 minutos                                            | Complementario        | Fuera de la entrega solicitada                                                                       |
-| SonarCloud y dashboard de métricas                              | Cumplido              | Proyecto conectado; análisis de GitHub Actions aprobado y Quality Gate `OK`                          |
-| Despliegue en nube y Docker                                     | Opcional              | No implementados; no son necesarios para los controles básicos solicitados                           |
+| Requisito                                                       | Estado                | Evidencia o acción pendiente                                                                     |
+| --------------------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------ |
+| Aplicación existente con operaciones de soporte/CRUD            | Cumplido              | Sistema Electron descrito en README y manuales                                                   |
+| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido              | Workflow `quality.yml` ejecutado por `push` y `pull_request`                                     |
+| Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente | 33 casos; algunas regresiones inspeccionan código fuente                                         |
+| Integración automatizada con base de datos                      | Cumplido              | Cinco pruebas ejercitan SQLite en memoria y una prueba E2E inicia Electron con una base temporal |
+| Matriz de pruebas                                               | Cumplido              | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                            |
+| Cobertura y umbrales mínimos                                    | Cumplido              | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                 |
+| Análisis estático                                               | Cumplido              | TypeScript, ESLint, Prettier y SonarCloud activos                                                |
+| Revisión de código y deuda técnica                              | Cumplido              | Revisión local documentada y aprobación independiente registrada por Acsa-Reyes en el PR #2      |
+| Plan SQA, línea base y reporte de mejora                        | Cumplido              | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                       |
+| Manuales técnicos y de usuario                                  | Cumplido              | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                               |
+| README con descripción, stack e instrucciones                   | Cumplido              | `README.md`; incluye badge de GitHub Actions                                                     |
+| Protección de la rama principal                                 | Habilitada            | PR, revisión independiente, conversaciones resueltas y check obligatorio configurados            |
+| Revisión por otra persona                                       | Cumplido              | Acsa-Reyes aprobó el PR #2 desde la cuenta secundaria                                            |
+| Presentación final                                              | Cumplido              | Presentación Markdown y PDF exportado disponibles                                                |
+| Video de 4–5 minutos                                            | Complementario        | Fuera de la entrega solicitada                                                                   |
+| SonarCloud y dashboard de métricas                              | Cumplido              | Proyecto conectado; análisis de GitHub Actions aprobado y Quality Gate `OK`                      |
+| Despliegue en nube y Docker                                     | Opcional              | No implementados; no son necesarios para los controles básicos solicitados                       |
 
 ## Interpretación de métricas
 
