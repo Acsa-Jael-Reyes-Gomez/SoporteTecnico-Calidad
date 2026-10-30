@@ -11,7 +11,7 @@
 
 ## Inspeccion manual local de la entrega CI/CD (29/10/2026)
 
-Se inspeccionaron los cambios de mayor riesgo de la rama `codex/cierre-requisitos-sqa`:
+Se inspeccionaron los cambios de mayor riesgo de la rama `cierre-requisitos-sqa`:
 
 | Area revisada                      | Comprobacion                                                                                                                              | Resultado                                                                                                                          |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |

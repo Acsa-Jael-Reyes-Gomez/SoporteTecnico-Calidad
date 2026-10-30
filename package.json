@@ -4,7 +4,7 @@
   "description": "Sistema interno de soporte técnico para tickets, rutas, equipos, proyectos y reportes.",
   "main": "dist/main/main.js",
   "type": "commonjs",
-  "author": "AL",
+  "author": "Acsa Reyes",
   "license": "ISC",
   "repository": {
     "type": "git",
