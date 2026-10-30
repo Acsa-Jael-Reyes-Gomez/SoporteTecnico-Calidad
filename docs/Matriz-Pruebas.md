@@ -2,7 +2,7 @@
 
 ## Alcance y ejecución
 
-La matriz debe mantenerse sincronizada con `tests/`. Las suites incluyen pruebas unitarias de servicios, integración con SQLite en memoria y verificación de integridad/fechas de la semilla, además de regresiones del Renderer y los handlers. Ningún caso inicia la interfaz Electron.
+La matriz se mantiene sincronizada con `tests/` y `scripts/test-electron-e2e.js`. Las suites incluyen pruebas unitarias de servicios, integración con SQLite en memoria, regresiones del Renderer/handlers y un flujo E2E que inicia Electron con una base aislada, autentica y crea un ticket.
 
 Ejecución local reproducida el 29 de octubre de 2026 con Node.js 22: **33 aprobadas, 0 fallidas**, incluidas las pruebas SQLite PR-29 a PR-33. Las 28 pruebas PR-01 a PR-28 también aparecen en el artefacto remoto del run 40599606066, que corresponde al commit publicado anterior a los cambios locales SQLite. La evidencia de ambas ejecuciones se registra por separado en `docs/calidad/EVIDENCIAS_EJECUCION.md`.
 
@@ -40,8 +40,7 @@ Ejecución local reproducida el 29 de octubre de 2026 con Node.js 22: **33 aprob
 ## Límites
 
 - Los casos clasificados como regresión estática inspeccionan patrones de código; no simulan una interacción real de la interfaz.
-- La integración del adaptador SQLite cubre una base en memoria y lectura de la semilla; falta iniciar Electron con una carpeta temporal para cubrir el ciclo de vida completo de la aplicación.
-- No hay pruebas automatizadas de extremo a extremo (E2E) con Electron.
+- La prueba E2E cubre el arranque, login, navegación y alta de ticket mediante la interfaz Electron. No cubre todos los módulos ni todos los flujos de negocio.
 - La cobertura reportada por Node incluye los módulos cargados durante la suite; no equivale a cobertura de toda la aplicación.
 
 ## Casos añadidos para SQLite (ejecución local aprobada)
@@ -55,3 +54,13 @@ Los siguientes casos están implementados en `tests/sqlite-connection.test.js`. 
 | PR-31 | Integración           | Commit y rollback                       | Confirma y revierte las transacciones respectivas           | Aprobada |
 | PR-32 | Integración           | Parámetro no compatible y error SQL     | Rechaza el objeto y propaga el error de consulta            | Aprobada |
 | PR-33 | Integración/regresión | Integridad de semilla y fechas          | quick_check correcto y fechas entre 25/09/2026 y 26/10/2026 | Aprobada |
+
+## Recorrido E2E de Electron
+
+La prueba `npm run test:e2e` inicia el ejecutable Electron real, crea un archivo SQLite temporal con datos sintéticos, verifica la pantalla inicial y el puente Preload/IPC, inicia sesión, abre el módulo Tickets, registra un ticket desde el formulario y comprueba su persistencia en SQLite. La base temporal se elimina al finalizar.
+
+Ejecución local aprobada el 29 de octubre de 2026. El mismo comando está integrado al workflow de GitHub Actions y su salida se adjunta como `coverage/e2e-electron.log`.
+
+| ID     | Tipo              | Flujo validado                                       | Resultado esperado                                                                    | Resultado obtenido |
+| ------ | ----------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------ |
+| E2E-01 | Extremo a extremo | Arranque Electron → login → Tickets → alta de ticket | La app carga el puente, autentica, muestra el módulo y persiste el registro de prueba | Aprobada           |

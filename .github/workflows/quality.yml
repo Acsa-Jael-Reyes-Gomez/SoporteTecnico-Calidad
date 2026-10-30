@@ -41,6 +41,13 @@ jobs:
           npm test 2>&1 | Tee-Object -FilePath coverage/test-results.log
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: PROBAR - recorrido E2E de Electron con SQLite aislado
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force coverage | Out-Null
+          npm run test:e2e 2>&1 | Tee-Object -FilePath coverage/e2e-electron.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: PROBAR - medir cobertura y aplicar umbrales
         shell: pwsh
         run: |
@@ -87,6 +94,7 @@ jobs:
           path: |
             coverage/coverage.txt
             coverage/test-results.log
+            coverage/e2e-electron.log
             coverage/typecheck.log
             coverage/eslint.log
             coverage/format-check.log

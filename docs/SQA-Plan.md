@@ -42,8 +42,8 @@ Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Pret
 - **Unitarias:** validación, normalización de dominio, paginación, permisos y saneamiento de exportación.
 - **Integración controlada:** servicios y consultas con dobles `DbConnection`; no usar DSN real.
 - **Regresión:** reglas de Renderer/SQL verificadas por los casos existentes.
-- **Interfaz/aceptación:** revisión manual en Windows/Electron y entorno de pruebas separado. No hay E2E automatizado.
-- **Base de datos:** los casos nuevos ejercitan el adaptador en SQLite en memoria y revisan la semilla incluida. Falta comprobar el arranque completo de Electron con una carpeta de datos temporal.
+- **Extremo a extremo:** `npm run test:e2e` lanza Electron con una base SQLite temporal sintética y valida inicio, Preload/IPC, login, navegación a Tickets y alta persistida.
+- **Base de datos:** pruebas del adaptador SQLite en memoria, integridad de semilla y persistencia del ticket E2E en una base temporal aislada.
 
 Framework adaptado al sistema: `node:test` evita introducir Jest/React Testing Library propios de otro stack.
 
@@ -70,11 +70,11 @@ Casos aprobados/fallidos, cobertura de líneas/ramas/funciones, errores de compi
 
 ## 12. Puertas de calidad
 
-El workflow falla si `npm run build`, `npm test`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. Las advertencias conocidas de ESLint no bloquean. SonarCloud solo se ejecuta si están definidas la organización, la clave y el token; mientras falte alguno de estos valores, el análisis remoto no es una puerta activa.
+El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. Las advertencias conocidas de ESLint no bloquean. SonarCloud solo se ejecuta si están definidas la organización, la clave y el token; mientras falte alguno de estos valores, el análisis remoto no es una puerta activa.
 
 ## 13. Revisiones automáticas
 
-GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. La revisión SQLite pasó en el PR #1: runs 40974922468 (`push`) y 40974928285 (`pull_request`), con artefacto guardado en `docs/calidad/evidencias/run-40974928285/quality-reports/`. SonarCloud se omitió por falta de configuración externa. El PR no tiene aprobación independiente registrada.
+GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. La ejecución actual también incluye el recorrido E2E de Electron y adjunta `e2e-electron.log` al artefacto `quality-reports`. Los runs 40975157636 (`push`) y 40975163149 (`pull_request`) pasaron antes de incorporar este nuevo paso; el run que lo incluya se verificará al publicar el cambio. El PR no tiene aprobación independiente registrada.
 
 ## 14. Revisiones manuales
 
@@ -86,11 +86,11 @@ Registrar identificador, evidencia, severidad, pasos para reproducir, componente
 
 ## 16. Deuda técnica
 
-Mantener el registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. Priorizar riesgos de inicialización de esquema, pruebas de integración de base de datos, pruebas de UI y lint.
+Mantener el registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. Priorizar riesgos de inicialización de esquema, ampliar los recorridos UI automatizados y mantener lint.
 
 ## 17. Riesgos
 
-Dependencia de Electron/Windows; pruebas de consulta con dobles y sin validación de SQLite en runtime Electron; ausencia de cobertura E2E; SonarCloud sin resultado remoto registrado; y protección de la rama principal no confirmada.
+Dependencia de Electron/Windows; la cobertura E2E se limita al inicio de sesión y alta de ticket; SonarCloud no tiene resultado remoto registrado; y la protección de la rama principal no está activa.
 
 ## 18. Control de versiones
 

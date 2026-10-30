@@ -535,14 +535,7 @@ mainWindow = new BrowserWindow({
     mainWindow?.show();
   };
 
-  mainWindow.webContents.once("dom-ready", () => {
-    showWindow();
-    setTimeout(() => {
-      void registerDeferredIpcHandlers().catch((error) => {
-        devError("Error cargando handlers diferidos:", error);
-      });
-    }, 800);
-  });
+  mainWindow.webContents.once("dom-ready", showWindow);
   mainWindow.once("ready-to-show", showWindow);
 
   mainWindow.loadFile(indexPath).catch((err) => {
@@ -645,7 +638,7 @@ function registerProcessGuards() {
 /* ======================================================
    APP READY
 ====================================================== */
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   if (isSecondaryInstance) {
     app.exit(0);
     return;
@@ -658,6 +651,7 @@ app.whenReady().then(() => {
   } catch {}
 
   registerIpcHandlers();
+  await registerDeferredIpcHandlers();
   createWindow();
 
   app.on("activate", () => {
