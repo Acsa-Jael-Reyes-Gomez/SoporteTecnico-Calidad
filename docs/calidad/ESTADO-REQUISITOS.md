@@ -31,7 +31,7 @@ Actualizado: 29 de octubre de 2026. Este registro distingue lo que existe en el 
 ## Alcance opcional
 
 - Docker, despliegue cloud y notificaciones no son obligatorios en el enunciado. La prueba E2E implementada cubre el flujo descrito en la matriz, no todos los módulos.
-- El dashboard SonarCloud es opcional; no hay metricas de bugs, vulnerabilidades ni code smells verificadas.
+- El dashboard SonarCloud muestra el Quality Gate `OK`; su análisis complementa GitHub Actions.
 
 ## Verificaciones locales del 29 de octubre de 2026
 
@@ -49,4 +49,4 @@ Actualizado: 29 de octubre de 2026. Este registro distingue lo que existe en el 
 - Revisión independiente: cumplida en el PR #2, aprobado por `Acsa-Reyes`.
 - Protección de `main`: habilitada mediante reglas de protección.
 - Video narrado: no está en el enunciado compartido. Si se solicita aparte, la grabación debe realizarla el estudiante.
-- SonarCloud: no configurado, por lo que no se afirma que haya análisis ni métricas de esa plataforma.
+- SonarCloud: configurado y conectado al workflow; el Quality Gate aprobado se muestra en el proyecto.
