@@ -18,31 +18,33 @@ Se reutilizó la aplicación Electron existente y se añadieron controles de cal
 - TypeScript: 0 errores.
 - ESLint: sin errores bloqueantes.
 - Prettier: todos los archivos seleccionados aprobados.
-- GitHub Actions: la rama normalizada ejecutó la puerta de calidad correctamente; el run más reciente quedó asociado a `cierre-requisitos-sqa`.
+- GitHub Actions: la rama normalizada ejecutó la puerta de calidad correctamente; el último run de `main` fue aprobado.
+- Recorrido E2E: Electron inicia, inicia sesión, navega y crea un ticket con una base SQLite temporal.
+- SonarCloud: análisis conectado desde GitHub Actions y Quality Gate `OK`.
 
-Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. No se hizo una prueba manual de arranque de Electron ni hay pruebas E2E.
+Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. El recorrido automatizado E2E completa el inicio de Electron con datos aislados.
 
 ## Estado frente al enunciado
 
-| Requisito                                                       | Estado                | Evidencia o acción pendiente                                                                     |
-| --------------------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------ |
-| Aplicación existente con operaciones de soporte/CRUD            | Cumplido              | Sistema Electron descrito en README y manuales                                                   |
-| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido              | Workflow `quality.yml` ejecutado por `push` y `pull_request`                                     |
-| Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente | 33 casos; algunas regresiones inspeccionan código fuente                                         |
-| Integración automatizada con base de datos                      | Cumplido              | Cinco pruebas ejercitan SQLite en memoria y una prueba E2E inicia Electron con una base temporal |
-| Matriz de pruebas                                               | Cumplido              | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                            |
-| Cobertura y umbrales mínimos                                    | Cumplido              | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                 |
-| Análisis estático                                               | Cumplido              | TypeScript, ESLint, Prettier y SonarCloud activos                                                |
-| Revisión de código y deuda técnica                              | Cumplido              | Revisión local documentada y aprobación independiente registrada por Acsa-Reyes en el PR #2      |
-| Plan SQA, línea base y reporte de mejora                        | Cumplido              | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                       |
-| Manuales técnicos y de usuario                                  | Cumplido              | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                               |
-| README con descripción, stack e instrucciones                   | Cumplido              | `README.md`; incluye badge de GitHub Actions                                                     |
-| Protección de la rama principal                                 | Habilitada            | PR, revisión independiente, conversaciones resueltas y check obligatorio configurados            |
-| Revisión por otra persona                                       | Cumplido              | Acsa-Reyes aprobó el PR #2 desde la cuenta secundaria                                            |
-| Presentación final                                              | Cumplido              | Presentación Markdown y PDF exportado disponibles                                                |
-| Video de 4–5 minutos                                            | Complementario        | Fuera de la entrega solicitada                                                                   |
-| SonarCloud y dashboard de métricas                              | Cumplido              | Proyecto conectado; análisis de GitHub Actions aprobado y Quality Gate `OK`                      |
-| Despliegue en nube y Docker                                     | Opcional              | No implementados; no son necesarios para los controles básicos solicitados                       |
+| Requisito                                                       | Estado     | Evidencia o acción pendiente                                                                     |
+| --------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------ |
+| Aplicación existente con operaciones de soporte/CRUD            | Cumplido   | Sistema Electron descrito en README y manuales                                                   |
+| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido   | Workflow `quality.yml` ejecutado por `push` y `pull_request`                                     |
+| Pruebas unitarias, integración y regresión automatizadas        | Cumplido   | 33 casos locales, incluidos 5 casos de SQLite                                                    |
+| Integración automatizada con base de datos                      | Cumplido   | Cinco pruebas ejercitan SQLite en memoria y una prueba E2E inicia Electron con una base temporal |
+| Matriz de pruebas                                               | Cumplido   | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                            |
+| Cobertura y umbrales mínimos                                    | Cumplido   | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                 |
+| Análisis estático                                               | Cumplido   | TypeScript, ESLint, Prettier y SonarCloud activos                                                |
+| Revisión de código y deuda técnica                              | Cumplido   | Revisión local documentada y aprobación independiente registrada por Acsa-Reyes en el PR #2      |
+| Plan SQA, línea base y reporte de mejora                        | Cumplido   | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                       |
+| Manuales técnicos y de usuario                                  | Cumplido   | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                               |
+| README con descripción, stack e instrucciones                   | Cumplido   | `README.md`; incluye badge de GitHub Actions                                                     |
+| Protección de la rama principal                                 | Habilitada | PR, revisión independiente, conversaciones resueltas y check obligatorio configurados            |
+| Revisión por otra persona                                       | Cumplido   | Acsa-Reyes aprobó el PR #2 desde la cuenta secundaria                                            |
+| Presentación final                                              | Cumplido   | Presentación Markdown y PDF exportado disponibles                                                |
+| Video de 4–5 minutos                                            | Pendiente  | El guion está preparado; falta grabar el archivo MP4                                             |
+| SonarCloud y dashboard de métricas                              | Cumplido   | Proyecto conectado; análisis de GitHub Actions aprobado y Quality Gate `OK`                      |
+| Despliegue en nube y Docker                                     | Opcional   | No implementados; no son necesarios para los controles básicos solicitados                       |
 
 ## Interpretación de métricas
 
@@ -50,4 +52,4 @@ El registro histórico indica 25 casos iniciales sin resultado aprobado/fallido 
 
 ## Pendientes para la entrega académica
 
-El entregable principal está cerrado. Como mejora opcional puede grabarse el video de 4–5 minutos si la rúbrica lo requiere.
+El entregable principal de código, documentación, presentación y automatización está cerrado. El único entregable obligatorio que falta de acuerdo con el enunciado es el video explicativo real de 4–5 minutos; Docker, despliegue y notificaciones son opcionales.
