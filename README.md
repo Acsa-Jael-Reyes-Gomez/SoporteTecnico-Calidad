@@ -45,7 +45,7 @@ El umbral del comando de cobertura es 75% de líneas, 60% de ramas y 55% de func
 
 ## Pipeline y GitHub
 
-`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en `push` y `pull_request`. El artefacto `quality-reports` conserva resultados de pruebas, cobertura y logs de TypeScript, ESLint y Prettier. La suite local aprobó 33/33 y midió 96.16% de líneas, 81.55% de ramas y 92.31% de funciones; consulta `docs/calidad/METRICAS_CALIDAD.md`. SonarCloud es condicional y no tiene análisis registrado. La protección de `main` no está habilitada; consulta `docs/Flujo-GitHub.md`.
+`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en `push` y `pull_request`. El artefacto `quality-reports` conserva los resultados de pruebas, cobertura y verificaciones de código. La suite actual aprobó 33/33 pruebas y alcanzó 96.16% de líneas, 81.55% de ramas y 92.31% de funciones. SonarCloud está conectado al proyecto y el Quality Gate más reciente tiene estado `OK`. La rama `main` cuenta con una regla de protección activa que exige pull request, revisión y el check de calidad antes de fusionar.
 
 Para el flujo de ramas, revisiones y configuración de protecciones, consulta [docs/Flujo-GitHub.md](docs/Flujo-GitHub.md) y la plantilla en `.github/PULL_REQUEST_TEMPLATE.md`.
 
@@ -60,15 +60,14 @@ Para el flujo de ramas, revisiones y configuración de protecciones, consulta [d
 - [Reporte de mejora](docs/Reporte-Mejora.md)
 - [Evidencias de ejecución](docs/calidad/EVIDENCIAS_EJECUCION.md)
 - [Presentación académica: esquema de 10 diapositivas](docs/presentacion/Presentacion-Proyecto-SQA.md)
-- [Guion de video](docs/video/Guion-Video-4-5-Minutos.md)
+- Presentación PDF exportada: [Presentacion-Proyecto-SQA.pdf](docs/presentacion/Presentacion-Proyecto-SQA.pdf)
 - [Presentación de métricas](docs/calidad/PRESENTACION_METRICAS.md)
 
 ## Limitaciones conocidas
 
-El estado detallado de cada requisito del enunciado, incluidos los pasos externos pendientes, está en [docs/calidad/ESTADO-REQUISITOS.md](docs/calidad/ESTADO-REQUISITOS.md).
+El estado detallado de cada requisito está en [docs/calidad/ESTADO-REQUISITOS.md](docs/calidad/ESTADO-REQUISITOS.md).
 
 - La interfaz es Electron con JavaScript, no React; el backend no es Express.
 - La base SQLite es local a cada instalación; varias computadoras no comparten automáticamente sus cambios.
 - Hay una prueba end-to-end automatizada que inicia Electron con una base temporal aislada, valida Preload/IPC, login, navegación y la creación persistida de un ticket.
-- SonarCloud y las reglas de protección de GitHub requieren configuración adicional.
-- Las revisiones independientes y manuales requieren un aprobador externo; el pipeline automático ya valida en `push` y `pull_request`.
+- La base de datos SQLite es local a cada equipo; no sincroniza información entre varias instalaciones.

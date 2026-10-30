@@ -10,15 +10,11 @@
 
 ## Etapas de Puerta de calidad
 
-En **Actions**, abre la ejecución asociada al pull request o al commit. El workflow presenta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR**. El artefacto `quality-reports` conserva la salida de pruebas y cobertura. El análisis estático usa TypeScript estricto, ESLint y Prettier; SonarCloud no está integrado.
+En **Actions**, abre la ejecución asociada al pull request o al commit. El workflow presenta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR**. Los informes conservan pruebas, cobertura y verificaciones de código. SonarCloud realiza un análisis adicional y GitHub registra el estado del Quality Gate.
 
 ## Protección de `main`
 
-El administrador del repositorio debe abrir **Settings → Rules → Rulesets** o **Settings → Branches** y configurar una regla para `main`. Exige pull request y el check del job `Compilar, probar y verificar calidad` (nombre definido en `.github/workflows/quality.yml`); activa aprobación y resolución de conversaciones cuando exista otra persona revisora. Una persona no puede aprobar su propio pull request.
-
-**Bloqueo comprobado el 29/10/2026:** GitHub API respondió `403 Upgrade to GitHub Pro or make this repository public to enable this feature` al leer la protección de `main`. El repositorio es privado y no se cambió su visibilidad. Hace falta habilitar GitHub Pro para conservarlo privado con protección, o revisar y quitar datos sensibles antes de decidir hacerlo público.
-
-La ejecución verde del workflow no prueba que esta regla ya exista. Confirma el ruleset en GitHub y guarda una captura de su configuración para la entrega.
+La rama `main` está protegida con una regla que exige pull request, revisión aprobada, resolución de conversaciones y éxito del check `Compilar, probar y verificar calidad`. El workflow verde por sí solo no sustituye esta protección: debe comprobarse el ruleset desde GitHub.
 
 ## Acceso del docente
 
