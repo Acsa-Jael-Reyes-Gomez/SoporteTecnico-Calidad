@@ -92,4 +92,6 @@ Los logs son salidas textuales reproducibles, no capturas de pantalla ni evidenc
 
 `npm run test:e2e` inició la aplicación Electron real con una base SQLite temporal y datos sintéticos. La prueba verificó la pantalla de inicio y el puente Preload, completó la autenticación, abrió el módulo Tickets, creó un ticket desde el formulario y confirmó que el registro persistió en SQLite con fecha 26/10/2026. La carpeta temporal se eliminó al terminar.
 
-La salida local está en `evidencias/e2e-local-20261029/e2e-electron.log`. El caso E2E-01 está descrito en `docs/Matriz-Pruebas.md`. El workflow adjunta la salida como `coverage/e2e-electron.log`; se debe revisar el run de Actions generado al publicar el cambio para conservar también evidencia remota de esta nueva etapa.
+La salida local está en `evidencias/e2e-local-20261029/e2e-electron.log`. El caso E2E-01 está descrito en `docs/Matriz-Pruebas.md`. El workflow adjunta la salida como `coverage/e2e-electron.log` dentro del artefacto `quality-reports`.
+
+Los runs [40977210991 (push)](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40977210991) y [40977218068 (pull request)](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40977218068) pasaron el 29 de octubre de 2026, incluido el paso E2E. El artefacto `quality-reports` del run del PR conserva `e2e-electron.log` junto con los reportes de calidad.
