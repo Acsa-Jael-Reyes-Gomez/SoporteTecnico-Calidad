@@ -10,7 +10,7 @@
 
 ## Etapas de Puerta de calidad
 
-En **Actions**, abre la ejecución asociada al pull request o al commit. El workflow presenta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR**. El artefacto `quality-reports` conserva la salida de pruebas y cobertura. SonarCloud se omite si faltan sus dos variables de repositorio o el secreto.
+En **Actions**, abre la ejecución asociada al pull request o al commit. El workflow presenta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR**. El artefacto `quality-reports` conserva la salida de pruebas y cobertura. El análisis estático usa TypeScript estricto, ESLint y Prettier; SonarCloud no está integrado.
 
 ## Protección de `main`
 

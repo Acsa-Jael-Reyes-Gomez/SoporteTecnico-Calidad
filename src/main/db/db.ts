@@ -14,6 +14,19 @@ let database: DatabaseSync | null = null;
 let connection: SqliteConnection | null = null;
 let operationTail: Promise<void> = Promise.resolve();
 
+function sqliteValueToString(value: unknown): string {
+  if (
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "bigint" ||
+    typeof value === "boolean"
+  ) {
+    return String(value);
+  }
+  if (value instanceof Date) return value.toISOString();
+  return "";
+}
+
 async function acquireDatabaseTurn(): Promise<() => void> {
   const previousTurn = operationTail;
   let releaseTurn!: () => void;
@@ -31,17 +44,23 @@ function registerSqliteFunctions(db: DatabaseSync) {
     return `${now.getFullYear()}-${part(now.getMonth() + 1)}-${part(now.getDate())} ${part(now.getHours())}:${part(now.getMinutes())}:${part(now.getSeconds())}`;
   });
   db.function("DATEDIFF", (left: unknown, right: unknown) => {
-    if (!left || !right) return null;
-    const leftDay = new Date(`${String(left).slice(0, 10)}T00:00:00Z`).getTime();
-    const rightDay = new Date(`${String(right).slice(0, 10)}T00:00:00Z`).getTime();
+    const leftText = sqliteValueToString(left);
+    const rightText = sqliteValueToString(right);
+    if (!leftText || !rightText) return null;
+    const leftDay = new Date(`${leftText.slice(0, 10)}T00:00:00Z`).getTime();
+    const rightDay = new Date(`${rightText.slice(0, 10)}T00:00:00Z`).getTime();
     return Number.isFinite(leftDay) && Number.isFinite(rightDay) ? Math.trunc((leftDay - rightDay) / 86400000) : null;
   });
   db.function("CONCAT", (...values: unknown[]) =>
-    values.includes(null) ? null : values.map(String).join("")
+    values.includes(null) ? null : values.map(sqliteValueToString).join("")
   );
-  db.function("LPAD", (value: unknown, width: unknown, fill: unknown) =>
-    String(value).padStart(Number(width), String(fill || " ").slice(0, 1))
-  );
+  db.function("LPAD", (value: unknown, width: unknown, fill: unknown) => {
+    if (value === null || value === undefined) return null;
+    return sqliteValueToString(value).padStart(
+      Number(width),
+      (sqliteValueToString(fill) || " ").slice(0, 1)
+    );
+  });
 }
 
 async function openDatabase(): Promise<SqliteConnection> {

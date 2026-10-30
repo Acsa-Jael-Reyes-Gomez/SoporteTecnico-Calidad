@@ -26,7 +26,7 @@ El workflow creó el artefacto `quality-reports`, descargado y archivado en `doc
 
 ## SonarCloud y protección de rama
 
-SonarCloud solo se ejecuta cuando existen las variables `SONAR_ORGANIZATION` y `SONAR_PROJECT_KEY` y el secreto `SONAR_TOKEN`. No hay evidencia de un análisis remoto exitoso ni de un dashboard configurado.
+Los runs históricos de octubre omitieron SonarCloud porque no había variables ni secreto configurados. La configuración opcional se retiró del workflow actual; los análisis activos son TypeScript estricto, ESLint y Prettier. No se presentan métricas de SonarCloud.
 
 La ejecución verde no demuestra por sí sola que `main` esté protegida. La regla que exige PR, aprobación y el check **Puerta de calidad** debe verificarse en la configuración del repositorio.
 
