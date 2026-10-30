@@ -21,7 +21,7 @@ Se inspeccionaron los cambios de mayor riesgo de la rama `cierre-requisitos-sqa`
 | `package.json`                     | Configuracion local fuera del paquete y comandos reproducibles para esquema/importacion SQLite                                            | Sin hallazgos bloqueantes                                                                                                          |
 | `tests/sqlite-connection.test.js`  | CRUD, conflicto, transacciones, parametros, integridad y fechas de la semilla                                                             | Los 5 casos pasan en la suite de 33 pruebas                                                                                        |
 
-Esta inspeccion es evidencia de revision tecnica local, no una aprobacion independiente de pares. El PR #1 permaneció cerrado tras la normalización de ramas y al 30/10/2026 GitHub no muestra aprobaciones independientes. Otra persona puede abrir/revisar un PR nuevo o revisar el PR existente si GitHub permite recuperarlo.
+Esta inspeccion es evidencia de revision tecnica local y se complementa con la aprobación independiente registrada por `Acsa-Reyes` en el PR #2. El PR #2 fue aprobado, comprobado sin conflictos y fusionado en `main` el 30/10/2026.
 
 ## Registro de deuda técnica
 
