@@ -26,14 +26,14 @@ test("el historial de envios carga completo y conserva filtros opcionales", () =
   assert.doesNotMatch(historySource, /Promise\.all\s*\(/);
 });
 
-test("serializa las operaciones ODBC para evitar bloqueos del driver 3.51", () => {
+test("serializa las operaciones SQLite sobre la conexión compartida", () => {
   const dbSource = fs.readFileSync(path.join(__dirname, "../src/main/db/db.ts"), "utf8");
   assert.match(dbSource, /await acquireDatabaseTurn\(\)/);
-  assert.match(dbSource, /await databaseOperationTail/);
+  assert.match(dbSource, /await operationTail/);
   assert.match(dbSource, /releaseTurn\(\)/);
 });
 
-test("el resumen de envios evita parametros dentro de agregados incompatibles con ODBC 3.51", () => {
+test("el resumen de envios usa agregados compatibles con SQLite", () => {
   const source = fs.readFileSync(path.join(__dirname, "../src/main/ipc_envio_equipo.ts"), "utf8");
   assert.doesNotMatch(source, /SUM\s*\(\s*CASE\s+WHEN\s+ee\.idEstadoEnvio\s*=\s*\?/i);
   assert.match(source, /GROUP BY ee\.idEstadoEnvio/);

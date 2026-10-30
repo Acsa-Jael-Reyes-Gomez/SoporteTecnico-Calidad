@@ -1,0 +1,6 @@
+﻿
+> soportetecnico@1.0.2 format:check
+> prettier --check README.md .github/PULL_REQUEST_TEMPLATE.md .github/workflows/quality.yml package.json eslint.config.mjs scripts/copy-renderer.js docs/Diagnostico-Inicial.md docs/Flujo-GitHub.md docs/Informe-Final.md docs/Linea-Base-Calidad.md docs/MAPA_FUNCIONALIDADES.md docs/Matriz-Pruebas.md docs/Manual-Tecnico.md docs/Manual-Usuario.md docs/Reporte-Mejora.md docs/SQA-Plan.md docs/Decisiones-Tecnicas.md docs/calidad/EVIDENCIAS_EJECUCION.md docs/calidad/METRICAS_CALIDAD.md docs/calidad/PRESENTACION_METRICAS.md docs/calidad/PLAN_ASEGURAMIENTO_CALIDAD.md docs/presentacion/Presentacion-Proyecto-SQA.md docs/video/Guion-Video-4-5-Minutos.md
+
+Checking formatting...
+All matched files use Prettier code style!

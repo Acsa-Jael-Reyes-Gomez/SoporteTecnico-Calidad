@@ -21,3 +21,9 @@
 ## Riesgos / seguimiento
 
 <!-- Enumera riesgos, limitaciones o trabajo posterior. -->
+
+## Revisión independiente
+
+- Persona revisora:
+- Resultado: Pendiente / Aprobado / Requiere cambios
+- Observaciones o «Sin observaciones»:

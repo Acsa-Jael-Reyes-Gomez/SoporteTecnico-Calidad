@@ -1,63 +1,36 @@
-# Presentación: Calidad de Software en el Sistema de Tickets
+# Resumen de métricas para exponer
 
-## Diapositiva 1. Portada
+## Comparación de la línea base con el estado actual
 
-**Aseguramiento de Calidad y CI/CD**  
-Sistema de Tickets de Soporte Técnico  
-Curso: Calidad de Software
+| Indicador                 | Antes de aplicar SQA                       | Estado actual (29/10/2026)                     | Interpretación                                               |
+| ------------------------- | ------------------------------------------ | ---------------------------------------------- | ------------------------------------------------------------ |
+| Casos de prueba anotados  | 25 registrados; sin resultado de ejecución | 33 aprobados, 0 fallidos                       | La suite creció; se desconoce la tasa inicial de aprobación  |
+| Cobertura de líneas       | No medida                                  | 96.16% (umbral 75%)                            | No se calcula variación porcentual sin medición inicial      |
+| Cobertura de ramas        | No medida                                  | 81.55% (umbral 60%)                            | No se calcula variación porcentual sin medición inicial      |
+| Cobertura de funciones    | No medida                                  | 92.31% (umbral 55%)                            | No se calcula variación porcentual sin medición inicial      |
+| Build y análisis estático | No se conserva evidencia inicial           | Build, TypeScript, ESLint y Prettier aprobados | Controles actuales ejecutados localmente y en GitHub Actions |
+| Integración continua      | No había pipeline documentado              | Quality gate en `push` y `pull_request`        | Ejecuciones enlazadas abajo                                  |
 
-## Diapositiva 2. Problema y objetivo
+El historial Git disponible no contiene una revisión ejecutable del producto anterior al pipeline. Los datos iniciales proceden del registro histórico; no se reconstruyen resultados inexistentes. El run 40599606066 es anterior a SQLite, pero ya corresponde a una revisión que tenía el pipeline y por eso no representa el estado pre-SQA.
 
-- El sistema es una aplicación Electron con TypeScript, ODBC y MySQL.
-- Antes del proyecto no existía un pipeline de integración continua ni una medición de cobertura.
-- El objetivo fue incorporar controles de calidad sin conectar una base de datos real ni alterar funcionalidades productivas.
+## Estado inicial documentado
 
-## Diapositiva 3. Estrategia aplicada
+- 25 casos de prueba anotados en el registro histórico.
+- No se registró la tasa de pruebas aprobadas.
+- No se medía cobertura ni había una puerta CI documentada.
+- No había verificación ESLint documentada.
 
-- Pruebas unitarias para validación, paginación, sesiones, permisos y exportaciones.
-- Pruebas de integración controlada mediante dobles de conexión ODBC.
-- Pruebas de regresión para filtros, reportes, notificaciones y compatibilidad ODBC 3.51.
-- Análisis estático con TypeScript en modo estricto.
-- Cobertura nativa de Node con umbrales mínimos.
+## Evidencia remota histórica anterior a SQLite
 
-## Diapositiva 4. Pipeline de GitHub Actions
+El run [40599606066](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40599606066) registra 28/28 pruebas y cobertura de 95.65% de líneas, 80.60% de ramas y 90.54% de funciones. Es una medición histórica de una revisión con pipeline, no la línea base pre-SQA.
 
-1. GitHub recibe un `push` o un `pull request` a `main` o `master`.
-2. El runner Windows configura Node 22 e instala con `npm ci`.
-3. TypeScript revisa tipos con `npm run typecheck`.
-4. El proyecto compila y ejecuta regresiones con `npm test`.
-5. Node mide cobertura con `npm run test:coverage`.
-6. GitHub conserva `coverage/coverage.txt` como artefacto.
+## Evidencia actual
 
-## Diapositiva 5. Métricas antes y después
+Los runs [40974922468](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974922468) (`push`) y [40974928285](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974928285) (`pull_request`) pasaron. El artefacto con cobertura y logs de análisis estático está en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
 
-| Indicador | Antes | Después |
-| --- | ---: | ---: |
-| Pruebas declaradas | 25 | 28 |
-| Pruebas aprobadas registradas | Sin medición | 28 de 28 |
-| Cobertura de líneas | No medida | 95.62% |
-| Cobertura de ramas | No medida | 80.60% |
-| Cobertura de funciones | No medida | 90.54% |
-| Errores TypeScript | No medido | 0 |
-| Pipeline CI | No existía | GitHub Actions |
+## Límites de interpretación
 
-## Diapositiva 6. Defecto encontrado y corregido
-
-**Hallazgo:** `2026-02-30` era aceptada porque JavaScript convierte fechas inválidas en fechas posteriores.  
-**Riesgo:** registros con una fecha distinta de la ingresada por el usuario.  
-**Corrección:** el servicio compara año, mes, día, hora, minuto y segundo luego de interpretar la fecha.  
-**Evidencia:** nueva prueba de regresión aprobada dentro de las 28 pruebas.
-
-## Diapositiva 7. Deuda técnica y límites
-
-- La capa de base de datos aún concentra conexión, compatibilidad y migraciones.
-- Las pruebas no usan una base MySQL/ODBC de prueba.
-- Algunas regresiones validan expresiones del código fuente y conviene migrarlas a funciones aislables.
-- El proyecto aún no tiene un linter instalado; TypeScript estricto funciona como análisis estático inicial.
-
-## Diapositiva 8. Conclusiones y verificación
-
-- El proyecto ahora bloquea integraciones con errores de tipos, pruebas fallidas o cobertura por debajo de los umbrales.
-- La cobertura y los reportes se generan sin exponer credenciales ni conectarse a producción.
-- Para verificar localmente: `npm ci`, `npm run typecheck`, `npm test`, `npm run test:coverage`.
-- Para verificar en la nube: subir los cambios a GitHub y revisar el workflow **Quality Gate**.
+- No se midió cobertura antes de SQA; por eso no se afirma una mejora porcentual desde la línea base.
+- No hay resultados SonarCloud ni métricas verificadas de bugs, vulnerabilidades o code smells.
+- La protección de `main` no está activa; GitHub rechazó la consulta de reglas para el repositorio privado con HTTP 403.
+- El PR no tiene una revisión independiente registrada.

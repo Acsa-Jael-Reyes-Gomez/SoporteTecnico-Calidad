@@ -1,35 +1,31 @@
-# Línea base de calidad
+> Actualizado el 29/10/2026: los valores posteriores son mediciones locales de la revisión actual con SQLite. El run remoto 40599606066 es anterior y se registra como evidencia separada.
 
-**Fecha de corte:** 26 de octubre de 2026.  
-Esta línea base registra el estado encontrado antes de los cambios documentales y del workflow en esta sesión. No se reemplaza por resultados posteriores.
+# Línea base de calidad y resultado posterior
 
-## Mediciones observables
+## Criterio de comparación
 
-| Indicador                                           | Línea base de esta auditoría                                 | Evidencia / limitación                                                                               |
-| --------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| Archivos de prueba                                  | 2                                                            | `tests/core-services.test.js`, `tests/envio-history.test.js`                                         |
-| Casos declarados                                    | 28                                                           | Conteo estático de declaraciones `test()` en ambos archivos                                          |
-| Pruebas aprobadas                                   | 28 de 28                                                     | npm test, Node.js 22.16.0; compiló y ejecutó ambas suites                                            |
-| Pruebas fallidas                                    | 0                                                            | Salida TAP: 28 aprobadas, 0 fallidas                                                                 |
-| Cobertura inicial                                   | 95.62% líneas; 80.60% ramas; 90.54% funciones                | npm run test:coverage; umbrales 75%, 60%, 55% satisfechos                                            |
-| Errores TypeScript                                  | 0                                                            | npm run typecheck, terminó con código 0                                                              |
-| Errores ESLint                                      | No disponible                                                | ESLint no está instalado ni configurado                                                              |
-| Bugs / vulnerabilidades / code smells cuantificados | No disponible                                                | No se ejecutó SonarCloud ni un escáner de seguridad                                                  |
-| Duplicación / complejidad                           | No disponible                                                | No hay herramienta local instalada para estas métricas                                               |
-| Deuda técnica identificada                          | 3 observaciones y 3 asuntos                                  | Registro manual en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`; no es conteo automatizado de defectos |
-| Pipeline                                            | Configuración local revisada; ejecución remota no verificada | .github/workflows/quality.yml; requiere push o pull request en GitHub                                |
-| Estado de Git                                       | No disponible                                                | `.git` está vacío y no hay ejecutable Git en PATH                                                    |
+La línea base representa el estado inicial documentado antes de incorporar controles de SQA. Los valores iniciales provienen del registro histórico de `docs/calidad/METRICAS_CALIDAD.md`; no se inventan resultados que no fueron medidos. El historial Git disponible no conserva una revisión ejecutable de la aplicación anterior al pipeline, así que no es posible repetir las mismas mediciones sobre ese estado. El estado posterior actual se midió localmente el **29 de octubre de 2026** con Node.js 22.16.0.
 
-## Resultados anteriores anotados en la copia
+## Comparación
 
-El documento METRICAS_CALIDAD.md registró previamente 28/28 pruebas, cobertura de 95.62% líneas, 80.60% ramas y 90.54% funciones y cero errores TypeScript el 15 de octubre de 2026. La ejecución de esta sesión reprodujo las mismas cifras para el código fuente actual.
+| Indicador                      |                Estado inicial documentado |                                                  Estado posterior medido | Evidencia y límite                                                                                                   |
+| ------------------------------ | ----------------------------------------: | -----------------------------------------------------------------------: | -------------------------------------------------------------------------------------------------------------------- |
+| Casos automatizados declarados |                                        25 |                                                                       33 | Conteo documentado inicialmente frente a la suite local actual; el resultado aprobado/fallido inicial no se conservó |
+| Pruebas aprobadas              |                   Sin medición registrada |                                                                 33 de 33 | `npm test` y GitHub Actions PR #1, 29/10/2026; 28/28 del run anterior se conserva como histórico                     |
+| Cobertura de líneas            |                                 No medida |                                                                   96.16% | Cobertura local de Node; umbral 75%; evidencia en `docs/calidad/evidencias/local-20261029/npm-test-coverage.log`     |
+| Cobertura de ramas             |                                 No medida |                                                                   81.55% | Cobertura local de Node; umbral 60%                                                                                  |
+| Cobertura de funciones         |                                 No medida |                                                                   92.31% | Cobertura local de Node; umbral 55%                                                                                  |
+| Errores de TypeScript          |                                No medidos |                                                                        0 | `npm run typecheck` terminó correctamente                                                                            |
+| Linter                         |                            No configurado |                              ESLint configurado; sin errores bloqueantes | `npm run lint` terminó correctamente; las advertencias se silencian con `--quiet`                                    |
+| Formato                        | Sin verificación automatizada documentada |                                                        Prettier aprobado | `npm run format:check` terminó correctamente                                                                         |
+| Pipeline CI                    |                                No existía | Configurado para push y pull_request; ejecución local y remota aprobadas | Workflow activo en la rama normalizada `cierre-requisitos-sqa`                                                       |
+| Análisis SonarCloud            |                                 No medido |                                 Condicional; no hay resultado registrado | Requiere las dos variables y el secreto indicados en README                                                          |
+| Protección de rama             |                             No verificada |                                                            No verificada | Debe confirmarse en las reglas del repositorio GitHub                                                                |
 
-## Incidencia reproducible del entorno
+## Alcance de las pruebas
 
-En el sandbox ordinario, Node 22.16.0 podía ejecutar instrucciones inline (node -e), pero cargar los archivos del proyecto devolvía:
+La suite contiene pruebas unitarias, integración controlada con dobles, pruebas del adaptador SQLite en memoria y regresiones de código fuente. No ejecuta Electron ni incluye pruebas E2E. La matriz de casos está en `docs/Matriz-Pruebas.md`.
 
-```text
-Error: EPERM: operation not permitted, lstat 'C:\\Users\\IT'
-```
+## Interpretación
 
-El fallo sucedió antes de ejecutar compilación o assertions. La herramienta autorizó luego el mismo runtime del sistema para la carpeta de trabajo; bajo ese contexto se ejecutaron npm test, npm run test:coverage y npm run typecheck correctamente. No fue necesario reinstalar las dependencias existentes.
+La mejora demostrable es automatizar 33 casos, compilar y revisar tipos, exigir umbrales de cobertura, ejecutar ESLint/Prettier y conservar reportes. Los runs 40974922468 y 40974928285 validan la revisión actual; el run remoto 40599606066 de 28 casos es histórico. No se atribuye una reducción de bugs o code smells porque SonarCloud no tiene una medición final registrada. La cobertura inicial no se midió; por ello no se calcula una diferencia de cobertura.

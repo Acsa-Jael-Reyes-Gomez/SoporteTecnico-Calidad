@@ -1,3 +1,8 @@
 {
-  "dialects": [{ "files": "database-demo.sql", "dialect": "mysql" }]
+  "dialects": [
+    { "files": "database-demo.sql", "dialect": "mysql" },
+    { "files": "assets/database/schema.mysql.sql", "dialect": "mysql" },
+    { "files": "assets/database/schema.sqlite.sql", "dialect": "sqlite" }
+  ],
+  "default": "sqlite"
 }

@@ -1,0 +1,227 @@
+
+> soportetecnico@1.0.2 test
+> npm run build && node --test tests/*.test.js
+
+
+> soportetecnico@1.0.2 build
+> npm run clean && tsc && npm run build:css && node scripts/copy-renderer.js
+
+
+> soportetecnico@1.0.2 clean
+> node -e "require('fs').rmSync('dist',{recursive:true,force:true});"
+
+
+> soportetecnico@1.0.2 build:css
+> node scripts/build-renderer-css.js
+
+CSS bundle generado en src\renderer\styles\app.bundle.css
+TAP version 13
+# Subtest: normaliza paginación conservando límites
+ok 1 - normaliza paginación conservando límites
+  ---
+  duration_ms: 2.8927
+  type: 'test'
+  ...
+# Subtest: centraliza normalización de catálogos, estados y período mensual
+ok 2 - centraliza normalización de catálogos, estados y período mensual
+  ---
+  duration_ms: 2.53
+  type: 'test'
+  ...
+# Subtest: los desplegables confirman con Tab y los módulos muestran el período 26-25
+ok 3 - los desplegables confirman con Tab y los módulos muestran el período 26-25
+  ---
+  duration_ms: 5.2184
+  type: 'test'
+  ...
+# Subtest: gerencial consulta todas las rutas pendientes sin rango de fechas
+ok 4 - gerencial consulta todas las rutas pendientes sin rango de fechas
+  ---
+  duration_ms: 3.7524
+  type: 'test'
+  ...
+# Subtest: todas las tablas permiten redimensionar, ocultar y recuperar columnas
+ok 5 - todas las tablas permiten redimensionar, ocultar y recuperar columnas
+  ---
+  duration_ms: 4.0282
+  type: 'test'
+  ...
+# Subtest: calificación, seguimiento y reportes usan el encabezado visual de Tickets
+ok 6 - calificación, seguimiento y reportes usan el encabezado visual de Tickets
+  ---
+  duration_ms: 6.2898
+  type: 'test'
+  ...
+# Subtest: rechaza rangos de fecha invertidos
+ok 7 - rechaza rangos de fecha invertidos
+  ---
+  duration_ms: 1.0642
+  type: 'test'
+  ...
+# Subtest: rechaza cierre anterior a apertura
+ok 8 - rechaza cierre anterior a apertura
+  ---
+  duration_ms: 0.3035
+  type: 'test'
+  ...
+# Subtest: deduplica referencias positivas
+ok 9 - deduplica referencias positivas
+  ---
+  duration_ms: 0.5744
+  type: 'test'
+  ...
+# Subtest: valida formatos de fecha y referencias activas sin usar ODBC real
+ok 10 - valida formatos de fecha y referencias activas sin usar ODBC real
+  ---
+  duration_ms: 1.3114
+  type: 'test'
+  ...
+# Subtest: normaliza límites y construye filtros de reporte parametrizados
+ok 11 - normaliza límites y construye filtros de reporte parametrizados
+  ---
+  duration_ms: 0.7143
+  type: 'test'
+  ...
+# Subtest: neutraliza fórmulas y sanea nombres de exportación
+ok 12 - neutraliza fórmulas y sanea nombres de exportación
+  ---
+  duration_ms: 0.5589
+  type: 'test'
+  ...
+# Subtest: sanea fórmulas de forma recursiva y valida permisos de sesión
+ok 13 - sanea fórmulas de forma recursiva y valida permisos de sesión
+  ---
+  duration_ms: 0.5376
+  type: 'test'
+  ...
+# Subtest: permite revocar sesiones activas
+ok 14 - permite revocar sesiones activas
+  ---
+  duration_ms: 0.2977
+  type: 'test'
+  ...
+# Subtest: no ejecuta consultas paralelas sobre una conexión ODBC 3.51
+ok 15 - no ejecuta consultas paralelas sobre una conexión ODBC 3.51
+  ---
+  duration_ms: 2.6277
+  type: 'test'
+  ...
+# Subtest: los módulos con búsqueda textual exponen el query filter y lo envían al backend
+ok 16 - los módulos con búsqueda textual exponen el query filter y lo envían al backend
+  ---
+  duration_ms: 1.9645
+  type: 'test'
+  ...
+# Subtest: la exportación de tickets conserva los filtros de la búsqueda
+ok 17 - la exportación de tickets conserva los filtros de la búsqueda
+  ---
+  duration_ms: 1.1833
+  type: 'test'
+  ...
+# Subtest: el reporte global de rutas usa una sola solicitud ODBC
+ok 18 - el reporte global de rutas usa una sola solicitud ODBC
+  ---
+  duration_ms: 1.4528
+  type: 'test'
+  ...
+# Subtest: los tres reportes visibles conservan filtros y evitan agregados frágiles de ODBC
+ok 19 - los tres reportes visibles conservan filtros y evitan agregados frágiles de ODBC
+  ---
+  duration_ms: 4.0362
+  type: 'test'
+  ...
+# Subtest: reportes de rutas y proyectos excluyen abiertos, no calificados y no aprobados
+ok 20 - reportes de rutas y proyectos excluyen abiertos, no calificados y no aprobados
+  ---
+  duration_ms: 2.2022
+  type: 'test'
+  ...
+# Subtest: reportes de tickets detallado y resumen incluyen exclusivamente tickets calificados y cerrados
+ok 21 - reportes de tickets detallado y resumen incluyen exclusivamente tickets calificados y cerrados
+  ---
+  duration_ms: 1.9317
+  type: 'test'
+  ...
+# Subtest: el reporte exportable de tickets resume por ticket único y conserva el número de ticket
+ok 22 - el reporte exportable de tickets resume por ticket único y conserva el número de ticket
+  ---
+  duration_ms: 2.1619
+  type: 'test'
+  ...
+# Subtest: las notificaciones de envíos consultan cambios incrementales sin sockets
+ok 23 - las notificaciones de envíos consultan cambios incrementales sin sockets
+  ---
+  duration_ms: 1.5197
+  type: 'test'
+  ...
+# Subtest: los técnicos reciben notificaciones por nuevas asignaciones de tickets y rutas
+ok 24 - los técnicos reciben notificaciones por nuevas asignaciones de tickets y rutas
+  ---
+  duration_ms: 3.6031
+  type: 'test'
+  ...
+# Subtest: el supervisor recibe aviso cuando gerencial valida una ruta que creó
+ok 25 - el supervisor recibe aviso cuando gerencial valida una ruta que creó
+  ---
+  duration_ms: 2.7626
+  type: 'test'
+  ...
+# Subtest: el historial de envios carga completo y conserva filtros opcionales
+ok 26 - el historial de envios carga completo y conserva filtros opcionales
+  ---
+  duration_ms: 3.9503
+  type: 'test'
+  ...
+# Subtest: serializa las operaciones SQLite sobre la conexión compartida
+ok 27 - serializa las operaciones SQLite sobre la conexión compartida
+  ---
+  duration_ms: 0.556
+  type: 'test'
+  ...
+# Subtest: el resumen de envios usa agregados compatibles con SQLite
+ok 28 - el resumen de envios usa agregados compatibles con SQLite
+  ---
+  duration_ms: 1.9287
+  type: 'test'
+  ...
+# (node:21540) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: el adaptador SQLite ejecuta CRUD con parámetros y devuelve el ID insertado
+ok 29 - el adaptador SQLite ejecuta CRUD con parámetros y devuelve el ID insertado
+  ---
+  duration_ms: 3.9413
+  type: 'test'
+  ...
+# Subtest: el adaptador transforma INSERT IGNORE y ON DUPLICATE KEY UPDATE
+ok 30 - el adaptador transforma INSERT IGNORE y ON DUPLICATE KEY UPDATE
+  ---
+  duration_ms: 0.7957
+  type: 'test'
+  ...
+# Subtest: commit conserva y rollback revierte los cambios
+ok 31 - commit conserva y rollback revierte los cambios
+  ---
+  duration_ms: 0.802
+  type: 'test'
+  ...
+# Subtest: rechaza objetos como parámetros SQLite y conserva los errores SQL
+ok 32 - rechaza objetos como parámetros SQLite y conserva los errores SQL
+  ---
+  duration_ms: 0.872
+  type: 'test'
+  ...
+# Subtest: la semilla incluida pasa la verificación SQLite y limita las fechas de tickets
+ok 33 - la semilla incluida pasa la verificación SQLite y limita las fechas de tickets
+  ---
+  duration_ms: 8.1505
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 212.8225

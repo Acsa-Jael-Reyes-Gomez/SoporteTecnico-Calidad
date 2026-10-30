@@ -1,7 +1,7 @@
 // src/preload/preload.ts
 import { contextBridge, ipcRenderer } from "electron";
 
-type AnyObj = Record<string, any>;
+type AnyObj = Record<string, unknown>;
 
 const UNREADABLE_TEXT_PATTERN = /[\u00c3\u00c2\u00e2\u0153\u00f0\uFFFD]/;
 
@@ -10,13 +10,17 @@ function countUnreadableMarkers(text: string) {
   return matches ? matches.length : 0;
 }
 
-function normalizeReadableText(value: any, fallback = "") {
+function normalizeReadableText(value: unknown, fallback = "") {
   const baseValue = value === null || value === undefined || value === "" ? fallback : value;
-  const text = String(baseValue ?? fallback ?? "");
+  let text = fallback;
+  if (typeof baseValue === "string") text = baseValue;
+  else if (typeof baseValue === "number" || typeof baseValue === "bigint" || typeof baseValue === "boolean") {
+    text = String(baseValue);
+  }
   if (!UNREADABLE_TEXT_PATTERN.test(text)) return text;
 
   try {
-    const bytes = Uint8Array.from(text, (char) => char.charCodeAt(0) & 0xff);
+    const bytes = Uint8Array.from(text, (char) => (char.codePointAt(0) ?? 0) & 0xff);
     const decoded = new TextDecoder("utf-8").decode(bytes);
     return countUnreadableMarkers(decoded) <= countUnreadableMarkers(text) ? decoded : text;
   } catch {
@@ -26,109 +30,42 @@ function normalizeReadableText(value: any, fallback = "") {
 
 function translateCommonErrorMessage(message: string) {
   const lower = message.toLowerCase();
+  const rules: Array<{ groups: string[][]; response: string }> = [
+    { groups: [["sesion invalida", "sesiÃ³n invÃ¡lida", "invalid session", "session invalid"]], response: "La sesiÃ³n ya no es vÃ¡lida. Inicia sesiÃ³n nuevamente." },
+    { groups: [["failed to fetch", "networkerror"]], response: "No se pudo completar la operaciÃ³n por un problema de conexiÃ³n." },
+    { groups: [["econnrefused", "enotfound", "ehostunreach", "etimedout", "timed out", "timeout", "socket hang up", "connection refused"]], response: "No fue posible conectarse al sistema o a la base de datos." },
+    { groups: [["cannot read properties", "cannot set properties"]], response: "OcurriÃ³ un error interno al procesar la informaciÃ³n." },
+    { groups: [["unexpected token", "unexpected identifier", "unexpected end of input"]], response: "OcurriÃ³ un error interno al cargar un mÃ³dulo de la interfaz." },
+    { groups: [["is not a function"]], response: "OcurriÃ³ un error interno porque una funciÃ³n requerida no estÃ¡ disponible." },
+    { groups: [["sin permiso", "access denied", "permission denied"]], response: "No tienes permiso para realizar esta acciÃ³n." },
+    { groups: [["duplicate entry"]], response: "Ya existe un registro con esos datos." },
+    { groups: [["foreign key constraint", "cannot add or update a child row", "a foreign key constraint fails"]], response: "No se puede completar la operaciÃ³n porque hay registros relacionados." },
+    { groups: [["sql syntax", "er_parse_error", "unknown column"]], response: "OcurriÃ³ un error interno al consultar la base de datos." },
+    { groups: [["er_access_denied_error", "access denied for user"]], response: "No fue posible conectarse a la base de datos con la configuraciÃ³n actual." },
+    { groups: [["unknown database", "er_bad_db_error"]], response: "No se encontrÃ³ la base de datos configurada." },
+    { groups: [["enoent", "no such file or directory"]], response: "Falta un archivo requerido para completar la operaciÃ³n." },
+    { groups: [["object has been destroyed", "browser has been closed"]], response: "La ventana de la aplicaciÃ³n ya no estaba disponible." },
+    { groups: [["target page", "target browser"], ["closed"]], response: "La ventana de la aplicaciÃ³n ya se habÃ­a cerrado." },
+    { groups: [["invalid url", "url vacia", "url invÃ¡lida"]], response: "El enlace proporcionado no es vÃ¡lido." }
+  ];
 
-  if (
-    lower.includes("im002") ||
-    lower.includes("data source name not found") ||
-    lower.includes("dsn no encontrado") ||
-    lower.includes("odbc driver manager")
-  ) {
-    return "No se encontró la conexión ODBC configurada. Verifica que el DSN Tickets_IT exista en Windows.";
-  }
-
-  if (
-    lower.includes("sesion invalida") ||
-    lower.includes("sesión inválida") ||
-    lower.includes("invalid session") ||
-    lower.includes("session invalid")
-  ) {
-    return "La sesión ya no es válida. Inicia sesión nuevamente.";
-  }
-  if (lower.includes("failed to fetch") || lower.includes("networkerror")) {
-    return "No se pudo completar la operación por un problema de conexión.";
-  }
-  if (
-    lower.includes("econnrefused") ||
-    lower.includes("enotfound") ||
-    lower.includes("ehostunreach") ||
-    lower.includes("etimedout") ||
-    lower.includes("timed out") ||
-    lower.includes("timeout") ||
-    lower.includes("socket hang up") ||
-    lower.includes("can't connect to mysql server") ||
-    lower.includes("can not connect to mysql server") ||
-    lower.includes("connection refused")
-  ) {
-    return "No fue posible conectarse al sistema o a la base de datos.";
-  }
-  if (lower.includes("cannot read properties") || lower.includes("cannot set properties")) {
-    return "Ocurrió un error interno al procesar la información.";
-  }
-  if (
-    lower.includes("unexpected token") ||
-    lower.includes("unexpected identifier") ||
-    lower.includes("unexpected end of input")
-  ) {
-    return "Ocurrió un error interno al cargar un módulo de la interfaz.";
-  }
-  if (lower.includes("is not a function")) {
-    return "Ocurrió un error interno porque una función requerida no está disponible.";
-  }
-  if (lower.includes("sin permiso") || lower.includes("access denied") || lower.includes("permission denied")) {
-    return "No tienes permiso para realizar esta acción.";
+  for (const rule of rules) {
+    if (rule.groups.every((group) => group.some((needle) => lower.includes(needle)))) return normalizeReadableText(normalizeReadableText(rule.response));
   }
   if (lower.includes("falta api:")) {
     const apiName = message.split(":").slice(1).join(":").trim();
     return apiName
-      ? `Falta una función interna requerida: ${apiName}.`
-      : "Falta una función interna requerida para completar la acción.";
+      ? `Falta una funciÃ³n interna requerida: ${apiName}.`
+      : "Falta una funciÃ³n interna requerida para completar la acciÃ³n.";
   }
-  if (lower.includes("duplicate entry")) {
-    return "Ya existe un registro con esos datos.";
-  }
-  if (
-    lower.includes("foreign key constraint") ||
-    lower.includes("cannot add or update a child row") ||
-    lower.includes("a foreign key constraint fails")
-  ) {
-    return "No se puede completar la operación porque hay registros relacionados.";
-  }
-  if (
-    lower.includes("sql syntax") ||
-    lower.includes("er_parse_error") ||
-    lower.includes("unknown column")
-  ) {
-    return "Ocurrió un error interno al consultar la base de datos.";
-  }
-  if (lower.includes("er_access_denied_error") || lower.includes("access denied for user")) {
-    return "No fue posible conectarse a la base de datos con la configuración actual.";
-  }
-  if (lower.includes("unknown database") || lower.includes("er_bad_db_error")) {
-    return "No se encontró la base de datos configurada.";
-  }
-  if (lower.includes("enoent") || lower.includes("no such file or directory")) {
-    return "Falta un archivo requerido para completar la operación.";
-  }
-  if (lower.includes("object has been destroyed") || lower.includes("browser has been closed")) {
-    return "La ventana de la aplicación ya no estaba disponible.";
-  }
-  if ((lower.includes("target page") || lower.includes("target browser")) && lower.includes("closed")) {
-    return "La ventana de la aplicación ya se había cerrado.";
-  }
-  if (lower.includes("invalid url") || lower.includes("url vacia") || lower.includes("url inválida")) {
-    return "El enlace proporcionado no es válido.";
-  }
-
-  return message || "No se pudo completar la operación. Intenta nuevamente.";
+  return message || "No se pudo completar la operaciÃ³n. Intenta nuevamente.";
 }
-
-function normalizeErrorMessage(error: any, fallback = "Ocurrió un error interno al comunicarse con el sistema.") {
-  const rawMessage =
-    typeof error === "string"
-      ? error
-      : error && typeof error === "object" && "message" in error
-        ? (error as { message?: string }).message
-        : fallback;
+function normalizeErrorMessage(error: unknown, fallback = "Ocurrió un error interno al comunicarse con el sistema.") {
+  let rawMessage: unknown = fallback;
+  if (typeof error === "string") rawMessage = error;
+  else if (error && typeof error === "object" && "message" in error) {
+    rawMessage = (error as { message?: unknown }).message;
+  }
 
   const message = normalizeReadableText(rawMessage, fallback).trim();
   return translateCommonErrorMessage(message || fallback);
@@ -137,14 +74,15 @@ function normalizeErrorMessage(error: any, fallback = "Ocurrió un error interno
 function normalizeInvokeResult<T>(result: T): T {
   if (!result || typeof result !== "object") return result;
 
-  if ("message" in (result as AnyObj) && typeof (result as AnyObj).message === "string") {
-    (result as AnyObj).message = normalizeErrorMessage((result as AnyObj).message);
+  const record = result as unknown as Record<string, unknown>;
+  if ("message" in record && typeof record.message === "string") {
+    record.message = normalizeErrorMessage(record.message);
   }
 
   return result;
 }
 
-async function invokeSafe(channel: string, ...args: any[]) {
+async function invokeSafe(channel: string, ...args: unknown[]) {
   try {
     const result = await ipcRenderer.invoke(channel, ...args);
     return normalizeInvokeResult(result);
