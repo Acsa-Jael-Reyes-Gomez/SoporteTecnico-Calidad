@@ -74,7 +74,7 @@ El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run t
 
 ## 13. Revisiones automáticas
 
-GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. Los runs 40977210991 (`push`) y 40977218068 (`pull_request`) pasaron incluyendo el recorrido E2E de Electron; el artefacto `quality-reports` del PR contiene `e2e-electron.log`. El PR no tiene aprobación independiente registrada.
+GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. Las ejecuciones verificadas para `cierre-requisitos-sqa` completaron correctamente la puerta de calidad. El PR no tiene aprobación independiente registrada y `main` no tiene protección configurada.
 
 ## 14. Revisiones manuales
 
