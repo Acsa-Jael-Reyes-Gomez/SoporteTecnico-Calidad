@@ -81,4 +81,15 @@ jobs:
             coverage/typecheck.log
             coverage/eslint.log
             coverage/format-check.log
+            coverage/lcov.info
           if-no-files-found: warn
+
+      - name: ANALIZAR - SonarCloud
+        if: ${{ secrets.SONAR_TOKEN != '' }}
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
