@@ -47,9 +47,9 @@ TypeScript estricto y ESLint se ejecutan en CI. ESLint cubre TypeScript, los mó
 
 `.github/workflows/quality.yml` se dispara en `push` y `pull_request` para Windows con Node 22. Las etapas instalan dependencias fijadas, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. Los runs 40974922468 y 40974928285 pasaron; el artefacto del PR está en `docs/calidad/evidencias/run-40974928285/quality-reports/`. La protección de `main` no está activa en la configuración actual del repositorio.
 
-## SonarCloud
+## Análisis estático
 
-La ejecución es opcional. En configuración del repositorio GitHub, crear variables `SONAR_ORGANIZATION` y `SONAR_PROJECT_KEY`, además del secreto `SONAR_TOKEN`. No guardar el token en el código. Hasta completar esos pasos, el workflow informa que el análisis se omitió. La cobertura V8 no genera LCOV y por ello no se entrega a SonarCloud.
+El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarCloud no está integrado en esta entrega, por lo que no se presentan métricas de bugs, vulnerabilidades o code smells de esa plataforma.
 
 ## Flujo GitHub y puertas de calidad
 

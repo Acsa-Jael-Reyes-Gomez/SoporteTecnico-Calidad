@@ -35,7 +35,7 @@ La aplicación de estas referencias es parcial y adaptada al tamaño del proyect
 
 ## 6. Herramientas
 
-Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Prettier, GitHub Actions y SonarCloud opcional. SonarCloud requiere proyecto, organización y token configurados por el propietario.
+Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Prettier y GitHub Actions. SonarCloud no está integrado.
 
 ## 7. Estrategia de pruebas
 
@@ -49,11 +49,11 @@ Framework adaptado al sistema: `node:test` evita introducir Jest/React Testing L
 
 ## 8. Análisis estático
 
-`npm run typecheck` ejecuta TypeScript estricto sin emitir archivos. `npm run lint` ejecuta ESLint sobre el proceso principal, Preload, módulos de interfaz, pruebas y scripts. Las reglas se adaptan a módulos de interfaz que comparten funciones globales y al uso CommonJS de Node. `npm run format:check` verifica documentos y configuración con Prettier. SonarCloud puede analizar TypeScript/JavaScript cuando se complete su configuración externa; ESLint y TypeScript son los controles estáticos activos.
+`npm run typecheck` ejecuta TypeScript estricto sin emitir archivos. `npm run lint` ejecuta ESLint sobre el proceso principal, Preload, módulos de interfaz, pruebas y scripts. Las reglas se adaptan a módulos de interfaz que comparten funciones globales y al uso CommonJS de Node. `npm run format:check` verifica documentos y configuración con Prettier. TypeScript, ESLint y Prettier son los controles estáticos activos.
 
 ## 9. Cobertura
 
-`npm run test:coverage` utiliza la cobertura V8 incluida en Node. No utiliza Istanbul/Jest. La medición local actual del 29/10/2026 es 96.16% de líneas, 81.55% de ramas y 92.31% de funciones, con 33/33 pruebas. El run remoto 40599606066, con 28 pruebas, corresponde a la revisión anterior a SQLite. No se ha configurado exportación LCOV para SonarCloud.
+`npm run test:coverage` utiliza la cobertura V8 incluida en Node. No utiliza Istanbul/Jest. La medición local actual del 29/10/2026 es 96.16% de líneas, 81.55% de ramas y 92.31% de funciones, con 33/33 pruebas. El run remoto 40599606066, con 28 pruebas, corresponde a la revisión anterior a SQLite.
 
 ## 10. Métricas
 
@@ -65,12 +65,12 @@ Casos aprobados/fallidos, cobertura de líneas/ramas/funciones, errores de compi
 - Todas las pruebas requeridas aprobadas.
 - Cobertura del comando: líneas >= 75%, ramas >= 60%, funciones >= 55% (más estricto que el mínimo académico del 60% de líneas).
 - TypeScript sin errores.
-- SonarCloud aprobado cuando el proyecto esté configurado.
+- SonarCloud no integrado; no se presentan métricas de esa plataforma.
 - No introducir secretos en cambios.
 
 ## 12. Puertas de calidad
 
-El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. Las advertencias conocidas de ESLint no bloquean. SonarCloud solo se ejecuta si están definidas la organización, la clave y el token; mientras falte alguno de estos valores, el análisis remoto no es una puerta activa.
+El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. El análisis estático se realiza con TypeScript estricto, ESLint y Prettier. SonarCloud no está integrado y no forma parte de esta puerta.
 
 ## 13. Revisiones automáticas
 
@@ -90,7 +90,7 @@ Mantener el registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. Priorizar ri
 
 ## 17. Riesgos
 
-Dependencia de Electron/Windows; la cobertura E2E se limita al inicio de sesión y alta de ticket; SonarCloud no tiene resultado remoto registrado; y la protección de la rama principal no está activa.
+Dependencia de Electron/Windows; la cobertura E2E se limita al inicio de sesión y alta de ticket; SonarCloud no está integrado; y la protección de la rama principal no está activa.
 
 ## 18. Control de versiones
 
@@ -102,7 +102,7 @@ Cada PR describe motivo, alcance, pruebas realizadas, riesgos y cambios de base/
 
 ## 20. Criterios de aceptación
 
-La aplicación existente conserva sus operaciones principales; compilación, pruebas y cobertura pasan; tipos sin errores; secretos ausentes; documentación y riesgos actualizados; y el revisor confirma los cambios. El propietario confirmó una ejecución verde de Actions. La protección de rama, SonarCloud y la revisión humana de cada pull request deben comprobarse por separado.
+La aplicación existente conserva sus operaciones principales; compilación, pruebas y cobertura pasan; tipos sin errores; documentación y riesgos actualizados; y el revisor confirma los cambios. El propietario confirmó una ejecución verde de Actions. La protección de rama y la revisión humana de cada pull request deben comprobarse por separado.
 
 ## 21. Mantenimiento
 

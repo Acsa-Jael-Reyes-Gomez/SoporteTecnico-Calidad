@@ -11,10 +11,6 @@ jobs:
   quality:
     name: Compilar, probar y verificar calidad
     runs-on: windows-latest
-    env:
-      SONAR_TOKEN: ${{ secrets['SONAR_TOKEN'] }}
-      SONAR_ORGANIZATION: ${{ vars['SONAR_ORGANIZATION'] }}
-      SONAR_PROJECT_KEY: ${{ vars['SONAR_PROJECT_KEY'] }}
 
     steps:
       - name: Descargar el código fuente
@@ -72,19 +68,6 @@ jobs:
         run: |
           npm run format:check 2>&1 | Tee-Object -FilePath coverage/format-check.log
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: ANALIZAR - SonarCloud (si está configurado)
-        if: ${{ env.SONAR_ORGANIZATION != '' && env.SONAR_PROJECT_KEY != '' && env.SONAR_TOKEN != '' }}
-        uses: SonarSource/sonarqube-scan-action@v8.3.0
-        with:
-          args: >-
-            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
-
-      - name: ANALIZAR - informar que SonarCloud no está configurado
-        if: ${{ env.SONAR_ORGANIZATION == '' || env.SONAR_PROJECT_KEY == '' || env.SONAR_TOKEN == '' }}
-        run: >-
-          Write-Output 'Se omitió SonarCloud: configura las variables SONAR_ORGANIZATION y SONAR_PROJECT_KEY y el secreto SONAR_TOKEN.'
 
       - name: REPORTAR - guardar informes de pruebas y cobertura
         if: always()
