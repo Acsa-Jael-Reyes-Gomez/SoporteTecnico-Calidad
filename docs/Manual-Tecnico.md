@@ -45,15 +45,15 @@ TypeScript estricto y ESLint se ejecutan en CI. ESLint cubre TypeScript, los mó
 
 ## Pipeline CI/CD
 
-`.github/workflows/quality.yml` se dispara en `push` y `pull_request` para Windows con Node 22. Las etapas instalan dependencias fijadas, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. Los runs 40974922468 y 40974928285 pasaron; el artefacto del PR está en `docs/calidad/evidencias/run-40974928285/quality-reports/`. La protección de `main` no está activa en la configuración actual del repositorio.
+`.github/workflows/quality.yml` se ejecuta en `push` y `pull_request` sobre Windows con Node 22. Las etapas instalan dependencias, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. La rama `main` está protegida y exige pull request, revisión y el check obligatorio antes de una fusión.
 
 ## Análisis estático
 
-El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarCloud no está integrado en esta entrega, por lo que no se presentan métricas de bugs, vulnerabilidades o code smells de esa plataforma.
+El workflow ejecuta TypeScript estricto, ESLint y Prettier. Después de esos controles, SonarCloud analiza la revisión y reporta el resultado del Quality Gate.
 
 ## Flujo GitHub y puertas de calidad
 
-Crear una rama de trabajo, abrir un pull request, revisar los cambios, esperar el check **Puerta de calidad** y fusionar solo con revisión aprobada. Un administrador debe proteger `main` para exigir pull request, aprobación y el check exitoso. La configuración se explica en `docs/Flujo-GitHub.md`.
+Crear una rama de trabajo, abrir un pull request y esperar la aprobación más el check **Puerta de calidad**. GitHub protege `main` para evitar fusiones sin revisión ni controles aprobados. La configuración se explica en `docs/Flujo-GitHub.md`.
 
 ## Mantenimiento
 
