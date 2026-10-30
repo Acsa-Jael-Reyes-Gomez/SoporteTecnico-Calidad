@@ -11,15 +11,17 @@ jobs:
   quality:
     name: Compilar, probar y verificar calidad
     runs-on: windows-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
       - name: Descargar el código fuente
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
@@ -71,7 +73,7 @@ jobs:
 
       - name: REPORTAR - guardar informes de pruebas y cobertura
         if: always()
-        uses: actions/upload-artifact@v7.0.2
+        uses: actions/upload-artifact@v4
         with:
           name: quality-reports
           path: |
@@ -85,7 +87,7 @@ jobs:
           if-no-files-found: warn
 
       - name: ANALIZAR - SonarCloud
-        if: ${{ secrets.SONAR_TOKEN != '' }}
+        if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
