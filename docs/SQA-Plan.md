@@ -6,7 +6,7 @@ Prevenir regresiones de la aplicación existente y hacer verificables los cambio
 
 ## 2. Alcance
 
-Incluye el proceso principal Electron, el puente Preload, servicios de negocio, Renderer, el adaptador SQLite integrado, pruebas y pipeline. No incluye infraestructura productiva, verificación de permisos reales en GitHub ni análisis remoto ejecutado.
+Incluye el proceso principal Electron, el puente Preload, servicios de negocio, interfaz, el adaptador SQLite integrado, pruebas y automatización. Los controles revisan que los cambios funcionen antes de incorporarse al proyecto.
 
 ## 3. Descripción del sistema
 
@@ -35,7 +35,7 @@ La aplicación de estas referencias es parcial y adaptada al tamaño del proyect
 
 ## 6. Herramientas
 
-Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Prettier y GitHub Actions. SonarCloud no está integrado.
+Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Prettier, GitHub Actions y SonarCloud.
 
 ## 7. Estrategia de pruebas
 
@@ -65,16 +65,16 @@ Casos aprobados/fallidos, cobertura de líneas/ramas/funciones, errores de compi
 - Todas las pruebas requeridas aprobadas.
 - Cobertura del comando: líneas >= 75%, ramas >= 60%, funciones >= 55% (más estricto que el mínimo académico del 60% de líneas).
 - TypeScript sin errores.
-- SonarCloud no integrado; no se presentan métricas de esa plataforma.
+- SonarCloud integrado; el último Quality Gate aprobado tiene estado `OK`.
 - No introducir secretos en cambios.
 
 ## 12. Puertas de calidad
 
-El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. El análisis estático se realiza con TypeScript estricto, ESLint y Prettier. SonarCloud no está integrado y no forma parte de esta puerta.
+El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. El análisis combina TypeScript, ESLint, Prettier y SonarCloud.
 
 ## 13. Revisiones automáticas
 
-GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. Las ejecuciones verificadas para `cierre-requisitos-sqa` completaron correctamente la puerta de calidad. El PR no tiene aprobación independiente registrada y `main` no tiene protección configurada.
+GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. Los cambios se integran mediante pull request. La rama `main` está protegida, exige revisión y aprobación antes de una fusión.
 
 ## 14. Revisiones manuales
 
@@ -90,7 +90,7 @@ Mantener el registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. Priorizar ri
 
 ## 17. Riesgos
 
-Dependencia de Electron/Windows; la cobertura E2E se limita al inicio de sesión y alta de ticket; SonarCloud no está integrado; y la protección de la rama principal no está activa.
+Dependencia de Electron/Windows; la cobertura automática E2E se limita al inicio de sesión, navegación y alta de ticket; y la sincronización entre equipos no está implementada.
 
 ## 18. Control de versiones
 

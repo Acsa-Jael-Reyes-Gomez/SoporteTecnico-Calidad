@@ -31,6 +31,5 @@ Los runs [40974922468](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-C
 ## Límites de interpretación
 
 - No se midió cobertura antes de SQA; por eso no se afirma una mejora porcentual desde la línea base.
-- No hay resultados SonarCloud ni métricas verificadas de bugs, vulnerabilidades o code smells.
-- La protección de `main` no está activa; GitHub rechazó la consulta de reglas para el repositorio privado con HTTP 403.
-- El PR no tiene una revisión independiente registrada.
+- SonarCloud está conectado al pipeline y el Quality Gate más reciente tiene estado `OK`.
+- La rama `main` está protegida y exige PR, revisión y el check de calidad.

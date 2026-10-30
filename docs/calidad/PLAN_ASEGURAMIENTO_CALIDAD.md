@@ -13,7 +13,8 @@ El plan vigente y completo está en [`../SQA-Plan.md`](../SQA-Plan.md). Este arc
 | Análisis estático    | `npm run lint`                         | Sin errores bloqueantes de ESLint              |
 | Formato              | `npm run format:check`                 | Todos los archivos configurados pasan Prettier |
 | Integración continua | GitHub Actions, workflow `quality.yml` | Etapas aprobadas en `push` y `pull_request`    |
+| SonarCloud           | GitHub Actions y SonarCloud            | Quality Gate aprobado                          |
 
 ## Límites
 
-Las pruebas de consulta usan dobles y no se conectan a una base MySQL/ODBC. No hay pruebas E2E ni resultados SonarCloud registrados. La protección de `main` debe configurarse aparte en GitHub. La ejecución y métricas actuales se documentan en `EVIDENCIAS_EJECUCION.md` y `METRICAS_CALIDAD.md`.
+Las pruebas de consulta usan dobles y SQLite aislado. La prueba E2E inicia Electron con una base temporal y cubre inicio, navegación y creación de un ticket. La ejecución actual y sus métricas se documentan en `EVIDENCIAS_EJECUCION.md` y `METRICAS_CALIDAD.md`.
