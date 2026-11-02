@@ -164,6 +164,7 @@ test("rutas:delete rechaza rutas inexistentes o validadas sin eliminar participa
   const h = setup(t);
   const id = await h.create();
   assert.match((await h.invoke("rutas:delete", 999)).message, /Ruta no existe/);
+  h.db.prepare("INSERT INTO des_estado_validacion (idEstadoValidacion, nombre) VALUES (1, ?)").run("VALIDADA");
   h.db.prepare("UPDATE ruta SET idEstadoValidacion=1 WHERE idRuta=?").run(id);
   const result = await h.invoke("rutas:delete", id);
   assert.equal(result.ok, false);
@@ -179,6 +180,7 @@ test("rutas:reopen exige identificador y no reabre rutas ya validadas", async (t
   assert.match((await h.invoke("rutas:reopen", 0)).message, /idRuta requerido/);
   assert.match((await h.invoke("rutas:reopen", 999)).message, /Ruta no existe/);
   const id = await h.create();
+  h.db.prepare("INSERT INTO des_estado_validacion (idEstadoValidacion, nombre) VALUES (1, ?)").run("VALIDADA");
   h.db.prepare("UPDATE ruta SET idEstadoValidacion=1, open=1, fechaCierre=? WHERE idRuta=?").run("2026-10-27 10:00:00", id);
   const result = await h.invoke("rutas:reopen", id);
   assert.equal(result.ok, false);
