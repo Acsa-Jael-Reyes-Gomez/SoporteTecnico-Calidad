@@ -36,7 +36,13 @@ function setup(moduleName, apiName, responder) {
     window: { api: { [apiName]: (...args) => { calls.push(["api", args]); return responder(...args); } },
       resetCatalogosState: () => calls.push(["reset"]) }
   });
-  vm.runInContext(source, context, { filename: moduleName });
+  const names = Object.keys(context).filter(name => name !== "window");
+  names.push("window");
+  const factory = vm.runInThisContext(`(function(${names.join(",")}) {\n${source}\nreturn { renderEquipos, renderRutas, get session() { return session; } };\n})`, { filename: path.resolve(__dirname, "../src/renderer/modulos", moduleName) });
+  const exposed = factory(...names.map(name => context[name]));
+  context.renderEquipos = exposed.renderEquipos;
+  context.renderRutas = exposed.renderRutas;
+  Object.defineProperty(context, "session", { get: () => exposed.session, configurable: true });
   return { context, host, nodes, calls };
 }
 const settle = () => new Promise(resolve => setImmediate(resolve));
