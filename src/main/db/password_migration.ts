@@ -207,7 +207,7 @@ function readWindowsAcl(target: string): WindowsAclSnapshot {
   const escapedTarget = target.replace(/'/g, "''");
   const script = `
 $ErrorActionPreference = 'Stop'
-$securityModule = Join-Path $PSHOME 'Modules\Microsoft.PowerShell.Security\Microsoft.PowerShell.Security.psd1'
+$securityModule = Join-Path (Join-Path (Join-Path $PSHOME 'Modules') 'Microsoft.PowerShell.Security') 'Microsoft.PowerShell.Security.psd1'
 Import-Module -Name $securityModule -ErrorAction Stop
 $acl = Get-Acl -LiteralPath '${escapedTarget}'
 $access = @()
