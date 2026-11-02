@@ -38,10 +38,11 @@ function setup(moduleName, apiName, responder) {
   });
   const names = Object.keys(context).filter(name => name !== "window");
   names.push("window");
-  const factory = vm.runInThisContext(`(function(${names.join(",")}) {\n${source}\nreturn { renderEquipos: typeof renderEquipos === 'function' ? renderEquipos : undefined, renderRutas: typeof renderRutas === 'function' ? renderRutas : undefined, get session() { return session; } };\n})`, { filename: path.resolve(__dirname, "../src/renderer/modulos", moduleName) });
+  const factory = vm.runInThisContext(`(function(${names.join(",")}) {\n${source}\nreturn { renderEquipos: typeof renderEquipos === 'function' ? renderEquipos : undefined, renderRutas: typeof renderRutas === 'function' ? renderRutas : undefined, renderValidarRutas: typeof renderValidarRutas === 'function' ? renderValidarRutas : undefined, get session() { return session; } };\n})`, { filename: path.resolve(__dirname, "../src/renderer/modulos", moduleName) });
   const exposed = factory(...names.map(name => context[name]));
   context.renderEquipos = exposed.renderEquipos;
   context.renderRutas = exposed.renderRutas;
+  context.renderValidarRutas = exposed.renderValidarRutas;
   Object.defineProperty(context, "session", { get: () => exposed.session, configurable: true });
   return { context, host, nodes, calls };
 }
@@ -135,4 +136,63 @@ test("rutas: paginación y limpieza de filtros mantienen búsquedas operativas",
   buttons(h, "Limpiar")[0].props.onclick();
   await settle();
   assert.equal(h.calls.filter(x => x[0] === "api").length, 4);
+});
+
+test("validación de rutas: bloquea usuarios sin permiso antes de llamar a la API", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: true, data: [] }));
+  h.context.can = () => false;
+  // La función conserva el permiso recibido al crear el módulo.
+  // Probar el rechazo con un contexto que lo reciba explícitamente.
+  const source = fs.readFileSync(path.resolve(__dirname, "../src/renderer/modulos/rutas-y-reportes.js"), "utf8");
+  const deny = vm.runInThisContext(`(function(can) { ${source}; return renderValidarRutas; })`)(() => false);
+  deny(h.host);
+  assert.match(h.host.innerHTML, /Sin acceso/);
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 0);
+});
+
+test("validación de rutas: respuesta sin éxito muestra error sin alterar datos", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: false, message: "Servicio temporalmente indisponible" }));
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  assert.ok(textNode(h, "Servicio temporalmente indisponible"));
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 1);
+});
+
+test("validación de rutas: listado vacío muestra estado y paginación coherentes", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: true, data: [] }));
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  assert.ok(textNode(h, "Encontradas 0 rutas pendientes"));
+  const pager = h.calls.find(x => x[0] === "pager")[1];
+  assert.equal(pager.total, 0);
+  pager.onPageChange(1);
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 1);
+  pager.onPageSizeChange(50);
+  await settle();
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 2);
+});
+
+test("validación de rutas: muestra registros y permite cambiar de página", async () => {
+  const data = Array.from({ length: 27 }, (_, i) => ({
+    idRuta: i + 1, unidad: "Unidad de prueba", participantes: [{ nombre: "Técnico de prueba" }],
+    fechaApertura: "2026-11-02"
+  }));
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: true, data }));
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  assert.ok(textNode(h, "Encontradas 27 rutas pendientes"));
+  const pager = h.calls.find(x => x[0] === "pager")[1];
+  assert.equal(pager.total, 27);
+  pager.onPageChange(2);
+  await settle();
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 2);
+});
+
+test("validación de rutas: error de sesión reinicia credenciales y vista", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => { throw new Error("Sesión expirada"); });
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  assert.ok(h.calls.some(x => x[0] === "reset"));
+  assert.ok(h.calls.some(x => x[0] === "mount"));
+  assert.equal(h.context.session, null);
 });
