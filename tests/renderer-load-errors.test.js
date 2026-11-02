@@ -4,14 +4,15 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 
-function setup(moduleName, apiName, responder) {
+function setup(moduleName, apiName, responder, extras = {}) {
   const source = fs.readFileSync(path.resolve(__dirname, "../src/renderer/modulos", moduleName), "utf8");
   const calls = [];
   const nodes = [];
   const host = { innerHTML: "", children: [], appendChild(node) { this.children.push(node); } };
   function el(tag, props = {}, children = []) {
     const node = { tag, props, children, value: props.value ?? "", textContent: "", innerHTML: "",
-      appended: [], appendChild(child) { this.appended.push(child); } };
+      appended: [], appendChild(child) { this.appended.push(child); },
+      querySelector() { return { appendChild() {} }; } };
     nodes.push(node);
     return node;
   }
@@ -36,6 +37,7 @@ function setup(moduleName, apiName, responder) {
     window: { api: { [apiName]: (...args) => { calls.push(["api", args]); return responder(...args); } },
       resetCatalogosState: () => calls.push(["reset"]) }
   });
+  Object.assign(context, extras);
   const names = Object.keys(context).filter(name => name !== "window");
   names.push("window");
   const factory = vm.runInThisContext(`(function(${names.join(",")}) {\n${source}\nreturn { renderEquipos: typeof renderEquipos === 'function' ? renderEquipos : undefined, renderRutas: typeof renderRutas === 'function' ? renderRutas : undefined, renderValidarRutas: typeof renderValidarRutas === 'function' ? renderValidarRutas : undefined, get session() { return session; } };\n})`, { filename: path.resolve(__dirname, "../src/renderer/modulos", moduleName) });
@@ -195,4 +197,59 @@ test("validación de rutas: error de sesión reinicia credenciales y vista", asy
   assert.ok(h.calls.some(x => x[0] === "reset"));
   assert.ok(h.calls.some(x => x[0] === "mount"));
   assert.equal(h.context.session, null);
+});
+
+test("validación de rutas: éxito con recarga fallida avisa sin repetir la validación", async () => {
+  let queries = 0;
+  let accepted = 0;
+  let closed = 0;
+  const messages = [];
+  const actions = [];
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => {
+    queries++;
+    return queries === 1
+      ? { ok: true, data: [{ idRuta: 32, unidad: "Unidad sintética", participantes: [], fechaApertura: "2026-11-02" }] }
+      : { ok: false, message: "Falla de recarga simulada" };
+  }, {
+    nowLocalMysql: () => "2026-11-02 14:00:00",
+    toast: (...args) => messages.push(args),
+    Modal: () => ({ card: { classList: { add() {} } }, close() { closed++; }, rebuildActions() {} }),
+    createActionButton: options => { actions.push(options); return { tag: "button", props: {} }; },
+    createSearchableSelect: () => ({ value: "Encargado" })
+  });
+  h.context.window.api.rutas_validar = async () => { accepted++; return { ok: true }; };
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  const open = h.nodes.find(n => n.tag === "button" && n.props.class === "btn primary validacion-rutas-cta");
+  assert.ok(open);
+  open.props.onclick();
+  assert.equal(actions.length, 1);
+  const nombre = h.nodes.find(n => n.props.placeholder === "Nombre completo");
+  nombre.value = "Responsable sintético";
+  await actions[0].onClick();
+  assert.equal(accepted, 1);
+  assert.equal(closed, 1);
+  assert.equal(queries, 2);
+  assert.ok(messages.some(m => /no se pudo actualizar la lista/i.test(m[0])));
+});
+
+test("validación de rutas: rechazo del servidor conserva el modal y muestra el error", async () => {
+  let closed = 0;
+  const actions = [];
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({
+    ok: true, data: [{ idRuta: 33, unidad: "Unidad sintética", participantes: [], fechaApertura: "2026-11-02" }]
+  }), {
+    nowLocalMysql: () => "2026-11-02 14:00:00",
+    toast: () => {},
+    Modal: () => ({ card: { classList: { add() {} } }, close() { closed++; }, rebuildActions() {} }),
+    createActionButton: options => { actions.push(options); return { tag: "button", props: {} }; },
+    createSearchableSelect: () => ({ value: "Encargado" })
+  });
+  h.context.window.api.rutas_validar = async () => ({ ok: false, message: "No autorizado para validar ruta" });
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  h.nodes.find(n => n.props.class === "btn primary validacion-rutas-cta").props.onclick();
+  h.nodes.find(n => n.props.placeholder === "Nombre completo").value = "Responsable sintético";
+  await assert.rejects(actions[0].onClick(), /No autorizado para validar ruta/);
+  assert.equal(closed, 0);
 });
