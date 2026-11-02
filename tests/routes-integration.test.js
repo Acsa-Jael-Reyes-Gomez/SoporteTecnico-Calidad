@@ -136,3 +136,69 @@ test("rutas:reopen reabre ruta cerrada pendiente de validación y rechaza repeti
   assert.equal(row.fechaCierre, null);
   assert.match((await h.invoke("rutas:reopen", id)).message, /Ya está abierta/);
 });
+
+test("rutas:update valida campos, permisos y estado sin modificar datos existentes", async (t) => {
+  const h = setup(t);
+  const id = await h.create();
+  const original = h.db.prepare("SELECT observaciones FROM ruta WHERE idRuta=?").get(id).observaciones;
+  for (const changes of [
+    { idRuta: 0 },
+    { idUnidad: 0 },
+    { fechaApertura: "" },
+    { participantes: [] },
+    { idUnidad: 999 },
+    { participantes: [999] }
+  ]) {
+    const result = await h.invoke("rutas:update", { ...h.data, idRuta: id, observaciones: "No debe persistir", ...changes });
+    assert.equal(result.ok, false, JSON.stringify(changes));
+    assert.equal(h.db.prepare("SELECT observaciones FROM ruta WHERE idRuta=?").get(id).observaciones, original);
+    assert.equal(h.db.prepare("SELECT count(*) AS n FROM ruta_participante WHERE idRuta=?").get(id).n, 1);
+  }
+  sessions.setTrustedSession(h.event, { ...h.session, permisos: [] });
+  const denied = await h.invoke("rutas:update", { ...h.data, idRuta: id });
+  assert.equal(denied.ok, false);
+  assert.match(denied.message, /Sin permiso/);
+});
+
+test("rutas:delete rechaza rutas inexistentes o validadas sin eliminar participantes", async (t) => {
+  const h = setup(t);
+  const id = await h.create();
+  assert.match((await h.invoke("rutas:delete", 999)).message, /Ruta no existe/);
+  h.db.prepare("UPDATE ruta SET idEstadoValidacion=1 WHERE idRuta=?").run(id);
+  const result = await h.invoke("rutas:delete", id);
+  assert.equal(result.ok, false);
+  assert.match(result.message, /No se puede borrar una ruta validada/);
+  assert.equal(h.db.prepare("SELECT count(*) AS n FROM ruta WHERE idRuta=?").get(id).n, 1);
+  assert.equal(h.db.prepare("SELECT count(*) AS n FROM ruta_participante WHERE idRuta=?").get(id).n, 1);
+  sessions.setTrustedSession(h.event, { ...h.session, permisos: [] });
+  assert.match((await h.invoke("rutas:delete", id)).message, /Sin permiso/);
+});
+
+test("rutas:reopen exige identificador y no reabre rutas ya validadas", async (t) => {
+  const h = setup(t);
+  assert.match((await h.invoke("rutas:reopen", 0)).message, /idRuta requerido/);
+  assert.match((await h.invoke("rutas:reopen", 999)).message, /Ruta no existe/);
+  const id = await h.create();
+  h.db.prepare("UPDATE ruta SET idEstadoValidacion=1, open=1, fechaCierre=? WHERE idRuta=?").run("2026-10-27 10:00:00", id);
+  const result = await h.invoke("rutas:reopen", id);
+  assert.equal(result.ok, false);
+  assert.match(result.message, /No se puede reabrir una ruta validada/);
+  assert.equal(h.db.prepare("SELECT open FROM ruta WHERE idRuta=?").get(id).open, 1);
+});
+
+test("rutas:validar y rutas:calificar exigen autorización y campos obligatorios", async (t) => {
+  const h = setup(t);
+  const id = await h.create();
+  assert.match((await h.invoke("rutas:validar", id, "Gerente", "Encargado")).message, /Sin permiso/);
+  assert.match((await h.invoke("rutas:calificar", id)).message, /Sin permiso/);
+  sessions.setTrustedSession(h.event, {
+    ...h.session,
+    permisos: [...h.session.permisos, "VALIDACION_RUTAS", "CALIFICACION_RUTAS"]
+  });
+  assert.match((await h.invoke("rutas:validar", 0, "Gerente", "Encargado")).message, /idRuta requerido/);
+  assert.match((await h.invoke("rutas:validar", id, "", "Encargado")).message, /Nombre validador requerido/);
+  assert.match((await h.invoke("rutas:validar", id, "Gerente", "")).message, /Puesto validador requerido/);
+  assert.match((await h.invoke("rutas:calificar", 0)).message, /idRuta requerido/);
+  assert.match((await h.invoke("rutas:calificar", id)).message, /Ruta no validada/);
+  assert.equal(h.db.prepare("SELECT idEstadoValidacion FROM ruta WHERE idRuta=?").get(id).idEstadoValidacion, 0);
+});
