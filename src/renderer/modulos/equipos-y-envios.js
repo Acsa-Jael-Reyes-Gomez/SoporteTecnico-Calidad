@@ -146,18 +146,19 @@ function renderEquipos(host, prefillData) {
         el("div", { class: "field" }, [el("label", {}, [el("i", { class: "fas fa-calendar" }), " Desde"]), desde]),
         el("div", { class: "field" }, [el("label", {}, [el("i", { class: "fas fa-calendar" }), " Hasta"]), hasta]),
         el("div", { class: "actions actions-inline" }, [
-          el("button", { class: "btn", onclick: () => { if (!isLoading) { page = 1; load(); } } }, [
+          el("button", { class: "btn", onclick: () => { if (!isLoading) { page = 1; void load(); } } }, [
             el("i", { class: "fas fa-search" }), " Buscar"
           ]),
           el("button", {
             class: "btn",
             onclick: () => {
+              if (isLoading) return;
               if (typeof idUnidad.clear === "function") idUnidad.clear();
               if (typeof idTecnico.clear === "function") idTecnico.clear();
               desde.value = defaultDesde;
               hasta.value = defaultHasta;
               page = 1;
-              load();
+              void load();
             }
           }, [el("i", { class: "fas fa-broom" }), " Limpiar"])
         ])
@@ -282,13 +283,13 @@ function renderEquipos(host, prefillData) {
         onPageChange: (nextPage) => {
           if (isLoading || nextPage === page) return;
           page = nextPage;
-          load();
+          void load();
         },
         onPageSizeChange: (nextPageSize) => {
           if (isLoading || nextPageSize === pageSize) return;
           pageSize = nextPageSize;
           page = 1;
-          load();
+          void load();
         }
       });
 
@@ -297,12 +298,22 @@ function renderEquipos(host, prefillData) {
       tableScroll.appendChild(tbl);
       tableFooter.appendChild(pager);
       normalizeExcelTableHeaders(tableWrap);
+    } catch (err) {
+      info.textContent = "Error: " + toUserText(
+        err?.message || err,
+        "No se pudo cargar el listado de equipos."
+      );
+      tableScroll.innerHTML = "";
+      tableFooter.innerHTML = "";
+      tableScroll.appendChild(el("div", { class: "card small error" }, [
+        "Ocurrió un error al cargar los equipos."
+      ]));
     } finally {
       isLoading = false;
     }
   }
 
-  load();
+  void load();
 
   if (prefillData && prefillData.idTicket) {
     // flujo pendiente: no autoabrir modal aquí
@@ -647,12 +658,12 @@ function renderEnvioEquipo(host) {
         el("button", {
           class: "btn envio-equipo-tab active",
           type: "button",
-          onclick: () => switchTab("nuevo")
+          onclick: () => { void switchTab("nuevo"); }
         }, [el("i", { class: "fas fa-plus" }), " Nuevo Envío"]),
         el("button", {
           class: "btn envio-equipo-tab",
           type: "button",
-          onclick: () => switchTab("historial")
+          onclick: () => { void switchTab("historial"); }
         }, [el("i", { class: "fas fa-clock-rotate-left" }), " Historial"])
       ])
     : null;
@@ -948,7 +959,7 @@ function renderEnvioEquipo(host) {
         });
         if (!save?.ok) throw new Error(save?.message || "No se pudo crear el envío.");
         toast(`Envío registrado como ${save.numeroEquipo}.`, "ok");
-        switchTab("historial");
+        void switchTab("historial");
       }
     });
 
@@ -1005,7 +1016,7 @@ function renderEnvioEquipo(host) {
               el("button", {
                 class: "btn",
                 type: "button",
-                onclick: () => load(1)
+                onclick: () => { if (!isLoading) { void load(1); } }
               }, [el("i", { class: "fas fa-search" }), " Buscar"]),
               el("button", {
                 class: "btn",
@@ -1017,7 +1028,7 @@ function renderEnvioEquipo(host) {
                   desde.value = mysqlToDateValue(defaultRange.start);
                   hasta.value = mysqlToDateValue(defaultRange.end);
                   activeSummaryState = "";
-                  load(1);
+                  void load(1);
                 }
               }, [el("i", { class: "fas fa-broom" }), " Limpiar"])
             ])
@@ -1098,7 +1109,7 @@ function renderEnvioEquipo(host) {
         onclick: () => {
           activeSummaryState = isActive ? "" : key;
           opsDetailDismissed = false;
-          load(1);
+          void load(1);
         }
       }, [
         el("div", { class: "envio-equipo-ops-summary-icon" }, [
@@ -1171,7 +1182,7 @@ function renderEnvioEquipo(host) {
             type: "button",
             onclick: () => {
               activeSummaryState = "";
-              load(1);
+              void load(1);
             }
           }, [el("i", { class: "fas fa-times" }), " Ver todos"])
         );
@@ -1753,12 +1764,12 @@ function renderEnvioEquipo(host) {
         total,
         onPageChange: (nextPage) => {
           if (isLoading || nextPage === opsCurrentPage) return;
-          load(nextPage);
+          void load(nextPage);
         },
         onPageSizeChange: (nextPageSize) => {
           if (isLoading || nextPageSize === opsPageSize) return;
           opsPageSize = nextPageSize;
-          load(1);
+          void load(1);
         }
       }));
     }
@@ -1886,13 +1897,14 @@ function renderEnvioEquipo(host) {
           q
         ]),
         el("div", { class: "actions envio-equipo-filter-actions" }, [
-          el("button", { class: "btn", type: "button", onclick: () => load(1) }, [
+          el("button", { class: "btn", type: "button", onclick: () => { if (!isLoading) { void load(1); } } }, [
             el("i", { class: "fas fa-search" }), " Buscar"
           ]),
           el("button", {
             class: "btn",
             type: "button",
             onclick: () => {
+              if (isLoading) return;
               q.value = "";
               idUnidad.value = "";
               idTipoEquipo.value = "";
@@ -1903,7 +1915,7 @@ function renderEnvioEquipo(host) {
               });
               desde.value = defaultDesde;
               hasta.value = defaultHasta;
-              load(1);
+              void load(1);
             }
           }, [el("i", { class: "fas fa-broom" }), " Limpiar"])
         ])
@@ -2023,12 +2035,12 @@ function renderEnvioEquipo(host) {
           total,
           onPageChange: (nextPage) => {
             if (isLoading || nextPage === currentPage) return;
-            load(nextPage);
+            void load(nextPage);
           },
           onPageSizeChange: (nextPageSize) => {
             if (isLoading || nextPageSize === currentPageSize) return;
             currentPageSize = nextPageSize;
-            load(1);
+            void load(1);
           }
         });
 
@@ -2037,6 +2049,16 @@ function renderEnvioEquipo(host) {
         tableScroll.appendChild(table);
         tableFooter.appendChild(pager);
         normalizeExcelTableHeaders(tableWrap);
+      } catch (err) {
+        info.textContent = "Error: " + getUserErrorMessage(
+          err,
+          "No se pudo cargar el historial."
+        );
+        tableScroll.innerHTML = "";
+        tableFooter.innerHTML = "";
+        tableScroll.appendChild(el("div", { class: "card small error" }, [
+          "Ocurrió un error al cargar el historial de envíos."
+        ]));
       } finally {
         isLoading = false;
       }
@@ -2048,7 +2070,15 @@ function renderEnvioEquipo(host) {
   async function switchTab(tab) {
     currentTab = tab;
     refreshTabButtons();
-    await renderCurrentTab();
+    try {
+      await renderCurrentTab();
+    } catch (error) {
+      stage.innerHTML = "";
+      stage.appendChild(el("div", { class: "card" }, [
+        el("div", { class: "h1" }, [el("i", { class: "fas fa-circle-exclamation" }), " Error cambiando de pestaña"]),
+        el("div", { class: "small" }, [getUserErrorMessage(error, "No se pudo cargar la pestaña seleccionada.")])
+      ]));
+    }
   }
 
   function refreshTabButtons() {
@@ -2074,7 +2104,7 @@ function renderEnvioEquipo(host) {
       if (!isGerencialModule) {
         const ops = buildOpsCenterView();
         stage.appendChild(ops.card);
-        ops.load(opsCurrentPage);
+        void ops.load(opsCurrentPage);
         return;
       }
       if (currentTab === "nuevo" && canCreate) {
@@ -2083,7 +2113,7 @@ function renderEnvioEquipo(host) {
       }
       const history = buildHistoryView();
       stage.appendChild(history.card);
-      history.load(1);
+      void history.load(1);
     } catch (error) {
       stage.innerHTML = "";
       stage.appendChild(el("div", { class: "card" }, [

@@ -657,6 +657,11 @@ app.whenReady().then(async () => {
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+}).catch((error: unknown) => {
+  devError("Error al preparar la aplicación:", error);
+  if (!isDevRuntime) {
+    showUserErrorBox("Error al iniciar la aplicación", error);
+  }
 });
 
 /* ======================================================

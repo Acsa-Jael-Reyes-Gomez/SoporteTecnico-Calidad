@@ -15,6 +15,7 @@ function normalizeSql(source: string): string {
   if (/^SET\s+NAMES\b/i.test(sql)) return "SELECT 1 WHERE 0";
 
   return sql
+    .replace(/\bFOR\s+UPDATE\b/gi, "")
     .replace(/\bINSERT\s+IGNORE\s+INTO\b/gi, "INSERT OR IGNORE INTO")
     .replace(/\bVALUES\s*\(\s*`?(\w+)`?\s*\)/gi, "excluded.$1")
     .replace(

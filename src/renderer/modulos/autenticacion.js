@@ -151,13 +151,13 @@ function LoginView() {
   user.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      doLogin();
+      void doLogin();
     }
   });
   pass.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      doLogin();
+      void doLogin();
     }
   });
 

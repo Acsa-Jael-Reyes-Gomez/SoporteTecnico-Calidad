@@ -96,8 +96,7 @@ async function getTicketCalificacionBlockReason(conn: any, idTicket: number) {
   const [st]: any = await conn.execute(
     `SELECT idTicket, fechaCierre, idEstadoCalificacion
      FROM ticket
-     WHERE idTicket=?
-     FOR UPDATE`,
+     WHERE idTicket=?`,
     [idTicket]
   );
   if (!st?.length) throw new Error("Ticket no existe.");
@@ -504,8 +503,7 @@ ipcMain.handle("tickets:list", async (event, _sessionArg: any, filtros: any) => 
           const [st]: any = await conn.execute(
             `SELECT fechaApertura, fechaCierre, idEstadoCalificacion
              FROM ticket
-             WHERE idTicket=?
-             FOR UPDATE`, 
+             WHERE idTicket=?`,
             [idTicket]
           );
           if (!st?.length) throw new Error("Ticket no existe.");
@@ -601,8 +599,7 @@ ipcMain.handle("tickets:list", async (event, _sessionArg: any, filtros: any) => 
           const [st]: any = await conn.execute(
             `SELECT fechaApertura, fechaCierre, idEstadoCalificacion
              FROM ticket
-             WHERE idTicket=?
-             FOR UPDATE`,
+             WHERE idTicket=?`,
             [idTicket]
           );
           if (!st?.length) throw new Error("Ticket no existe.");
@@ -728,8 +725,7 @@ ipcMain.handle("tickets:list", async (event, _sessionArg: any, filtros: any) => 
         const [st]: any = await conn.execute(
           `SELECT fechaCierre, idEstadoCalificacion
            FROM ticket
-           WHERE idTicket=?
-           FOR UPDATE`,
+           WHERE idTicket=?`,
           [idTicket]
         );
         if (!st?.length) throw new Error("Ticket no existe.");
@@ -784,8 +780,7 @@ ipcMain.handle("tickets:list", async (event, _sessionArg: any, filtros: any) => 
           const [st]: any = await conn.execute(
             `SELECT idEstadoCalificacion
              FROM ticket
-             WHERE idTicket=?
-             FOR UPDATE`,
+             WHERE idTicket=?`,
             [idTicket]
           );
           if (!st?.length) throw new Error("Ticket no existe.");
@@ -837,8 +832,7 @@ ipcMain.handle("tickets:list", async (event, _sessionArg: any, filtros: any) => 
           const [st]: any = await conn.execute(
             `SELECT idEstadoCalificacion
              FROM ticket
-             WHERE idTicket=?
-             FOR UPDATE`,
+             WHERE idTicket=?`,
             [tid]
           );
           if (!st?.length) throw new Error("Ticket no existe.");
@@ -990,10 +984,10 @@ ipcMain.handle("tickets:list", async (event, _sessionArg: any, filtros: any) => 
         const whereSQL = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
         const [res]: any = await conn.execute(
-          `UPDATE ticket t
-           SET t.idEstadoCalificacion=1,
-               t.fechaCalificacion=NOW(),
-               t.idUsuarioCalificador=?
+          `UPDATE ticket AS t
+           SET idEstadoCalificacion=1,
+               fechaCalificacion=NOW(),
+               idUsuarioCalificador=?
            ${whereSQL}`,
           params
         );
