@@ -5,6 +5,10 @@ import { DatabaseSync } from "node:sqlite";
 import bcrypt from "bcryptjs";
 import { BCRYPT_FULL_RE } from "../password_service";
 
+// Rutas absolutas del sistema: no buscar ejecutables en PATH modificable.
+const WINDOWS_POWERSHELL = path.win32.join("C:/Windows", "System32", "WindowsPowerShell", "v1.0", "powershell.exe");
+const WINDOWS_ICACLS = path.win32.join("C:/Windows", "System32", "icacls.exe");
+
 export type PasswordClassification =
   | "bcrypt_valid"
   | "plaintext_valid"
@@ -125,7 +129,7 @@ function currentWindowsUserSid(): string | null {
   if (process.platform !== "win32") return null;
   try {
     const result = execFileSync(
-      "powershell.exe",
+      WINDOWS_POWERSHELL,
       [
         "-NoProfile",
         "-NonInteractive",
@@ -228,7 +232,7 @@ foreach ($rule in $acl.Access) {
 } | ConvertTo-Json -Compress -Depth 4
 `;
   const output = execFileSync(
-    "powershell.exe",
+    WINDOWS_POWERSHELL,
     ["-NoProfile", "-NonInteractive", "-Command", script],
     { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }
   ).trim();
@@ -248,13 +252,13 @@ function applyWindowsBackupAcl(target: string, directory: boolean): void {
   ];
   try {
     execFileSync(
-      "icacls.exe",
+      WINDOWS_ICACLS,
       [target, "/inheritance:r"],
       { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }
     );
     for (const grant of grants) {
       execFileSync(
-        "icacls.exe",
+        WINDOWS_ICACLS,
         [target, "/grant", grant],
         { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }
       );
