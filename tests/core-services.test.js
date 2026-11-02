@@ -155,7 +155,7 @@ test("equipos y envíos controlan rechazos IPC y restauran el estado de carga", 
     createActionButton: () => fakeNode("button"),
     setTimeout
   });
-  vm.runInContext(enviosSource, context);
+  vm.runInContext(enviosSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "equipos-y-envios.js") });
 
   const equipmentHost = fakeNode("div", {}, []);
   context.renderEquipos(equipmentHost);
@@ -294,7 +294,7 @@ test("la carga de tickets maneja rechazos IPC y evita cargas simultáneas", asyn
     badgeTicketEstadoCalificacion: () => "",
     setTimeout
   });
-  vm.runInContext(ticketsSource, context);
+  vm.runInContext(ticketsSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "modulo-tickets.js") });
 
   const host = fakeNode("div", {}, []);
   context.renderTickets(host);
@@ -430,7 +430,7 @@ test("las cargas de rutas controlan errores, filtros, paginación y cargas simul
     badgeTicketEstadoCalificacion: () => "",
     setTimeout
   });
-  vm.runInContext(routesSource, context);
+  vm.runInContext(routesSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js") });
 
   const host = fakeNode("div", {}, []);
   context.renderRutas(host);
@@ -604,7 +604,7 @@ test("las rutas pendientes controlan cargas, paginación, errores y recuperació
     formatDate: (value) => String(value || ""),
     setTimeout
   });
-  vm.runInContext(routesSource, context);
+  vm.runInContext(routesSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js") });
 
   const host = fakeNode("div", {}, []);
   context.renderValidarRutas(host);
@@ -841,7 +841,7 @@ test("la validacion distingue el resultado de rutas_validar y la recarga posteri
     formatDate: (value) => String(value || ""),
     setTimeout
   });
-  vm.runInContext(routesSource, context);
+  vm.runInContext(routesSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js") });
 
   const host = fakeNode("div", {}, []);
   context.renderValidarRutas(host);
