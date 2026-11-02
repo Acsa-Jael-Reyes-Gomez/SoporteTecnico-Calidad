@@ -38,7 +38,7 @@ function setup(moduleName, apiName, responder) {
   });
   const names = Object.keys(context).filter(name => name !== "window");
   names.push("window");
-  const factory = vm.runInThisContext(`(function(${names.join(",")}) {\n${source}\nreturn { renderEquipos, renderRutas, get session() { return session; } };\n})`, { filename: path.resolve(__dirname, "../src/renderer/modulos", moduleName) });
+  const factory = vm.runInThisContext(`(function(${names.join(",")}) {\n${source}\nreturn { renderEquipos: typeof renderEquipos === 'function' ? renderEquipos : undefined, renderRutas: typeof renderRutas === 'function' ? renderRutas : undefined, get session() { return session; } };\n})`, { filename: path.resolve(__dirname, "../src/renderer/modulos", moduleName) });
   const exposed = factory(...names.map(name => context[name]));
   context.renderEquipos = exposed.renderEquipos;
   context.renderRutas = exposed.renderRutas;
