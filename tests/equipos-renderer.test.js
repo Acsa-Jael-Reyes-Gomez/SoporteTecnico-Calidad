@@ -29,7 +29,9 @@ function setup({ allowed = true } = {}) {
     },
     formatDate: (value) => value || "—"
   });
-  vm.runInContext(source, context, { filename: sourcePath });
+  const names = ["el", "can", "toast", "Modal", "catalogos", "formatDate"];
+  const factory = vm.runInThisContext(`(function(${names.join(",")}) {\n${source}\nreturn { EquipoModal, renderEquipos };\n})`, { filename: sourcePath });
+  Object.assign(context, factory(...names.map(name => context[name])));
   return { context, notices, modals };
 }
 
