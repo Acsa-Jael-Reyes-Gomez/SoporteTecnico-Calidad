@@ -93,8 +93,14 @@ jobs:
             coverage/sonar-coverage.txt
           if-no-files-found: warn
 
+      - name: ANALIZAR - validar token SonarCloud
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:SONAR_TOKEN)) {
+            throw 'Falta SONAR_TOKEN: el análisis obligatorio no puede omitirse.'
+          }
+
       - name: ANALIZAR - SonarCloud
-        if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -102,3 +108,5 @@ jobs:
           args: >
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.qualitygate.wait=true
+            -Dsonar.qualitygate.timeout=300
