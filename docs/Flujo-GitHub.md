@@ -10,6 +10,6 @@
 
 Main exige PR, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados y conversaciones resueltas. Aplica también a administradores; no permite force-push ni eliminación. No se cambia esta configuración.
 
-PR7 contiene dos eventos APPROVED de la misma cuenta Acsa-Reyes y fue fusionado. PR8 tiene sus [checks técnicos aprobados](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592), pero necesita su propia revisión. No se intentó bypass, autoaprobación ni fusión.
+PR7 contiene dos eventos APPROVED de la misma cuenta Acsa-Reyes y fue fusionado. Al corte documentado, PR #8 tenía sus [checks técnicos aprobados](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592), y requería una revisión propia. Antes de fusionar, comprobar el estado actual y la aprobación independiente. No se intentó omitir la protección ni fusionar el PR durante el corte documentado.
 
 El repositorio es público para lectura del docente. La estudiante debe entregar el enlace y los artefactos en la plataforma; el acceso público no acredita esa entrega manual.
