@@ -23,7 +23,7 @@ El tratamiento de cada uno de los **36 hallazgos iniciales** está en [HALLAZGOS
 | Comprobación                   | Resultado verificado                                                           |
 | ------------------------------ | ------------------------------------------------------------------------------ |
 | Compilación                    | Aprobada                                                                       |
-| node:test                      | 146/146; 0 fallidas, 0 canceladas y 0 omitidas                            |
+| node:test                      | 146/146; 0 fallidas, 0 canceladas y 0 omitidas                                 |
 | Casos originales               | 140 conservados y trazados; seis regresiones añadidas                          |
 | E2E Electron/SQLite            | Aprobado: inicio, Preload/IPC, login, Tickets, alta persistida                 |
 | Gate c8 corregido              | 83,30 % líneas; 70,41 % ramas; 94,66 % funciones                               |
