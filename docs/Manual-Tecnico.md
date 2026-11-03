@@ -71,7 +71,7 @@ npm test
 npm run test:coverage
 ```
 
-`npm test` compila y ejecuta `node:test`. El comando de cobertura ejecuta los casos sobre el `dist` compilado. Umbrales configurados: 75% líneas, 60% ramas y 55% funciones. En la ejecución local del 29/10/2026 aprobaron 33/33 casos; cobertura 96.16% / 81.55% / 92.31%. El log está en `docs/calidad/evidencias/local-20261029/npm-test-coverage.log`. El run remoto 40599606066 es anterior a SQLite y no valida esa revisión.
+`npm test` compila y ejecuta `node:test`. El comando de cobertura ejecuta los casos sobre el `dist` compilado. Umbrales configurados: 75% líneas, 60% ramas y 55% funciones. Como referencia histórica, la ejecución local del 29/10/2026 aprobó 33/33 casos. La ejecución de cierre verificada en GitHub Actions run 41564667224 aprobó **140/140 pruebas** y registró cobertura c8: **88,90 % de líneas, 80,75 % de ramas y 73,61 % de funciones**. Son mediciones de diferentes revisiones, y no deben presentarse como incremento de cobertura homogéneo.
 
 ## Análisis estático y formato
 
@@ -79,11 +79,11 @@ TypeScript estricto y ESLint se ejecutan en CI. ESLint cubre TypeScript, los mó
 
 ## Pipeline CI/CD
 
-`.github/workflows/quality.yml` se dispara en `push` y `pull_request` para Windows con Node 22. Las etapas instalan dependencias fijadas, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. Los runs 40974922468 y 40974928285 pasaron; el artefacto del PR está en `docs/calidad/evidencias/run-40974928285/quality-reports/`. La protección de `main` no está activa en la configuración actual del repositorio.
+`.github/workflows/quality.yml` se dispara en `push` y `pull_request` para Windows con Node 22. Las etapas instalan dependencias fijadas, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. La ejecución de cierre 41564667224 pasó y generó el artefacto `quality-reports`. Según Settings → Branches revisado por la propietaria, `main` exige Pull Request, aprobación y estado correcto del trabajo `Compilar, probar y verificar calidad`. PR #7 fue fusionado con dos aprobaciones y tres checks exitosos.
 
 ## Análisis estático
 
-El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarCloud no está integrado en esta entrega, por lo que no se presentan métricas de bugs, vulnerabilidades o code smells de esa plataforma.
+El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarQube Cloud está integrado. El dashboard de `main` mostró **Quality Gate PASSED**, cobertura de código nuevo **80,1 %**, duplicación nueva **0,48 %** y cero problemas nuevos. La cobertura general de SonarQube fue **30,2 %**. En PR #8 se añadió `sonar.qualitygate.wait=true` para que el job también falle ante Quality Gate fallido; verificar su ejecución después del cambio.
 
 ## Flujo GitHub y puertas de calidad
 
