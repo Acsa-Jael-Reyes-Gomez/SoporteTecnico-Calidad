@@ -21,7 +21,7 @@ Se aplicaron controles automatizados sobre una aplicación Electron existente. E
 
 SonarQube reportó 0 problemas nuevos, 0 nuevos hotspots de seguridad y 0,5 % de duplicación en código nuevo. La cobertura de código nuevo fue 80,1 %, superando el mínimo del Quality Gate (80 %).
 
-La propietaria revisó una regla de protección de `main` que obliga a usar Pull Request, aprobación y el check del trabajo de calidad. En PR #8 se reforzó además el workflow con `sonar.qualitygate.wait=true` y fallo ante ausencia de `SONAR_TOKEN`; se debe comprobar una nueva ejecución antes de fusionar. Continúan pendientes el acceso del docente y el video MP4 obligatorio.
+La propietaria revisó una regla de protección de `main` que obliga a usar Pull Request, aprobación y el check del trabajo de calidad. En PR #8 se reforzó además el workflow con `sonar.qualitygate.wait=true` y fallo ante ausencia de `SONAR_TOKEN`; el [run 41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) comprobó `QUALITY GATE STATUS: PASSED`, 140/140 pruebas y estilo Prettier correcto; queda revisar y fusionar el PR #8. Continúan pendientes el acceso del docente y el video MP4 obligatorio.
 
 ## Evidencias
 
