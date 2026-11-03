@@ -29,4 +29,7 @@ La propietaria revisó una regla de protección de `main` que obliga a usar Pull
 - [GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801).
 - [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
 - [Informe final](Informe-Final.md) y [métricas](calidad/METRICAS_CALIDAD.md).
-\n## Evidencia de control negativo\n\nUna captura histórica de PR #7 muestra **Quality Gate FAILED** por cobertura de código nuevo **70,7 %**, inferior al **80 %** requerido. Después, el panel final de SonarQube muestra **Quality Gate PASSED** con **80,1 % de cobertura de código nuevo**. La captura negativa demuestra que SonarQube detectó y reportó la condición, pero no permite por sí sola afirmar que el job de GitHub Actions falló; por eso se fortaleció el workflow del PR #8 con espera explícita de Quality Gate.\n
+
+## Evidencia de control negativo
+
+Una captura histórica de PR #7 muestra **Quality Gate FAILED** por cobertura de código nuevo **70,7 %**, inferior al **80 %** requerido. Después, el panel final de SonarQube muestra **Quality Gate PASSED** con **80,1 % de cobertura de código nuevo**. La captura negativa demuestra que SonarQube detectó y reportó la condición, pero no permite por sí sola afirmar que el job de GitHub Actions falló; por eso se fortaleció el workflow del PR #8 con espera explícita de Quality Gate.
