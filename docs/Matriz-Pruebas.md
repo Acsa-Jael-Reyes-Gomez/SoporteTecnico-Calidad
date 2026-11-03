@@ -1,3 +1,9 @@
+## Evidencia integral de la ejecución final: 140 casos
+
+La matriz histórica detallada PR-01 a PR-33 se conserva a continuación, pero el cierre contiene **140 pruebas automatizadas aprobadas y 0 fallidas**. El [inventario CSV de los 140 casos](calidad/INVENTARIO_140_CASOS.csv) enumera los nombres exactos extraídos de la salida `ok 1` a `ok 140` del [run 41564667224](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41564667224), con identificador, clasificación orientativa por comportamiento, escenario, resultado esperado según el nombre del caso y resultado observado. Los valores concretos de entrada y las aserciones completas están en los archivos fuente de `tests/`; no se inventan parámetros que no figuran en el log.
+
+El mismo pipeline ejecuta además el recorrido **E2E aprobado** de Electron con SQLite aislado, como paso separado. Es una verificación de comportamiento funcional adicional a los 140 casos contabilizados por `node:test`.
+
 ## Actualización de cierre — ejecución completa
 
 La matriz histórica de casos **PR-01 a PR-33** no representa el inventario completo del cierre. La ejecución final verificable de [GitHub Actions #41560908801](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) registró **140 pruebas aprobadas y 0 fallidas**, más el recorrido E2E de Electron con SQLite aislado. Para los identificadores y resultados individuales de los 140 casos, consultar el artefacto `quality-reports` y el archivo `test-results.log` de ese run; no se asignan IDs inventados. Las tablas siguientes conservan su valor como matriz histórica detallada, no como totalidad de la suite actual.
