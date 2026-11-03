@@ -45,7 +45,7 @@ El umbral del comando de cobertura es 75% de líneas, 60% de ramas y 55% de func
 
 ## Pipeline y GitHub
 
-`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en `push` y `pull_request`. El artefacto `quality-reports` conserva resultados de pruebas, cobertura y logs de TypeScript, ESLint y Prettier. La suite local aprobó 33/33 y midió 96.16% de líneas, 81.55% de ramas y 92.31% de funciones; consulta `docs/calidad/METRICAS_CALIDAD.md`. SonarCloud es condicional y no tiene análisis registrado. La protección de `main` no está habilitada; consulta `docs/Flujo-GitHub.md`.
+`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en `push` y `pull_request`. El artefacto `quality-reports` conserva resultados de pruebas, cobertura y logs de TypeScript, ESLint y Prettier. La ejecución de cierre [Actions #154](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41564667224) acreditó **140/140 pruebas aprobadas**, recorrido E2E y cobertura c8 de **88,90 % de líneas, 80,75 % de ramas y 73,61 % de funciones**. SonarQube Cloud mostró **Quality Gate PASSED** con **80,1 % de cobertura de código nuevo**. La protección de `main` fue configurada según la revisión de la propietaria en GitHub; se requiere PR, aprobación y check de calidad. Se añadió al workflow la espera del resultado de SonarQube; verificar el run nuevo antes de fusionar PR #8.
 
 Para el flujo de ramas, revisiones y configuración de protecciones, consulta [docs/Flujo-GitHub.md](docs/Flujo-GitHub.md) y la plantilla en `.github/PULL_REQUEST_TEMPLATE.md`.
 
@@ -70,5 +70,5 @@ El estado detallado de cada requisito del enunciado, incluidos los pasos externo
 - La interfaz es Electron con JavaScript, no React; el backend no es Express.
 - La base SQLite es local a cada instalación; varias computadoras no comparten automáticamente sus cambios.
 - Hay una prueba end-to-end automatizada que inicia Electron con una base temporal aislada, valida Preload/IPC, login, navegación y la creación persistida de un ticket.
-- SonarCloud y las reglas de protección de GitHub requieren configuración adicional.
-- Las revisiones independientes y manuales requieren un aprobador externo; el pipeline automático ya valida en `push` y `pull_request`.
+- SonarQube Cloud está conectado y mostró Quality Gate PASSED. El workflow del PR #8 se reforzó para fallar cuando el Quality Gate falle; la ejecución posterior debe verificarse.
+- El PR #7 obtuvo dos aprobaciones de Acsa-Reyes, tres checks aprobados y fue fusionado a `main`. Se deben seguir solicitando revisiones para los PR posteriores.
