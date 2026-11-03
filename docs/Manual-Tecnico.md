@@ -87,7 +87,7 @@ El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarQube Cloud est�
 
 ## Flujo GitHub y puertas de calidad
 
-Crear una rama de trabajo, abrir un pull request, revisar los cambios, esperar el check **Puerta de calidad** y fusionar solo con revisi처n aprobada. Un administrador debe proteger `main` para exigir pull request, aprobaci처n y el check exitoso. La configuraci처n se explica en `docs/Flujo-GitHub.md`.
+Crear una rama de trabajo, abrir un pull request, revisar los cambios, esperar el check **Puerta de calidad** y fusionar solo con revisi처n aprobada. La API confirm처 que `main` exige pull request, una aprobaci처n y el check exitoso, incluso para administradores. La configuraci처n se explica en `docs/Flujo-GitHub.md`.
 
 ## Mantenimiento
 

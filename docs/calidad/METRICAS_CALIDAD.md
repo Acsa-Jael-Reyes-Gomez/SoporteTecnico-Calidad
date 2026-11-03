@@ -1,6 +1,6 @@
 # Métricas de calidad — evidencia final y serie histórica
 
-**Corte:** 2 de noviembre de 2026 (hora de Guatemala). Los eventos del 3 de noviembre en GitHub corresponden a UTC.
+**Corte:** 3 de noviembre de 2026 (Guatemala). Los resultados históricos conservan su fecha original.
 
 ## Resumen de medición final
 
@@ -32,4 +32,8 @@ El registro más antiguo disponible reporta **25 casos automatizados** sin conse
 
 ## Pendientes de evidencia
 
-Confirmar estado del workflow asociado al `push` del commit de merge `7697745` en `main`, la protección efectiva de esa rama y el acceso del docente. La cifra de cobertura del PR no acredita por sí misma esas tres condiciones.
+El push de `main` [41562455432](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41562455432) pasó: 140/140, E2E y cobertura c8 de 88,90 % líneas, 80,75 % ramas y 73,61 % funciones. La protección está verificada por API y el repositorio es público.
+
+## Alcance global de SonarQube
+
+La API pública consultada el 03/11/2026 reporta 30,2 % de cobertura global, 3,8 % de duplicación global, 20 bugs, 1 vulnerabilidad y 15 code smells. En código nuevo reporta 80,0989 % de cobertura, 0,4816 % de duplicación y cero bugs, vulnerabilidades y code smells nuevos. El Quality Gate es OK. Los hallazgos globales permanecen como deuda técnica; la puerta de código nuevo no los elimina. Respuestas archivadas en `evidencias/cierre-20261103/sonar-metricas.json` y `sonar-quality-gate.json`.

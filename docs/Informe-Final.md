@@ -1,7 +1,7 @@
 # Informe final — Pipeline CI/CD con aseguramiento de calidad integrado
 
 **Sistema:** Soporte Técnico (Electron, Renderer JavaScript/CSS, Preload y Main TypeScript, SQLite)
-**Corte de evidencia:** 2 de noviembre de 2026 (Guatemala); las marcas UTC de GitHub figuran el 3 de noviembre.
+**Corte de evidencia:** 3 de noviembre de 2026 (Guatemala).
 **Repositorio:** https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad
 
 ## 1. Objetivo y alcance
@@ -19,7 +19,7 @@ Aplicar aseguramiento de calidad a una aplicación existente, sin reconstruirla 
 | Cobertura de código nuevo   | **80,1 %**; mínimo del Quality Gate: 80 %                                             | Mismo dashboard                                                                                                                    |
 | Hallazgos nuevos            | 0 problemas nuevos y 0 hotspots de seguridad nuevos                                   | Mismo dashboard                                                                                                                    |
 | Duplicación de código nuevo | 0,5 %                                                                                 | Mismo dashboard                                                                                                                    |
-| Revisión manual             | 2 eventos de aprobación registrados                                                   | [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7)                                                    |
+| Revisión manual             | 2 eventos de aprobación de una cuenta revisora                                        | [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7)                                                    |
 | Integración a main          | PR #7 fusionado; commit `76977452bddfd4b204a51057f84e76eb9e6cc34a`                    | [Commit de merge](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/commit/76977452bddfd4b204a51057f84e76eb9e6cc34a) |
 
 **Precisión de métricas:** el 80,1 % corresponde a la cobertura de _código nuevo del PR_ en SonarQube, no a la cobertura total de la aplicación. El comando `npm run test:coverage` conserva umbrales de 75 % de líneas, 60 % de ramas y 55 % de funciones para el conjunto instrumentado por c8.
@@ -45,14 +45,14 @@ No se deben mezclar tasas de cobertura V8 global, c8 con exclusiones y cobertura
 3. **ANALIZAR:** TypeScript, ESLint, Prettier, SonarQube Cloud y su Quality Gate.
 4. **REPORTAR:** artefacto `quality-reports`, resultados y LCOV.
 
-La ejecución de PR contiene evidencia de la respuesta de los controles. Para verificar la condición de que **no se pueda omitir el pipeline en main**, hay que confirmar además un ruleset o branch protection habilitado; una aprobación voluntaria no equivale a política obligatoria.
+La ejecución de PR contiene evidencia de la respuesta de los controles. La API de GitHub confirmó el 03/11/2026 que `main` exige PR, una aprobación, checks actualizados y el check `Compilar, probar y verificar calidad`; aplica a administradores y exige resolver conversaciones. No permite force-push ni eliminación. La respuesta está archivada en `docs/calidad/evidencias/cierre-20261103/proteccion-main.json`. El PR #8 sin aprobación devuelve `mergeable_state: blocked`; se conserva la regla sin omitirla.
 
 ## 5. Requisitos faltantes o pendientes de corroborar
 
-- **Protección de main:** la propietaria comprobó en **Settings → Branches** una regla para `main` con Pull Request obligatorio, aprobación y check `Compilar, probar y verificar calidad`. La captura de configuración no está guardada; confirmar que la regla bloquee cambios en un PR posterior.
-- **Pipeline tras la fusión:** el resultado del PR está aprobado, pero la ejecución _push_ específica del merge a `main` no está confirmada en este informe. Verificar en Actions sobre el SHA `7697745`.
-- **Acceso del docente:** invitar al docente con permiso de lectura, o publicar el repositorio solo tras auditar secretos y datos.
-- **Presentación:** se preparó un PowerPoint de 10 diapositivas con capturas auténticas del pipeline, pruebas, cobertura, SonarQube y PR #7, acompañado de anexo de evidencias y guion con pronunciación. Adjuntar los archivos PDF finales a la entrega.
+- **Protección de main:** verificada por API; evidencia JSON y PR #8 bloqueado sin aprobación.
+- **Pipeline tras la fusión:** el [run 41562455432](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41562455432) de `main` pasó con 140/140 pruebas y E2E sobre `7697745`.
+- **Acceso del docente:** el repositorio es público y sus páginas se comprobaron sin sesión. Entregar su enlace y los PDF en la plataforma del curso; no se ha verificado la entrega en dicha plataforma.
+- **Presentación:** HTML editable y PDF de 10 diapositivas actualizados con capturas auténticas de Actions y SonarQube en las diapositivas 7 y 8. No se afirma que exista un PowerPoint sin archivo.
 - **Video obligatorio:** entregar MP4 de 4–5 min, al menos 720p, con narración y demostración del flujo (rama, cambio, PR, pipeline, Quality Gate, dashboard, comparativa y conclusiones). El guion no sustituye la grabación.
 - **Matriz de pruebas:** su inventario histórico de 33 casos no es la enumeración completa de los 140 casos del run final. Consultar los nombres de pruebas del artefacto `test-results.log`.
 
@@ -65,4 +65,4 @@ La ejecución de PR contiene evidencia de la respuesta de los controles. Para ve
 
 ## 7. Conclusión
 
-El flujo SQA del PR terminó aprobado, con 140 pruebas automatizadas, recorrido E2E y Quality Gate superado. La regla de protección de `main` fue revisada por la propietaria. En PR #8 se reforzó el workflow para que el trabajo falle si SonarQube reporta un Quality Gate fallido. La ejecución [41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) pasó, incluyendo `sonar.qualitygate.wait=true`, 140 pruebas y Quality Gate PASSED. Queda revisar y fusionar la documentación y entregar el video MP4.
+El flujo SQA del PR terminó aprobado, con 140 pruebas automatizadas, recorrido E2E y Quality Gate superado. La protección de `main` quedó verificada por API. En PR #8 se reforzó el workflow para que el trabajo falle si SonarQube reporta un Quality Gate fallido. La ejecución [41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) pasó, incluyendo `sonar.qualitygate.wait=true`, 140 pruebas y Quality Gate PASSED. Queda revisar y fusionar la documentación y entregar el video MP4.

@@ -1,9 +1,9 @@
 # Presentación final del proyecto SQA (10 diapositivas)
 
 **Proyecto:** Pipeline CI/CD con aseguramiento de calidad integrado. **Caso:** sistema de soporte técnico Electron.
-**Edición actual:** cierre del PR #7, noviembre de 2026.
+**Edición actual:** 3 de noviembre de 2026; evidencia de main y cierre del PR #8.
 
-Este guion acompaña el PowerPoint/PDF de diez diapositivas. **Para completar el requisito visual, incorporar capturas auténticas** en las diapositivas 7 y 8; los marcadores todavía no son capturas finales.
+El [HTML editable](Presentacion-Proyecto-SQA.html) y el [PDF de diez diapositivas](Presentacion-Proyecto-SQA.pdf) contienen capturas auténticas en las diapositivas 7 y 8. Las fuentes y respuestas de API están en `../calidad/evidencias/cierre-20261103/`.
 
 ## 1. Portada
 
@@ -31,15 +31,15 @@ Quality Gate: **PASSED**. Cobertura de **código nuevo**: **80,1 %**, con umbral
 
 ## 7. Captura auténtica de pipeline
 
-Insertar captura de [Actions, run #41560908801](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801), mostrando los nombres de etapas, resultado exitoso y SHA. Verificar ejecución `push` del merge en `main` por separado.
+Captura real de [Actions, run 41562455432](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41562455432): push de main, commit 7697745 y ejecución exitosa; 140/140 pruebas y E2E aprobados según el log.
 
 ## 8. Captura auténtica del dashboard
 
-Insertar captura de [SonarQube para PR #7](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7), que muestre explícitamente Quality Gate PASSED, 80,1 %, problemas y duplicación. No reutilizar la captura anterior del 78,98 % como resultado final.
+Captura real del [dashboard de main](https://sonarcloud.io/summary/overall?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad), Quality Gate Passed. Las métricas nuevas de 80,1 % de cobertura y 0,48 % de duplicación se verificaron también por API; cobertura global 30,2 %.
 
 ## 9. Conclusiones y lecciones aprendidas
 
-La automatización permite detectar problemas antes de integrar. El PR #7 recibió **dos aprobaciones** y fue fusionado a `main` (commit `7697745`). Permanecen por confirmar la política de protección obligatoria, el acceso del docente y la demostración en video.
+La automatización permite detectar problemas antes de integrar. El PR #7 recibió **dos eventos de aprobación de una misma cuenta revisora** y fue fusionado a `main` (commit `7697745`). La protección se confirmó por API y el repositorio es público. Quedan revisión del PR #8, entrega en plataforma y video al final.
 
 ## 10. Referencias
 
@@ -51,7 +51,7 @@ La automatización permite detectar problemas antes de integrar. El PR #7 recibi
 
 ## Lista de entrega audiovisual
 
-- [ ] Captura real del pipeline en la diapositiva 7.
-- [ ] Captura real del dashboard final en la diapositiva 8.
-- [ ] Exportar PDF final después de insertar capturas.
+- [x] Captura real del pipeline en la diapositiva 7.
+- [x] Captura real del dashboard final en la diapositiva 8.
+- [x] PDF exportado después de insertar capturas y revisado visualmente.
 - [ ] Grabar MP4 de 4–5 minutos, resolución mínima 720p, según [guion de video](../video/Guion-Video-4-5-Minutos.md).

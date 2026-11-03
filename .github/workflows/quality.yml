@@ -93,6 +93,8 @@ jobs:
             coverage/sonar-coverage.txt
           if-no-files-found: warn
 
+      # El plan de SonarQube admite main y PR; los demás push conservan build/test/analyze/report.
+      # Los PR y main siempre exigen token y esperan un Quality Gate aprobado.
       - name: ANALIZAR - validar token SonarCloud
         if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         shell: pwsh

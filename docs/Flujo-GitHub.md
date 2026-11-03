@@ -14,11 +14,11 @@ En **Actions**, abre la ejecución asociada al pull request o al commit. El work
 
 ## Protección de `main`
 
-Según la verificación de la propietaria en **Settings → Branches**, `main` tiene una regla clásica de protección. Se marcaron Pull Request obligatorio, aprobación, actualización de checks, resolución de conversaciones y el check `Compilar, probar y verificar calidad` como requerido. Esta configuración debe preservarse y comprobarse en un PR nuevo. Una persona no puede aprobar su propio Pull Request.
+La API de GitHub confirmó el 03/11/2026 que `main` exige PR, una aprobación, checks actualizados y el check `Compilar, probar y verificar calidad`; aplica a administradores y exige resolver conversaciones. No permite force-push ni eliminación. La respuesta está archivada en `docs/calidad/evidencias/cierre-20261103/proteccion-main.json`. El PR #8 sin aprobación devuelve `mergeable_state: blocked`; se conserva la regla sin omitirla. Una persona no puede aprobar su propio PR.
 
-**Estado actual:** el repositorio está público, el PR #7 fue revisado y fusionado con dos aprobaciones y tres checks exitosos. El bloqueo del 29 de octubre correspondía a una configuración anterior y ya no describe el estado actual.
+**Estado actual:** el repositorio está público, el PR #7 fue revisado y fusionado con dos eventos de aprobación de la misma cuenta revisora y tres checks exitosos. El bloqueo del 29 de octubre correspondía a una configuración anterior y ya no describe el estado actual.
 
-La ejecución verde del workflow no demuestra por sí sola la protección. La regla fue comprobada visualmente por la propietaria; conviene conservar su captura y confirmar el bloqueo de un PR sin aprobación.
+La ejecución verde del workflow no demuestra por sí sola la protección. La regla y el bloqueo del PR #8 se verificaron por API; la respuesta se conserva como evidencia.
 
 ## Acceso del docente
 

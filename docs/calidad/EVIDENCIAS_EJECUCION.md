@@ -30,3 +30,11 @@ La fusión fue confirmada en GitHub. El análisis del PR final se realizó en el
 ## Archivo histórico
 
 Los resultados de octubre (28/28, 33/33 y métricas V8 previas) son evidencia histórica que no se debe confundir con el resultado final del PR de 140 pruebas. Véase `docs/calidad/METRICAS_CALIDAD.md`.
+
+## Cierre verificado del 03/11/2026
+
+- Push de main 41562455432: éxito, 140/140, E2E, c8 88,90 % / 80,75 % / 73,61 %.
+- Corrección 6ccb7cc: push 41687471160 y PR 41687479429 exitosos. SonarQube se ejecuta solo en PR/main por la restricción de análisis de ramas del plan; los demás checks siguen en todos los push.
+- Protección de main verificada por API: una aprobación y checks actualizados obligatorios, incluso administradores. PR #8 sin aprobación bloqueado.
+- Páginas públicas de Actions, SonarQube y PR #7 capturadas sin sesión. PNG y respuestas JSON en `evidencias/cierre-20261103/`.
+- PDF actualizado a 10 diapositivas con capturas reales. Video reservado para el último paso por indicación de la usuaria.

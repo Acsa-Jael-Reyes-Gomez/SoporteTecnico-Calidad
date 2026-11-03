@@ -14,8 +14,8 @@
 - Umbrales c8 aprobados: **88,90 % líneas**, **80,75 % ramas**, **73,61 % funciones**; mínimos del comando: 75 %, 60 % y 55 % respectivamente.
 - Análisis estático: TypeScript estricto, ESLint y Prettier aprobados.
 - SonarQube Cloud: Quality Gate **PASSED** en `main`; cobertura de código nuevo **80,1 %**, duplicación nueva **0,48 %**, 0 problemas nuevos.
-- Revisión manual: PR [#7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7) fusionado a `main`, con dos aprobaciones de Acsa-Reyes y tres checks exitosos.
-- Protección de `main`: la propietaria revisó en Settings → Branches una regla que exige PR, aprobación y estado correcto de `Compilar, probar y verificar calidad`; se recomienda probar el bloqueo con un PR nuevo y conservar captura de la configuración.
+- Revisión manual: PR [#7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7) fusionado a `main`, con dos eventos de aprobación de la misma cuenta revisora de Acsa-Reyes y tres checks exitosos.
+- Protección de `main`: verificada por API; PR obligatorio, una aprobación y checks actualizados, incluso administradores. Evidencia: `evidencias/cierre-20261103/proteccion-main.json`.
 - Documentos: SQA Plan, matriz de pruebas, línea base, reporte de mejora, manual técnico y README existen en la rama de cierre.
 - Deuda técnica: registrar y priorizar defectos no resueltos en `REVISION_Y_DEUDA_TECNICA.md`.
 
@@ -29,10 +29,10 @@
 
 ## Pendientes de cierre
 
-1. El [run 41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) ya pasó las verificaciones nuevas. Solicitar revisión del [PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8) y fusionar a `main`.
-2. Verificar que una solicitud sin aprobación o check exitoso quede bloqueada por la regla de `main`.
-3. Adjuntar PowerPoint, PDF de 10 diapositivas y anexo de capturas reales a la plataforma.
-4. Confirmar acceso del docente a repositorio y documentos.
+1. La corrección de SonarQube del commit `6ccb7cc` pasó tanto en [push 41687471160](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41687471160) como en [PR 41687479429](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41687479429). La documentación y presentación actualizadas deben superar sus propios checks; obtener revisión del PR #8 y fusionar a `main` respetando la protección.
+2. Bloqueo verificado: PR #8 sin aprobación devuelve `mergeable_state: blocked`. Conservar la regla.
+3. Adjuntar el PDF actualizado de 10 diapositivas y las capturas reales de `evidencias/cierre-20261103/` a la plataforma.
+4. Repositorio público comprobado sin sesión; entregar el enlace al docente y los PDF en la plataforma.
 5. Grabar y entregar el **video obligatorio MP4 de 4 a 5 minutos, mínimo 720p**, al final de la preparación.
 
 ## Opcionales, no exigidos
