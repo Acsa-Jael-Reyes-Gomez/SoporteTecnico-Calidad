@@ -1,83 +1,57 @@
-# Presentación del proyecto SQA
+# Presentación final del proyecto SQA (10 diapositivas)
 
-**Guion de 10 diapositivas en español.** El contenido está redactado para una exposición de estudiante y sigue el orden indicado en el enunciado. Este guion todavía debe maquetarse y exportarse a PDF; las capturas marcadas como pendientes deben sustituirse por imágenes reales del repositorio.
+**Proyecto:** Pipeline CI/CD con aseguramiento de calidad integrado. **Caso:** sistema de soporte técnico Electron.
+**Edición actual:** cierre del PR #7, noviembre de 2026.
+
+Este guion acompaña el PowerPoint/PDF de diez diapositivas. **Para completar el requisito visual, incorporar capturas auténticas** en las diapositivas 7 y 8; los marcadores todavía no son capturas finales.
 
 ## 1. Portada
 
-**Pipeline CI/CD con aseguramiento de calidad integrado**  
-Sistema: soporte técnico
-Estudiante: Acsa Jael Reyes Gómez · Curso: Aseguramiento de la Calidad del Software · Fecha: 29 de octubre de 2026
+Proyecto y estudiante; Universidad, curso y fecha de entrega.
 
 ## 2. Objetivo y alcance
 
-- El proyecto parte de una aplicación de escritorio que ya estaba desarrollada.
-- El objetivo fue agregar controles automáticos para revisar los cambios antes de integrarlos.
-- El trabajo cubre compilación, pruebas, cobertura, análisis estático, documentación y flujo de CI.
-- No se cambió la arquitectura funcional del sistema ni se conectaron las pruebas a datos reales.
+Reutilizar la aplicación existente y verificar cambios antes de integrarlos con compilación, pruebas, análisis, reportes y revisión.
 
-## 3. Sistema y herramientas
+## 3. Arquitectura y stack
 
-- La aplicación usa Electron: Renderer para la interfaz, Preload como puente y Main para la lógica del sistema.
-- La interfaz está hecha con JavaScript y CSS; el código principal usa TypeScript.
-- La información se guarda en SQLite mediante node:sqlite; cada instalacion conserva una base local.
-- Se usan `node:test`, cobertura V8, TypeScript, ESLint, Prettier y GitHub Actions.
-- No se migró a React ni Express porque no forman parte de la aplicación existente.
+Electron (Renderer JS/CSS → Preload → Main TypeScript → SQLite); GitHub Actions; node:test; c8; ESLint; Prettier; SonarQube Cloud. Variante justificada de React/Express/MySQL permitida por el enunciado.
 
-## 4. Diagrama del pipeline
+## 4. Arquitectura del pipeline
 
-`push` o `pull_request` → **CONSTRUIR** → **PROBAR** → **ANALIZAR** → **REPORTAR**
+Evento `push` o `pull_request` → **BUILD** → **TEST** (140 pruebas y E2E) → **ANALYZE** (TypeScript/ESLint/Prettier/SonarQube) → **REPORT** (logs/LCOV/artefactos).
 
-- GitHub Actions ejecuta el workflow en Windows con Node.js 22.
-- `npm ci` instala las dependencias fijadas en el lockfile.
-- La etapa de pruebas ejecuta casos y calcula cobertura; el reporte se conserva como artefacto.
-- El workflow se ejecuta en los eventos configurados. Que el check sea obligatorio para fusionar depende de la protección de rama en GitHub.
+## 5. Línea base (antes) y evolución
 
-## 5. Línea base
+Antes: **25 casos registrados**, pero tasa de aprobación y cobertura inicial **no medidas**. Después: **140 pruebas aprobadas / 0 fallidas**. El aumento del número de casos no permite afirmar mejora porcentual de cobertura por faltar línea base homogénea.
 
-| Dato inicial documentado               | Resultado                          |
-| -------------------------------------- | ---------------------------------- |
-| Casos de prueba registrados            | 25                                 |
-| Cobertura de líneas, ramas y funciones | No medida                          |
-| Resultado histórico aprobado/fallido   | No conservado                      |
-| Ejecución del pipeline inicial         | No se guardó evidencia verificable |
+## 6. Métricas finales (después)
 
-La información inicial disponible es incompleta. Por eso se conserva como línea base histórica y no se calculan porcentajes de mejora que no se pueden comprobar.
+Quality Gate: **PASSED**. Cobertura de **código nuevo**: **80,1 %**, con umbral **80 %**. **0** problemas nuevos; **0** nuevos hotspots de seguridad; **0,5 %** duplicación. No se trata de cobertura global del sistema.
 
-## 6. Métricas antes y después de integrar SQLite
+## 7. Captura auténtica de pipeline
 
-| Métrica                | Antes (run 40599606066) | Actual (run 40974928285) |   Cambio |
-| ---------------------- | ----------------------: | -----------------------: | -------: |
-| Pruebas aprobadas      |                   28/28 |                    33/33 | +5 casos |
-| Cobertura de líneas    |                  95.65% |                   96.16% | +0.51 pp |
-| Cobertura de ramas     |                  80.60% |                   81.55% | +0.95 pp |
-| Cobertura de funciones |                  90.54% |                   92.31% | +1.77 pp |
+Insertar captura de [Actions, run #41560908801](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801), mostrando los nombres de etapas, resultado exitoso y SHA. Verificar ejecución `push` del merge en `main` por separado.
 
-Los dos runs usaron Node 22 y los mismos umbrales. Esta comparación corresponde a la versión anterior y la actual; no se presenta como una mejora desde el inicio del proyecto SQA. La línea base original registró 25 casos, pero no conservó cobertura ni tasa de aprobación.
+## 8. Captura auténtica del dashboard
 
-## 7. Captura real del pipeline
+Insertar captura de [SonarQube para PR #7](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7), que muestre explícitamente Quality Gate PASSED, 80,1 %, problemas y duplicación. No reutilizar la captura anterior del 78,98 % como resultado final.
 
-La revisión actual pasó en el PR #1. Los runs [40974922468](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974922468) (`push`) y [40974928285](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974928285) (`pull_request`) aprobaron. Inserta una captura auténtica de GitHub Actions donde se vean el nombre del workflow, la rama, el ID y el resultado.
+## 9. Conclusiones y lecciones aprendidas
 
-## 8. Dashboard o reporte de calidad
-
-**Evidencia disponible:** el artefacto del run de PR está guardado en `docs/calidad/evidencias/run-40974928285/quality-reports/`. Inserta aquí una captura auténtica del artefacto o del reporte generado.
-
-SonarCloud está condicionado a configurar la organización, la clave del proyecto y el token. No hay un análisis ni dashboard SonarCloud registrado, así que no se reportan bugs, vulnerabilidades o code smells.
-
-## 9. Conclusiones y aprendizajes
-
-- Aprendí que se puede agregar un flujo de calidad a una aplicación existente sin reescribirla.
-- Las pruebas y los umbrales permiten detectar fallos de compilación, regresiones y formato antes de integrar cambios.
-- Cinco pruebas nuevas ejercitan SQLite en memoria y verifican la semilla; aprobaron en la suite local. Falta probar manualmente el arranque de Electron con una carpeta de datos temporal.
-- Para cerrar la entrega faltan las capturas auténticas, resolver el requisito de protección de `main` con el plan de GitHub, exportar la presentación y grabar el video.
+La automatización permite detectar problemas antes de integrar. El PR #7 recibió **dos aprobaciones** y fue fusionado a `main` (commit `7697745`). Permanecen por confirmar la política de protección obligatoria, el acceso del docente y la demostración en video.
 
 ## 10. Referencias
 
-- [ISO/IEC/IEEE 29119-2:2021, procesos de prueba](https://www.iso.org/standard/79428.html).
-- [ISO/IEC/IEEE 29119-3:2021, documentación de pruebas](https://www.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/07/94/79429.html).
-- [ISO/IEC 25010:2023, modelo de calidad del producto](https://www.iso.org/standard/78176.html).
-- Repositorio del proyecto: `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad`.
+- [Repositorio y PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7).
+- [GitHub Actions #41560908801](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801).
+- [SonarQube Cloud PR #7](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
+- [ISO/IEC/IEEE 29119](https://www.iso.org/standard/79428.html).
+- [ISO/IEC 25010](https://www.iso.org/standard/78176.html).
 
-## Archivos pendientes
+## Lista de entrega audiovisual
 
-Este documento es el guion, no el PDF/PPTX final. Para completar la presentación hay que maquetar las 10 diapositivas, insertar las capturas reales de las diapositivas 7 y 8 y exportar el archivo final. El video también requiere una grabación real de 4 a 5 minutos.
+- [ ] Captura real del pipeline en la diapositiva 7.
+- [ ] Captura real del dashboard final en la diapositiva 8.
+- [ ] Exportar PDF final después de insertar capturas.
+- [ ] Grabar MP4 de 4–5 minutos, resolución mínima 720p, según [guion de video](../video/Guion-Video-4-5-Minutos.md).
