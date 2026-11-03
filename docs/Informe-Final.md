@@ -65,4 +65,4 @@ La ejecución de PR contiene evidencia de la respuesta de los controles. Para ve
 
 ## 7. Conclusión
 
-El flujo SQA del PR terminó aprobado, con 140 pruebas automatizadas, recorrido E2E y Quality Gate superado. La regla de protección de `main` fue revisada por la propietaria. En PR #8 se reforzó el workflow para que el trabajo falle si SonarQube reporta un Quality Gate fallido. Falta comprobar esa nueva ejecución, fusionar la documentación y entregar el video MP4.
+El flujo SQA del PR terminó aprobado, con 140 pruebas automatizadas, recorrido E2E y Quality Gate superado. La regla de protección de `main` fue revisada por la propietaria. En PR #8 se reforzó el workflow para que el trabajo falle si SonarQube reporta un Quality Gate fallido. La ejecución [41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) pasó, incluyendo `sonar.qualitygate.wait=true`, 140 pruebas y Quality Gate PASSED. Queda revisar y fusionar la documentación y entregar el video MP4.
