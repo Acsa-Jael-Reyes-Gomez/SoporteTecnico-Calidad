@@ -1,56 +1,68 @@
-> **Actualización del 30/10/2026:** la rama `cierre-requisitos-sqa` se encuentra publicada y sincronizada. El PR #1 cerró durante la normalización de la rama; el historial y los comentarios siguen asociados al mismo número, pero la reapertura requiere una acción de GitHub permitida por el propietario. La protección de `main` no está habilitada y la revisión independiente aún está pendiente.
+# Informe final — Pipeline CI/CD con aseguramiento de calidad integrado
 
-# Informe final del proyecto SQA
+**Sistema:** Soporte Técnico (Electron, Renderer JavaScript/CSS, Preload y Main TypeScript, SQLite)
+**Corte de evidencia:** 2 de noviembre de 2026 (Guatemala); las marcas UTC de GitHub figuran el 3 de noviembre.
+**Repositorio:** https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad
 
-**Fecha de actualización:** 30 de octubre de 2026
-**Repositorio:** `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad`
+## 1. Objetivo y alcance
 
-## Resumen ejecutivo
+Aplicar aseguramiento de calidad a una aplicación existente, sin reconstruirla desde cero. El workflow `.github/workflows/quality.yml` ejecuta compilación, pruebas unitarias/de integración/de regresión, prueba E2E controlada, cobertura, análisis estático y publicación de evidencias. La aplicación no usa React/Express/MySQL: se conserva la arquitectura Electron original, variante permitida en el enunciado con justificación.
 
-Se reutilizó la aplicación Electron existente y se añadieron controles de calidad continuos. La persistencia integrada usa SQLite con `node:sqlite`; la interfaz permanece en JavaScript/CSS y el proceso principal en TypeScript. GitHub Actions se configura para `push` y `pull_request` y valida actualmente desde `cierre-requisitos-sqa`.
+## 2. Resultados finales verificados
 
-## Resultados reproducidos
+| Aspecto | Resultado | Evidencia |
+| --- | --- | --- |
+| Pruebas automatizadas | **140 aprobadas; 0 fallidas** | [Run 41560908801](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) |
+| Prueba E2E | Electron, Preload/IPC, autenticación, Tickets, inserción persistida en SQLite aislado | Misma ejecución, paso E2E |
+| Pipeline de PR | **completed / success** | [GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) |
+| SonarQube: Quality Gate | **PASSED** | [Dashboard del PR #7](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7) |
+| Cobertura de código nuevo | **80,1 %**; mínimo del Quality Gate: 80 % | Mismo dashboard |
+| Hallazgos nuevos | 0 problemas nuevos y 0 hotspots de seguridad nuevos | Mismo dashboard |
+| Duplicación de código nuevo | 0,5 % | Mismo dashboard |
+| Revisión manual | 2 eventos de aprobación registrados | [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7) |
+| Integración a main | PR #7 fusionado; commit `76977452bddfd4b204a51057f84e76eb9e6cc34a` | [Commit de merge](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/commit/76977452bddfd4b204a51057f84e76eb9e6cc34a) |
 
-- Build: aprobado.
-- Suite local actual: 33 aprobadas y 0 fallidas.
-- Cobertura local actual: 96.16% de líneas, 81.55% de ramas y 92.31% de funciones.
-- Umbrales: 75% de líneas, 60% de ramas y 55% de funciones.
-- TypeScript: 0 errores.
-- ESLint: sin errores bloqueantes.
-- Prettier: todos los archivos seleccionados aprobados.
-- GitHub Actions: la rama normalizada ejecutó la puerta de calidad correctamente; el run más reciente quedó asociado a `cierre-requisitos-sqa`.
+**Precisión de métricas:** el 80,1 % corresponde a la cobertura de *código nuevo del PR* en SonarQube, no a la cobertura total de la aplicación. El comando `npm run test:coverage` conserva umbrales de 75 % de líneas, 60 % de ramas y 55 % de funciones para el conjunto instrumentado por c8.
 
-Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. No se hizo una prueba manual de arranque de Electron ni hay pruebas E2E.
+## 3. Línea base y comparación
 
-## Estado frente al enunciado
+El expediente histórico registra **25 casos de prueba**, pero no conserva el número de aprobados/fallidos ni una medición inicial de cobertura. Por ello no se atribuye a la intervención una ganancia porcentual de cobertura desde el origen.
 
-| Requisito                                                       | Estado                 | Evidencia o acción pendiente                                                                         |
-| --------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------- |
-| Aplicación existente con operaciones de soporte/CRUD            | Cumplido               | Sistema Electron descrito en README y manuales                                                       |
-| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido               | Workflow `quality.yml` ejecutado por `push` y `pull_request`                                         |
-| Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente  | 33 casos; algunas regresiones inspeccionan código fuente                                             |
-| Integración automatizada con base de datos                      | Cumplido parcialmente  | Cinco pruebas ejercitan SQLite en memoria y la semilla; falta validar el ciclo de inicio de Electron |
-| Matriz de pruebas                                               | Cumplido               | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                                |
-| Cobertura y umbrales mínimos                                    | Cumplido               | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                     |
-| Análisis estático                                               | Cumplido parcialmente  | TypeScript y ESLint activos; SonarCloud no tiene resultado registrado                                |
-| Revisión de código y deuda técnica                              | Parcial                | Revisión local y deuda documentadas; falta aprobación independiente en el PR                         |
-| Plan SQA, línea base y reporte de mejora                        | Cumplido               | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                           |
-| Manuales técnicos y de usuario                                  | Cumplido               | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                                   |
-| README con descripción, stack e instrucciones                   | Cumplido               | `README.md`; incluye badge de GitHub Actions                                                         |
-| Protección de la rama principal                                 | No habilitada          | La API confirmó que `main` no tiene reglas de protección                                             |
-| Revisión por otra persona                                       | Pendiente              | No hay aprobación independiente registrada en el PR #1                                               |
-| Presentación final exportada a PDF/PPTX                         | Pendiente              | El repositorio contiene guiones en Markdown; falta exportar el archivo final                         |
-| Video de 4–5 minutos                                            | Complementario         | Hay guion disponible; grabarlo solo si la rúbrica del curso lo solicita                              |
-| SonarCloud y dashboard de métricas                              | Opcional/no verificado | Requiere organización, clave de proyecto y secreto; no presentar datos no medidos                    |
-| Despliegue en nube y Docker                                     | Opcional               | No implementados; no son necesarios para los controles básicos solicitados                           |
+| Indicador | Antes documentado | Resultado final verificado |
+| --- | --- | --- |
+| Casos de prueba registrados | 25 (sin resultado histórico individual) | 140 aprobados / 0 fallidos |
+| Cobertura inicial equivalente | No medida | 80,1 % *solo de código nuevo* |
+| Automatización CI y SQA | Sin resultado inicial reproducible comparable | Workflow de PR exitoso |
+| Análisis SonarQube | Sin métrica inicial equivalente verificable | Quality Gate PASSED |
+| Revisión de cambios | Sin medición inicial comparable | 2 aprobaciones del PR #7 |
 
-## Interpretación de métricas
+No se deben mezclar tasas de cobertura V8 global, c8 con exclusiones y cobertura de código nuevo de SonarQube: miden universos diferentes.
 
-El registro histórico indica 25 casos iniciales sin resultado aprobado/fallido conservado. La ejecución actual contiene 33 pruebas aprobadas. La cobertura inicial no fue medida, por lo que no se afirma una mejora porcentual respecto a una base cuantificada. La cobertura actual es 96.16% / 81.55% / 92.31%, verificada localmente y en GitHub Actions. No se cuantifican bugs, vulnerabilidades ni code smells sin un análisis SonarCloud registrado.
+## 4. Controles del pipeline
 
-## Pendientes para la entrega académica
+1. **CONSTRUIR:** compilar aplicación Electron/TypeScript.
+2. **PROBAR:** suites automatizadas, E2E de Electron con SQLite sintético y umbrales c8.
+3. **ANALIZAR:** TypeScript, ESLint, Prettier, SonarQube Cloud y su Quality Gate.
+4. **REPORTAR:** artefacto `quality-reports`, resultados y LCOV.
 
-1. Obtener una revisión independiente del PR #1 y conservar el comentario o aprobación como evidencia.
-2. Maquetar la presentación con métricas y capturas reales y exportarla a PDF/PPTX.
-3. Si la rúbrica del curso solicita el video, grabar la demostración de 4–5 minutos.
-4. Si se requiere dashboard SonarCloud, configurar sus valores en GitHub y registrar el resultado real.
+La ejecución de PR contiene evidencia de la respuesta de los controles. Para verificar la condición de que **no se pueda omitir el pipeline en main**, hay que confirmar además un ruleset o branch protection habilitado; una aprobación voluntaria no equivale a política obligatoria.
+
+## 5. Requisitos faltantes o pendientes de corroborar
+
+- **Protección de main:** no hay evidencia de un ruleset obligatorio activo. La documentación previa registró una restricción de GitHub para proteger un repositorio privado con el plan disponible. Confirmar en **Settings → Rules → Rulesets** o **Settings → Branches**. No volver público el repositorio sin evaluar información sensible.
+- **Pipeline tras la fusión:** el resultado del PR está aprobado, pero la ejecución *push* específica del merge a `main` no está confirmada en este informe. Verificar en Actions sobre el SHA `7697745`.
+- **Acceso del docente:** invitar al docente con permiso de lectura, o publicar el repositorio solo tras auditar secretos y datos.
+- **Presentación:** debe contar con capturas auténticas de GitHub Actions y SonarQube; enlaces no sustituyen capturas.
+- **Video obligatorio:** entregar MP4 de 4–5 min, al menos 720p, con narración y demostración del flujo (rama, cambio, PR, pipeline, Quality Gate, dashboard, comparativa y conclusiones). El guion no sustituye la grabación.
+- **Matriz de pruebas:** su inventario histórico de 33 casos no es la enumeración completa de los 140 casos del run final. Consultar los nombres de pruebas del artefacto `test-results.log`.
+
+## 6. Evidencias para anexar
+
+- GitHub Actions: https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801
+- PR fusionado y aprobaciones: https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7
+- SonarQube: https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7
+- Commit fusionado: https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/commit/76977452bddfd4b204a51057f84e76eb9e6cc34a
+
+## 7. Conclusión
+
+El flujo SQA del PR terminó aprobado, con 140 pruebas automatizadas, recorrido E2E y Quality Gate superado. La evaluación integral del enunciado debe conservar explícitos los pendientes de protección de rama, acceso al docente, video y capturas; no se presentan como cumplidos sin evidencia.
