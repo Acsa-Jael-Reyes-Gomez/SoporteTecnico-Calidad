@@ -94,6 +94,7 @@ jobs:
           if-no-files-found: warn
 
       - name: ANALIZAR - validar token SonarCloud
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         shell: pwsh
         run: |
           if ([string]::IsNullOrWhiteSpace($env:SONAR_TOKEN)) {
@@ -101,6 +102,7 @@ jobs:
           }
 
       - name: ANALIZAR - SonarCloud
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
