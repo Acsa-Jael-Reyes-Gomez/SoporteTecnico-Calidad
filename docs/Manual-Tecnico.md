@@ -7,7 +7,7 @@ La aplicación reutilizada es un sistema de escritorio Electron. El Renderer est
 ## Requisitos
 
 - Windows 10 o posterior, compatible con Electron 45.
-- Node.js 22 para desarrollo; Electron 45 incorpora Node.js 24 en produccion.
+- Node.js 22 para desarrollo; Electron 45 incorpora Node.js 24 en producción.
 
 La base inicial está en `assets/database/seed.db`; el esquema de referencia está en `assets/database/schema.sqlite.sql`.
 
@@ -63,6 +63,8 @@ Para recuperar una base:
 
 ## Pruebas y cobertura
 
+Ejecuta desde la raíz del repositorio:
+
 ```powershell
 npm run typecheck
 npm run lint
@@ -71,19 +73,21 @@ npm test
 npm run test:coverage
 ```
 
-`npm test` compila y ejecuta `node:test`. El comando de cobertura ejecuta los casos sobre el `dist` compilado. Umbrales configurados: 75% líneas, 60% ramas y 55% funciones. Como referencia histórica, la ejecución local del 29/10/2026 aprobó 33/33 casos. El cierre histórico anterior (antes de corregir el denominador), GitHub Actions run 41564667224, aprobó **140/140 pruebas** y registró cobertura c8: **88,90 % de líneas, 80,75 % de ramas y 73,61 % de funciones**. Son mediciones de diferentes revisiones, y no deben presentarse como incremento de cobertura homogéneo.
+`npm test` compila la aplicación y ejecuta `node:test`. En el cierre se aprobaron **146 pruebas sin fallos ni omisiones** y un recorrido E2E adicional con SQLite aislado. El comando c8 informa **83,30 % de líneas, 70,41 % de ramas y 94,66 % de funciones** con mínimos de **75/60/55 %**, respectivamente. Estas cifras corresponden al código de aplicación instrumentado, no a toda la interfaz. El historial de 25 casos definidos, 28/28, 33/33 y 140/140 está en [la línea base](Linea-Base-Calidad.md).
 
 ## Análisis estático y formato
 
-TypeScript estricto y ESLint se ejecutan en CI. ESLint cubre TypeScript, los módulos JavaScript de la interfaz, pruebas y scripts; no-undef se desactiva para el Renderer porque sus módulos comparten funciones globales. Prettier verifica la documentación y configuración editadas, sin reescribir toda la interfaz. `.hintrc` se conserva para su uso original.
+TypeScript estricto verifica tipos y ESLint analiza el código TypeScript y JavaScript. El Renderer comparte algunos bindings entre módulos; por ello sus advertencias deben revisarse en contexto y no suprimirse sin justificación. Prettier comprueba la documentación y los archivos configurados. Las reglas y su tratamiento se documentan en [Hallazgos de SonarQube](calidad/HALLAZGOS_SONAR.md).
 
 ## Pipeline CI/CD
 
-`.github/workflows/quality.yml` se dispara en `push` y `pull_request` para Windows con Node 22. Las etapas instalan dependencias fijadas, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. La ejecución de cierre 41564667224 pasó y generó el artefacto `quality-reports`. Según Settings → Branches revisado por la propietaria, `main` exige Pull Request, aprobación y estado correcto del trabajo `Compilar, probar y verificar calidad`. PR #7 fue fusionado con dos aprobaciones y tres checks exitosos.
+El workflow `.github/workflows/quality.yml` se ejecuta en `push` y `pull_request` con Windows y Node.js 22. Su secuencia integra compilación, pruebas unitarias/integración/regresión, E2E de Electron, cobertura con umbrales, validación TypeScript, ESLint, Prettier y publicación de `quality-reports`.
+
+El análisis remoto de SonarQube se ejecuta en los pull requests y en los push de `main`. Esta condición respeta las limitaciones del plan para ramas secundarias, sin omitir los demás controles. El scanner exige credenciales configuradas como secreto y usa `sonar.qualitygate.wait=true` para esperar el Quality Gate. Una falla en un control obligatorio impide que el job se apruebe.
 
 ## Análisis estático
 
-El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarQube Cloud está integrado. Como antecedente previo a la integración de PR #8, el dashboard de `main` mostró **Quality Gate PASSED**, cobertura de código nuevo **80,1 %**, duplicación nueva **0,48 %** y cero problemas nuevos. La cobertura general de SonarQube fue **30,2 %**. En PR #8 se añadió `sonar.qualitygate.wait=true` para que el job también falle ante Quality Gate fallido; el run 41677005283 comprobó 140 pruebas aprobadas y el estado `QUALITY GATE STATUS: PASSED` después de activar esa espera.
+La ejecución técnica del [PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) terminó con **Quality Gate PASSED**, **86,5 % de cobertura del código nuevo**, **0 % de duplicación nueva** y **cero hallazgos nuevos**. El panel general de `main` anterior a ese cambio mostraba otra cobertura y hallazgos históricos. No se deben mezclar los denominadores ni interpretar la aprobación del código nuevo como ausencia de deuda histórica. Consulta [las métricas](calidad/METRICAS_CALIDAD.md).
 
 ## Flujo GitHub y puertas de calidad
 
@@ -96,18 +100,13 @@ Conservar `package-lock.json`, usar `npm ci` en CI, revisar dependencias antes d
 ## Solución de problemas
 
 - **No aparece la base:** verifica permisos de escritura en la carpeta `userData` o define `SOPORTE_DATABASE_PATH`.
-- **Falla de autenticacion:** reconstruye la semilla desde otro volcado con `npm run db:sqlite:import -- "C:\ruta\volcado.sql"`. Importar reemplaza `seed.db`, pero no las bases de trabajo ya creadas.
+- **Falla de autenticación:** reconstruye la semilla desde otro volcado con `npm run db:sqlite:import -- "C:\ruta\volcado.sql"`. Importar reemplaza `seed.db`, pero no las bases de trabajo ya creadas.
 - **Falla `npm ci`:** confirma Node 22 y conectividad al registro npm.
 - **Falla TypeScript:** ejecuta `npm run typecheck` y corrige el error antes de probar.
 - **Falla cobertura:** identifica archivo/ramas sin prueba; no reduzcas los umbrales para ocultar la regresión.
-- **Error `EPERM` cargando Node:** comprueba permisos de lectura/traversal de la ruta de Node y del workspace. El primer intento aislado de esta auditoría lo encontró; la ejecución posterior con acceso al runtime pasó.
 
-## Verificación final y alcance
+## Alcance del cierre y mantenimiento de evidencias
 
-**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
+El cierre técnico del 3 de noviembre de 2026 documenta **146/146 pruebas aprobadas**, E2E exitoso, cobertura c8 **83,30 / 70,41 / 94,66 %** y Quality Gate aprobado en el PR #8. Las capturas anteriores están identificadas como antecedentes, no como cifras vigentes. Conserva sus enlaces a ejecuciones y el inventario final de casos de prueba.
 
-El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
-
-La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. PR #8 permanece abierto y sin aprobación independiente; no se fusionó ni se modificó main directamente.
-
-La regla compartida de estado Renderer y el permiso CSS inline se analizan en `calidad/HALLAZGOS_SONAR.md`; no se modifica la arquitectura.
+Al corte registrado, la integración en `main` seguía pendiente de aprobación independiente. Antes de afirmar que está fusionado, comprueba el PR y el último workflow de `main`. El video obligatorio MP4 y la entrega académica son pasos externos, no evidencia de ejecución del pipeline. Los riesgos del Renderer y los estilos inline se mantienen documentados en [Revisión y deuda técnica](calidad/REVISION_Y_DEUDA_TECNICA.md).
