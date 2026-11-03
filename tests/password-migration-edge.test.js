@@ -51,7 +51,7 @@ test("migración: identifica valores inesperados sin registrar contraseñas en e
   const insert = db.prepare("INSERT INTO usuario (idUsuario, usuario, pass) VALUES (?, ?, ?)");
   insert.run(1, "empty", null);
   insert.run(2, "invalid", "$2b$12$bad");
-  insert.run(3, "control", "dato" + String.fromCharCode(0) + "invalido");
+  insert.run(3, "control", "dato" + String.fromCharCode(0xfffd) + "invalido");
   const result = migration.migratePlaintextPasswords(db, databasePath);
   assert.equal(result.migrated, 0);
   assert.equal(result.unchanged, 3);
@@ -60,7 +60,7 @@ test("migración: identifica valores inesperados sin registrar contraseñas en e
   const reports = fs.readdirSync(path.join(directory, "backups")).filter(name => name.endsWith(".json"));
   assert.equal(reports.length, 1);
   const report = fs.readFileSync(path.join(directory, "backups", reports[0]), "utf8");
-  assert.doesNotMatch(report, /dato\\u0000invalido|\\$2b\\$12\\$bad/);
+  assert.doesNotMatch(report, /dato|\\$2b\\$12\\$bad/);
   assert.match(report, /credenciales y hashes no se incluyen/);
 });
 
