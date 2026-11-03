@@ -1,37 +1,31 @@
-> Actualizado el 29/10/2026: los resultados locales actuales incluyen la integración SQLite. El run remoto 40599606066 es histórico y pertenece al commit publicado anterior.
+# Reporte de mejora del sistema de soporte técnico — cierre SQA
 
-# Reporte de mejora de calidad
+## Alcance
 
-## Resumen
+Se aplicaron controles automatizados sobre una aplicación Electron existente. El resultado final corresponde al [PR #7 fusionado](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7), validado con [GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) y [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
 
-Se añadió una puerta de calidad automatizada al sistema Electron existente. El cambio conserva la arquitectura y las funciones del producto y establece controles repetibles para compilación, pruebas, cobertura, tipos, lint y formato. No se afirma una mejora en bugs o vulnerabilidades porque no hay un resultado SonarCloud disponible.
+## Comparación sustentada
 
-## Comparación antes y después
+| Indicador | Línea base histórica | Cierre final verificado |
+| --- | --- | --- |
+| Casos registrados | 25; sin resultados individuales conservados | 140/140 aprobados en el run final |
+| Cobertura | No medida en la línea base inicial | 80,1 % sobre código nuevo del PR; sin base homogénea anterior |
+| CI/CD verificable | No existe resultado inicial comparable | Pipeline del PR `success` |
+| Análisis estático | Sin resultado inicial comparable | TypeScript, ESLint, Prettier y Quality Gate aprobados |
+| Revisión independiente | Sin métrica inicial comparable | Dos aprobaciones registradas en PR #7 |
+| Fusión | No aplica a línea base | PR #7 integrado a `main` (SHA `7697745`) |
 
-| Métrica                              |                   Antes |                                   Después | Cambio comprobable                                                           |
-| ------------------------------------ | ----------------------: | ----------------------------------------: | ---------------------------------------------------------------------------- |
-| Casos automatizados declarados       | 25 (registro histórico) |                                        33 | 8 más que el conteo inicial documentado; el resultado inicial no se conserva |
-| Pruebas aprobadas                    |            Sin registro |                                     33/33 | Suite local completa, 29/10/2026                                             |
-| Cobertura de líneas                  |               No medida |                                    96.16% | Medición local; supera el umbral de 75%                                      |
-| Cobertura de ramas                   |               No medida |                                    81.55% | Medición local; supera el umbral de 60%                                      |
-| Cobertura de funciones               |               No medida |                                    92.31% | Medición local; supera el umbral de 55%                                      |
-| Verificación TypeScript              |               No medida |                                 0 errores | `npm run typecheck` aprobado localmente                                      |
-| Análisis ESLint                      |          No configurado |                    Configurado y aprobado | `npm run lint` aprobado localmente                                           |
-| Verificación de formato              |           No registrada |                                  Aprobada | `npm run format:check` aprobado localmente                                   |
-| Integración continua                 |              No existía | GitHub Actions en `push` y `pull_request` | Workflow activo; ejecuciones verificadas en `cierre-requisitos-sqa`          |
-| Bugs, vulnerabilidades y code smells |              No medidos |                                No medidos | Sin análisis SonarCloud registrado; no se asigna diferencia                  |
-| Protección de `main`                 |           No verificada |                             No verificada | Requiere reglas externas del repositorio                                     |
+**La ganancia comprobable** es la incorporación de un proceso repetible de controles, 140 pruebas y revisión antes del merge; no es correcto restar porcentajes de cobertura medidos sobre archivos o períodos distintos.
 
-## Cambios realizados
+## Calidad y riesgos
 
-- Se añadieron controles automáticos de compilación, pruebas, umbrales de cobertura, TypeScript, ESLint y Prettier.
-- Se guardan los informes de pruebas y cobertura como artefacto de GitHub Actions.
-- Se documentaron estrategia, límites, deuda técnica, línea base y los 33 casos automatizados.
-- Se fijaron finales de línea LF mediante `.gitattributes` para que Prettier valide igual en los equipos Windows y en Actions.
-- Se mantuvo SonarCloud condicional: no bloquea mientras el proyecto externo no esté configurado.
+SonarQube reportó 0 problemas nuevos, 0 nuevos hotspots de seguridad y 0,5 % de duplicación en código nuevo. La cobertura de código nuevo fue 80,1 %, superando el mínimo del Quality Gate (80 %).
 
-## Limitaciones y acciones posteriores
+La protección obligatoria de `main` continúa pendiente de evidencia; también deben verificarse el acceso del docente, la ejecución `push` posterior al merge y el video obligatorio.
 
-Las consultas de negocio se prueban con dobles; el adaptador se cubre con SQLite en memoria y la semilla. No hay E2E ni una prueba manual de arranque de Electron. Para completar el quality gate del repositorio, un administrador debe exigir PR y el check exitoso del job `Build, tests and quality checks` en la rama principal. SonarCloud debe habilitarse y medirse antes de presentar métricas de bugs o code smells. La comparación de cobertura inicial no es posible porque no se midió antes.
+## Evidencias
 
-El resultado exacto de cobertura y las condiciones de ejecución están en `docs/Linea-Base-Calidad.md` y `docs/calidad/EVIDENCIAS_EJECUCION.md`.
+- [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7).
+- [GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801).
+- [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
+- [Informe final](Informe-Final.md) y [métricas](calidad/METRICAS_CALIDAD.md).
