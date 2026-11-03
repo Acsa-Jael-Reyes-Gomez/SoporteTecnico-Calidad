@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const path = require("node:path");
+const { createSyntheticDatabase } = require("./helpers/synthetic-database");
 const { DatabaseSync } = require("node:sqlite");
 const { SqliteConnection } = require("../dist/main/db/sqlite_connection.js");
 
@@ -64,10 +64,32 @@ test("rechaza objetos como parámetros SQLite y conserva los errores SQL", () =>
   }
 });
 
-test("la semilla incluida pasa la verificación SQLite y limita las fechas de tickets", () => {
-  const database = new DatabaseSync(path.join(__dirname, "../assets/database/seed.db"), { readOnly: true });
+test("el esquema ficticio conserva integridad, relaciones y fechas operativas reproducibles", () => {
+  const fixture = createSyntheticDatabase();
+  const database = fixture.db;
   try {
+    // These explicit synthetic dates replace the historical dump's date boundaries.
+    database.prepare("UPDATE ticket SET fechaApertura = ?, fechaCierre = ? WHERE idTicket = 1")
+      .run("2026-09-25 10:00:00", fixture.identity.date);
     assert.equal(database.prepare("PRAGMA quick_check").get().quick_check, "ok");
+    assert.deepEqual(database.prepare("PRAGMA foreign_key_check").all(), []);
+    const relation = database.prepare(`
+      SELECT t.idTicket, tt.idTecnico, u.usuario
+      FROM ticket t
+      JOIN ticket_tecnico tt ON tt.idTicket = t.idTicket
+      JOIN usuario u ON u.idUsuario = tt.idTecnico
+      JOIN unidad un ON un.idUnidad = t.idUnidad
+      JOIN puesto p ON p.idPuesto = t.idPuesto
+      JOIN servicio s ON s.idServicio = t.idServicio
+      WHERE t.idTicket = 1
+    `).get();
+    assert.ok(relation, "el ticket ficticio debe conservar sus referencias obligatorias");
+    assert.equal(relation.idTecnico, 2);
+    assert.equal(relation.usuario, "sqa_fictitious_technician");
+    assert.throws(
+      () => database.prepare("INSERT INTO ticket_tecnico (idTicket, idTecnico) VALUES (?, ?)").run(999, 2),
+      /FOREIGN KEY/
+    );
     const [range] = database.prepare(`
       WITH operational_dates(value) AS (
         SELECT fechaEnvio FROM envio_equipo UNION ALL SELECT fechaRecepcion FROM envio_equipo
@@ -92,6 +114,6 @@ test("la semilla incluida pasa la verificación SQLite y limita las fechas de ti
     assert.equal(range.fin, "2026-10-26");
     assert.equal(range.fuera, 0);
   } finally {
-    database.close();
+    fixture.cleanup();
   }
 });

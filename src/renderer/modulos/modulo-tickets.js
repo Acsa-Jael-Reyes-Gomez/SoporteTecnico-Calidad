@@ -754,7 +754,7 @@ function TicketModal(row, onDone, prefill = null) {
     }
   }
 
-  refreshEquipoStatus();
+  void refreshEquipoStatus();
 
   if (envioPrefill?.nombreSolicitante) {
     nombreSolicitante.value = envioPrefill.nombreSolicitante;
@@ -1296,16 +1296,17 @@ function renderTickets(host) {
         el("div", { class: "field" }, [el("label", {}, [el("i", { class: "fas fa-calendar" }), " Desde"]), desde]),
         el("div", { class: "field" }, [el("label", {}, [el("i", { class: "fas fa-calendar" }), " Hasta"]), hasta]),
         el("div", { class: "actions actions-inline" }, [
-          el("button", { class: "btn", onclick: () => { if (!isLoading) { page = 1; load(); } } }, [el("i", { class: "fas fa-search" }), " Buscar"]),
+          el("button", { class: "btn", onclick: () => { if (!isLoading) { page = 1; void load(); } } }, [el("i", { class: "fas fa-search" }), " Buscar"]),
           el("button", {
             class: "btn",
             onclick: () => {
+              if (isLoading) return;
               if (typeof idUnidad.clear === 'function') idUnidad.clear();
               if (typeof idTecnico.clear === 'function') idTecnico.clear();
               desde.value = defaultDesde;
               hasta.value = defaultHasta;
               page = 1;
-              load();
+              void load();
             }
           }, [el("i", { class: "fas fa-broom" }), " Limpiar"])
         ])
@@ -1452,13 +1453,13 @@ function renderTickets(host) {
         onPageChange: (nextPage) => {
           if (isLoading || nextPage === page) return;
           page = nextPage;
-          load();
+          void load();
         },
         onPageSizeChange: (nextPageSize) => {
           if (isLoading || nextPageSize === pageSize) return;
           pageSize = nextPageSize;
           page = 1;
-          load();
+          void load();
         }
       });
 
@@ -1467,13 +1468,15 @@ function renderTickets(host) {
       tableScroll.appendChild(tbl);
       tableFooter.appendChild(pager);
       normalizeExcelTableHeaders(tableWrap);
+    } catch (err) {
+      info.textContent = "Error: " + getUserErrorMessage(err, "Ocurrió un error al cargar los tickets.");
     } finally {
       // ✅ Siempre liberar el flag de carga
       isLoading = false;
     }
   }
 
-  load();
+  void load();
 
   if (pendingDirectTicketId) {
     setTimeout(() => {

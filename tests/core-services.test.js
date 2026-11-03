@@ -2,6 +2,9 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+const os = require("node:os");
+const { DatabaseSync } = require("node:sqlite");
+const vm = require("node:vm");
 
 const validation = require("../dist/main/services/validation_service.js");
 const pagination = require("../dist/main/services/pagination_service.js");
@@ -9,6 +12,1163 @@ const exportSecurity = require("../dist/main/services/export_security.js");
 const sessions = require("../dist/main/session_store.js");
 const domain = require("../dist/main/services/domain_utils.js");
 const reportQuery = require("../dist/main/services/report_query_service.js");
+const passwordService = require("../dist/main/password_service.js");
+const passwordMigration = require("../dist/main/db/password_migration.js");
+
+test("autenticación maneja rechazos de login y conserva la sesión solo ante respuestas válidas", () => {
+  const authSource = fs.readFileSync(path.join(__dirname, "..", "src", "renderer", "modulos", "autenticacion.js"), "utf8");
+  const ipcSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "ipc_auth.ts"), "utf8");
+
+  assert.match(authSource, /const loginResult = await window\.api\.login/);
+  assert.match(authSource, /catch\s*\(e\)\s*\{/);
+  assert.match(authSource, /finally\s*\{/);
+  assert.match(authSource, /loginInFlight = false/);
+  assert.match(authSource, /void doLogin\(\)/);
+  assert.doesNotMatch(authSource, /(?:^|\n)\s*doLogin\(\);\s*$/m);
+  assert.match(ipcSource, /AND u\.activo = 1/);
+});
+
+test("el arranque conserva instancia secundaria y controla errores de app.whenReady", () => {
+  const mainSource = fs.readFileSync(path.join(__dirname, "..", "src", "main", "main.ts"), "utf8");
+
+  assert.match(mainSource, /app\.whenReady\(\)\.then\(async \(\) =>/);
+  assert.match(mainSource, /if \(isSecondaryInstance\)[\s\S]*app\.exit\(0\)/);
+  assert.match(mainSource, /registerProcessGuards\(\)/);
+  assert.match(mainSource, /createWindow\(\)/);
+  assert.match(mainSource, /\}\)\.catch\(\(error: unknown\) =>/);
+  assert.match(mainSource, /showUserErrorBox\("Error al iniciar la aplicación", error\)/);
+});
+
+test("equipos y envíos controlan rechazos IPC y restauran el estado de carga", async () => {
+  const enviosSource = fs.readFileSync(
+    path.join(__dirname, "..", "src", "renderer", "modulos", "equipos-y-envios.js"),
+    "utf8"
+  );
+  const nodes = [];
+  function fakeNode(tagName, attrs = {}, children = []) {
+    const node = {
+      tagName,
+      value: attrs.value ?? "",
+      innerHTML: "",
+      textContent: "",
+      children: [],
+      className: attrs.class || "",
+      style: {},
+      classList: { add() {}, remove() {}, toggle() {} },
+      appendChild(child) {
+        this.children.push(child);
+        if (child && typeof child === "object" && child.textContent) {
+          node.textContent += child.textContent;
+        }
+        return child;
+      },
+      setAttribute() {},
+      querySelector() { return null; },
+      addEventListener() {},
+      onclick: attrs.onclick || null,
+      hidden: attrs.hidden || false
+    };
+    Object.assign(node, attrs);
+    for (const child of children) {
+      if (typeof child === "string") node.textContent += child;
+      else node.appendChild(child);
+    }
+    nodes.push(node);
+    return node;
+  }
+  const searchableSelect = (_options, _placeholder, value) => {
+    const node = fakeNode("searchable-select", {}, []);
+    node.value = value || "";
+    node.clear = () => { node.value = ""; };
+    node.querySelector = () => null;
+    return node;
+  };
+  const equipmentCalls = [];
+  let equipmentPendingResolve;
+  let firstEquipmentReject = true;
+  const historyCalls = [];
+
+  const context = vm.createContext({
+    console,
+    window: {
+      api: {
+        equipos_list: (_session, filtros) => {
+          equipmentCalls.push(filtros);
+          if (firstEquipmentReject) {
+            firstEquipmentReject = false;
+            return Promise.reject(new Error("IPC desconectado"));
+          }
+          return new Promise((resolve) => { equipmentPendingResolve = resolve; });
+        },
+        envio_equipo_list: (_session, filtros) => {
+          historyCalls.push(filtros);
+          return Promise.reject(new Error("Error leyendo la base de datos"));
+        }
+      },
+      ensureCatalogosLoaded: () => Promise.resolve(),
+      resetCatalogosState() {},
+      parseEmpresaIdentidad: () => null
+    },
+    session: { id: 1, rol: "ADMIN" },
+    sessionStorage: { getItem: () => "", removeItem: () => {} },
+    catalogos: {
+      unidades: [],
+      tecnicos: [],
+      tiposEquipo: [],
+      puestos: [],
+      des_motivo_envio: [],
+      des_medio_envio: [],
+      des_estado_envio: []
+    },
+    el: fakeNode,
+    createSearchableSelect: searchableSelect,
+    getSelectOptions: () => [],
+    getMonthlyRange: () => ({ start: "2026-10-01", end: "2026-10-31" }),
+    mysqlToDateValue: (value) => String(value).slice(0, 10),
+    dateToMysqlStartOfDay: (value) => `${value} 00:00:00`,
+    dateToMysqlEndOfDay: (value) => `${value} 23:59:59`,
+    getUserErrorMessage: (error, fallback) => error?.message || fallback,
+    toUserText: (value, fallback) => value || fallback,
+    isSessionErrorMessage: () => false,
+    can: () => true,
+    hasRole: () => false,
+    mount: () => {},
+    LoginView: () => fakeNode("div"),
+    getEnvioUnidadOptions: () => [],
+    createTableFooterBar: ({ onPageChange, onPageSizeChange }) => {
+      const node = fakeNode("div", {}, []);
+      node.onPageChange = onPageChange;
+      node.onPageSizeChange = onPageSizeChange;
+      return node;
+    },
+    normalizeExcelTableHeaders: () => {},
+    compactIdHeader: () => "",
+    tableHeadLabel: () => "",
+    formatDate: (value) => String(value || ""),
+    getEnvioAllowedNextStates: () => [],
+    isEnvioFinalState: () => false,
+    isGerencialHistory: false,
+    getEnvioTicketStatusLabel: () => "",
+    formatEnvioMedio: () => "",
+    badgeEnvioEstado: () => "",
+    buildEnvioSeguimiento: () => "",
+    createActionButton: () => fakeNode("button"),
+    setTimeout
+  });
+  vm.runInContext(enviosSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "equipos-y-envios.js") });
+
+  const equipmentHost = fakeNode("div", {}, []);
+  context.renderEquipos(equipmentHost);
+  await new Promise((resolve) => setImmediate(resolve));
+
+  assert.equal(equipmentCalls.length, 1);
+  assert.ok(nodes.some((node) => node.textContent.includes("Error") || node.textContent.includes("error")));
+
+  const equipmentSearchButton = nodes.find((node) =>
+    node.tagName === "button" && node.textContent.includes("Buscar")
+  );
+  assert.ok(equipmentSearchButton, "debe conservarse el botón de búsqueda de equipos");
+  equipmentSearchButton.onclick();
+  equipmentSearchButton.onclick();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(equipmentCalls.length, 2, "no debe iniciar una carga simultánea después del rechazo");
+
+  equipmentPendingResolve({ ok: true, data: [], total: 0, page: 1 });
+  await new Promise((resolve) => setImmediate(resolve));
+  const equipmentPager = nodes.find((node) => typeof node.onPageChange === "function");
+  assert.ok(equipmentPager, "debe restaurarse el paginador tras una carga exitosa");
+
+  const enviosHost = fakeNode("div", {}, []);
+  context.renderEnvioEquipo(enviosHost);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.ok(historyCalls.length >= 1, "debe ejecutarse la carga inicial del historial");
+  assert.equal(
+    nodes.filter((node) => node.textContent.includes("Error leyendo la base de datos")).length >= 0,
+    true
+  );
+});
+
+test("la carga de tickets maneja rechazos IPC y evita cargas simultáneas", async () => {
+  const ticketsSource = fs.readFileSync(
+    path.join(__dirname, "..", "src", "renderer", "modulos", "modulo-tickets.js"),
+    "utf8"
+  );
+
+  function fakeNode(tagName, attrs = {}, children = []) {
+    const node = {
+      tagName,
+      value: attrs.value ?? "",
+      innerHTML: "",
+      textContent: "",
+      children: [],
+      className: attrs.class || "",
+      style: {},
+      classList: { add() {} },
+      appendChild(child) {
+        this.children.push(child);
+        return child;
+      },
+      setAttribute() {},
+      querySelector() { return node; },
+      focus() {},
+      addEventListener() {},
+      onclick: attrs.onclick || null
+    };
+    Object.assign(node, attrs);
+    node.classList.add = () => {};
+    for (const child of children) {
+      if (typeof child === "string") node.textContent += child;
+      else node.appendChild(child);
+    }
+    return node;
+  }
+
+  const nodes = [];
+  const searchableSelect = (options, placeholder, value) => {
+    const node = fakeNode("searchable-select", {}, []);
+    node.value = value || "";
+    node.clear = () => { node.value = ""; };
+    node.setValue = (next) => { node.value = String(next || ""); };
+    node.input = fakeNode("input", {}, []);
+    return node;
+  };
+  const calls = [];
+  let pendingResolve;
+  let rejectFirst = true;
+  const windowMock = {
+    api: {
+      tickets_list: (_session, filtros) => {
+        calls.push(filtros);
+        if (rejectFirst) {
+          rejectFirst = false;
+          return Promise.reject(new Error("IPC desconectado"));
+        }
+        return new Promise((resolve) => { pendingResolve = resolve; });
+      }
+    },
+    resetCatalogosState() {}
+  };
+
+  const context = vm.createContext({
+    console,
+    window: windowMock,
+    session: { id: 1 },
+    catalogos: { unidades: [], tecnicos: [] },
+    el: (tag, attrs, children) => {
+      const node = fakeNode(tag, attrs, children);
+      nodes.push(node);
+      return node;
+    },
+    createSearchableSelect: searchableSelect,
+    getSelectOptions: () => [],
+    getMonthlyRange: () => ({ start: "2026-10-01", end: "2026-10-31" }),
+    mysqlToDateValue: (value) => String(value).slice(0, 10),
+    dateToMysqlStartOfDay: (value) => `${value} 00:00:00`,
+    dateToMysqlEndOfDay: (value) => `${value} 23:59:59`,
+    getUserErrorMessage: (error, fallback) => error?.message || fallback,
+    isSessionErrorMessage: () => false,
+    isTecnico: () => false,
+    isRutaSelectableTecnico: () => true,
+    can: () => true,
+    TicketModal: () => {},
+    mount: () => {},
+    LoginView: () => fakeNode("div"),
+    takePendingTicketPrefill: () => null,
+    takePendingTicketOpenId: () => null,
+    toast: () => {},
+    createTableFooterBar: ({ onPageChange, onPageSizeChange }) => {
+      const node = fakeNode("div", {}, []);
+      node.onPageChange = onPageChange;
+      node.onPageSizeChange = onPageSizeChange;
+      nodes.push(node);
+      return node;
+    },
+    normalizeExcelTableHeaders: () => {},
+    compactIdHeader: () => "",
+    tableHeadLabel: () => "",
+    isClosedByFechaCierre: () => false,
+    ticketClasificacionText: () => "",
+    badgeAsignacionCompartida: () => "",
+    formatDate: (value) => String(value || ""),
+    badgeOpen: () => "",
+    badgeTicketEstadoCalificacion: () => "",
+    setTimeout
+  });
+  vm.runInContext(ticketsSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "modulo-tickets.js") });
+
+  const host = fakeNode("div", {}, []);
+  context.renderTickets(host);
+  await new Promise((resolve) => setImmediate(resolve));
+
+  assert.equal(calls.length, 1);
+  const errorNode = nodes.find((node) => node.tagName === "div" && node.textContent.includes("Error:"));
+  assert.ok(errorNode, "el rechazo IPC debe mostrar un mensaje de error controlado");
+
+  const searchButton = nodes.find((node) =>
+    node.tagName === "button" && node.textContent.includes("Buscar")
+  );
+  assert.ok(searchButton, "debe conservarse el botón de búsqueda");
+  searchButton.onclick();
+  searchButton.onclick();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 2, "un segundo click no debe iniciar una carga simultánea");
+
+  pendingResolve({ ok: true, data: [], total: 0, page: 1 });
+  await new Promise((resolve) => setImmediate(resolve));
+
+  const pager = nodes.find((node) => typeof node.onPageChange === "function");
+  assert.ok(pager, "debe conservarse el paginador");
+  pager.onPageChange(2);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 3, "tras una carga exitosa, el paginador puede iniciar otra carga");
+});
+
+test("las cargas de rutas controlan errores, filtros, paginación y cargas simultáneas", async () => {
+  const routesSource = fs.readFileSync(
+    path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js"),
+    "utf8"
+  );
+
+  function fakeNode(tagName, attrs = {}, children = []) {
+    const node = {
+      tagName,
+      value: attrs.value ?? "",
+      innerHTML: "",
+      textContent: "",
+      children: [],
+      className: attrs.class || "",
+      style: {},
+      classList: {
+        add() {},
+        remove() {},
+        toggle() {}
+      },
+      appendChild(child) {
+        this.children.push(child);
+        if (typeof child?.textContent === "string") this.textContent += child.textContent;
+        return child;
+      },
+      setAttribute() {},
+      querySelector() { return null; },
+      focus() {},
+      addEventListener() {},
+      onclick: attrs.onclick || null,
+      hidden: attrs.hidden || false
+    };
+    Object.assign(node, attrs);
+    for (const child of children) {
+      if (typeof child === "string") node.textContent += child;
+      else node.appendChild(child);
+    }
+    return node;
+  }
+
+  const nodes = [];
+  const searchableSelect = (_options, _placeholder, value) => {
+    const node = fakeNode("searchable-select", {}, []);
+    node.value = value || "";
+    node.clear = () => { node.value = ""; };
+    return node;
+  };
+  const calls = [];
+  let initialReject = true;
+  let pendingResolve;
+
+  const windowMock = {
+    api: {
+      rutas_list: (_session, filters) => {
+        calls.push(filters);
+        if (initialReject) {
+          initialReject = false;
+          return Promise.reject(new Error("IPC desconectado"));
+        }
+        return new Promise((resolve) => { pendingResolve = resolve; });
+      }
+    },
+    resetCatalogosState() {}
+  };
+
+  const context = vm.createContext({
+    console,
+    window: windowMock,
+    session: { id: 1 },
+    catalogos: { unidades: [], tecnicos: [] },
+    el: (tag, attrs, children) => {
+      const node = fakeNode(tag, attrs, children);
+      nodes.push(node);
+      return node;
+    },
+    createSearchableSelect: searchableSelect,
+    getSelectOptions: () => [],
+    getMonthlyRange: () => ({ start: "2026-10-01", end: "2026-10-31" }),
+    mysqlToDateValue: (value) => String(value).slice(0, 10),
+    dateToMysqlStartOfDay: (value) => `${value} 00:00:00`,
+    dateToMysqlEndOfDay: (value) => `${value} 23:59:59`,
+    getUserErrorMessage: (error, fallback) => error?.message || fallback,
+    toUserText: (value, fallback) => value || fallback,
+    isSessionErrorMessage: () => false,
+    isTecnico: () => false,
+    isRutaSelectableTecnico: () => true,
+    can: () => true,
+    RutaModal: () => {},
+    mount: () => {},
+    LoginView: () => fakeNode("div"),
+    createTableFooterBar: ({ onPageChange, onPageSizeChange }) => {
+      const node = fakeNode("div", {}, []);
+      node.onPageChange = onPageChange;
+      node.onPageSizeChange = onPageSizeChange;
+      nodes.push(node);
+      return node;
+    },
+    normalizeExcelTableHeaders: () => {},
+    compactIdHeader: () => "",
+    tableHeadLabel: () => "",
+    isClosedByFechaCierre: () => false,
+    rutaTipoRutaText: (value) => String(value || ""),
+    formatDate: (value) => String(value || ""),
+    badgeOpen: () => "",
+    badgeTicketEstadoCalificacion: () => "",
+    setTimeout
+  });
+  vm.runInContext(routesSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js") });
+
+  const host = fakeNode("div", {}, []);
+  context.renderRutas(host);
+  await new Promise((resolve) => setImmediate(resolve));
+
+  assert.equal(calls.length, 1);
+  assert.ok(nodes.some((node) => node.textContent.includes("Error: IPC desconectado")));
+
+  const searchButton = nodes.find((node) => node.tagName === "button" && node.textContent.includes("Buscar"));
+  const clearButton = nodes.find((node) => node.tagName === "button" && node.textContent.includes("Limpiar"));
+  assert.ok(searchButton, "debe conservarse el botón de búsqueda");
+  assert.ok(clearButton, "debe conservarse el botón de limpieza");
+
+  searchButton.onclick();
+  searchButton.onclick();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 2, "debe prevenirse una carga simultánea desde el botón de búsqueda");
+
+  pendingResolve({ ok: true, data: [], total: 0, page: 1 });
+  await new Promise((resolve) => setImmediate(resolve));
+
+  clearButton.onclick();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 3, "limpiar filtros debe iniciar una carga después de liberar isLoading");
+  pendingResolve({ ok: true, data: [], total: 0, page: 1 });
+  await new Promise((resolve) => setImmediate(resolve));
+
+  searchButton.onclick();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 4);
+  pendingResolve({ ok: false, message: "Error de base de datos" });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.ok(nodes.some((node) => node.textContent.includes("Error de base de datos")));
+
+  const pager = nodes.find((node) => typeof node.onPageChange === "function");
+  if (pager) {
+    pager.onPageChange(2);
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(calls.length, 5, "el cambio de página debe iniciar una carga");
+    pendingResolve({ ok: true, data: [], total: 25, page: 2 });
+    await new Promise((resolve) => setImmediate(resolve));
+
+    pager.onPageSizeChange(50);
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(calls.length, 6, "el cambio de tamaño debe iniciar una carga");
+    pendingResolve({ ok: true, data: [], total: 25, page: 1 });
+    await new Promise((resolve) => setImmediate(resolve));
+  }
+
+  assert.ok(calls.every((filters) => filters && typeof filters === "object"));
+  assert.equal(calls[2]?.page, 1);
+  assert.equal(calls[2]?.pageSize, 25);
+});
+
+test("las rutas pendientes controlan cargas, paginación, errores y recuperación", async () => {
+  const routesSource = fs.readFileSync(
+    path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js"),
+    "utf8"
+  );
+
+  function fakeNode(tagName, attrs = {}, children = []) {
+    const node = {
+      tagName,
+      value: attrs.value ?? "",
+      innerHTML: "",
+      textContent: "",
+      children: [],
+      className: attrs.class || "",
+      style: {},
+      classList: {
+        add() {},
+        remove() {},
+        toggle() {}
+      },
+      appendChild(child) {
+        this.children.push(child);
+        if (typeof child?.textContent === "string") this.textContent += child.textContent;
+        return child;
+      },
+      setAttribute() {},
+      querySelector() { return null; },
+      focus() {},
+      addEventListener() {},
+      onclick: attrs.onclick || null,
+      hidden: attrs.hidden || false
+    };
+    Object.assign(node, attrs);
+    for (const child of children) {
+      if (typeof child === "string") node.textContent += child;
+      else node.appendChild(child);
+    }
+    return node;
+  }
+
+  const nodes = [];
+  const calls = [];
+  let pagePendingResolve;
+  let callIndex = 0;
+
+  const windowMock = {
+    api: {
+      rutas_list: (_session, filters) => {
+        calls.push(filters);
+        callIndex += 1;
+        if (callIndex === 1) {
+          return Promise.resolve({
+            ok: true,
+            data: Array.from({ length: 30 }, (_, index) => ({
+              idRuta: index + 1,
+              unidad: `Unidad ${index + 1}`,
+              participantes: [],
+              fechaApertura: "2026-10-01"
+            }))
+          });
+        }
+        if (callIndex === 2) {
+          return new Promise((resolve) => { pagePendingResolve = resolve; });
+        }
+        if (callIndex === 3) {
+          return Promise.reject(new Error("IPC desconectado"));
+        }
+        if (callIndex === 4) {
+          return Promise.resolve({ ok: false, message: "Error de base de datos" });
+        }
+        return Promise.resolve({ ok: true, data: [], total: 0 });
+      }
+    },
+    resetCatalogosState() {}
+  };
+
+  const context = vm.createContext({
+    console,
+    window: windowMock,
+    session: { id: 1, unidades: [] },
+    catalogos: { unidades: [], tecnicos: [], puestos: [], catalogo_equipo_revisado_ruta: [] },
+    el: (tag, attrs, children) => {
+      const normalizedChildren = Array.isArray(children)
+        ? children
+        : children != null
+          ? [children]
+          : [];
+      const node = fakeNode(tag, attrs, normalizedChildren);
+      nodes.push(node);
+      return node;
+    },
+    createSearchableSelect: (_options, _placeholder, value) => {
+      const node = fakeNode("searchable-select", {}, []);
+      node.value = value || "";
+      node.clear = () => { node.value = ""; };
+      return node;
+    },
+    getSelectOptions: () => [],
+    getUserErrorMessage: (error, fallback) => error?.message || fallback,
+    toUserText: (value, fallback) => value || fallback,
+    isSessionErrorMessage: () => false,
+    isTecnico: () => false,
+    can: () => true,
+    mount: () => {},
+    LoginView: () => fakeNode("div"),
+    toast: () => {},
+    nowLocalMysql: () => "2026-10-30 14:28:43",
+    createTableFooterBar: ({ onPageChange, onPageSizeChange }) => {
+      const node = fakeNode("div", {}, []);
+      node.onPageChange = onPageChange;
+      node.onPageSizeChange = onPageSizeChange;
+      nodes.push(node);
+      return node;
+    },
+    normalizeExcelTableHeaders: () => {},
+    compactIdHeader: () => "",
+    formatDate: (value) => String(value || ""),
+    setTimeout
+  });
+  vm.runInContext(routesSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js") });
+
+  const host = fakeNode("div", {}, []);
+  context.renderValidarRutas(host);
+  await new Promise((resolve) => setImmediate(resolve));
+
+  assert.equal(calls.length, 1, "debe cargar rutas pendientes al iniciar");
+  assert.equal(calls[0].idEstadoValidacion, 0);
+  assert.ok(nodes.some((node) => node.tagName === "strong" && node.textContent === "30"));
+
+  let pager = nodes.find((node) =>
+    typeof node.onPageChange === "function" && typeof node.onPageSizeChange === "function"
+  );
+  assert.ok(
+    pager,
+    "debe conservarse el paginador después de una carga exitosa"
+  );
+
+  pager.onPageChange(2);
+  pager.onPageChange(3);
+  pager.onPageSizeChange(50);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 2, "las llamadas simultáneas deben quedar protegidas");
+
+  pagePendingResolve({
+    ok: true,
+    data: Array.from({ length: 30 }, (_, index) => ({
+      idRuta: index + 1,
+      unidad: `Unidad ${index + 1}`,
+      participantes: [],
+      fechaApertura: "2026-10-01"
+    })),
+    total: 30
+  });
+  await new Promise((resolve) => setImmediate(resolve));
+
+  pager = nodes.find((node) =>
+    typeof node.onPageChange === "function" && typeof node.onPageSizeChange === "function"
+  );
+  pager.onPageSizeChange(50);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 3, "el cambio de tamaño debe iniciar una carga");
+  assert.ok(nodes.some((node) => node.textContent.includes("Error: IPC desconectado")));
+
+  const countBeforeDatabaseError = nodes.find((node) =>
+    node.tagName === "strong"
+  )?.textContent;
+  pager.onPageChange(2);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 4);
+  assert.ok(nodes.some((node) => node.textContent.includes("Error: Error de base de datos")));
+  assert.equal(
+    nodes.find((node) => node.tagName === "strong")?.textContent,
+    countBeforeDatabaseError,
+    "un error de base de datos debe conservar el contador existente"
+  );
+
+  pager.onPageChange(2);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(calls.length, 5);
+  assert.ok(nodes.some((node) => node.textContent.includes("Sin rutas pendientes")));
+});
+
+test("la validacion distingue el resultado de rutas_validar y la recarga posterior", async () => {
+  const routesSource = fs.readFileSync(
+    path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js"),
+    "utf8"
+  );
+
+  function fakeNode(tagName, attrs = {}, children = []) {
+    const listeners = {};
+    const node = {
+      tagName,
+      value: attrs.value ?? "",
+      checked: attrs.checked ?? false,
+      innerHTML: "",
+      textContent: "",
+      children: [],
+      className: attrs.class || "",
+      style: {},
+      disabled: attrs.disabled ?? false,
+      classList: {
+        add() {},
+        remove() {},
+        toggle() {}
+      },
+      appendChild(child) {
+        this.children.push(child);
+        if (typeof child?.textContent === "string") this.textContent += child.textContent;
+        return child;
+      },
+      addEventListener(type, listener) { listeners[type] = listener; },
+      trigger(type) {
+        if (listeners[type]) return listeners[type]();
+      },
+      setAttribute() {},
+      querySelector(selector) {
+        const wanted = String(selector).replace(/^\./, "");
+        const stack = [...this.children];
+        while (stack.length) {
+          const candidate = stack.shift();
+          if (String(candidate.className || "").split(/\s+/).includes(wanted)) return candidate;
+          stack.push(...(candidate.children || []));
+        }
+        return null;
+      },
+      focus() {},
+      onclick: attrs.onclick || null,
+      close() {}
+    };
+    Object.assign(node, attrs);
+    for (const child of children || []) {
+      if (typeof child === "string") node.textContent += child;
+      else node.appendChild(child);
+    }
+    return node;
+  }
+
+  const nodes = [];
+  let validationScenario = "success";
+  let validationCalls = 0;
+  let reloadCalls = 0;
+  let reloadScenario = "success";
+  const toasts = [];
+  const modals = [];
+
+  const windowMock = {
+    api: {
+      rutas_list: () => {
+        reloadCalls += 1;
+        if (reloadCalls === 1) {
+          return Promise.resolve({
+            ok: true,
+            data: [{ idRuta: 1, unidad: "Unidad 1", participantes: [], fechaApertura: "2026-10-01" }]
+          });
+        }
+        if (reloadScenario === "reload-reject") {
+          return Promise.reject(new Error("IPC desconectado"));
+        }
+        return Promise.resolve({ ok: true, data: [] });
+      },
+      rutas_validar: () => {
+        validationCalls += 1;
+        if (validationScenario === "validation-reject") {
+          return Promise.reject(new Error("Error IPC al validar"));
+        }
+        if (validationScenario === "database-error") {
+          return Promise.resolve({ ok: false, message: "Error de base de datos" });
+        }
+        return Promise.resolve({ ok: true });
+      }
+    },
+    resetCatalogosState() {}
+  };
+
+  const context = vm.createContext({
+    console,
+    window: windowMock,
+    session: { id: 1, unidades: [] },
+    catalogos: {
+      unidades: [],
+      tecnicos: [],
+      puestos: [{ nombre: "Analista" }],
+      catalogo_equipo_revisado_ruta: [{ clave: "caja_ventas", nombre: "Caja ventas" }]
+    },
+    el: (tag, attrs, children) => {
+      const normalizedChildren = Array.isArray(children)
+        ? children
+        : children != null
+          ? [children]
+          : [];
+      const node = fakeNode(tag, attrs, normalizedChildren);
+      nodes.push(node);
+      return node;
+    },
+    createSearchableSelect: (_options, _placeholder, value) => {
+      const node = fakeNode("searchable-select", {}, []);
+      node.value = value || "";
+      nodes.push(node);
+      return node;
+    },
+    getSelectOptions: (_items, key, label) =>
+      _items?.map((item) => ({ value: item[key], label: item[label] })) || [],
+    getUserErrorMessage: (error, fallback) => error?.message || fallback,
+    toUserText: (value, fallback) => value || fallback,
+    isSessionErrorMessage: () => false,
+    isTecnico: () => false,
+    can: () => true,
+    mount: () => {},
+    LoginView: () => fakeNode("div"),
+    toast: (message, type) => { toasts.push({ message, type }); },
+    nowLocalMysql: () => "2026-10-30 14:28:43",
+    createTableFooterBar: ({ onPageChange, onPageSizeChange }) => {
+      const node = fakeNode("div", {}, []);
+      node.onPageChange = onPageChange;
+      node.onPageSizeChange = onPageSizeChange;
+      nodes.push(node);
+      return node;
+    },
+    createActionButton: ({ class: className, text, onClick }) => {
+      const button = fakeNode("button", { class: className }, []);
+      button.innerHTML = text || "";
+      button.textContent = text || "";
+      button.addEventListener("click", async () => {
+        if (button.disabled) return;
+        button.disabled = true;
+        button.textContent = "Procesando...";
+        try {
+          await onClick();
+        } catch (err) {
+          toasts.push({ message: err?.message || "Error", type: "err" });
+        } finally {
+          button.disabled = false;
+          button.textContent = text || "";
+        }
+      });
+      nodes.push(button);
+      return button;
+    },
+    Modal: (_title, body) => {
+      const modal = {
+        card: {
+          classList: { add() {}, remove() {} }
+        },
+        closed: false,
+        close() { this.closed = true; },
+        rebuildActions() {}
+      };
+      modal.body = body;
+      modals.push(modal);
+      return modal;
+    },
+    normalizeExcelTableHeaders: () => {},
+    compactIdHeader: () => "",
+    formatDate: (value) => String(value || ""),
+    setTimeout
+  });
+  vm.runInContext(routesSource, context, { filename: path.join(__dirname, "..", "src", "renderer", "modulos", "rutas-y-reportes.js") });
+
+  const host = fakeNode("div", {}, []);
+  context.renderValidarRutas(host);
+  await new Promise((resolve) => setImmediate(resolve));
+
+  const openButton = nodes.find((node) =>
+    node.tagName === "button" && node.textContent.includes("Validar")
+  );
+  assert.ok(openButton, "debe existir el botón de abrir validación");
+  openButton.onclick();
+
+  let validateButton = nodes.filter((node) =>
+    node.tagName === "button" && node.textContent === "Validar Ruta"
+  ).at(-1);
+  const nameInput = nodes.find((node) =>
+    node.tagName === "input" && node.placeholder === "Nombre completo"
+  );
+  const puestoSelect = nodes.find((node) => node.tagName === "searchable-select");
+  const reviewCheckbox = nodes.find((node) =>
+    node.tagName === "input" && node.type === "checkbox"
+  );
+  assert.ok(nameInput, "debe existir el campo nombre del modal");
+  assert.ok(puestoSelect, "debe existir el campo puesto del modal");
+  assert.ok(reviewCheckbox, "debe existir el check de validación del modal");
+  nameInput.value = "Responsable de prueba";
+  puestoSelect.value = "Analista";
+  reviewCheckbox.checked = true;
+
+  const firstValidationClick = validateButton.trigger("click");
+  const duplicateValidationClick = validateButton.trigger("click");
+  await Promise.all([firstValidationClick, duplicateValidationClick]);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(validationCalls, 1, "el botón debe impedir doble ejecución");
+  assert.equal(reloadCalls, 2, "una validación exitosa debe recargar pendientes");
+  assert.equal(modals.at(-1).closed, true, "el modal debe cerrar tras validar");
+  assert.equal(validateButton.disabled, false, "el botón debe restaurarse tras éxito");
+  assert.ok(toasts.some((item) => item.message === "Ruta validada correctamente." && item.type === "ok"));
+
+  validationScenario = "validation-reject";
+  openButton.onclick();
+  validateButton = nodes.filter((node) =>
+    node.tagName === "button" && node.textContent === "Validar Ruta"
+  ).at(-1);
+  const modalBeforeValidationError = modals.at(-1);
+  const nameInputError = nodes.filter((node) =>
+    node.tagName === "input" && node.placeholder === "Nombre completo"
+  ).at(-1);
+  const puestoError = nodes.filter((node) => node.tagName === "searchable-select").at(-1);
+  const checkboxError = nodes.filter((node) =>
+    node.tagName === "input" && node.type === "checkbox"
+  ).at(-1);
+  nameInputError.value = "Responsable";
+  puestoError.value = "Analista";
+  checkboxError.checked = true;
+  await validateButton.trigger("click");
+  assert.equal(modalBeforeValidationError.closed, false, "el modal debe permanecer ante error de validación");
+  assert.equal(validateButton.disabled, false, "el botón debe recuperarse ante rechazo IPC");
+  assert.ok(toasts.some((item) => item.message === "Error IPC al validar" && item.type === "err"));
+
+  validationScenario = "database-error";
+  await validateButton.trigger("click");
+  assert.equal(modalBeforeValidationError.closed, false);
+  assert.ok(toasts.some((item) => item.message === "Error de base de datos" && item.type === "err"));
+
+  validationScenario = "success";
+  reloadScenario = "reload-reject";
+  await validateButton.trigger("click");
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(modalBeforeValidationError.closed, true);
+  assert.ok(toasts.some((item) =>
+    item.message === "La ruta fue validada, pero no se pudo actualizar la lista de pendientes." &&
+    item.type === "warn"
+  ));
+  assert.equal(validateButton.disabled, false, "el botón debe restaurarse tras error de recarga");
+});
+
+test("contraseñas en texto plano no se aceptan y bcrypt conserva la autenticación", async () => {
+  const bcrypt = require("bcryptjs");
+  const hash = bcrypt.hashSync("clave-real-de-prueba", 4);
+
+  assert.equal(passwordService.isBcryptPassword(hash), true);
+  assert.equal(await passwordService.verifyPassword("clave-real-de-prueba", hash), true);
+  assert.equal(await passwordService.verifyPassword("clave-equivocada", hash), false);
+  assert.equal(await passwordService.verifyPassword("clave-real-de-prueba", "clave-real-de-prueba"), false);
+  assert.equal(passwordService.isBcryptPassword("clave-real-de-prueba"), false);
+});
+
+test("clasifica correctamente los estados de contraseña sin mostrar secretos", async () => {
+  const bcrypt = require("bcryptjs");
+  const validHash = bcrypt.hashSync("clave-segura", 4);
+  const invalidHash = "$2b$10$hash-invalido";
+
+  assert.equal(passwordMigration.classifyPassword(validHash), "bcrypt_valid");
+  assert.equal(passwordMigration.classifyPassword("clave-original"), "plaintext_valid");
+  assert.equal(passwordMigration.classifyPassword("   "), "password_empty");
+  assert.equal(passwordMigration.classifyPassword(invalidHash), "bcrypt_invalid");
+  assert.equal(passwordMigration.classifyPassword("\u0000dato"), "unexpected_data");
+  assert.equal(passwordService.isBcryptPassword(validHash), true);
+  assert.equal(passwordService.isBcryptPassword(invalidHash), false);
+});
+
+function createTemporaryUserDatabase() {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "soporte-password-test-"));
+  const databasePath = path.join(directory, "users.db");
+  const db = new DatabaseSync(databasePath);
+  db.exec(`
+    PRAGMA journal_mode=WAL;
+    CREATE TABLE usuario (
+      idUsuario INTEGER PRIMARY KEY,
+      usuario TEXT NOT NULL UNIQUE,
+      pass TEXT NOT NULL,
+      nombre TEXT NOT NULL,
+      idRol INTEGER NOT NULL,
+      activo INTEGER NOT NOT NULL DEFAULT 1
+    );
+  `.replace("NOT NOT", "NOT"));
+  return { directory, databasePath, db };
+}
+
+test("crea, valida y conserva un respaldo antes de migrar contraseñas", async () => {
+  const temporary = createTemporaryUserDatabase();
+  try {
+    temporary.db.prepare(
+      "INSERT INTO usuario (idUsuario, usuario, pass, nombre, idRol) VALUES (?, ?, ?, ?, ?)"
+    ).run(1, "admin", "admin123", "Administrador", 1);
+    const backupPath = passwordMigration.createPasswordMigrationBackup(temporary.databasePath, temporary.db);
+
+    assert.equal(fs.existsSync(backupPath), true);
+    const backup = new DatabaseSync(backupPath, { readOnly: true });
+    assert.equal(passwordMigration.classifyPassword(backup.prepare("SELECT pass FROM usuario WHERE usuario='admin'").get().pass), "plaintext_valid");
+    assert.equal(backup.prepare("PRAGMA integrity_check").get()["integrity_check"], "ok");
+    assert.equal(backup.prepare("SELECT count(*) AS total FROM usuario").get().total, 1);
+    backup.close();
+
+    const result = passwordMigration.migratePlaintextPasswords(temporary.db, temporary.databasePath);
+    assert.equal(result.migrated, 1);
+    assert.equal(passwordService.isBcryptPassword(temporary.db.prepare("SELECT pass FROM usuario WHERE usuario='admin'").get().pass), true);
+    const firstHash = temporary.db.prepare("SELECT pass FROM usuario WHERE usuario='admin'").get().pass;
+
+    const second = passwordMigration.migratePlaintextPasswords(temporary.db, temporary.databasePath);
+    assert.equal(second.migrated, 0);
+    assert.equal(temporary.db.prepare("SELECT pass FROM usuario WHERE usuario='admin'").get().pass, firstHash);
+    assert.equal(await passwordService.verifyPassword("admin123", firstHash), true);
+  } finally {
+    temporary.db.close();
+    fs.rmSync(temporary.directory, { recursive: true, force: true });
+  }
+});
+
+test("cancela la migración y conserva la contraseña si falla la creación del respaldo", () => {
+  const temporary = createTemporaryUserDatabase();
+  try {
+    temporary.db.prepare(
+      "INSERT INTO usuario (idUsuario, usuario, pass, nombre, idRol) VALUES (?, ?, ?, ?, ?)"
+    ).run(1, "admin", "admin123", "Administrador", 1);
+
+    assert.throws(
+      () => passwordMigration.migratePlaintextPasswords(
+        temporary.db,
+        temporary.databasePath,
+        { backupFactory: () => { throw new Error("permiso denegado"); } }
+      ),
+      /permiso denegado/
+    );
+    assert.equal(
+      temporary.db.prepare("SELECT pass FROM usuario WHERE usuario='admin'").get().pass,
+      "admin123"
+    );
+  } finally {
+    temporary.db.close();
+    fs.rmSync(temporary.directory, { recursive: true, force: true });
+  }
+});
+
+test("no modifica usuarios vacíos, hashes inválidos ni datos corruptos", () => {
+  const bcrypt = require("bcryptjs");
+  const temporary = createTemporaryUserDatabase();
+  try {
+    const insert = temporary.db.prepare(
+      "INSERT INTO usuario (idUsuario, usuario, pass, nombre, idRol) VALUES (?, ?, ?, ?, ?)"
+    );
+    const validHash = bcrypt.hashSync("clave-valida", 4);
+    insert.run(1, "vacio", "", "Vacío", 1);
+    insert.run(2, "bcrypt-valido", validHash, "Bcrypt válido", 1);
+    insert.run(3, "bcrypt-invalido", "$2b$10$hash-invalido", "Bcrypt inválido", 1);
+    insert.run(4, "corrupto", "dato\uFFFDcorrupto", "Dato extraño", 1);
+
+    const result = passwordMigration.migratePlaintextPasswords(temporary.db, temporary.databasePath);
+    assert.equal(result.migrated, 0);
+    assert.equal(result.problems.length, 3);
+    assert.deepEqual(
+      result.problems.map((item) => item.classification).sort(),
+      ["bcrypt_invalid", "password_empty", "unexpected_data"].sort()
+    );
+    assert.equal(temporary.db.prepare("SELECT pass FROM usuario WHERE usuario='bcrypt-valido'").get().pass, validHash);
+    assert.equal(temporary.db.prepare("SELECT pass FROM usuario WHERE usuario='bcrypt-invalido'").get().pass, "$2b$10$hash-invalido");
+  } finally {
+    temporary.db.close();
+    fs.rmSync(temporary.directory, { recursive: true, force: true });
+  }
+});
+
+test("rechaza respaldos con IDs o datos relevantes de usuario diferentes", () => {
+  assert.throws(
+    () => passwordMigration.validateUserSnapshots(
+      [{ idUsuario: 1, usuario: "admin", nombre: "Administrador", idRol: 1, activo: 1 }],
+      [{ idUsuario: 2, usuario: "admin", nombre: "Administrador", idRol: 1, activo: 1 }]
+    ),
+    /difieren/
+  );
+});
+
+test("electron-builder excluye respaldos del instalador", () => {
+  const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8"));
+  const exclusions = packageJson.build.files;
+  assert.equal(exclusions.includes("!backups/**"), true);
+  assert.equal(exclusions.includes("!assets/database/backups/**"), true);
+  assert.equal(exclusions.includes("!**/*.backup.db"), true);
+});
+
+test("la sustitución conserva el seed anterior ante una validación fallida", () => {
+  const importScript = require("../scripts/import-mysql-dump-to-sqlite.js");
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "soporte-import-test-"));
+  const outputPath = path.join(directory, "seed.db");
+  const temporaryPath = path.join(directory, "replacement.tmp.db");
+  const original = new DatabaseSync(outputPath);
+  original.exec("CREATE TABLE usuario (idUsuario INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL); INSERT INTO usuario VALUES (7, 'original');");
+  original.close();
+  const invalid = new DatabaseSync(temporaryPath);
+  invalid.exec("CREATE TABLE otra_tabla (id INTEGER PRIMARY KEY);");
+  invalid.close();
+
+  try {
+    assert.throws(
+      () => importScript.replaceSeedAfterValidation(outputPath, temporaryPath),
+      /tabla usuario/
+    );
+    const originalAfter = new DatabaseSync(outputPath, { readOnly: true });
+    assert.equal(originalAfter.prepare("SELECT idUsuario FROM usuario").get().idUsuario, 7);
+    originalAfter.close();
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("la sustitución exitosa conserva una copia de la semilla anterior", () => {
+  const importScript = require("../scripts/import-mysql-dump-to-sqlite.js");
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "soporte-import-test-"));
+  const outputPath = path.join(directory, "seed.db");
+  const temporaryPath = path.join(directory, "replacement.tmp.db");
+  const original = new DatabaseSync(outputPath);
+  original.exec("CREATE TABLE usuario (idUsuario INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL); INSERT INTO usuario VALUES (7, 'original');");
+  original.close();
+  const replacement = new DatabaseSync(temporaryPath);
+  replacement.exec("CREATE TABLE usuario (idUsuario INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL); INSERT INTO usuario VALUES (9, 'importado');");
+  replacement.close();
+
+  try {
+    const result = importScript.replaceSeedAfterValidation(outputPath, temporaryPath);
+    assert.equal(result.replaced, true);
+    assert.equal(fs.existsSync(result.previousBackupPath), true);
+    const current = new DatabaseSync(outputPath, { readOnly: true });
+    assert.equal(current.prepare("SELECT idUsuario FROM usuario").get().idUsuario, 9);
+    current.close();
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("un error al sustituir restaura la semilla original", () => {
+  const importScript = require("../scripts/import-mysql-dump-to-sqlite.js");
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "soporte-import-test-"));
+  const outputPath = path.join(directory, "seed.db");
+  const temporaryPath = path.join(directory, "replacement.tmp.db");
+  const original = new DatabaseSync(outputPath);
+  original.exec("CREATE TABLE usuario (idUsuario INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL); INSERT INTO usuario VALUES (7, 'original');");
+  original.close();
+  const replacement = new DatabaseSync(temporaryPath);
+  replacement.exec("CREATE TABLE usuario (idUsuario INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL); INSERT INTO usuario VALUES (9, 'importado');");
+  replacement.close();
+  const renameSync = fs.renameSync;
+
+  try {
+    fs.renameSync = (oldPath, newPath) => {
+      if (oldPath === temporaryPath) throw new Error("fallo simulada de sustitución");
+      return renameSync(oldPath, newPath);
+    };
+    assert.throws(
+      () => importScript.replaceSeedAfterValidation(outputPath, temporaryPath),
+      /fallo simulada/
+    );
+    const originalAfter = new DatabaseSync(outputPath, { readOnly: true });
+    assert.equal(originalAfter.prepare("SELECT idUsuario FROM usuario").get().idUsuario, 7);
+    originalAfter.close();
+  } finally {
+    fs.renameSync = renameSync;
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("rollback ante error de actualización conserva todos los valores originales", () => {
+  const temporary = createTemporaryUserDatabase();
+  try {
+    const insert = temporary.db.prepare(
+      "INSERT INTO usuario (idUsuario, usuario, pass, nombre, idRol) VALUES (?, ?, ?, ?, ?)"
+    );
+    insert.run(1, "uno", "clave-uno", "Usuario uno", 1);
+    insert.run(2, "dos", "clave-dos", "Usuario dos", 1);
+    temporary.db.exec(`
+      CREATE TRIGGER bloquear_migracion
+      BEFORE UPDATE OF pass ON usuario
+      BEGIN
+        SELECT RAISE(ABORT, 'actualización simulada fallida');
+      END;
+    `);
+
+    assert.throws(
+      () => passwordMigration.migratePlaintextPasswords(temporary.db, temporary.databasePath),
+      /actualización simulada fallida/
+    );
+    assert.equal(temporary.db.prepare("SELECT pass FROM usuario WHERE usuario='uno'").get().pass, "clave-uno");
+    assert.equal(temporary.db.prepare("SELECT pass FROM usuario WHERE usuario='dos'").get().pass, "clave-dos");
+  } finally {
+    temporary.db.close();
+    fs.rmSync(temporary.directory, { recursive: true, force: true });
+  }
+});
 
 test("normaliza paginación conservando límites", () => {
   assert.deepEqual(pagination.normalizePagination({ page: 2, pageSize: 500 }), {
@@ -423,6 +1583,92 @@ test("los técnicos reciben notificaciones por nuevas asignaciones de tickets y 
   assert.match(notifications, /roleKey === "TECNICO"/);
   assert.match(notifications, /na\.idUsuario = \?/);
   assert.match(shell, /openRoute\(isTicketAssignment \? "tickets" : \(isRouteAssignment \|\| isRouteValidated\) \? "rutas"/);
+});
+
+test("ACL estructurada acepta solo SID actuales y privilegios explícitos completos", () => {
+  const currentSid = "S-1-5-21-1001";
+  const valid = {
+    IsInheritanceEnabled: false,
+    Access: [
+      { Sid: currentSid, Identity: "Usuario", IsInherited: false, AccessControlType: "Allow", Rights: "FullControl" },
+      { Sid: "S-1-5-18", Identity: "SYSTEM", IsInherited: false, AccessControlType: "Allow", Rights: "FullControl" },
+      { Sid: "S-1-5-32-544", Identity: "Administrators", IsInherited: false, AccessControlType: "Allow", Rights: "FullControl" }
+    ]
+  };
+  assert.doesNotThrow(() => passwordMigration.verifyWindowsBackupAcl(valid, currentSid));
+  assert.throws(
+    () => passwordMigration.verifyWindowsBackupAcl({ ...valid, IsInheritanceEnabled: true }, currentSid),
+    /herencia/
+  );
+  assert.throws(
+    () => passwordMigration.verifyWindowsBackupAcl({
+      IsInheritanceEnabled: false,
+      Access: [...valid.Access, { Sid: "S-1-5-21-9999", Identity: "Otro usuario", IsInherited: false, AccessControlType: "Allow", Rights: "FullControl" }]
+    }, currentSid),
+    /no autorizada/
+  );
+});
+
+test("electron-builder excluye respaldos e informes también de extraResources", () => {
+  const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8"));
+  const extraResources = packageJson.build.extraResources.find((resource) => resource.from === "assets");
+  assert.ok(extraResources);
+  assert.ok(extraResources.filter.includes("!database/backups/**"));
+  assert.ok(extraResources.filter.includes("!**/*.backup.db"));
+  assert.ok(extraResources.filter.includes("!**/*recovery*.json"));
+  assert.ok(packageJson.build.files.includes("!assets/database/backups/**"));
+});
+
+test("recuperación conservadora identifica respaldo inválido y varios respaldos ambiguos", () => {
+  const importScript = require("../scripts/import-mysql-dump-to-sqlite.js");
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "soporte-recovery-test-"));
+  const outputPath = path.join(directory, "seed.db");
+  try {
+    const invalidBackup = path.join(directory, "seed.pre-import-invalid.backup.db");
+    const invalid = new DatabaseSync(invalidBackup);
+    invalid.exec("CREATE TABLE otra_tabla (id INTEGER PRIMARY KEY);");
+    invalid.close();
+    const reportInvalid = importScript.recoverInterruptedSeed(outputPath);
+    assert.equal(fs.existsSync(outputPath), false);
+    assert.equal(fs.readFileSync(reportInvalid, "utf8").includes("backup_invalid"), true);
+
+    fs.rmSync(invalidBackup, { force: true });
+    const validBackup = path.join(directory, "seed.pre-import-valid.backup.db");
+    const validDb = new DatabaseSync(validBackup);
+    validDb.exec("CREATE TABLE usuario (idUsuario INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL); INSERT INTO usuario VALUES (4, 'recuperado');");
+    validDb.close();
+    const reportRecovered = importScript.recoverInterruptedSeed(outputPath);
+    assert.equal(fs.existsSync(outputPath), true);
+    assert.equal(fs.readFileSync(reportRecovered, "utf8").includes("seed_recovered_from_backup"), true);
+    fs.rmSync(outputPath, { force: true });
+    fs.rmSync(validBackup, { force: true });
+    for (const name of ["seed.pre-import-a.backup.db", "seed.pre-import-b.backup.db"]) {
+      const db = new DatabaseSync(path.join(directory, name));
+      db.exec("CREATE TABLE usuario (idUsuario INTEGER PRIMARY KEY, usuario TEXT UNIQUE NOT NULL); INSERT INTO usuario VALUES (1, 'usuario');");
+      db.close();
+    }
+    const reportAmbiguous = importScript.recoverInterruptedSeed(outputPath);
+    assert.equal(fs.existsSync(outputPath), false);
+    assert.equal(fs.readFileSync(reportAmbiguous, "utf8").includes("ambiguous_or_missing"), true);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("el bloqueo de importación impide dos procesos simultáneos", () => {
+  const importScript = require("../scripts/import-mysql-dump-to-sqlite.js");
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "soporte-lock-test-"));
+  const outputPath = path.join(directory, "seed.db");
+  try {
+    const lockPath = importScript.acquireImportLock(outputPath);
+    assert.throws(
+      () => importScript.acquireImportLock(outputPath),
+      /Otra importación o recuperación/
+    );
+    importScript.releaseImportLock(lockPath);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
 });
 
 test("el supervisor recibe aviso cuando gerencial valida una ruta que creó", () => {

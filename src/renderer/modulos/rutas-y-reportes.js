@@ -353,16 +353,17 @@ function renderRutas(host) {
         el("div", { class: "field" }, [el("label", {}, [el("i", { class: "fas fa-calendar" }), " Desde"]), desde]),
         el("div", { class: "field" }, [el("label", {}, [el("i", { class: "fas fa-calendar" }), " Hasta"]), hasta]),
         el("div", { class: "actions actions-inline" }, [
-          el("button", { class: "btn", onclick: () => { if (!isLoading) { page = 1; load(); } } }, [el("i", { class: "fas fa-search" }), " Buscar"]),
+          el("button", { class: "btn", onclick: () => { if (!isLoading) { page = 1; void load(); } } }, [el("i", { class: "fas fa-search" }), " Buscar"]),
           el("button", {
             class: "btn",
             onclick: () => {
+              if (isLoading) return;
               if (typeof idUnidad.clear === 'function') idUnidad.clear();
               if (typeof idTecnico.clear === 'function') idTecnico.clear();
               desde.value = defaultDesde;
               hasta.value = defaultHasta;
               page = 1;
-              load();
+              void load();
             }
           }, [el("i", { class: "fas fa-broom" }), " Limpiar"])
         ])
@@ -375,10 +376,13 @@ function renderRutas(host) {
   moduleRoot.appendChild(tableWrap);
   host.appendChild(moduleRoot);
 
+  let latestRequestId = 0;
+
   async function load() {
     if (isLoading) return;
     isLoading = true;
     info.textContent = "Cargando...";
+    const requestId = ++latestRequestId;
 
     try {
       const filtros = {
@@ -393,6 +397,8 @@ function renderRutas(host) {
 
 
       const res = await window.api.rutas_list(session, filtros);
+
+      if (requestId !== latestRequestId) return;
 
       if (!res || !res.ok) {
         info.textContent = "Error: " + toUserText(res?.message, "Error desconocido.");
@@ -472,13 +478,13 @@ function renderRutas(host) {
         onPageChange: (nextPage) => {
           if (isLoading || nextPage === page) return;
           page = nextPage;
-          load();
+          void load();
         },
         onPageSizeChange: (nextPageSize) => {
           if (isLoading || nextPageSize === pageSize) return;
           pageSize = nextPageSize;
           page = 1;
-          load();
+          void load();
         }
       });
 
@@ -487,13 +493,28 @@ function renderRutas(host) {
       tableScroll.appendChild(tbl);
       tableFooter.appendChild(pager);
       normalizeExcelTableHeaders(tableWrap);
+    } catch (err) {
+      if (requestId !== latestRequestId) return;
+      info.textContent = "Error: " + getUserErrorMessage(
+        err,
+        "No se pudieron cargar las rutas."
+      );
+      if (isSessionErrorMessage(err?.message || err)) {
+        session = null;
+        if (typeof window.resetCatalogosState === "function") {
+          window.resetCatalogosState();
+        } else {
+          catalogos = null;
+        }
+        mount(LoginView());
+      }
     } finally {
       // Siempre liberar el flag de carga
       isLoading = false;
     }
   }
 
-  load();
+  void load();
 }
 
 /* =========================
@@ -644,10 +665,13 @@ function renderValidarRutas(host) {
   moduleRoot.appendChild(tableWrap);
   host.appendChild(moduleRoot);
 
+  let latestRequestId = 0;
+
   async function load(pageNum = 1) {
-    if (isLoading) return;
+    if (isLoading) return false;
     isLoading = true;
     info.textContent = "Cargando rutas pendientes...";
+    const requestId = ++latestRequestId;
 
     try {
       const filtros = {
@@ -658,11 +682,12 @@ function renderValidarRutas(host) {
         hasta: null
       };
 
-
       const res = await window.api.rutas_list(session, filtros);
+      if (requestId !== latestRequestId) return false;
+
       if (!res?.ok) {
-        info.textContent = toUserText(res?.message, "No se pudieron cargar las rutas.");
-        return;
+        info.textContent = "Error: " + toUserText(res?.message, "No se pudieron cargar las rutas.");
+        return false;
       }
 
       const data = Array.isArray(res.data) ? res.data : [];
@@ -687,13 +712,17 @@ function renderValidarRutas(host) {
           page: 1,
           pageSize: validationPageSize,
           total: 0,
-          onPageChange: load,
+          onPageChange: (nextPage) => {
+            if (isLoading || nextPage === 1) return;
+            void load(nextPage);
+          },
           onPageSizeChange: (nextSize) => {
+            if (isLoading || nextSize === validationPageSize) return;
             validationPageSize = nextSize;
-            load(1);
+            void load(1);
           }
         }));
-        return;
+        return true;
       }
 
       const totalPages = Math.max(1, Math.ceil(data.length / validationPageSize));
@@ -739,13 +768,34 @@ function renderValidarRutas(host) {
         page: safePage,
         pageSize: validationPageSize,
         total: data.length,
-        onPageChange: load,
+        onPageChange: (nextPage) => {
+          if (isLoading || nextPage === safePage) return;
+          void load(nextPage);
+        },
         onPageSizeChange: (nextSize) => {
+          if (isLoading || nextSize === validationPageSize) return;
           validationPageSize = nextSize;
-          load(1);
+          void load(1);
         }
       }));
       normalizeExcelTableHeaders(tableWrap);
+      return true;
+    } catch (err) {
+      if (requestId !== latestRequestId) return false;
+      info.textContent = "Error: " + getUserErrorMessage(
+        err,
+        "No se pudieron cargar las rutas pendientes."
+      );
+      if (isSessionErrorMessage(err?.message || err)) {
+        session = null;
+        if (typeof window.resetCatalogosState === "function") {
+          window.resetCatalogosState();
+        } else {
+          catalogos = null;
+        }
+        mount(LoginView());
+      }
+      return false;
     } finally {
       isLoading = false;
     }
@@ -1019,7 +1069,10 @@ function renderValidarRutas(host) {
         if (res?.ok) {
           toast("Ruta validada correctamente.", "ok");
           modal.close();
-          load();
+          const reloadSucceeded = await load();
+          if (!reloadSucceeded) {
+            toast("La ruta fue validada, pero no se pudo actualizar la lista de pendientes.", "warn");
+          }
           return;
         }
         throw new Error(res?.message || "Error al validar.");
@@ -1030,7 +1083,7 @@ function renderValidarRutas(host) {
     modal.rebuildActions([]);
   }
 
-  load();
+  void load();
 }
 
 function renderReportes(host) {
@@ -2153,5 +2206,3 @@ function renderReportes(host) {
   host.appendChild(filtersCard);
   host.appendChild(out);
 }
-
-

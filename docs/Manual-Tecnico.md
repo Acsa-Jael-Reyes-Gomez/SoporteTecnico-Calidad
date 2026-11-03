@@ -27,6 +27,40 @@ Al iniciar por primera vez, la aplicación copia `assets/database/seed.db` a la 
 
 El volcado MySQL recibido se convirtió a SQLite. Se conservaron las filas `INSERT`; los procedimientos almacenados de generación de tickets no se importaron. Las fechas operativas de la semilla se ajustaron proporcionalmente al intervalo 25/09/2026–26/10/2026, conservando horas y orden temporal. No sobrescribas una base de trabajo existente al reinstalar. El archivo semilla es una instantánea; cada instalación mantiene sus cambios localmente. El archivo `seed.db` incluye los registros importados del volcado compartido y se distribuye con la aplicación.
 
+## Migración segura de contraseñas
+
+Al abrir una base SQLite, el sistema revisa la columna `usuario.pass` antes de iniciar la aplicación. Las contraseñas válidas almacenadas como texto plano se convierten a hashes bcrypt. Los hashes bcrypt válidos se conservan sin volver a procesarse. Las contraseñas vacías, los hashes incompletos y los datos corruptos se dejan sin modificar.
+
+Antes de convertir contraseñas existentes, la aplicación crea una copia segura en la carpeta `backups`, ubicada junto al archivo `soporte_tecnico.db`. Por ejemplo: `C:\ruta-del-usuario\backups\soporte_tecnico-2026-10-30T11-30-55-714Z.backup.db`.
+
+La copia usa SQLite `VACUUM INTO`, por lo que incluye correctamente los datos actuales incluso cuando estén registrados temporalmente en el archivo WAL. La aplicación verifica primero la integridad de la base original, crea una copia con nombre único, verifica la integridad de la copia y compara IDs, nombres de usuario, nombre visible, rol y estado activo de todos los usuarios. Las contraseñas y los hashes no se incluyen en esa comparación ni en los informes. No sobrescribe respaldos anteriores. Una falla de permisos, espacio, bloqueo, integridad o conservación cancela la migración.
+
+Los archivos de respaldo contienen datos sensibles. En Windows, el programa consulta el SID del usuario actual y utiliza `icacls` para quitar la herencia, conservar acceso explícito al usuario actual, `SYSTEM` y `Administradores`, y verificar la ACL efectiva. `icacls` puede ser bloqueado por políticas de empresa o por permisos administrativos; si falla, se cancela la creación del respaldo. En otros sistemas se aplica `chmod 700/600`. Estas medidas POSIX no representan ACL privadas de Windows. La carpeta `backups/` está excluida de Git y del instalador por configuración de electron-builder. Los respaldos locales no forman parte del paquete de instalación y no se eliminan automáticamente.
+
+La protección estructurada de Windows conserva acceso explícito al usuario actual, `SYSTEM` y el grupo `Administradores`; elimina la herencia y verifica mediante PowerShell las reglas efectivas. Si aparece otra identidad, falta una regla requerida o la ACL no puede verificarse, se cancela el respaldo. Las políticas corporativas pueden impedir ajustar o verificar la ACL aunque la aplicación tenga permisos normales.
+
+Durante la sustitución de `seed.db`, el importador usa archivos temporales y un bloqueo local exclusivo. Ante una interrupción, la recuperación es conservadora: si `seed.db` ya existe se conserva; si falta y existe un único respaldo válido se puede recuperar; si existen varios respaldos o temporales ambiguos, se conserva todo y se requiere intervención manual. Los archivos temporales incompletos nunca se consideran semilla válida. Cualquier recuperación registra una acción local sin contraseñas ni hashes.
+
+La migración mantiene todos los usuarios y no genera ni cambia credenciales. Los casos problemáticos se registran en un informe dentro de `backups/`, con el identificador, el nombre de usuario y una clasificación. El informe nunca incluye la contraseña original ni el hash bcrypt.
+
+Clasificaciones disponibles:
+
+- `bcrypt_valid`: hash válido; se conserva.
+- `plaintext_valid`: texto válido; se puede convertir a bcrypt.
+- `password_empty`: valor vacío o espacios; se conserva sin modificar.
+- `bcrypt_invalid`: comienza como bcrypt, pero el formato está incompleto o es inválido; se conserva sin modificar.
+- `unexpected_data`: contiene caracteres dañados o datos fuera de formato esperado; se conserva sin modificar.
+
+Para recuperar una base:
+
+1. Cierra completamente la aplicación.
+2. Conserva primero una copia adicional de la base original afectada; por ejemplo, `soporte_tecnico-antes-restaurar.backup.db`.
+3. Copia el respaldo de seguridad deseado a una ubicación temporal.
+4. Abre únicamente la copia temporal y ejecuta `PRAGMA integrity_check`.
+5. Confirma también que los IDs y datos relevantes de los usuarios sean los esperados sin divulgar contraseñas ni hashes.
+6. Cuando el respaldo temporal sea válido, reemplázalo como `soporte_tecnico.db`.
+7. Conserva tanto la copia anterior como el respaldo restaurado hasta confirmar que el sistema inició correctamente.
+
 ## Pruebas y cobertura
 
 ```powershell
@@ -45,15 +79,15 @@ TypeScript estricto y ESLint se ejecutan en CI. ESLint cubre TypeScript, los mó
 
 ## Pipeline CI/CD
 
-`.github/workflows/quality.yml` se ejecuta en `push` y `pull_request` sobre Windows con Node 22. Las etapas instalan dependencias, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. La rama `main` está protegida y exige pull request, revisión y el check obligatorio antes de una fusión.
+`.github/workflows/quality.yml` se dispara en `push` y `pull_request` para Windows con Node 22. Las etapas instalan dependencias fijadas, compilan, ejecutan pruebas y cobertura, revisan tipos, lint y formato, y guardan reportes como artefactos. Los runs 40974922468 y 40974928285 pasaron; el artefacto del PR está en `docs/calidad/evidencias/run-40974928285/quality-reports/`. La protección de `main` no está activa en la configuración actual del repositorio.
 
 ## Análisis estático
 
-El workflow ejecuta TypeScript estricto, ESLint y Prettier. Después de esos controles, SonarCloud analiza la revisión y reporta el resultado del Quality Gate.
+El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarCloud no está integrado en esta entrega, por lo que no se presentan métricas de bugs, vulnerabilidades o code smells de esa plataforma.
 
 ## Flujo GitHub y puertas de calidad
 
-Crear una rama de trabajo, abrir un pull request y esperar la aprobación más el check **Puerta de calidad**. GitHub protege `main` para evitar fusiones sin revisión ni controles aprobados. La configuración se explica en `docs/Flujo-GitHub.md`.
+Crear una rama de trabajo, abrir un pull request, revisar los cambios, esperar el check **Puerta de calidad** y fusionar solo con revisión aprobada. Un administrador debe proteger `main` para exigir pull request, aprobación y el check exitoso. La configuración se explica en `docs/Flujo-GitHub.md`.
 
 ## Mantenimiento
 

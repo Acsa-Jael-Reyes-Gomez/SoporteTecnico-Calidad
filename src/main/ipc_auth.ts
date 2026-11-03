@@ -1,8 +1,8 @@
 // src/main/ipc_auth.ts
 import type { IpcMain } from "electron";
-import bcrypt from "bcryptjs";
 import { withConn } from "./db/db";
 import { clearTrustedSession, requireTrustedSession, revokeTrustedSessionsForUser, setTrustedSession, type TrustedSession } from "./session_store";
+import { verifyPassword } from "./password_service";
 
 // Rate limiting simple en memoria
 const loginAttempts = new Map<string, { count: number; lockedUntil: number }>();
@@ -35,23 +35,6 @@ function recordFailedAttempt(user: string) {
 
 function clearFailedAttempts(user: string) {
   loginAttempts.delete(user);
-}
-
-async function verifyPassword(input: string, stored: string): Promise<boolean> {
-  const plainInput = String(input || "");
-  const storedValue = String(stored || "");
-
-  if (!storedValue) return false;
-
-  if (storedValue.startsWith("$2a$") || storedValue.startsWith("$2b$") || storedValue.startsWith("$2y$")) {
-    try {
-      return await bcrypt.compare(plainInput, storedValue);
-    } catch {
-      return false;
-    }
-  }
-
-  return plainInput === storedValue;
 }
 
 type LoginOk = {

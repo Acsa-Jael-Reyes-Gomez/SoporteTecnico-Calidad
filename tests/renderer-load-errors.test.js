@@ -1,0 +1,255 @@
+const test = require("node:test");
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const vm = require("node:vm");
+
+function setup(moduleName, apiName, responder, extras = {}) {
+  const source = fs.readFileSync(path.resolve(__dirname, "../src/renderer/modulos", moduleName), "utf8");
+  const calls = [];
+  const nodes = [];
+  const host = { innerHTML: "", children: [], appendChild(node) { this.children.push(node); } };
+  function el(tag, props = {}, children = []) {
+    const node = { tag, props, children, value: props.value ?? "", textContent: "", innerHTML: "",
+      appended: [], appendChild(child) { this.appended.push(child); },
+      querySelector() { return { appendChild() {} }; } };
+    nodes.push(node);
+    return node;
+  }
+  const context = vm.createContext({
+    el, session: { idUsuario: 1 },
+    catalogos: { unidades: [], tecnicos: [], tiposEquipo: [] },
+    can: () => true, isTecnico: () => false, isRutaSelectableTecnico: () => true,
+    getSelectOptions: () => [],
+    createSearchableSelect: () => ({ value: "", clear() { this.value = ""; } }),
+    getMonthlyRange: () => ({ start: "2026-11-01", end: "2026-11-30" }),
+    mysqlToDateValue: x => x, dateToMysqlStartOfDay: x => x + " 00:00:00",
+    dateToMysqlEndOfDay: x => x + " 23:59:59",
+    toUserText: (x, fallback) => String(x || fallback),
+    getUserErrorMessage: (x, fallback) => x?.message || fallback,
+    isSessionErrorMessage: x => /sesión|session/i.test(String(x || "")),
+    LoginView: () => ({ login: true }),
+    mount: x => calls.push(["mount", x]),
+    formatDate: x => x || "—",
+    compactIdHeader: () => [], tableHeadLabel: () => [],
+    createTableFooterBar: config => { calls.push(["pager", config]); return el("footer"); },
+    normalizeExcelTableHeaders: () => {},
+    window: { api: { [apiName]: (...args) => { calls.push(["api", args]); return responder(...args); } },
+      resetCatalogosState: () => calls.push(["reset"]) }
+  });
+  Object.assign(context, extras);
+  const names = Object.keys(context).filter(name => name !== "window");
+  names.push("window");
+  const factory = vm.runInThisContext(`(function(${names.join(",")}) {\n${source}\nreturn { renderEquipos: typeof renderEquipos === 'function' ? renderEquipos : undefined, renderRutas: typeof renderRutas === 'function' ? renderRutas : undefined, renderValidarRutas: typeof renderValidarRutas === 'function' ? renderValidarRutas : undefined, get session() { return session; } };\n})`, { filename: path.resolve(__dirname, "../src/renderer/modulos", moduleName) });
+  const exposed = factory(...names.map(name => context[name]));
+  context.renderEquipos = exposed.renderEquipos;
+  context.renderRutas = exposed.renderRutas;
+  context.renderValidarRutas = exposed.renderValidarRutas;
+  Object.defineProperty(context, "session", { get: () => exposed.session, configurable: true });
+  return { context, host, nodes, calls };
+}
+const settle = () => new Promise(resolve => setImmediate(resolve));
+function textNode(h, value) { return h.nodes.find(n => n.textContent.includes(value)); }
+function buttons(h, word) {
+  return h.nodes.filter(n => n.tag === "button" && JSON.stringify(n.children).includes(word));
+}
+
+test("equipos: rechazo de API muestra error recuperable y permite reintentar", async () => {
+  let count = 0;
+  const h = setup("equipos-y-envios.js", "equipos_list", () => {
+    if (++count === 1) return Promise.reject(new Error("Falla sintética de red"));
+    return Promise.resolve({ ok: true, page: 1, total: 0, data: [] });
+  });
+  h.context.renderEquipos(h.host);
+  await settle();
+  assert.ok(textNode(h, "Falla sintética de red"));
+  assert.ok(h.nodes.some(n => n.props.class === "card small error"));
+  buttons(h, "Buscar")[0].props.onclick();
+  await settle();
+  assert.ok(textNode(h, "Página 1"));
+  assert.equal(count, 2);
+});
+
+test("equipos: búsqueda y paginación ignoran acciones repetidas durante carga", async () => {
+  let release;
+  const h = setup("equipos-y-envios.js", "equipos_list", () => new Promise(resolve => { release = resolve; }));
+  h.context.renderEquipos(h.host);
+  const search = buttons(h, "Buscar")[0];
+  search.props.onclick();
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 1);
+  release({ ok: true, page: 1, total: 0, data: [] });
+  await settle();
+  const pager = h.calls.find(x => x[0] === "pager")[1];
+  pager.onPageChange(1);
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 1);
+  pager.onPageSizeChange(50);
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 2);
+  release({ ok: true, page: 1, total: 0, data: [] });
+  await settle();
+});
+
+test("equipos: limpiar filtros restaura fechas y ejecuta nueva consulta", async () => {
+  const h = setup("equipos-y-envios.js", "equipos_list", async () => ({ ok: true, page: 1, total: 0, data: [] }));
+  h.context.renderEquipos(h.host);
+  await settle();
+  const dates = h.nodes.filter(n => n.tag === "input" && n.props.type === "date");
+  dates[0].value = "2026-01-01";
+  buttons(h, "Limpiar")[0].props.onclick();
+  await settle();
+  assert.equal(dates[0].value, "2026-11-01");
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 2);
+});
+
+test("rutas: fallo de consulta muestra error sin bloquear un nuevo intento", async () => {
+  let count = 0;
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => {
+    if (++count === 1) throw new Error("Falla sintética de rutas");
+    return { ok: true, page: 1, total: 0, data: [] };
+  });
+  h.context.renderRutas(h.host);
+  await settle();
+  assert.ok(textNode(h, "Falla sintética de rutas"));
+  buttons(h, "Buscar")[0].props.onclick();
+  await settle();
+  assert.ok(textNode(h, "Página 1"));
+});
+
+test("rutas: sesión expirada restablece catálogos y muestra acceso", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => {
+    throw new Error("Sesión inválida");
+  });
+  h.context.renderRutas(h.host);
+  await settle();
+  assert.ok(h.calls.some(x => x[0] === "reset"));
+  assert.ok(h.calls.some(x => x[0] === "mount"));
+  assert.equal(h.context.session, null);
+});
+
+test("rutas: paginación y limpieza de filtros mantienen búsquedas operativas", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: true, page: 1, total: 0, data: [] }));
+  h.context.renderRutas(h.host);
+  await settle();
+  const pager = h.calls.find(x => x[0] === "pager")[1];
+  pager.onPageChange(2);
+  await settle();
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 2);
+  pager.onPageSizeChange(50);
+  await settle();
+  buttons(h, "Limpiar")[0].props.onclick();
+  await settle();
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 4);
+});
+
+test("validación de rutas: bloquea usuarios sin permiso antes de llamar a la API", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: true, data: [] }));
+  h.context.can = () => false;
+  // La función conserva el permiso recibido al crear el módulo.
+  // Probar el rechazo con un contexto que lo reciba explícitamente.
+  const source = fs.readFileSync(path.resolve(__dirname, "../src/renderer/modulos/rutas-y-reportes.js"), "utf8");
+  const deny = vm.runInThisContext(`(function(can) { ${source}; return renderValidarRutas; })`)(() => false);
+  deny(h.host);
+  assert.match(h.host.innerHTML, /Sin acceso/);
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 0);
+});
+
+test("validación de rutas: respuesta sin éxito muestra error sin alterar datos", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: false, message: "Servicio temporalmente indisponible" }));
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  assert.ok(textNode(h, "Servicio temporalmente indisponible"));
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 1);
+});
+
+test("validación de rutas: listado vacío muestra estado y paginación coherentes", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: true, data: [] }));
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  assert.ok(textNode(h, "Encontradas 0 rutas pendientes"));
+  const pager = h.calls.find(x => x[0] === "pager")[1];
+  assert.equal(pager.total, 0);
+  pager.onPageChange(1);
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 1);
+  pager.onPageSizeChange(50);
+  await settle();
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 2);
+});
+
+test("validación de rutas: muestra registros y permite cambiar de página", async () => {
+  const data = Array.from({ length: 27 }, (_, i) => ({
+    idRuta: i + 1, unidad: "Unidad de prueba", participantes: [{ nombre: "Técnico de prueba" }],
+    fechaApertura: "2026-11-02"
+  }));
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({ ok: true, data }));
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  assert.ok(textNode(h, "Encontradas 27 rutas pendientes"));
+  const pager = h.calls.find(x => x[0] === "pager")[1];
+  assert.equal(pager.total, 27);
+  pager.onPageChange(2);
+  await settle();
+  assert.equal(h.calls.filter(x => x[0] === "api").length, 2);
+});
+
+test("validación de rutas: error de sesión reinicia credenciales y vista", async () => {
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => { throw new Error("Sesión expirada"); });
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  assert.ok(h.calls.some(x => x[0] === "reset"));
+  assert.ok(h.calls.some(x => x[0] === "mount"));
+  assert.equal(h.context.session, null);
+});
+
+test("validación de rutas: éxito con recarga fallida avisa sin repetir la validación", async () => {
+  let queries = 0;
+  let accepted = 0;
+  let closed = 0;
+  const messages = [];
+  const actions = [];
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => {
+    queries++;
+    return queries === 1
+      ? { ok: true, data: [{ idRuta: 32, unidad: "Unidad sintética", participantes: [], fechaApertura: "2026-11-02" }] }
+      : { ok: false, message: "Falla de recarga simulada" };
+  }, {
+    nowLocalMysql: () => "2026-11-02 14:00:00",
+    toast: (...args) => messages.push(args),
+    Modal: () => ({ card: { classList: { add() {} } }, close() { closed++; }, rebuildActions() {} }),
+    createActionButton: options => { actions.push(options); return { tag: "button", props: {} }; },
+    createSearchableSelect: () => ({ value: "Encargado" })
+  });
+  h.context.window.api.rutas_validar = async () => { accepted++; return { ok: true }; };
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  const open = h.nodes.find(n => n.tag === "button" && n.props.class === "btn primary validacion-rutas-cta");
+  assert.ok(open);
+  open.props.onclick();
+  assert.equal(actions.length, 1);
+  const nombre = h.nodes.find(n => n.props.placeholder === "Nombre completo");
+  nombre.value = "Responsable sintético";
+  await actions[0].onClick();
+  assert.equal(accepted, 1);
+  assert.equal(closed, 1);
+  assert.equal(queries, 2);
+  assert.ok(messages.some(m => /no se pudo actualizar la lista/i.test(m[0])));
+});
+
+test("validación de rutas: rechazo del servidor conserva el modal y muestra el error", async () => {
+  let closed = 0;
+  const actions = [];
+  const h = setup("rutas-y-reportes.js", "rutas_list", async () => ({
+    ok: true, data: [{ idRuta: 33, unidad: "Unidad sintética", participantes: [], fechaApertura: "2026-11-02" }]
+  }), {
+    nowLocalMysql: () => "2026-11-02 14:00:00",
+    toast: () => {},
+    Modal: () => ({ card: { classList: { add() {} } }, close() { closed++; }, rebuildActions() {} }),
+    createActionButton: options => { actions.push(options); return { tag: "button", props: {} }; },
+    createSearchableSelect: () => ({ value: "Encargado" })
+  });
+  h.context.window.api.rutas_validar = async () => ({ ok: false, message: "No autorizado para validar ruta" });
+  h.context.renderValidarRutas(h.host);
+  await settle();
+  h.nodes.find(n => n.props.class === "btn primary validacion-rutas-cta").props.onclick();
+  h.nodes.find(n => n.props.placeholder === "Nombre completo").value = "Responsable sintético";
+  await assert.rejects(actions[0].onClick(), /No autorizado para validar ruta/);
+  assert.equal(closed, 0);
+});

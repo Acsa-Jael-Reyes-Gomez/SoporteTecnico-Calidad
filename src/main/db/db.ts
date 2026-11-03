@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { SqliteConnection } from "./sqlite_connection";
+import { migratePlaintextPasswords } from "./password_migration";
 
 export interface DbConnection {
   execute<T = unknown>(sql: string, params?: unknown[]): Promise<[T, unknown]> | [T, unknown];
@@ -96,6 +97,7 @@ async function openDatabase(): Promise<SqliteConnection> {
   database = new DatabaseSync(databasePath);
   database.exec("PRAGMA foreign_keys=ON; PRAGMA busy_timeout=10000; PRAGMA journal_mode=WAL;");
   registerSqliteFunctions(database);
+  migratePlaintextPasswords(database, databasePath);
   connection = new SqliteConnection(database);
   return connection;
 }

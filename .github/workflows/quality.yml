@@ -53,6 +53,12 @@ jobs:
           npm run test:coverage 2>&1 | Tee-Object -FilePath coverage/coverage.txt
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: REPORTAR - generar cobertura completa para SonarQube
+        shell: pwsh
+        run: |
+          npm run test:coverage:sonar 2>&1 | Tee-Object -FilePath coverage/sonar-coverage.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: ANALIZAR - verificación estricta de TypeScript
         shell: pwsh
         run: |
@@ -84,6 +90,7 @@ jobs:
             coverage/eslint.log
             coverage/format-check.log
             coverage/lcov.info
+            coverage/sonar-coverage.txt
           if-no-files-found: warn
 
       - name: ANALIZAR - SonarCloud
