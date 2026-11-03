@@ -90,3 +90,44 @@ test("clasificación: maneja valores nulos, números, datos binarios y contrase�
   assert.equal(migration.classifyPassword("x".repeat(81)), "unexpected_data");
   assert.equal(migration.classifyPassword("clave" + String.fromCharCode(0xfffd)), "unexpected_data");
 });
+
+test("ACL: también rechaza ausencia de reglas y verifica una regla única sin aceptar permisos parciales", () => {
+  const sid = "S-1-5-21-2026";
+  const rule = { Sid: sid, Identity: "Usuario", IsInherited: false, AccessControlType: "Allow", Rights: "FullControl" };
+  const check = (access) => migration.verifyWindowsBackupAcl(
+    { IsInheritanceEnabled: false, Access: access }, sid
+  );
+  assert.throws(() => check(null), /reglas explícitas/);
+  assert.throws(() => check(undefined), /reglas explícitas/);
+  assert.throws(() => check(rule), /Falta una regla ACL válida/);
+  assert.throws(() => check([{ ...rule, Sid: "S-1-5-21-otro", Identity: "" }]), /no autorizada/);
+  assert.throws(() => check([{ ...rule, Rights: "ReadAndExecute" }]), /control total/);
+});
+
+test("respaldo: compara cantidad, identidad y datos relevantes de usuarios", () => {
+  const original = [{ idUsuario: 1, usuario: "synthetic", nombre: "Prueba", idRol: 1, activo: 1 }];
+  assert.doesNotThrow(() => migration.validateUserSnapshots(original, [{ ...original[0] }]));
+  assert.throws(() => migration.validateUserSnapshots(original, []), /contiene 0 usuarios/);
+  assert.throws(() => migration.validateUserSnapshots(original, [{ ...original[0], activo: 0 }]), /difieren/);
+});
+
+test("migración: acepta respaldo inyectado y conserva usuarios ya migrados", (t) => {
+  const { db, databasePath, directory } = fixture(t);
+  const insert = db.prepare("INSERT INTO usuario (idUsuario, usuario, pass) VALUES (?, ?, ?)");
+  insert.run(1, "pending", "OnlySynthetic123");
+  insert.run(2, "hash", require("bcryptjs").hashSync("OnlySynthetic456", 4));
+  let calls = 0;
+  const result = migration.migratePlaintextPasswords(db, databasePath, {
+    backupFactory: (sourcePath) => {
+      calls++;
+      assert.equal(sourcePath, databasePath);
+      return path.join(directory, "controlled-backup.db");
+    }
+  });
+  assert.equal(calls, 1);
+  assert.equal(result.migrated, 1);
+  assert.equal(result.unchanged, 1);
+  assert.equal(result.backupPath, path.join(directory, "controlled-backup.db"));
+  assert.equal(migration.classifyPassword(db.prepare("SELECT pass FROM usuario WHERE idUsuario=1").get().pass), "bcrypt_valid");
+  assert.equal(migration.classifyPassword(db.prepare("SELECT pass FROM usuario WHERE idUsuario=2").get().pass), "bcrypt_valid");
+});
