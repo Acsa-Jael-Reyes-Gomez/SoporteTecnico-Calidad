@@ -83,7 +83,7 @@ TypeScript estricto y ESLint se ejecutan en CI. ESLint cubre TypeScript, los mó
 
 ## Análisis estático
 
-El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarQube Cloud está integrado. El dashboard de `main` mostró **Quality Gate PASSED**, cobertura de código nuevo **80,1 %**, duplicación nueva **0,48 %** y cero problemas nuevos. La cobertura general de SonarQube fue **30,2 %**. En PR #8 se añadió `sonar.qualitygate.wait=true` para que el job también falle ante Quality Gate fallido; verificar su ejecución después del cambio.
+El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarQube Cloud está integrado. El dashboard de `main` mostró **Quality Gate PASSED**, cobertura de código nuevo **80,1 %**, duplicación nueva **0,48 %** y cero problemas nuevos. La cobertura general de SonarQube fue **30,2 %**. En PR #8 se añadió `sonar.qualitygate.wait=true` para que el job también falle ante Quality Gate fallido; el run 41677005283 comprobó 140 pruebas aprobadas y el estado `QUALITY GATE STATUS: PASSED` después de activar esa espera.
 
 ## Flujo GitHub y puertas de calidad
 
