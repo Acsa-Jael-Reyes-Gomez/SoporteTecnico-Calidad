@@ -76,7 +76,7 @@ Casos aprobados/fallidos, cobertura de líneas/ramas/funciones, errores de compi
 
 ## 12. Puertas de calidad
 
-El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. El análisis estático se realiza con TypeScript estricto, ESLint y Prettier. SonarQube Cloud analiza el PR; el workflow exige `SONAR_TOKEN` y ahora espera el resultado del Quality Gate con `sonar.qualitygate.wait=true` para fallar si la puerta de calidad falla. La verificación de este cambio en una ejecución nueva aún debe registrarse.
+El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. El análisis estático se realiza con TypeScript estricto, ESLint y Prettier. SonarQube Cloud analiza el PR; el workflow exige `SONAR_TOKEN` y ahora espera el resultado del Quality Gate con `sonar.qualitygate.wait=true` para fallar si la puerta de calidad falla. La ejecución [41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) verificó el parámetro `sonar.qualitygate.wait=true` y concluyó con `QUALITY GATE STATUS: PASSED`.
 
 ## 13. Revisiones automáticas
 
