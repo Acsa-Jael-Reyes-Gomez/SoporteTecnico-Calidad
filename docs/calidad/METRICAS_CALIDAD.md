@@ -40,10 +40,6 @@ Las 25 pruebas iniciales son casos registrados sin resultado completo conservado
 
 Main conserva la medición de 20 bugs, 15 code smells y 1 vulnerabilidad hasta una integración y reanálisis posteriores. No se afirma que los hallazgos estén cerrados en main porque las correcciones se publican únicamente en PR #8. Véase [revisión individual](HALLAZGOS_SONAR.md).
 
-## Antecedente de julio de 2026 incorporado al cierre
+## Fuente de la línea base histórica
 
-Según el [historial documental aportado](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
-
-La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
-
-El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.
+La [revisión de la copia de julio](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) identifica 25 pruebas definidas en dos archivos, sin registros de ejecución ni cobertura inicial conservados. La tabla anterior documenta las verificaciones posteriores y aclara sus diferentes alcances. El cierre técnico y su cobertura se apoyan en las ejecuciones de GitHub Actions citadas arriba.
