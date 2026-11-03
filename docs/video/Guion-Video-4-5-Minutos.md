@@ -1,24 +1,22 @@
-# Guion del video explicativo
+# Video obligatorio — guion de 4 min 30 s
 
-**Duración objetivo:** 4 minutos y 30 segundos · **Idioma:** español
-**Estado:** guion preparado; falta grabar y exportar el video real.
+**Entrega exigida:** MP4, mínimo 720p, duración entre 4:00 y 5:00 minutos, narración de voz clara. El video real debe ser grabado por la persona estudiante. Este archivo es un guion, no una grabación.
 
-| Tiempo    | Qué mostrar                                                                                                 | Narración sugerida                                                                                                                                                                                                                                                                                                         |
-| --------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0:00–0:30 | Portada con nombre del sistema y del curso.                                                                 | «Soy Acsa Jael Reyes Gómez. Presento el proyecto de CI/CD con aseguramiento de calidad aplicado al sistema de soporte técnico. El objetivo fue reutilizar la aplicación existente y comprobar automáticamente los cambios.»                                                                                                |
-| 0:30–1:00 | README y mapa de módulos: tickets, rutas, equipos, envíos, proyectos y reportes.                            | «El sistema es una aplicación de escritorio Electron. La interfaz usa JavaScript y CSS; la lógica principal usa TypeScript y se comunica mediante IPC. La persistencia utiliza SQLite mediante node:sqlite. No se cambió a React ni Express porque el proyecto debía conservar su base existente.»                         |
-| 1:00–1:30 | Diagrama Renderer → Preload → Main/IPC → SQLite.                                                            | «La interfaz Renderer solicita operaciones al proceso principal por medio del puente Preload. Main valida permisos y datos antes de consultar SQLite. Las pruebas de esta entrega no se conectan a la base local: usan dobles y SQLite en memoria para validar reglas sin afectar datos.»                                  |
-| 1:30–2:45 | Mostrar el PR #1 y los runs 40974922468 (`push`) y 40974928285 (`pull_request`), expandir etapas aprobadas. | «Abrí un pull request para integrar SQLite y los cambios de calidad. GitHub Actions ejecutó el workflow en Windows con Node 22. CONSTRUIR compiló; PROBAR ejecutó los casos y midió cobertura; ANALIZAR revisó TypeScript, ESLint y Prettier; REPORTAR guardó los resultados. Pasaron los runs de push y de pull request.» |
-| 2:45–3:20 | Resultado local actual del comando de cobertura.                                                            | «La suite local actual tiene 33 casos y los 33 aprobaron. La cobertura fue 96.16 por ciento de líneas, 81.55 por ciento de ramas y 92.31 por ciento de funciones. Los umbrales son 75, 60 y 55 por ciento. La cobertura inicial no se midió, así que no presento una diferencia porcentual.»                               |
-| 3:20–3:55 | Tabla de línea base y resultado posterior.                                                                  | «El registro inicial documenta 25 casos, pero no conserva una tasa de aprobación y no se midió cobertura. Por eso no afirmo un aumento porcentual de cobertura. La mejora comprobable es que ahora hay pruebas, umbrales, compilación y análisis ejecutados automáticamente.»                                              |
-| 3:55–4:20 | Mostrar límites en SQA Plan o informe final.                                                                | «El adaptador SQLite tiene pruebas de integración en memoria y se verifica la integridad y el rango de fechas de la semilla. Falta probar el arranque completo de Electron y no hay pruebas E2E ni un resultado SonarCloud registrado.»                                                                                    |
-| 4:20–4:30 | Diapositiva de cierre.                                                                                      | «El sistema existente se conserva y cada cambio puede pasar por controles repetibles. Para cerrar la entrega, quedan la presentación exportada, este video grabado y la verificación de reglas de la rama.»                                                                                                                |
+| Tiempo | Pantalla a mostrar | Narración sugerida |
+| --- | --- | --- |
+| 0:00–0:35 | Portada, nombre del curso y repositorio | "Este proyecto incorpora un pipeline de integración continua y aseguramiento de calidad a una aplicación existente de soporte técnico. La meta es verificar cambios antes de integrarlos." |
+| 0:35–1:05 | Arquitectura Electron: Renderer → Preload → Main/IPC → SQLite | "Se conserva la aplicación Electron con interfaz JavaScript, proceso principal TypeScript y SQLite. Las pruebas usan datos sintéticos y no tocan una base operativa." |
+| 1:05–2:35 | Mostrar rama de trabajo y PR #7, o una rama de demostración nueva; abrir Actions y enseñar etapas build, test, analyze, report | "El flujo comienza con una rama y una modificación verificable. Al crear un pull request, Actions compila, ejecuta 140 pruebas automatizadas, la prueba E2E, los controles de cobertura y los análisis estáticos. Las verificaciones pueden rechazar cambios cuando fallan." |
+| 2:35–3:20 | Captura real del SonarQube PR #7 | "El Quality Gate quedó aprobado con 80,1 % de cobertura de código nuevo, 0 problemas nuevos, 0 hotspots nuevos y 0,5 % de duplicación. Esta cobertura no es la cobertura global de toda la aplicación." |
+| 3:20–3:55 | Tabla de comparación y línea base | "La línea base histórica registra 25 casos pero no una cobertura inicial medible. Ahora la ejecución final registra 140 pruebas aprobadas. No calculo mejoras porcentuales de cobertura entre universos diferentes." |
+| 3:55–4:30 | PR #7 fusionado y conclusiones | "Dos aprobaciones quedaron registradas y el PR se fusionó con main. El mayor aprendizaje fue combinar pruebas, métricas y revisión. Aún debe comprobarse por separado la protección obligatoria de main y entregar las evidencias audiovisuales." |
 
-## Lista de preparación para grabar
+## Pasos de grabación
 
-- [ ] Verificar que el nombre y curso de la portada sean correctos.
-- [ ] Crear una rama de demostración y abrir un pull request real hacia `main`.
-- [ ] Mostrar el run 40974928285 asociado al pull request actual; el run 40599606066 es histórico.
-- [ ] Mostrar el artefacto de reportes y la salida real de cobertura.
-- [ ] No presentar SonarCloud, protección de rama ni integración de base de datos como activos si no se verificaron.
-- [ ] Grabar narración en español, exportar a MP4 de 720p o superior y comprobar que dure entre 4 y 5 minutos.
+1. Grabar pantalla con OBS, Zoom, PowerPoint o herramienta equivalente, resolución 1280 × 720 o superior.
+2. Mostrar una **captura auténtica** del workflow y del dashboard, o navegar en vivo por esas páginas.
+3. Para demostrar "rama → cambio → PR" puede usar el PR #7 histórico o preparar una rama nueva con una edición documental no funcional. No modificar una rama de producción para fingir fallos.
+4. Indicar explícitamente que **140/140** es la ejecución del PR, y **80,1 %** solo código nuevo.
+5. Revisar duración, audio y nitidez, exportar MP4, abrirlo y comprobar que se reproduce.
+
+**Links:** [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7) · [Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) · [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
