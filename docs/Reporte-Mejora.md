@@ -6,14 +6,14 @@ Se aplicaron controles automatizados sobre una aplicación Electron existente. E
 
 ## Comparación sustentada
 
-| Indicador | Línea base histórica | Cierre final verificado |
-| --- | --- | --- |
-| Casos registrados | 25; sin resultados individuales conservados | 140/140 aprobados en el run final |
-| Cobertura | No medida en la línea base inicial | 80,1 % sobre código nuevo del PR; sin base homogénea anterior |
-| CI/CD verificable | No existe resultado inicial comparable | Pipeline del PR `success` |
-| Análisis estático | Sin resultado inicial comparable | TypeScript, ESLint, Prettier y Quality Gate aprobados |
-| Revisión independiente | Sin métrica inicial comparable | Dos aprobaciones registradas en PR #7 |
-| Fusión | No aplica a línea base | PR #7 integrado a `main` (SHA `7697745`) |
+| Indicador              | Línea base histórica                        | Cierre final verificado                                       |
+| ---------------------- | ------------------------------------------- | ------------------------------------------------------------- |
+| Casos registrados      | 25; sin resultados individuales conservados | 140/140 aprobados en el run final                             |
+| Cobertura              | No medida en la línea base inicial          | 80,1 % sobre código nuevo del PR; sin base homogénea anterior |
+| CI/CD verificable      | No existe resultado inicial comparable      | Pipeline del PR `success`                                     |
+| Análisis estático      | Sin resultado inicial comparable            | TypeScript, ESLint, Prettier y Quality Gate aprobados         |
+| Revisión independiente | Sin métrica inicial comparable              | Dos aprobaciones registradas en PR #7                         |
+| Fusión                 | No aplica a línea base                      | PR #7 integrado a `main` (SHA `7697745`)                      |
 
 **La ganancia comprobable** es la incorporación de un proceso repetible de controles, 140 pruebas y revisión antes del merge; no es correcto restar porcentajes de cobertura medidos sobre archivos o períodos distintos.
 
