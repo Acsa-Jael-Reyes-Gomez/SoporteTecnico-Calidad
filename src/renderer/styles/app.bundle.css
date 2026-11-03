@@ -1086,8 +1086,7 @@ td{
   th, td{ padding:13px 14px; }
 }
 
-/* ==========================
-
+/* ========================== */
 
 
 
@@ -4804,8 +4803,7 @@ select.techSelectSingle:not([value=""]){
   font-weight:700;
 }
 
-/* ==========================
-
+/* ========================== */
 
 
 
@@ -10129,8 +10127,7 @@ EQUIPO TICKET - COMPACTO (OPTIMIZADO)
   background: #fff !important;
 }
 
-/* ==========================
-
+/* ========================== */
 
 
 /* ===== modules/reportes.css ===== */
@@ -12390,7 +12387,6 @@ body.sidebar-collapsed .nav .sidebar-nav-btn::after{
 .content > :not(.dashboardWrap) .calif-table thead th{
   min-height:24px !important;
   height:auto !important;
-  box-shadow:none !important;
   border-bottom:1px solid var(--app-table-divider-strong) !important;
   border-right:1px solid var(--app-table-divider-strong) !important;
   box-shadow:

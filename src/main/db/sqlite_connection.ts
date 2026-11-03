@@ -18,11 +18,14 @@ function normalizeSql(source: string): string {
     .replace(/\bFOR\s+UPDATE\b/gi, "")
     .replace(/\bINSERT\s+IGNORE\s+INTO\b/gi, "INSERT OR IGNORE INTO")
     .replace(/\bVALUES\s*\(\s*`?(\w+)`?\s*\)/gi, "excluded.$1")
-    .replace(
-      /GROUP_CONCAT\s*\(\s*DISTINCT\s+([^)]*)\s+ORDER\s+BY\s+[^)]*\s+SEPARATOR\s+'[^']*'\s*\)/gi,
-      "GROUP_CONCAT(DISTINCT $1)"
-    )
-    .replace(/\bDATEDIFF\s*\(\s*CURRENT_TIMESTAMP\s*,\s*([^()]+)\)/gi, "DATEDIFF(CURRENT_TIMESTAMP, $1)")
+    .replace(/\bGROUP_CONCAT\s*\(([^()]*)\)/gi, (original, args: string) => {
+      // Inspect each argument once instead of backtracking across the SQL text.
+      const distinct = /^\s*DISTINCT\s+/i.exec(args);
+      const order = /\bORDER\s+BY\b/i.exec(args);
+      const separator = /\bSEPARATOR\b/i.exec(args);
+      if (!distinct || !order || !separator || separator.index <= order.index) return original;
+      return `GROUP_CONCAT(DISTINCT ${args.slice(distinct[0].length, order.index).trim()})`;
+    })
     .replace(/\bON\s+DUPLICATE\s+KEY\s+UPDATE\b/gi, "ON CONFLICT DO UPDATE SET");
 }
 

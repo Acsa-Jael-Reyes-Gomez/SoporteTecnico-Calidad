@@ -102,7 +102,7 @@
     btnBuscar.addEventListener("click", () => {
       if (!isLoading) {
         page = 1;
-        load();
+        load().catch(error => toast(getUserErrorMessage(error, "No se pudieron cargar los proyectos."), "err"));
       }
     });
 
@@ -112,7 +112,7 @@
       if (typeof idUnidad.clear === "function") idUnidad.clear();
       if (typeof idTecnico.clear === "function") idTecnico.clear();
       page = 1;
-      load();
+      load().catch(error => toast(getUserErrorMessage(error, "No se pudieron cargar los proyectos."), "err"));
     });
 
     const header = el("div", { class: "card module-standard-header" }, [
@@ -295,13 +295,13 @@
           onPageChange: (nextPage) => {
             if (isLoading || nextPage === page) return;
             page = nextPage;
-            load();
+            load().catch(error => toast(getUserErrorMessage(error, "No se pudieron cargar los proyectos."), "err"));
           },
           onPageSizeChange: (nextPageSize) => {
             if (isLoading || nextPageSize === pageSize) return;
             pageSize = nextPageSize;
             page = 1;
-            load();
+            load().catch(error => toast(getUserErrorMessage(error, "No se pudieron cargar los proyectos."), "err"));
           }
         });
 
@@ -335,9 +335,9 @@
 
     contentEl.addEventListener("app:refresh-route", (event) => {
       event.preventDefault();
-      load();
+      load().catch(error => toast(getUserErrorMessage(error, "No se pudieron cargar los proyectos."), "err"));
     });
 
-    load();
+    load().catch(error => toast(getUserErrorMessage(error, "No se pudieron cargar los proyectos."), "err"));
   };
 })();

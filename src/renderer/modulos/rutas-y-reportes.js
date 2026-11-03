@@ -1,4 +1,5 @@
-﻿function RutaModal(row, onDone) {
+/* global session: writable, catalogos: writable, proyectosScriptPromise: writable */
+function RutaModal(row, onDone) {
   const isEdit = !!row;
   let isClosed = isEdit ? isClosedByFechaCierre(row) : false;
   const isValidated = isEdit ? Number(row?.idEstadoValidacion || 0) !== 0 : false;
@@ -1761,7 +1762,7 @@ function renderReportes(host) {
     const tbody = el("tbody", {}, rows.length
       ? rows.map((row) => {
           const documento = normalizeReportValue(row?.documento);
-          const hasDocument = documento !== "—" && documento !== "—";
+          const hasDocument = documento !== "—";
           return el("tr", {}, [
             el("td", { title: row.titulo }, [row.titulo]),
             el("td", { class: "report-project-detail-text", title: row.participantes }, [row.participantes]),

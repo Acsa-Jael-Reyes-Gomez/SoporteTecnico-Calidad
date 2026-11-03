@@ -568,6 +568,7 @@ function normalizeExcelTableHeaders(root = document) {
   initResizableExcelTables(scope);
 }
 
+/** @returns {Array<number|string>} Page numbers and ellipsis markers. */
 function getPagerItems(totalPages, page) {
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, index) => index + 1);
@@ -991,7 +992,7 @@ function clearPendingTimeouts() {
  * Permite filtrar las opciones escribiendo en un input
  * @param {Array} options - Array de objetos {value, label}
  * @param {string} placeholder - Texto placeholder
- * @param {string|number} currentValue - Valor actual seleccionado
+ * @param {string|number|undefined} currentValue - Valor actual seleccionado; puede omitirse
  * @param {Function} onChange - Función callback cuando cambia la selección
  * @returns {HTMLElement} - Contenedor con input de búsqueda y lista de opciones
  */

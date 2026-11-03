@@ -1,4 +1,5 @@
-﻿
+/* global session: writable, catalogos: writable */
+
 /**
  * Modal de consulta de equipo (solo lectura)
  */
