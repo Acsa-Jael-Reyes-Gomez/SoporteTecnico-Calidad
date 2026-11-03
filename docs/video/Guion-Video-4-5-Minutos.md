@@ -34,7 +34,7 @@ Se puede recortar la espera de CI indicando que se omitió tiempo de espera y co
 
 **Pantalla:** tabla de línea base y métricas finales; señalar alcances distintos.
 
-“El registro inicial conserva veinticinco casos, pero no una cobertura equivalente ni todos los resultados. Por eso no calculo una mejora porcentual inexistente. Las capturas de ciento cuarenta casos y ochenta y ocho coma noventa por ciento son antecedentes de un cálculo que incluía tests. El cierre usa ciento cuarenta y seis casos y un denominador corregido. La diferencia de porcentaje no demuestra pérdida de cobertura. La mejora verificable son los controles, los defectos corregidos y las regresiones.”
+“El registro inicial conserva veinticinco casos definidos, sin resultados de ejecución ni cobertura inicial conservados. Por eso no calculo una mejora porcentual inexistente. Las capturas de ciento cuarenta casos y ochenta y ocho coma noventa por ciento son antecedentes de un cálculo que incluía tests. El cierre usa ciento cuarenta y seis casos y un denominador corregido. La diferencia de porcentaje no demuestra pérdida de cobertura. La mejora verificable son los controles, los defectos corregidos y las regresiones.”
 
 ## 3:45–4:30 · Conclusiones (45 s)
 
@@ -50,4 +50,3 @@ Se puede recortar la espera de CI indicando que se omitió tiempo de espera y co
 - Exportar MP4, abrirlo y reproducirlo completo; comprobar duración y resolución antes de marcarlo entregado.
 
 **Pronunciación:** pipeline: páip-lain; GitHub Actions: guít-jab ák-shons; Pull Request: pul ri-kuést; SonarQube: só-nar kiub; Quality Gate: kuóliti gueit; c8: si-éit; E2E: i-tu-i; SQLite: es-kiu-el-áit; main: mein.
-

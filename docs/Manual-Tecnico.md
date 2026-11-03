@@ -37,8 +37,6 @@ La copia usa SQLite `VACUUM INTO`, por lo que incluye correctamente los datos ac
 
 Los archivos de respaldo contienen datos sensibles. En Windows, el programa consulta el SID del usuario actual y utiliza `icacls` para quitar la herencia, conservar acceso explícito al usuario actual, `SYSTEM` y `Administradores`, y verificar la ACL efectiva. `icacls` puede ser bloqueado por políticas de empresa o por permisos administrativos; si falla, se cancela la creación del respaldo. En otros sistemas se aplica `chmod 700/600`. Estas medidas POSIX no representan ACL privadas de Windows. La carpeta `backups/` está excluida de Git y del instalador por configuración de electron-builder. Los respaldos locales no forman parte del paquete de instalación y no se eliminan automáticamente.
 
-La protección estructurada de Windows conserva acceso explícito al usuario actual, `SYSTEM` y el grupo `Administradores`; elimina la herencia y verifica mediante PowerShell las reglas efectivas. Si aparece otra identidad, falta una regla requerida o la ACL no puede verificarse, se cancela el respaldo. Las políticas corporativas pueden impedir ajustar o verificar la ACL aunque la aplicación tenga permisos normales.
-
 Durante la sustitución de `seed.db`, el importador usa archivos temporales y un bloqueo local exclusivo. Ante una interrupción, la recuperación es conservadora: si `seed.db` ya existe se conserva; si falta y existe un único respaldo válido se puede recuperar; si existen varios respaldos o temporales ambiguos, se conserva todo y se requiere intervención manual. Los archivos temporales incompletos nunca se consideran semilla válida. Cualquier recuperación registra una acción local sin contraseñas ni hashes.
 
 La migración mantiene todos los usuarios y no genera ni cambia credenciales. Los casos problemáticos se registran en un informe dentro de `backups/`, con el identificador, el nombre de usuario y una clasificación. El informe nunca incluye la contraseña original ni el hash bcrypt.
@@ -71,6 +69,7 @@ npm run lint
 npm run format:check
 npm test
 npm run test:coverage
+npm run test:e2e
 ```
 
 `npm test` compila la aplicación y ejecuta `node:test`. En el cierre se aprobaron **146 pruebas sin fallos ni omisiones** y un recorrido E2E adicional con SQLite aislado. El comando c8 informa **83,30 % de líneas, 70,41 % de ramas y 94,66 % de funciones** con mínimos de **75/60/55 %**, respectivamente. Estas cifras corresponden al código de aplicación instrumentado, no a toda la interfaz. El historial de 25 casos definidos, 28/28, 33/33 y 140/140 está en [la línea base](Linea-Base-Calidad.md).
