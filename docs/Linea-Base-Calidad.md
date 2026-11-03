@@ -14,10 +14,8 @@ El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del deno
 
 La mejora comprobable es el proceso reproducible, la trazabilidad, la conservación de los 140 casos previos, seis nuevas regresiones y las correcciones identificadas en [hallazgos](calidad/HALLAZGOS_SONAR.md). No se atribuye una ganancia porcentual a una línea base no medida. La serie histórica completa está en [métricas](calidad/METRICAS_CALIDAD.md).
 
-## Antecedente de julio de 2026 incorporado al cierre
+## Evidencia de la copia original
 
-Según el [historial documental aportado](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
+En la [copia de julio de 2026](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) se identificaron 22 casos definidos en `core-services.test.js` y tres en `envio-history.test.js`. No se conservó un resultado de ejecución. Tampoco aparecieron mediciones de cobertura o configuraciones de GitHub Actions y SonarQube en los archivos examinados; esto describe únicamente la copia revisada, no la historia completa del proyecto.
 
-La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
-
-El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.
+La evolución registrada fue de **25 casos definidos**, luego **28/28**, **33/33**, **140/140** y finalmente **146/146 pruebas aprobadas**. Estas cifras muestran el aumento del inventario y de las verificaciones comprobadas. Las coberturas de cada etapa tienen alcances diferentes y se muestran con su contexto en [Métricas de calidad](calidad/METRICAS_CALIDAD.md).
