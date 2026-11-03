@@ -49,10 +49,10 @@ La ejecución de PR contiene evidencia de la respuesta de los controles. Para ve
 
 ## 5. Requisitos faltantes o pendientes de corroborar
 
-- **Protección de main:** no hay evidencia de un ruleset obligatorio activo. La documentación previa registró una restricción de GitHub para proteger un repositorio privado con el plan disponible. Confirmar en **Settings → Rules → Rulesets** o **Settings → Branches**. No volver público el repositorio sin evaluar información sensible.
+- **Protección de main:** la propietaria comprobó en **Settings → Branches** una regla para `main` con Pull Request obligatorio, aprobación y check `Compilar, probar y verificar calidad`. La captura de configuración no está guardada; confirmar que la regla bloquee cambios en un PR posterior.
 - **Pipeline tras la fusión:** el resultado del PR está aprobado, pero la ejecución _push_ específica del merge a `main` no está confirmada en este informe. Verificar en Actions sobre el SHA `7697745`.
 - **Acceso del docente:** invitar al docente con permiso de lectura, o publicar el repositorio solo tras auditar secretos y datos.
-- **Presentación:** debe contar con capturas auténticas de GitHub Actions y SonarQube; enlaces no sustituyen capturas.
+- **Presentación:** se preparó un PowerPoint de 10 diapositivas con capturas auténticas del pipeline, pruebas, cobertura, SonarQube y PR #7, acompañado de anexo de evidencias y guion con pronunciación. Adjuntar los archivos PDF finales a la entrega.
 - **Video obligatorio:** entregar MP4 de 4–5 min, al menos 720p, con narración y demostración del flujo (rama, cambio, PR, pipeline, Quality Gate, dashboard, comparativa y conclusiones). El guion no sustituye la grabación.
 - **Matriz de pruebas:** su inventario histórico de 33 casos no es la enumeración completa de los 140 casos del run final. Consultar los nombres de pruebas del artefacto `test-results.log`.
 
@@ -65,4 +65,4 @@ La ejecución de PR contiene evidencia de la respuesta de los controles. Para ve
 
 ## 7. Conclusión
 
-El flujo SQA del PR terminó aprobado, con 140 pruebas automatizadas, recorrido E2E y Quality Gate superado. La evaluación integral del enunciado debe conservar explícitos los pendientes de protección de rama, acceso al docente, video y capturas; no se presentan como cumplidos sin evidencia.
+El flujo SQA del PR terminó aprobado, con 140 pruebas automatizadas, recorrido E2E y Quality Gate superado. La regla de protección de `main` fue revisada por la propietaria. En PR #8 se reforzó el workflow para que el trabajo falle si SonarQube reporta un Quality Gate fallido. Falta comprobar esa nueva ejecución, fusionar la documentación y entregar el video MP4.
