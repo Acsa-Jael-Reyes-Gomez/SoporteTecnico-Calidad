@@ -1,6 +1,6 @@
 ## Actualización de cierre — PR #7 (noviembre de 2026)
 
-El análisis remoto **sí quedó configurado y ejecutado**: SonarQube informó Quality Gate **PASSED** y **80,1 % de cobertura del código nuevo**, el run del PR #7 aprobó **140/140 pruebas**, se ejecutó E2E con SQLite sintético y el PR fue fusionado con dos revisiones aprobatorias. Los párrafos históricos posteriores que indican “SonarCloud no integrado” o “sin resultado remoto” describen estados previos, no la situación final. La protección obligatoria de `main`, el acceso del docente y el video MP4 aún necesitan evidencia independiente. Véase [Informe final](Informe-Final.md) y [Métricas](calidad/METRICAS_CALIDAD.md).
+El análisis remoto **sí quedó configurado y ejecutado**: SonarQube informó Quality Gate **PASSED** y **80,1 % de cobertura del código nuevo**, el run del PR #7 aprobó **140/140 pruebas**, se ejecutó E2E con SQLite sintético y el PR fue fusionado con dos revisiones aprobatorias. Los párrafos históricos posteriores que indican “SonarCloud no integrado” o “sin resultado remoto” describen estados previos, no la situación final. La configuración de protección de `main` fue revisada por la propietaria mediante la interfaz de GitHub: exige Pull Request, aprobaciones, estado correcto de «Compilar, probar y verificar calidad» y conversaciones resueltas. Aún falta comprobar la aplicación efectiva de estas políticas sobre un PR nuevo. El acceso del docente y el video MP4 están pendientes. Véase [Informe final](Informe-Final.md) y [Métricas](calidad/METRICAS_CALIDAD.md).
 
 ---
 
@@ -12,7 +12,7 @@ Prevenir regresiones de la aplicación existente y hacer verificables los cambio
 
 ## 2. Alcance
 
-Incluye el proceso principal Electron, el puente Preload, servicios de negocio, Renderer, el adaptador SQLite integrado, pruebas y pipeline. No incluye infraestructura productiva, verificación de permisos reales en GitHub ni análisis remoto ejecutado.
+Incluye el proceso principal Electron, el puente Preload, servicios de negocio, Renderer, el adaptador SQLite integrado, pruebas y pipeline. No incluye despliegue cloud ni pruebas contra infraestructura de producción. Sí incluye el análisis remoto SonarQube Cloud, la revisión del PR #7 y la comprobación reportada de reglas de protección en GitHub.
 
 ## 3. Descripción del sistema
 
@@ -41,7 +41,7 @@ La aplicación de estas referencias es parcial y adaptada al tamaño del proyect
 
 ## 6. Herramientas
 
-Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Prettier y GitHub Actions. SonarCloud no está integrado.
+Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Prettier y GitHub Actions. SonarQube Cloud está integrado; en el PR #7 el Quality Gate resultó PASSED y la cobertura de código nuevo alcanzó 80,1 %.
 
 ## 7. Estrategia de pruebas
 
@@ -59,7 +59,7 @@ Framework adaptado al sistema: `node:test` evita introducir Jest/React Testing L
 
 ## 9. Cobertura
 
-`npm run test:coverage` utiliza la cobertura V8 incluida en Node. No utiliza Istanbul/Jest. La medición local actual del 29/10/2026 es 96.16% de líneas, 81.55% de ramas y 92.31% de funciones, con 33/33 pruebas. El run remoto 40599606066, con 28 pruebas, corresponde a la revisión anterior a SQLite.
+`npm run test:coverage` utiliza la cobertura V8 incluida en Node. No utiliza Istanbul/Jest. El registro histórico del 29/10/2026 documentó 33/33 pruebas. El cierre comprobable en el run 41560908801 ejecutó 140/140, con 88,90 % de cobertura de líneas, 80,75 % de ramas y 73,61 % de funciones para el alcance medido por c8. SonarQube midió por separado 80,1 % de cobertura del código nuevo. No se calcula mejora porcentual frente a una cobertura inicial que no fue medida.
 
 ## 10. Métricas
 
@@ -71,16 +71,16 @@ Casos aprobados/fallidos, cobertura de líneas/ramas/funciones, errores de compi
 - Todas las pruebas requeridas aprobadas.
 - Cobertura del comando: líneas >= 75%, ramas >= 60%, funciones >= 55% (más estricto que el mínimo académico del 60% de líneas).
 - TypeScript sin errores.
-- SonarCloud no integrado; no se presentan métricas de esa plataforma.
+- SonarQube Cloud: Quality Gate PASSED, al menos 80 % de cobertura y como máximo 3 % de duplicación sobre código nuevo; el resultado del cierre fue 80,1 % de cobertura y 0,48 % de duplicación.
 - No introducir secretos en cambios.
 
 ## 12. Puertas de calidad
 
-El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. El análisis estático se realiza con TypeScript estricto, ESLint y Prettier. SonarCloud no está integrado y no forma parte de esta puerta.
+El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. El análisis estático se realiza con TypeScript estricto, ESLint y Prettier. SonarQube Cloud analiza el PR; el workflow exige `SONAR_TOKEN` y ahora espera el resultado del Quality Gate con `sonar.qualitygate.wait=true` para fallar si la puerta de calidad falla. La verificación de este cambio en una ejecución nueva aún debe registrarse.
 
 ## 13. Revisiones automáticas
 
-GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. Las ejecuciones verificadas para `cierre-requisitos-sqa` completaron correctamente la puerta de calidad. El PR no tiene aprobación independiente registrada y `main` no tiene protección configurada.
+GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. La ejecución final del PR #7 (run 41560908801) registró 140 pruebas aprobadas, E2E, TypeScript, ESLint, Prettier y análisis SonarQube exitosos. El PR #7 recibió dos aprobaciones del revisor Acsa-Reyes y se fusionó a `main`. Según comprobación de la propietaria en Settings → Branches, la regla para `main` exige PR, aprobación y el check `Compilar, probar y verificar calidad`.
 
 ## 14. Revisiones manuales
 
@@ -96,7 +96,7 @@ Mantener el registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. Priorizar ri
 
 ## 17. Riesgos
 
-Dependencia de Electron/Windows; la cobertura E2E se limita al inicio de sesión y alta de ticket; SonarCloud no está integrado; y la protección de la rama principal no está activa.
+Dependencia de Electron/Windows; el E2E cubre el inicio de sesión y la creación persistida de un ticket, no todas las pantallas; la cobertura total de SonarQube está por debajo de la del código nuevo (30,2 % frente a 80,1 %); persiste deuda técnica en código histórico.
 
 ## 18. Control de versiones
 
@@ -108,7 +108,7 @@ Cada PR describe motivo, alcance, pruebas realizadas, riesgos y cambios de base/
 
 ## 20. Criterios de aceptación
 
-La aplicación existente conserva sus operaciones principales; compilación, pruebas y cobertura pasan; tipos sin errores; documentación y riesgos actualizados; y el revisor confirma los cambios. El propietario confirmó una ejecución verde de Actions. La protección de rama y la revisión humana de cada pull request deben comprobarse por separado.
+La aplicación existente conserva sus operaciones principales; compilación, pruebas y cobertura pasan; tipos sin errores; documentación y riesgos actualizados; y el revisor confirma los cambios. El run 41560908801 y el PR #7 documentan la ejecución verde, las dos aprobaciones y la fusión. La propietaria confirmó la configuración de la protección de la rama mediante GitHub; su efecto en un PR posterior debe volver a verificarse.
 
 ## 21. Mantenimiento
 
