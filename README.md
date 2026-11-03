@@ -51,7 +51,7 @@ El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del deno
 
 [PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. PR #8 permanece abierto y sin aprobación independiente; no se fusionó ni se modificó main directamente.
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. Al corte del 3 de noviembre de 2026, el PR #8 estaba abierto, pendiente de revisión y sin fusionar. Antes de la entrega debe consultarse su estado actual en GitHub.
 
 Para el flujo de ramas, revisiones y configuración de protecciones, consulta [docs/Flujo-GitHub.md](docs/Flujo-GitHub.md) y la plantilla en `.github/PULL_REQUEST_TEMPLATE.md`.
 
@@ -83,10 +83,8 @@ El estado detallado de cada requisito del enunciado, incluidos los pasos externo
 
 [Informe final](docs/Informe-Final.md) · [Hallazgos Sonar](docs/calidad/HALLAZGOS_SONAR.md) · [Inventario final](docs/calidad/INVENTARIO_FINAL_CASOS.csv). Las capturas y cifras de octubre y del cierre de 140 casos se conservan como antecedentes.
 
-## Antecedente de julio de 2026 incorporado al cierre
+## Procedencia del proyecto y línea base
 
-Según el [historial documental aportado](docs/calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
+La aplicación parte de un sistema de soporte técnico existente. En una copia de julio de 2026 se identificaron **25 casos de prueba definidos**, pero no se conservaron registros para confirmar cuántos aprobaron ni una medición inicial de cobertura. Este antecedente se documenta en [el historial verificado](docs/calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) y se compara con el cierre en [la línea base](docs/Linea-Base-Calidad.md). Los porcentajes de distintas etapas no son directamente comparables porque cambió el alcance de la instrumentación.
 
-La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
-
-El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.
+La presentación y las métricas de entrega están en [docs/presentacion/](docs/presentacion/README.md). El video explicativo se entrega como archivo independiente.
