@@ -82,3 +82,11 @@ El estado detallado de cada requisito del enunciado, incluidos los pasos externo
 ## Cierre y evidencias
 
 [Informe final](docs/Informe-Final.md) · [Hallazgos Sonar](docs/calidad/HALLAZGOS_SONAR.md) · [Inventario final](docs/calidad/INVENTARIO_FINAL_CASOS.csv). Las capturas y cifras de octubre y del cierre de 140 casos se conservan como antecedentes.
+
+## Antecedente de julio de 2026 incorporado al cierre
+
+Según el [historial documental aportado](docs/calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
+
+La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
+
+El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.

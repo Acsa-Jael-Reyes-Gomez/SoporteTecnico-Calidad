@@ -66,19 +66,19 @@ Fuentes: https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8 
 
 ## 5. Línea base
 
-La línea base histórica registra veinticinco casos, pero no conserva una medición inicial completa de cobertura ni todos los resultados individuales. Por eso no afirmo que la cobertura haya crecido desde un porcentaje desconocido. Los antecedentes de 28 y 33 pruebas pertenecen a revisiones posteriores que ya tenían controles. La evolución demostrable es la ampliación del inventario, el uso de pruebas aisladas, el pipeline obligatorio y la revisión. La comparación debe mantener el mismo alcance para ser válida.
+La línea base procede del historial documental aportado sobre una copia de julio de 2026. Identifica 25 casos definidos: 22 en core-services y 3 en envio-history. No conservamos resultados de ejecución ni cobertura inicial; por eso no afirmamos que esos 25 aprobaron. La copia utilizaba Electron, JavaScript y TypeScript, con MySQL mediante ODBC, y no contiene configuración de Actions ni SonarQube. Esto describe únicamente esa copia. El cierre actual conserva Electron y SQLite: tiene 146 pruebas aprobadas, cero fallidas y cobertura c8 corregida de 83,30 por ciento de líneas, 70,41 de ramas y 94,66 de funciones. SonarQube aprueba el Quality Gate con 86,5 por ciento de cobertura del código nuevo y cero duplicación nueva. No calculo incrementos de cobertura entre alcances diferentes. Las capturas anteriores permanecen como antecedentes.
 
-**Pronunciación:** Baseline: béis-lain; coverage: có-ve-rich; métricas: valores medidos con alcance y fecha.
+**Pronunciación:** core-services: cor sér-vi-sis; envio-history: envío jís-to-ri; MySQL: mai es-kiu-el; ODBC: o-de-be-ce; Electron: electrón; Quality Gate: kuóliti gueit.
 
-**¿Por qué no hay porcentaje de mejora inicial?**
+**¿Las 25 pruebas originales habían aprobado?**
 
-Porque no existe una medición anterior equivalente; inventarla o restar porcentajes de alcances distintos sería incorrecto.
+No se conserva un registro que lo pruebe. El informe verifica 25 declaraciones en dos archivos; contamos casos definidos, no aprobaciones históricas.
 
-**¿Qué mejora sí puedes demostrar?**
+**¿Cuánto aumentó la cobertura desde julio?**
 
-La implantación del proceso y el conjunto de casos aprobados, además de los defectos concretos y regresiones documentados.
+No puede calcularse: falta un reporte inicial y las mediciones posteriores usan alcances diferentes. c8 actual mide aplicación cargada; SonarQube informa por separado sobre código nuevo.
 
-Fuentes: https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8 ; https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592 ; docs/calidad/HALLAZGOS_SONAR.md
+Fuentes: docs/calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md ; docs/Linea-Base-Calidad.md ; Actions run 41690348592 ; SonarQube PR #8
 
 ## 6. Resultados y cobertura
 

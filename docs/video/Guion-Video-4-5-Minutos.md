@@ -50,3 +50,11 @@ Se puede recortar la espera de CI indicando que se omitió tiempo de espera y co
 - Exportar MP4, abrirlo y reproducirlo completo; comprobar duración y resolución antes de marcarlo entregado.
 
 **Pronunciación:** pipeline: páip-lain; GitHub Actions: guít-jab ák-shons; Pull Request: pul ri-kuést; SonarQube: só-nar kiub; Quality Gate: kuóliti gueit; c8: si-éit; E2E: i-tu-i; SQLite: es-kiu-el-áit; main: mein.
+
+## Antecedente de julio de 2026 incorporado al cierre
+
+Según el [historial documental aportado](../calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
+
+La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
+
+El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.
