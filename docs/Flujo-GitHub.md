@@ -10,16 +10,16 @@
 
 ## Etapas de Puerta de calidad
 
-En **Actions**, abre la ejecución asociada al pull request o al commit. El workflow presenta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR**. El artefacto `quality-reports` conserva la salida de pruebas y cobertura. El análisis estático usa TypeScript estricto, ESLint y Prettier; SonarCloud no está integrado.
+En **Actions**, abre la ejecución asociada al pull request o al commit. El workflow presenta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR**. El artefacto `quality-reports` conserva la salida de pruebas y cobertura. El análisis estático usa TypeScript estricto, ESLint y Prettier; SonarQube Cloud está integrado y registró Quality Gate PASSED en el PR #7. El workflow de cierre también espera el estado de SonarQube y debe fallar si falla la puerta.
 
 ## Protección de `main`
 
-El administrador del repositorio debe abrir **Settings → Rules → Rulesets** o **Settings → Branches** y configurar una regla para `main`. Exige pull request y el check del job `Compilar, probar y verificar calidad` (nombre definido en `.github/workflows/quality.yml`); activa aprobación y resolución de conversaciones cuando exista otra persona revisora. Una persona no puede aprobar su propio pull request.
+Según la verificación de la propietaria en **Settings → Branches**, `main` tiene una regla clásica de protección. Se marcaron Pull Request obligatorio, aprobación, actualización de checks, resolución de conversaciones y el check `Compilar, probar y verificar calidad` como requerido. Esta configuración debe preservarse y comprobarse en un PR nuevo. Una persona no puede aprobar su propio Pull Request.
 
-**Bloqueo comprobado el 29/10/2026:** GitHub API respondió `403 Upgrade to GitHub Pro or make this repository public to enable this feature` al leer la protección de `main`. El repositorio es privado y no se cambió su visibilidad. Hace falta habilitar GitHub Pro para conservarlo privado con protección, o revisar y quitar datos sensibles antes de decidir hacerlo público.
+**Estado actual:** el repositorio está público, el PR #7 fue revisado y fusionado con dos aprobaciones y tres checks exitosos. El bloqueo del 29 de octubre correspondía a una configuración anterior y ya no describe el estado actual.
 
-La ejecución verde del workflow no prueba que esta regla ya exista. Confirma el ruleset en GitHub y guarda una captura de su configuración para la entrega.
+La ejecución verde del workflow no demuestra por sí sola la protección. La regla fue comprobada visualmente por la propietaria; conviene conservar su captura y confirmar el bloqueo de un PR sin aprobación.
 
 ## Acceso del docente
 
-El repositorio `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad` puede ser privado. Si se mantiene privado, invita al docente desde **Settings → Collaborators** con la cuenta que indique el curso. No publiques la aplicación ni datos de conexión reales para facilitar la revisión.
+El repositorio `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad` es público. El docente puede consultar los archivos publicados, pero se debe entregar el enlace correcto y verificar que los documentos de la rama de cierre se fusionen a `main`. No publiques la aplicación ni datos de conexión reales para facilitar la revisión.
