@@ -6,12 +6,12 @@ La evidencia histórica anterior a los controles SQA registra **25 casos de prue
 
 ## Mediciones históricas posteriores
 
-| Corte | Pruebas | Cobertura | Tipo de medición |
-| --- | --- | --- | --- |
-| Inicio documentado | 25 registradas | No medida | Sin base comparativa completa |
-| 27/10/2026 | 28/28 | 95,65 % líneas; 80,60 % ramas; 90,54 % funciones | V8/c8 de esa revisión |
-| 29/10/2026 | 33/33 | 96,16 % líneas; 81,55 % ramas; 92,31 % funciones | V8/c8 de esa revisión |
-| Cierre PR #7 | 140/140 | **80,1 % de cobertura del código nuevo** | SonarQube, alcance distinto |
+| Corte              | Pruebas        | Cobertura                                        | Tipo de medición              |
+| ------------------ | -------------- | ------------------------------------------------ | ----------------------------- |
+| Inicio documentado | 25 registradas | No medida                                        | Sin base comparativa completa |
+| 27/10/2026         | 28/28          | 95,65 % líneas; 80,60 % ramas; 90,54 % funciones | V8/c8 de esa revisión         |
+| 29/10/2026         | 33/33          | 96,16 % líneas; 81,55 % ramas; 92,31 % funciones | V8/c8 de esa revisión         |
+| Cierre PR #7       | 140/140        | **80,1 % de cobertura del código nuevo**         | SonarQube, alcance distinto   |
 
 La medición final se acreditó en [Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) y [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
 
