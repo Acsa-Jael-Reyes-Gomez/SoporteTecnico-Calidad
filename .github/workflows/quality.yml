@@ -29,6 +29,18 @@ jobs:
       - name: Instalar dependencias fijadas
         run: npm ci
 
+      - name: TEMPORAL - obtener formato Prettier para los documentos finales
+        shell: pwsh
+        run: |
+          $files = @('docs/Informe-Final.md','docs/Linea-Base-Calidad.md','docs/Reporte-Mejora.md','docs/calidad/EVIDENCIAS_EJECUCION.md','docs/calidad/METRICAS_CALIDAD.md','docs/video/Guion-Video-4-5-Minutos.md')
+          npx prettier --write $files
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          foreach ($file in $files) {
+            Write-Output "SQA_FORMAT_START $file"
+            Write-Output ([Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Join-Path (Get-Location).Path $file))))
+            Write-Output "SQA_FORMAT_END $file"
+          }
+
       - name: CONSTRUIR - compilar la aplicación
         run: npm run build
 
