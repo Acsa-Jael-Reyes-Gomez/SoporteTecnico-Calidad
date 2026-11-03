@@ -1,3 +1,9 @@
+## Actualización de cierre — ejecución completa
+
+La matriz histórica de casos **PR-01 a PR-33** no representa el inventario completo del cierre. La ejecución final verificable de [GitHub Actions #41560908801](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) registró **140 pruebas aprobadas y 0 fallidas**, más el recorrido E2E de Electron con SQLite aislado. Para los identificadores y resultados individuales de los 140 casos, consultar el artefacto `quality-reports` y el archivo `test-results.log` de ese run; no se asignan IDs inventados. Las tablas siguientes conservan su valor como matriz histórica detallada, no como totalidad de la suite actual.
+
+---
+
 # Matriz de pruebas
 
 ## Alcance y ejecución
