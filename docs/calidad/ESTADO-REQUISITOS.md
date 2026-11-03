@@ -1,52 +1,48 @@
-# Estado de cumplimiento del enunciado
+# Estado de requisitos del Proyecto Final 2026
 
-## Alcance y cierre de requisitos de la alternativa 1
+**Proyecto:** Pipeline CI/CD con Aseguramiento de Calidad Integrado.
+**Sistema:** SoporteTecnico-Calidad, aplicación Electron reutilizada.
+**Corte:** 3 de noviembre de 2026. Este documento reemplaza el diagnóstico histórico del 29 al 30 de octubre.
 
-El enunciado presenta tres alternativas independientes. Esta entrega corresponde a **Pipeline CI/CD con Aseguramiento de Calidad Integrado**; el evaluador ISO/IEC 25010 y el gestor de defectos son opciones separadas, no requisitos acumulativos.
+## Obligatorios verificados
 
-La evidencia remota mas reciente es el run [40977210991](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40977210991) (`push`) y el run [40977218068](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40977218068) (`pull_request`); ambos pasaron con el recorrido E2E de Electron. El run del PR publica el artefacto `quality-reports` con `e2e-electron.log`. Los reportes archivados de ejecuciones anteriores permanecen en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
+- Aplicación existente con operaciones CRUD: módulos y pruebas integradas de tickets y rutas.
+- Pipeline `.github/workflows/quality.yml`: etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR ante push/PR.
+- Pruebas unitarias, de integración y regresión: **140 de 140 aprobadas, 0 fallidas**, run [41564667224](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41564667224).
+- Inventario de los 140 nombres de pruebas: [INVENTARIO_140_CASOS.csv](INVENTARIO_140_CASOS.csv), extraído del log. La matriz [Matriz-Pruebas.md](../Matriz-Pruebas.md) conserva además 33 casos históricos con entradas y resultados detallados.
+- E2E adicional de Electron: inicio, login, Tickets, persistencia en SQLite aislado. Paso separado en el mismo run.
+- Umbrales c8 aprobados: **88,90 % líneas**, **80,75 % ramas**, **73,61 % funciones**; mínimos del comando: 75 %, 60 % y 55 % respectivamente.
+- Análisis estático: TypeScript estricto, ESLint y Prettier aprobados.
+- SonarQube Cloud: Quality Gate **PASSED** en `main`; cobertura de código nuevo **80,1 %**, duplicación nueva **0,48 %**, 0 problemas nuevos.
+- Revisión manual: PR [#7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7) fusionado a `main`, con dos aprobaciones de Acsa-Reyes y tres checks exitosos.
+- Protección de `main`: la propietaria revisó en Settings → Branches una regla que exige PR, aprobación y estado correcto de `Compilar, probar y verificar calidad`; se recomienda probar el bloqueo con un PR nuevo y conservar captura de la configuración.
+- Documentos: SQA Plan, matriz de pruebas, línea base, reporte de mejora, manual técnico y README existen en la rama de cierre.
+- Deuda técnica: registrar y priorizar defectos no resueltos en `REVISION_Y_DEUDA_TECNICA.md`.
 
-La revision tecnica local se registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. El PR #1 sigue cerrado tras la normalización de ramas; se conserva su número y GitHub conserva su historial. GitHub no registra solicitudes ni aprobaciones de revisores independientes. La presentacion HTML/Markdown existe y ya había sido exportada a PDF, excluida de esta verificación por instrucción del usuario.
+## Matices importantes
 
-Actualizado: 29 de octubre de 2026. Este registro distingue lo que existe en el repositorio de lo que requiere una ejecucion o configuracion externa. No se marca como evidencia algo que no se ha podido reproducir.
+- **25 casos registrados** en el estado inicial no equivale a **25 pruebas aprobadas**. No existe medición histórica comparable de cobertura y no se inventa.
+- La cobertura **c8 (88,90 % de líneas)**, la cobertura **SonarQube de código nuevo (80,1 %)** y la cobertura **SonarQube global (30,2 %)** miden universos distintos.
+- Hubo una condición de Quality Gate **FAILED** con 70,7 % de cobertura nueva (<80 %) antes de la captura final **PASSED**. Esto confirma la detección por SonarQube, pero no que el job GitHub Actions fallara en ese momento.
+- Por tal motivo se actualizó `quality.yml` en PR #8: el job exige `SONAR_TOKEN` y usa `sonar.qualitygate.wait=true` para fallar ante Quality Gate fallido. **Debe verificarse el run de este nuevo cambio antes de fusionar.**
+- React/Express/MySQL son el stack sugerido, no obligatorio si se justifica una variante. El enunciado permite proyectos previos y variantes. El sistema usa Electron, TypeScript, JavaScript y SQLite.
 
-## Requisitos obligatorios
+## Pendientes de cierre
 
-| Requisito                                     | Estado actual                                                       | Evidencia / paso necesario                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| --------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Aplicacion existente con operaciones CRUD     | Implementado                                                        | Sistema Electron existente; operaciones descritas en README y mapa funcional.                                                                                                                                                                                                                                                                                                                                                                                            |
-| Variante de stack justificada                 | Implementado                                                        | Electron, TypeScript/JavaScript y SQLite integrado. El enunciado permite proponer variantes; React/Express/MySQL no corresponden a la aplicacion reutilizada.                                                                                                                                                                                                                                                                                                            |
-| Plan SQA, matriz, linea base y reporte        | Documentado                                                         | `docs/SQA-Plan.md`, `docs/Matriz-Pruebas.md`, `docs/Linea-Base-Calidad.md` y `docs/Reporte-Mejora.md`. La linea base conserva los limites historicos.                                                                                                                                                                                                                                                                                                                    |
-| Pruebas unitarias, integracion y regresion    | Implementadas; 33/33 aprobadas                                      | `npm test` y `npm run test:coverage`: 33 aprobadas, 0 fallidas. Incluye cinco casos SQLite; `npm run test:e2e` además inicia Electron, autentica, navega a Tickets y crea un registro en una base temporal aislada. Evidencia: `docs/calidad/evidencias/e2e-local-20261029/e2e-electron.log`.                                                                                                                                                                            |
-| Cobertura minima y quality gate               | Configurado y superado localmente                                   | Medicion actual: 96,16% lineas, 81,55% ramas y 92,31% funciones; supera 75%, 60% y 55%.                                                                                                                                                                                                                                                                                                                                                                                  |
-| Analisis estatico                             | Aprobado                                                            | TypeScript estricto, ESLint y Prettier pasaron en los runs 40977210991 y 40977218068. El artefacto `quality-reports` del run del PR incluye los logs. SonarCloud no está integrado.                                                                                                                                                                                                                                                                                      |
-| Revision automatizada y manual de codigo      | Parcial                                                             | Los checks automáticos siguen activos en `push` y `pull_request`; la revisión local está documentada. Falta revisión independiente registrada y protección que haga obligatorio el aprobador.                                                                                                                                                                                                                                                                            |
-| Gestion de deuda tecnica                      | Documentada                                                         | `docs/calidad/REVISION_Y_DEUDA_TECNICA.md` registra hallazgos, prioridad, estado y acción siguiente.                                                                                                                                                                                                                                                                                                                                                                     |
-| Pipeline build, test, analyze, report         | Superado en push y PR                                               | El PR [#1](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/1) y los runs [40977210991](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40977210991) (`push`) y [40977218068](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40977218068) (`pull_request`) pasaron, incluyendo E2E. El run del PR conserva el artefacto `quality-reports`. SonarCloud se omitió por no estar configurado. |
-| Documentacion tecnica y manual                | Implementada                                                        | `docs/Manual-Tecnico.md` y `docs/Manual-Usuario.md`.                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| Proteccion de rama principal y PR obligatorio | No habilitado                                                       | La API confirmó que `main` no tiene protección. El propietario debe habilitar reglas externas; el check a exigir es `Compilar, probar y verificar calidad`.                                                                                                                                                                                                                                                                                                              |
-| Medicion antes/despues                        | Comparacion de revisiones completada; linea base pre-SQA incompleta | La presentacion compara runs 40599606066 y 40974928285 antes y despues de SQLite. No se conserva cobertura pre-SQA ni tasa inicial de aprobacion; no se atribuye el cambio a toda la implementacion SQA.                                                                                                                                                                                                                                                                 |
-| Presentacion de resultados exportada a PDF    | Completada                                                          | `docs/presentacion/Presentacion-Proyecto-SQA.pdf` contiene 10 diapositivas; `Presentacion-Proyecto-SQA.html` es la fuente editable.                                                                                                                                                                                                                                                                                                                                      |
+1. Confirmar que el último commit del [PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8) pase las verificaciones nuevas; solicitar revisión y fusionar a `main`.
+2. Verificar que una solicitud sin aprobación o check exitoso quede bloqueada por la regla de `main`.
+3. Adjuntar PowerPoint, PDF de 10 diapositivas y anexo de capturas reales a la plataforma.
+4. Confirmar acceso del docente a repositorio y documentos.
+5. Grabar y entregar el **video obligatorio MP4 de 4 a 5 minutos, mínimo 720p**, al final de la preparación.
 
-## Alcance opcional
+## Opcionales, no exigidos
 
-- Docker, despliegue cloud y notificaciones no son obligatorios en el enunciado. La prueba E2E implementada cubre el flujo descrito en la matriz, no todos los módulos.
-- El dashboard SonarCloud es opcional; no hay metricas de bugs, vulnerabilidades ni code smells verificadas.
+Docker, despliegue continuo a la nube, notificaciones y URL de aplicación desplegada. La prueba E2E es opcional según el enunciado, pero ya está implementada y verificada.
 
-## Verificaciones locales del 29 de octubre de 2026
+## Fuentes
 
-- `npm test`: compilacion correcta y 33 pruebas aprobadas, 0 fallidas.
-- `npm run test:coverage`: 96,16% lineas, 81,55% ramas y 92,31% funciones; los umbrales se cumplen.
-- `npm run typecheck`: aprobado, 0 errores.
-- `npm run lint`: aprobado tras corregir 17 errores de estilo.
-- `npm run format:check`: aprobado despues de aplicar Prettier a los documentos modificados.
-- `npm run test:e2e`: aprobado; arranque de Electron, Preload/IPC, login, módulo Tickets y alta persistida en SQLite temporal.
-- GitHub Actions runs 40977210991 (`push`) y 40977218068 (`pull_request`): aprobados; ambos ejecutaron el paso E2E. El run del PR conserva `quality-reports/e2e-electron.log`.
-- Reejecución posterior: build, pruebas, cobertura, typecheck, lint y formato con evidencia en `docs/calidad/evidencias/local-reinicio-20261029/`.
-
-## Elementos de cierre que requieren trabajo fuera del repositorio
-
-- Revisión independiente: el PR #1 está cerrado y GitHub no registra revisiones ni aprobaciones independientes.
-- Protección de `main`: no habilitada; GitHub rechazó la configuración para este repositorio privado con el plan actual.
-- Video narrado: no está en el enunciado compartido. Si se solicita aparte, la grabación debe realizarla el estudiante.
-- SonarCloud: no configurado, por lo que no se afirma que haya análisis ni métricas de esa plataforma.
+- Enunciado «Proyecto Final 2026» proporcionado por el curso (PDF de 4 páginas).
+- [Repositorio](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad).
+- [Ejecución de GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41564667224).
+- [Pull Request #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7).
+- [SonarQube Cloud](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad).
