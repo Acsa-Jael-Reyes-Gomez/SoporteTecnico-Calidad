@@ -23,7 +23,7 @@ El tratamiento de cada uno de los **36 hallazgos iniciales** está en [HALLAZGOS
 | Comprobación                   | Resultado verificado                                                           |
 | ------------------------------ | ------------------------------------------------------------------------------ |
 | Compilación                    | Aprobada                                                                       |
-| node:test                      | 146/146; cero fallidas, canceladas, omitidas y todo                            |
+| node:test                      | 146/146; 0 fallidas, 0 canceladas y 0 omitidas                            |
 | Casos originales               | 140 conservados y trazados; seis regresiones añadidas                          |
 | E2E Electron/SQLite            | Aprobado: inicio, Preload/IPC, login, Tickets, alta persistida                 |
 | Gate c8 corregido              | 83,30 % líneas; 70,41 % ramas; 94,66 % funciones                               |
@@ -59,10 +59,8 @@ La [matriz de requisitos](calidad/ESTADO-REQUISITOS.md) distingue verificado, li
 
 Pendientes: aprobación independiente del PR #8; autorización y fusión manual; comprobar el pipeline posterior en main; entregar enlaces y archivos en la plataforma académica; grabar y verificar MP4 de 4–5 minutos y al menos 720p **al final**. No se declara el proyecto al 100 % mientras falten estas acciones.
 
-## Antecedente de julio de 2026 incorporado al cierre
+## Antecedente del sistema original
 
-Según el [historial documental aportado](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
+El [análisis de la copia de julio de 2026](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) identifica 25 casos definidos en dos archivos de pruebas. No existe un registro conservado de su ejecución ni una cobertura inicial medible. En esa copia se utilizaba MySQL mediante ODBC; el cierre utiliza Electron y SQLite. La comparación se centra en el proceso de aseguramiento, la ampliación de las pruebas y la trazabilidad, no en incrementos porcentuales calculados con mediciones incompatibles.
 
-La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
-
-El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.
+Los resultados históricos de 28, 33 y 140 casos se conservan en la [línea base](Linea-Base-Calidad.md); las métricas y verificaciones del cierre figuran en [Métricas de calidad](calidad/METRICAS_CALIDAD.md).
