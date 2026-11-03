@@ -21,15 +21,11 @@
 | Guion y anexo                        | Narración, pronunciación, preguntas y evidencias                                                                         | Preparados                     | No sustituyen MP4                                                        |
 | Acceso docente                       | Repositorio público comprobado sin sesión                                                                                | Lectura pública verificada     | Entrega en plataforma no comprobada                                      |
 | Video obligatorio                    | Guion/secuencia; sin MP4 declarado                                                                                       | Pendiente al final             | Grabar 4–5 minutos, mínimo 720p, reproducir y entregar                   |
-| Código/documentación finales en main | Main previo 7697745; correcciones en PR #8                                                                               | Pendiente autorizado           | Revisar, aprobar, fusionar y comprobar push                              |
+| Código/documentación finales en main | Correcciones en la rama de cierre al corte 03/11/2026                                                                               | Pendiente autorizado           | Revisar, aprobar, fusionar y comprobar push                              |
 | Docker/cloud/notificaciones/URL app  | Extras del enunciado                                                                                                     | Opcionales                     | No condicionan requisitos básicos                                        |
 
 La revisión de las 36 observaciones está en [hallazgos](HALLAZGOS_SONAR.md). El [informe final](../Informe-Final.md) detalla resultados, archivos, riesgos y tareas humanas. No se asigna una calificación ni se declara cumplimiento total sin la entrega audiovisual y la integración requerida.
 
-## Antecedente de julio de 2026 incorporado al cierre
+## Procedencia de la comparación
 
-Según el [historial documental aportado](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
-
-La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
-
-El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.
+El [historial de julio](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) acredita 25 casos definidos, no 25 aprobaciones. No se conserva una cobertura inicial comparable. Las evidencias posteriores de 28, 33 y 140 casos, así como el cierre de 146, se presentan en [Métricas de calidad](METRICAS_CALIDAD.md). Los estados de integración y entrega de esta matriz corresponden al corte indicado y deben revisarse después de cualquier fusión.
