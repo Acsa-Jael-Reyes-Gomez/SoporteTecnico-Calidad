@@ -35,7 +35,7 @@ Todos los tests y comandos obligatorios deben terminar en exit 0. SonarQube exig
 
 Etapas: CONSTRUIR, PROBAR, ANALIZAR y REPORTAR. Todos los push ejecutan compilación, pruebas, E2E, cobertura, tipos, lint, formato y artefactos. SonarQube corre obligatoriamente en PR y push de main; el plan limita otras ramas. Se usa sonar.qualitygate.wait=true. El upload de reportes tiene always() y ocurre antes del último análisis remoto; sus resultados se consultan además en el job y dashboard.
 
-La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. PR #8 permanece abierto y sin aprobación independiente; no se fusionó ni se modificó main directamente.
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. Al corte del 3 de noviembre de 2026, el PR #8 estaba abierto, pendiente de revisión y sin fusionar. Antes de la entrega debe consultarse su estado actual en GitHub.
 
 ## Riesgos y deuda
 
@@ -47,10 +47,6 @@ Los hallazgos iniciales y su tratamiento individual están en [HALLAZGOS_SONAR.m
 
 La estudiante mantiene código, documentación y evidencias; la cuenta revisora aprueba de forma independiente. El repositorio público permite lectura al docente; la entrega en plataforma requiere acción manual. La [presentación vigente](presentacion/final/Presentacion_SQA_Final.pdf), guion y anexo se verifican visualmente. El video MP4 obligatorio de 4–5 minutos y al menos 720p se prepara y graba al final. No se declara completado antes de existir y reproducirse.
 
-## Antecedente de julio de 2026 incorporado al cierre
+## Línea base y trazabilidad
 
-Según el [historial documental aportado](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
-
-La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
-
-El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.
+La copia original de julio de 2026 contiene 25 casos definidos, sin resultados conservados de ejecución ni cobertura. Por ese motivo no se atribuyen aprobaciones históricas ni una mejora porcentual de cobertura sin mediciones equivalentes. La explicación y la evolución de las pruebas están en [Línea base](Linea-Base-Calidad.md) y [Historial documentado](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md).
