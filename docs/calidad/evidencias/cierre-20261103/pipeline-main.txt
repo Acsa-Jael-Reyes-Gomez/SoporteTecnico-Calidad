@@ -1,0 +1,66 @@
+Skip to content
+Navigation Menu
+Products
+Developers
+Businesses
+Resources
+Pricing
+Search
+/
+Sign in
+Sign up
+Acsa-Jael-Reyes-Gomez
+SoporteTecnico-Calidad
+Repository navigation
+Code
+Issues
+Pull requests
+1
+ (1)
+Actions
+Projects
+Security and quality
+Insights
+Puerta de calidad
+Merge pull request #7: Integrar mejoras SQA y pruebas automatizadas #130
+Sign in to view logs
+Summary
+All jobs
+Compilar, probar y verificar calidad
+Run details
+Usage
+Workflow file
+Lockfile
+Triggered via push 
+Acsa-Jael-Reyes-Gomez
+pushed
+ 7697745
+main
+Status
+Success
+Total duration
+4m 0s
+Artifacts
+1
+quality.yml
+on: push
+Compilar, probar y verificar calidad
+3m 57s
+
+Oh hello! Nice to see you.
+
+Made with ❤️ by humans.txt
+
+Annotations
+1 warning
+Compilar, probar y verificar calidad
+Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4, SonarSource/sonarqube-scan-action@v6. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Show more
+Artifacts
+Produced during runtime
+Name	Size	Digest	
+
+quality-reports
+	50.8 KB	
+sha256:bd1243efcca83c4cd74fc51a0d7b10f0d32b459a360fe78ecab6dacde6fde584
+	

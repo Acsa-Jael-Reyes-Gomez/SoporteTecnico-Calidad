@@ -1,3 +1,4 @@
+/* global session: writable, catalogos: writable */
 function TicketModal(row, onDone, prefill = null) {
   const isEdit = !!row;
   let isClosed = isEdit ? isClosedByFechaCierre(row) : false;

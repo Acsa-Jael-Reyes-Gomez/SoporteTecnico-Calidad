@@ -1,109 +1,52 @@
 # Plan de aseguramiento de la calidad del software
 
-## 1. Propósito
+**Sistema:** Soporte Técnico. **Estudiante:** Acsa Jael Reyes Gómez. **Corte:** 03/11/2026.
 
-Prevenir regresiones de la aplicación existente y hacer verificables los cambios antes de integrarlos.
+## Propósito y alcance
 
-## 2. Alcance
+Detectar regresiones y hacer verificables los cambios de una aplicación existente antes de su integración. Incluye Main TypeScript, Preload, Renderer JavaScript/CSS, SQLite, pruebas y pipeline. Conserva Electron/SQLite, variante justificada permitida por el enunciado. No incluye nube, pruebas de carga ni datos operativos en los tests.
 
-Incluye el proceso principal Electron, el puente Preload, servicios de negocio, Renderer, el adaptador SQLite integrado, pruebas y pipeline. No incluye infraestructura productiva, verificación de permisos reales en GitHub ni análisis remoto ejecutado.
+## Arquitectura y normas de referencia
 
-## 3. Descripción del sistema
+Renderer invoca window.api; Preload expone operaciones IPC; Main valida sesión, permisos y datos y consulta SQLite. TypeScript es estricto, la base de pruebas es sintética y las consultas usan parámetros. El plan toma como referencia organizativa ISO/IEC/IEEE 29119-2 y 29119-3 y el modelo de calidad ISO/IEC 25010; no declara certificación ni cumplimiento integral de normas. Referencias: https://www.iso.org/standard/79428.html y https://www.iso.org/standard/78176.html.
 
-Aplicación interna de soporte técnico con tickets, rutas, equipos en taller, envíos, proyectos especiales, notificaciones, calificación y reportes. Véase `docs/MAPA_FUNCIONALIDADES.md`.
+## Actividades y herramientas
 
-## 4. Arquitectura
+1. Planificar alcance, riesgos, matriz y línea base.
+2. Ejecutar unitarias de servicios, integración con SQLite y handlers, regresiones Renderer/reportes y E2E aislado.
+3. Compilar y verificar TypeScript, ESLint y Prettier.
+4. Medir c8 y generar LCOV independiente para SonarQube.
+5. Esperar Quality Gate, conservar reportes y obtener revisión humana.
+6. Registrar defectos, falsos positivos justificados, métricas y evidencias de cierre.
 
-Electron con Renderer JavaScript/CSS, Preload TypeScript, Main TypeScript y persistencia SQLite mediante `node:sqlite`. No utiliza React ni Express. La interfaz invoca handlers IPC a través de `window.api`. La decisión de conservar esta variante se documenta en `docs/Decisiones-Tecnicas.md`; SQLite integrado permite ejecutar una copia sin instalar un servicio de base de datos.
+## Casos y datos
 
-## 5. Estándares
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-El plan toma como referencia ISO/IEC/IEEE 29119-2:2021 para organizar las actividades de prueba y 29119-3:2021 para documentar casos y resultados. En este proyecto se refleja en el alcance, los tipos de prueba, los criterios de aceptación y la matriz con entradas, resultados esperados y resultados obtenidos. También se usa ISO/IEC 25010:2023 como referencia para hablar de calidad del producto; las métricas que sí se miden aquí son cobertura, compilación y pruebas aprobadas.
+La [matriz](Matriz-Pruebas.md) enlaza preparación y aserciones de los 146 casos. El CSV de 140 es antecedente. Las pruebas de base usan memoria o directorios temporales propios. E2E crea usuarios ficticios, autentica, abre Tickets y confirma persistencia SQLite; no cubre todas las rutas de la aplicación.
 
-La aplicación de estas referencias es parcial y adaptada al tamaño del proyecto. No se declara certificación ni cumplimiento completo de las normas. Además, se mantienen estos controles concretos:
+## Métricas y aceptación
 
-- TypeScript `strict: true` y `noEmitOnError` en `tsconfig.json`.
-- Consultas parametrizadas para valores variables; los identificadores SQL se validan mediante listas permitidas en helpers.
-- Secretos fuera del repositorio; la configuración local `appsettings.json` está ignorada por Git.
-- Cambios pequeños, revisables y acompañados de pruebas para las reglas de negocio.
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
 
-### Referencias consultadas
+Todos los tests y comandos obligatorios deben terminar en exit 0. SonarQube exige sus condiciones, incluida cobertura nueva ≥80 % y duplicación nueva ≤3 %. No se omite por falta de token en PR/main. La línea base anterior a SQA es incompleta y se documenta, sin inventar porcentajes.
 
-- [ISO/IEC/IEEE 29119-2:2021 — procesos de prueba](https://www.iso.org/standard/79428.html).
-- [ISO/IEC/IEEE 29119-3:2021 — documentación de pruebas](https://www.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/07/94/79429.html).
-- [ISO/IEC 25010:2023 — modelo de calidad del producto](https://www.iso.org/standard/78176.html).
+## Pipeline y revisión
 
-## 6. Herramientas
+Etapas: CONSTRUIR, PROBAR, ANALIZAR y REPORTAR. Todos los push ejecutan compilación, pruebas, E2E, cobertura, tipos, lint, formato y artefactos. SonarQube corre obligatoriamente en PR y push de main; el plan limita otras ramas. Se usa sonar.qualitygate.wait=true. El upload de reportes tiene always() y ocurre antes del último análisis remoto; sus resultados se consultan además en el job y dashboard.
 
-Node.js 22, npm, TypeScript, `node:test`, cobertura nativa de Node, ESLint, Prettier y GitHub Actions. SonarCloud no está integrado.
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. Al corte del 3 de noviembre de 2026, el PR #8 estaba abierto, pendiente de revisión y sin fusionar. Antes de la entrega debe consultarse su estado actual en GitHub.
 
-## 7. Estrategia de pruebas
+## Riesgos y deuda
 
-- **Unitarias:** validación, normalización de dominio, paginación, permisos y saneamiento de exportación.
-- **Integración controlada:** servicios y consultas con dobles `DbConnection`; no usar DSN real.
-- **Regresión:** reglas de Renderer/SQL verificadas por los casos existentes.
-- **Extremo a extremo:** `npm run test:e2e` lanza Electron con una base SQLite temporal sintética y valida inicio, Preload/IPC, login, navegación a Tickets y alta persistida.
-- **Base de datos:** pruebas del adaptador SQLite en memoria, integridad de semilla y persistencia del ticket E2E en una base temporal aislada.
+Los hallazgos iniciales y su tratamiento individual están en [HALLAZGOS_SONAR.md](calidad/HALLAZGOS_SONAR.md). Se conserva el permiso de estilos inline por dependencia funcional, sin permitir scripts inline; requiere migración futura y pruebas visuales. Los avisos de bindings compartidos se justifican con declaraciones y orden de carga, sin apagar reglas. El gate de código nuevo no certifica ausencia de deuda global. La cobertura cargada no equivale a cobertura total.
 
-Framework adaptado al sistema: `node:test` evita introducir Jest/React Testing Library propios de otro stack.
+## Evidencia, responsabilidades y cierre
 
-## 8. Análisis estático
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-`npm run typecheck` ejecuta TypeScript estricto sin emitir archivos. `npm run lint` ejecuta ESLint sobre el proceso principal, Preload, módulos de interfaz, pruebas y scripts. Las reglas se adaptan a módulos de interfaz que comparten funciones globales y al uso CommonJS de Node. `npm run format:check` verifica documentos y configuración con Prettier. TypeScript, ESLint y Prettier son los controles estáticos activos.
+La estudiante mantiene código, documentación y evidencias; la cuenta revisora aprueba de forma independiente. El repositorio público permite lectura al docente; la entrega en plataforma requiere acción manual. La [presentación vigente](presentacion/final/Presentacion_SQA_Final.pdf), guion y anexo se verifican visualmente. El video MP4 obligatorio de 4–5 minutos y al menos 720p se prepara y graba al final. No se declara completado antes de existir y reproducirse.
 
-## 9. Cobertura
+## Línea base y trazabilidad
 
-`npm run test:coverage` utiliza la cobertura V8 incluida en Node. No utiliza Istanbul/Jest. La medición local actual del 29/10/2026 es 96.16% de líneas, 81.55% de ramas y 92.31% de funciones, con 33/33 pruebas. El run remoto 40599606066, con 28 pruebas, corresponde a la revisión anterior a SQLite.
-
-## 10. Métricas
-
-Casos aprobados/fallidos, cobertura de líneas/ramas/funciones, errores de compilación, resultado del workflow y defectos encontrados. Las métricas no disponibles se reportan literalmente como tales. Línea base auditada en `docs/Linea-Base-Calidad.md`.
-
-## 11. Umbrales de aceptación
-
-- Compilación correcta.
-- Todas las pruebas requeridas aprobadas.
-- Cobertura del comando: líneas >= 75%, ramas >= 60%, funciones >= 55% (más estricto que el mínimo académico del 60% de líneas).
-- TypeScript sin errores.
-- SonarCloud no integrado; no se presentan métricas de esa plataforma.
-- No introducir secretos en cambios.
-
-## 12. Puertas de calidad
-
-El workflow falla si `npm run build`, `npm test`, `npm run test:e2e`, `npm run test:coverage`, `npm run typecheck`, `npm run lint` o `npm run format:check` devuelve error. El análisis estático se realiza con TypeScript estricto, ESLint y Prettier. SonarCloud no está integrado y no forma parte de esta puerta.
-
-## 13. Revisiones automáticas
-
-GitHub Actions ejecuta las etapas CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en cada `push` y `pull_request`. Las ejecuciones verificadas para `cierre-requisitos-sqa` completaron correctamente la puerta de calidad. El PR no tiene aprobación independiente registrada y `main` no tiene protección configurada.
-
-## 14. Revisiones manuales
-
-Revisar modelo de permisos, cambios de esquema, consultas, mensajes de error, interfaz en Electron, persistencia SQLite, exclusión de secretos y que las instrucciones del manual correspondan a funciones implementadas.
-
-## 15. Gestión de defectos
-
-Registrar identificador, evidencia, severidad, pasos para reproducir, componente, responsable y estado. Corregir defectos críticos antes de integrar; enlazar la prueba de regresión que evita su retorno.
-
-## 16. Deuda técnica
-
-Mantener el registro en `docs/calidad/REVISION_Y_DEUDA_TECNICA.md`. Priorizar riesgos de inicialización de esquema, ampliar los recorridos UI automatizados y mantener lint.
-
-## 17. Riesgos
-
-Dependencia de Electron/Windows; la cobertura E2E se limita al inicio de sesión y alta de ticket; SonarCloud no está integrado; y la protección de la rama principal no está activa.
-
-## 18. Control de versiones
-
-Usar ramas cortas y pull requests hacia `main`. El repositorio tiene Git funcional y el cambio de finales de línea se publicó en el commit `9f5a007`. No reescribir historial ni reemplazar remotos.
-
-## 19. Pull requests
-
-Cada PR describe motivo, alcance, pruebas realizadas, riesgos y cambios de base/configuración. Requiere revisión humana y checks aprobados antes de fusionar. La plantilla está en `.github/PULL_REQUEST_TEMPLATE.md`.
-
-## 20. Criterios de aceptación
-
-La aplicación existente conserva sus operaciones principales; compilación, pruebas y cobertura pasan; tipos sin errores; documentación y riesgos actualizados; y el revisor confirma los cambios. El propietario confirmó una ejecución verde de Actions. La protección de rama y la revisión humana de cada pull request deben comprobarse por separado.
-
-## 21. Mantenimiento
-
-Repetir los checks al cambiar dependencias, Node, Electron, consultas o esquema. Mantener `package-lock.json`, revisar avisos de dependencias y recalibrar umbrales solo con evidencia reproducible, sin reescribir la línea base histórica.
+La copia original de julio de 2026 contiene 25 casos definidos, sin resultados conservados de ejecución ni cobertura. Por ese motivo no se atribuyen aprobaciones históricas ni una mejora porcentual de cobertura sin mediciones equivalentes. La explicación y la evolución de las pruebas están en [Línea base](Linea-Base-Calidad.md) y [Historial documentado](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md).

@@ -1,19 +1,9 @@
-# Plan de aseguramiento de la calidad
+# Acceso al plan SQA vigente
 
-El plan vigente y completo está en [`../SQA-Plan.md`](../SQA-Plan.md). Este archivo se conserva como acceso desde la carpeta de calidad para facilitar la consulta en el paquete de evidencias.
+El plan completo está en [SQA-Plan.md](../SQA-Plan.md). **146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-## Controles actuales
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
 
-| Control              | Herramienta/comando                    | Criterio                                       |
-| -------------------- | -------------------------------------- | ---------------------------------------------- |
-| Compilación          | `npm run build`                        | Código de salida 0                             |
-| Pruebas              | `npm test`                             | Todas aprobadas                                |
-| Cobertura            | `npm run test:coverage`                | Líneas >= 75%, ramas >= 60%, funciones >= 55%  |
-| Tipos                | `npm run typecheck`                    | 0 errores TypeScript                           |
-| Análisis estático    | `npm run lint`                         | Sin errores bloqueantes de ESLint              |
-| Formato              | `npm run format:check`                 | Todos los archivos configurados pasan Prettier |
-| Integración continua | GitHub Actions, workflow `quality.yml` | Etapas aprobadas en `push` y `pull_request`    |
+E2E y SonarQube están integrados. La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. PR #8 permanece abierto y sin aprobación independiente; no se fusionó ni se modificó main directamente.
 
-## Límites
-
-Las pruebas de consulta usan dobles y no se conectan a una base MySQL/ODBC. No hay pruebas E2E ni resultados SonarCloud registrados. La protección de `main` debe configurarse aparte en GitHub. La ejecución y métricas actuales se documentan en `EVIDENCIAS_EJECUCION.md` y `METRICAS_CALIDAD.md`.
+Resultados y límites en [métricas](METRICAS_CALIDAD.md) y [hallazgos](HALLAZGOS_SONAR.md).

@@ -1,4 +1,8 @@
-# Decisiones técnicas
+# Decisiones técnicas: vigencia y antecedentes
+
+El sistema vigente usa Electron y SQLite; no necesita ODBC. El arranque de Electron con SQLite temporal se verificó por E2E y la suite final contiene 146 casos. Los apartados siguientes son antecedentes de octubre, incluidos los conteos de 28/33 casos y las validaciones entonces pendientes; no describen el estado final. Las correcciones del cierre se documentan en `calidad/HALLAZGOS_SONAR.md`.
+
+## Registro histórico de decisiones
 
 ## Actualización de Electron para corregir el aviso de seguridad
 

@@ -1,31 +1,21 @@
-> Actualizado el 29/10/2026: los valores posteriores son mediciones locales de la revisión actual con SQLite. El run remoto 40599606066 es anterior y se registra como evidencia separada.
+# Línea base de calidad y evolución verificable
 
-# Línea base de calidad y resultado posterior
+## Registro inicial
 
-## Criterio de comparación
+Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
 
-La línea base representa el estado inicial documentado antes de incorporar controles de SQA. Los valores iniciales provienen del registro histórico de `docs/calidad/METRICAS_CALIDAD.md`; no se inventan resultados que no fueron medidos. El historial Git disponible no conserva una revisión ejecutable de la aplicación anterior al pipeline, así que no es posible repetir las mismas mediciones sobre ese estado. El estado posterior actual se midió localmente el **29 de octubre de 2026** con Node.js 22.16.0.
+## Resultado del cierre
 
-## Comparación
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-| Indicador                      |                Estado inicial documentado |                                                  Estado posterior medido | Evidencia y límite                                                                                                   |
-| ------------------------------ | ----------------------------------------: | -----------------------------------------------------------------------: | -------------------------------------------------------------------------------------------------------------------- |
-| Casos automatizados declarados |                                        25 |                                                                       33 | Conteo documentado inicialmente frente a la suite local actual; el resultado aprobado/fallido inicial no se conservó |
-| Pruebas aprobadas              |                   Sin medición registrada |                                                                 33 de 33 | `npm test` y GitHub Actions PR #1, 29/10/2026; 28/28 del run anterior se conserva como histórico                     |
-| Cobertura de líneas            |                                 No medida |                                                                   96.16% | Cobertura local de Node; umbral 75%; evidencia en `docs/calidad/evidencias/local-20261029/npm-test-coverage.log`     |
-| Cobertura de ramas             |                                 No medida |                                                                   81.55% | Cobertura local de Node; umbral 60%                                                                                  |
-| Cobertura de funciones         |                                 No medida |                                                                   92.31% | Cobertura local de Node; umbral 55%                                                                                  |
-| Errores de TypeScript          |                                No medidos |                                                                        0 | `npm run typecheck` terminó correctamente                                                                            |
-| Linter                         |                            No configurado |                              ESLint configurado; sin errores bloqueantes | `npm run lint` terminó correctamente; las advertencias se silencian con `--quiet`                                    |
-| Formato                        | Sin verificación automatizada documentada |                                                        Prettier aprobado | `npm run format:check` terminó correctamente                                                                         |
-| Pipeline CI                    |                                No existía | Configurado para push y pull_request; ejecución local y remota aprobadas | Workflow activo en la rama normalizada `cierre-requisitos-sqa`                                                       |
-| Análisis SonarCloud            |                                 No medido |                                 Condicional; no hay resultado registrado | Requiere las dos variables y el secreto indicados en README                                                          |
-| Protección de rama             |                             No verificada |                                                            No verificada | Debe confirmarse en las reglas del repositorio GitHub                                                                |
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
 
-## Alcance de las pruebas
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-La suite contiene pruebas unitarias, integración controlada con dobles, pruebas del adaptador SQLite en memoria y regresiones de código fuente. No ejecuta Electron ni incluye pruebas E2E. La matriz de casos está en `docs/Matriz-Pruebas.md`.
+La mejora comprobable es el proceso reproducible, la trazabilidad, la conservación de los 140 casos previos, seis nuevas regresiones y las correcciones identificadas en [hallazgos](calidad/HALLAZGOS_SONAR.md). No se atribuye una ganancia porcentual a una línea base no medida. La serie histórica completa está en [métricas](calidad/METRICAS_CALIDAD.md).
 
-## Interpretación
+## Evidencia de la copia original
 
-La mejora demostrable es automatizar 33 casos, compilar y revisar tipos, exigir umbrales de cobertura, ejecutar ESLint/Prettier y conservar reportes. Los runs 40974922468 y 40974928285 validan la revisión actual; el run remoto 40599606066 de 28 casos es histórico. No se atribuye una reducción de bugs o code smells porque SonarCloud no tiene una medición final registrada. La cobertura inicial no se midió; por ello no se calcula una diferencia de cobertura.
+En la [copia de julio de 2026](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) se identificaron 22 casos definidos en `core-services.test.js` y tres en `envio-history.test.js`. No se conservó un resultado de ejecución. Tampoco aparecieron mediciones de cobertura o configuraciones de GitHub Actions y SonarQube en los archivos examinados; esto describe únicamente la copia revisada, no la historia completa del proyecto.
+
+La evolución registrada fue de **25 casos definidos**, luego **28/28**, **33/33**, **140/140** y finalmente **146/146 pruebas aprobadas**. Estas cifras muestran el aumento del inventario y de las verificaciones comprobadas. Las coberturas de cada etapa tienen alcances diferentes y se muestran con su contexto en [Métricas de calidad](calidad/METRICAS_CALIDAD.md).

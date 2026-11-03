@@ -1,3 +1,4 @@
+/* global session: writable, catalogos: writable */
 let promesaCatalogos = null;
 let catalogosRequestVersion = 0;
 

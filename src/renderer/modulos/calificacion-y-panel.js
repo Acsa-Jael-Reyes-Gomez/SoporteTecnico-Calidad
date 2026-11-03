@@ -21,9 +21,9 @@ function renderCalificacion(host) {
   let btnCalificarTodos = null;
 
   const reloadAllTabs = () => {
-    loadTab("tickets", { silent: currentTab !== "tickets" });
-    loadTab("rutas", { silent: currentTab !== "rutas" });
-    loadTab("proyectos", { silent: currentTab !== "proyectos" });
+    loadTab("tickets", { silent: currentTab !== "tickets" }).catch(error => toast(getUserErrorMessage(error, "No se pudo actualizar la calificación."), "err"));
+    loadTab("rutas", { silent: currentTab !== "rutas" }).catch(error => toast(getUserErrorMessage(error, "No se pudo actualizar la calificación."), "err"));
+    loadTab("proyectos", { silent: currentTab !== "proyectos" }).catch(error => toast(getUserErrorMessage(error, "No se pudo actualizar la calificación."), "err"));
   };
 
   const resetAllTabPages = () => {
@@ -50,7 +50,7 @@ function renderCalificacion(host) {
     if (btnCalificarTodos) {
       btnCalificarTodos.style.display = tabName === "proyectos" ? "none" : "";
     }
-    loadTab(tabName);
+    loadTab(tabName).catch(error => toast(getUserErrorMessage(error, "No se pudo actualizar la calificación."), "err"));
   };
 
   // Header
@@ -380,7 +380,7 @@ function renderCalificacion(host) {
             const resSet = await apiFn(session, rowId, c.id);
             if (resSet?.ok) {
               toast(`Complejidad actualizada a ${c.name}`, "ok");
-              loadTab(tabName);
+              loadTab(tabName).catch(error => toast(getUserErrorMessage(error, "No se pudo actualizar la calificación."), "err"));
             } else {
               throw new Error(resSet?.message || "Error actualizando complejidad");
             }
@@ -742,7 +742,7 @@ function renderCalificacion(host) {
               (isProyectos && isLoadingProyectos)
             ) return;
             pageState.page = nextPage;
-            loadTab(tabName);
+            loadTab(tabName).catch(error => toast(getUserErrorMessage(error, "No se pudo actualizar la calificación."), "err"));
           },
           onPageSizeChange: (nextPageSize) => {
             if (
@@ -753,7 +753,7 @@ function renderCalificacion(host) {
             ) return;
             pageState.pageSize = nextPageSize;
             pageState.page = 1;
-            loadTab(tabName);
+            loadTab(tabName).catch(error => toast(getUserErrorMessage(error, "No se pudo actualizar la calificación."), "err"));
           }
         }));
       }
@@ -1151,5 +1151,5 @@ function renderDashboard(host) {
     }
   }
 
-  loadDashboard();
+  loadDashboard().catch(error => toast(getUserErrorMessage(error, "No se pudo cargar el panel."), "err"));
 }

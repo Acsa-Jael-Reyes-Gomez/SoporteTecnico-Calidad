@@ -1757,7 +1757,7 @@ function buildExcelSheetConfig(data: any[], title: string, sheetName: string) {
     sheet: sanitizeSheetName(sheetName || reportTitle),
     data: shouldAddTitleRow ? [titleRow, ...bodyRows] : bodyRows,
     columns,
-    stickyRowsCount: isProjectReportLayout ? 5 : isRouteReportLayout ? 5 : isTicketComplexityLayout ? 5 : isTicketSummaryMatrix ? 3 : isRouteSummaryMatrix ? 2 : isProjectSummaryMatrix ? 2 : isTicketDetailMatrix ? 2 : 2
+    stickyRowsCount: (isProjectReportLayout || isRouteReportLayout || isTicketComplexityLayout) ? 5 : isTicketSummaryMatrix ? 3 : 2
   };
 }
 

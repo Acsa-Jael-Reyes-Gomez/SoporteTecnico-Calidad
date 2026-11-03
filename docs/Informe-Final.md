@@ -1,56 +1,66 @@
-> **Actualización del 30/10/2026:** la rama `cierre-requisitos-sqa` se encuentra publicada y sincronizada. El PR #1 cerró durante la normalización de la rama; el historial y los comentarios siguen asociados al mismo número, pero la reapertura requiere una acción de GitHub permitida por el propietario. La protección de `main` no está habilitada y la revisión independiente aún está pendiente.
+# Informe final de correcciones y verificación SQA
 
-# Informe final del proyecto SQA
+**Estudiante:** Acsa Jael Reyes Gómez. **Universidad:** Mariano Gálvez de Guatemala. **Fecha:** 3 de noviembre de 2026.
 
-**Fecha de actualización:** 30 de octubre de 2026
-**Repositorio:** `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad`
+## Alcance y estado de integración
 
-## Resumen ejecutivo
+Se conserva el Sistema de Soporte Técnico existente en Electron, Renderer JavaScript/CSS, Preload/Main TypeScript y SQLite. Las correcciones se publican únicamente en la rama del [PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8). No se modificó main directamente, no se reescribió el historial y no se fusionó el PR.
 
-Se reutilizó la aplicación Electron existente y se añadieron controles de calidad continuos. La persistencia integrada usa SQLite con `node:sqlite`; la interfaz permanece en JavaScript/CSS y el proceso principal en TypeScript. GitHub Actions se configura para `push` y `pull_request` y valida actualmente desde `cierre-requisitos-sqa`.
+## Errores encontrados y correcciones
 
-## Resultados reproducidos
+- Cobertura inflada por incluir código de tests: el gate ahora incluye src/** y conserva la exclusión Renderer previa, con los mismos mínimos 75/60/55.
+- Tres comentarios CSS sin cierre: corregidos y bundle regenerado; se conserva la apariencia efectiva.
+- Regex susceptibles de retroceso excesivo: simplificadas en SQL y recorte de nombres. Eliminado un reemplazo DATEDIFF que no cambiaba el significado.
+- Promesas de cargas sin manejador explícito: catch con mensaje al usuario en calificación, proyectos y dashboard; no se convierten errores en éxitos.
+- Condición duplicada, ternario redundante y propiedad CSS duplicada: simplificados conservando sus resultados efectivos.
+- Alertas sobre variables compartidas: orden de carga y declaraciones demostrados; no se agregaron declaraciones que sombreen el estado. JSDoc aclara la unión numérica/string y el valor opcional del select.
+- Documentación contradictoria y manual de rutas: versión vigente sincronizada, cierre automático al validar y antecedentes separados.
 
-- Build: aprobado.
-- Suite local actual: 33 aprobadas y 0 fallidas.
-- Cobertura local actual: 96.16% de líneas, 81.55% de ramas y 92.31% de funciones.
-- Umbrales: 75% de líneas, 60% de ramas y 55% de funciones.
-- TypeScript: 0 errores.
-- ESLint: sin errores bloqueantes.
-- Prettier: todos los archivos seleccionados aprobados.
-- GitHub Actions: la rama normalizada ejecutó la puerta de calidad correctamente; el run más reciente quedó asociado a `cierre-requisitos-sqa`.
+El tratamiento de cada uno de los **36 hallazgos iniciales** está en [HALLAZGOS_SONAR.csv](calidad/HALLAZGOS_SONAR.csv), con justificaciones en [HALLAZGOS_SONAR.md](calidad/HALLAZGOS_SONAR.md).
 
-Las pruebas SQLite ejercitan el adaptador en memoria y la semilla. No se hizo una prueba manual de arranque de Electron ni hay pruebas E2E.
+## Pruebas y resultados
 
-## Estado frente al enunciado
+| Comprobación                   | Resultado verificado                                                           |
+| ------------------------------ | ------------------------------------------------------------------------------ |
+| Compilación                    | Aprobada                                                                       |
+| node:test                      | 146/146; 0 fallidas, 0 canceladas y 0 omitidas                                 |
+| Casos originales               | 140 conservados y trazados; seis regresiones añadidas                          |
+| E2E Electron/SQLite            | Aprobado: inicio, Preload/IPC, login, Tickets, alta persistida                 |
+| Gate c8 corregido              | 83,30 % líneas; 70,41 % ramas; 94,66 % funciones                               |
+| Umbrales                       | 75 % / 60 % / 55 %, sin reducción                                              |
+| TypeScript / ESLint / Prettier | Aprobados                                                                      |
+| SonarQube PR técnico           | PASSED; 86,5 % cobertura nueva, 0,0 % duplicación nueva; cero hallazgos nuevos |
 
-| Requisito                                                       | Estado                 | Evidencia o acción pendiente                                                                         |
-| --------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------- |
-| Aplicación existente con operaciones de soporte/CRUD            | Cumplido               | Sistema Electron descrito en README y manuales                                                       |
-| Pipeline con etapas de compilación, pruebas, análisis y reporte | Cumplido               | Workflow `quality.yml` ejecutado por `push` y `pull_request`                                         |
-| Pruebas unitarias y de regresión automatizadas                  | Cumplido parcialmente  | 33 casos; algunas regresiones inspeccionan código fuente                                             |
-| Integración automatizada con base de datos                      | Cumplido parcialmente  | Cinco pruebas ejercitan SQLite en memoria y la semilla; falta validar el ciclo de inicio de Electron |
-| Matriz de pruebas                                               | Cumplido               | `docs/Matriz-Pruebas.md`, con entrada, esperado y resultado observado                                |
-| Cobertura y umbrales mínimos                                    | Cumplido               | 96.16% líneas, 81.55% ramas, 92.31% funciones; umbrales 75/60/55                                     |
-| Análisis estático                                               | Cumplido parcialmente  | TypeScript y ESLint activos; SonarCloud no tiene resultado registrado                                |
-| Revisión de código y deuda técnica                              | Parcial                | Revisión local y deuda documentadas; falta aprobación independiente en el PR                         |
-| Plan SQA, línea base y reporte de mejora                        | Cumplido               | `docs/SQA-Plan.md`, `docs/Linea-Base-Calidad.md`, `docs/Reporte-Mejora.md`                           |
-| Manuales técnicos y de usuario                                  | Cumplido               | `docs/Manual-Tecnico.md`, `docs/Manual-Usuario.md`                                                   |
-| README con descripción, stack e instrucciones                   | Cumplido               | `README.md`; incluye badge de GitHub Actions                                                         |
-| Protección de la rama principal                                 | No habilitada          | La API confirmó que `main` no tiene reglas de protección                                             |
-| Revisión por otra persona                                       | Pendiente              | No hay aprobación independiente registrada en el PR #1                                               |
-| Presentación final exportada a PDF/PPTX                         | Pendiente              | El repositorio contiene guiones en Markdown; falta exportar el archivo final                         |
-| Video de 4–5 minutos                                            | Complementario         | Hay guion disponible; grabarlo solo si la rúbrica del curso lo solicita                              |
-| SonarCloud y dashboard de métricas                              | Opcional/no verificado | Requiere organización, clave de proyecto y secreto; no presentar datos no medidos                    |
-| Despliegue en nube y Docker                                     | Opcional               | No implementados; no son necesarios para los controles básicos solicitados                           |
+Fuentes: [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247), [PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y logs/API en [evidencia final](calidad/evidencias/cierre-final-20261103/). Los checks del último commit documental deben verificarse además en el PR.
 
-## Interpretación de métricas
+La cobertura c8 mide código de aplicación cargado, con el Renderer excluido en ese comando, no toda la aplicación. El LCOV de SonarQube conserva un alcance distinto. Las capturas originales de 140 casos, 88,90 % c8 y 80,1 % Sonar nuevo se conservan como **antecedentes**, junto con 30,2 % Sonar global del main anterior. La línea base inicial de 25 casos no conserva cobertura comparable; no se inventa ni se calcula mejora porcentual desde ella.
 
-El registro histórico indica 25 casos iniciales sin resultado aprobado/fallido conservado. La ejecución actual contiene 33 pruebas aprobadas. La cobertura inicial no fue medida, por lo que no se afirma una mejora porcentual respecto a una base cuantificada. La cobertura actual es 96.16% / 81.55% / 92.31%, verificada localmente y en GitHub Actions. No se cuantifican bugs, vulnerabilidades ni code smells sin un análisis SonarCloud registrado.
+## Hallazgos abiertos y por qué
 
-## Pendientes para la entrega académica
+Web:S7039 permanece como riesgo documentado: style-src permite estilos inline usados por la interfaz dinámica, mientras script-src sigue restringido a self. Retirarlos requiere migración de estilos y regresión visual completa; no se debilita la CSP ni se desactiva la regla. Los avisos S2703 de estado compartido y S3403 de tipos se justifican con código y pruebas; no se tratan como fallos funcionales sin contexto.
 
-1. Obtener una revisión independiente del PR #1 y conservar el comentario o aprobación como evidencia.
-2. Maquetar la presentación con métricas y capturas reales y exportarla a PDF/PPTX.
-3. Si la rúbrica del curso solicita el video, grabar la demostración de 4–5 minutos.
-4. Si se requiere dashboard SonarCloud, configurar sus valores en GitHub y registrar el resultado real.
+Main aún conserva sus 36 hallazgos iniciales hasta integrar y reanalizar; no se afirma cierre remoto en una rama que no se ha modificado. La puerta de código nuevo del PR sí aprobó sin issues nuevos. La ampliación de cobertura global y de recorridos E2E sigue siendo deuda priorizable, distinta de los controles obligatorios que pasaron.
+
+GitHub emite una advertencia no bloqueante sobre el runtime Node 20 de algunas acciones externas, ejecutadas mediante compatibilidad con Node 24. Esto no cambia Node.js 22 configurado para la aplicación; las verificaciones completaron correctamente. Se conserva el workflow funcional solicitado.
+
+## Archivos modificados y entregables
+
+- Código: adaptador SQLite, saneamiento de exportación, reporte Excel, módulos Renderer de cargas, contratos compartidos y CSS fuente/bundle.
+- Configuración: alcance del comando c8, sin reducir umbrales ni cambiar la condición Sonar funcional de 6ccb7cc.
+- Pruebas: sqa-closeout.test.js, seis regresiones; todas las pruebas previas conservadas.
+- Documentación: README, plan SQA, matriz, línea base, reporte, manuales, mapa, métricas, flujo GitHub, revisión y estado de requisitos.
+- Trazabilidad: [inventario final](calidad/INVENTARIO_FINAL_CASOS.csv), fuente/línea, preparación y aserciones; [inventario histórico de 140](calidad/INVENTARIO_140_CASOS.csv) conservado.
+- Presentación: [PowerPoint](presentacion/final/Presentacion_SQA_Final.pptx), [PDF de diez diapositivas](presentacion/final/Presentacion_SQA_Final.pdf), [guion](presentacion/final/Guion_Exposicion_Final.pdf) y [anexo](presentacion/final/Anexo_Evidencias_Final.pdf), basados en los archivos originales de la estudiante.
+- Video: [guion y secuencia](video/Guion-Video-4-5-Minutos.md); no existe entrega MP4 declarada.
+
+## Cumplimiento y acciones manuales
+
+La [matriz de requisitos](calidad/ESTADO-REQUISITOS.md) distingue verificado, limitación histórica y pendiente humano. Repositorio público y protección de main comprobados por API: PR, una aprobación, checks actualizados y conversaciones resueltas, incluso administradores. PR #7 registra dos eventos de aprobación de la misma cuenta Acsa-Reyes; PR #8 necesita su propia revisión.
+
+Pendientes: aprobación independiente del PR #8; autorización y fusión manual; comprobar el pipeline posterior en main; entregar enlaces y archivos en la plataforma académica; grabar y verificar MP4 de 4–5 minutos y al menos 720p **al final**. No se declara el proyecto al 100 % mientras falten estas acciones.
+
+## Antecedente del sistema original
+
+El [análisis de la copia de julio de 2026](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) identifica 25 casos definidos en dos archivos de pruebas. No existe un registro conservado de su ejecución ni una cobertura inicial medible. En esa copia se utilizaba MySQL mediante ODBC; el cierre utiliza Electron y SQLite. La comparación se centra en el proceso de aseguramiento, la ampliación de las pruebas y la trazabilidad, no en incrementos porcentuales calculados con mediciones incompatibles.
+
+Los resultados históricos de 28, 33 y 140 casos se conservan en la [línea base](Linea-Base-Calidad.md); las métricas y verificaciones del cierre figuran en [Métricas de calidad](calidad/METRICAS_CALIDAD.md).

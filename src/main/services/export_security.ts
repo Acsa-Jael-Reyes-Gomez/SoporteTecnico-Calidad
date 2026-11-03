@@ -1,5 +1,15 @@
 const FORMULA_PREFIX_RE = /^[\t\r\n ]*[=+\-@]/;
 
+function trimBoundaryCharacters(value: string, characters: string, trimStart = false): string {
+  let start = 0;
+  let end = value.length;
+  if (trimStart) {
+    while (start < end && characters.includes(value[start])) start += 1;
+  }
+  while (end > start && characters.includes(value[end - 1])) end -= 1;
+  return value.slice(start, end);
+}
+
 export function sanitizeSpreadsheetValue(value: any): any {
   if (typeof value !== "string") return value;
   return FORMULA_PREFIX_RE.test(value) ? `'${value}` : value;
@@ -14,14 +24,14 @@ export function sanitizeSpreadsheetData(data: any): any {
 }
 
 export function sanitizeExportFilename(value: unknown, fallback = "Reporte.xlsx") {
-  const clean = String(value || fallback)
+  const safe = String(value || fallback)
     // This intentionally rejects control characters in exported filenames.
     // eslint-disable-next-line no-control-regex
-    .replace(/[<>:"/\\|?*\x00-\x1F]/g, "_")
-    .replace(/[. ]+$/g, "")
-    .slice(0, 120);
+    .replace(/[<>:"/\\|?*\x00-\x1F]/g, "_");
+  const clean = trimBoundaryCharacters(safe, ". ").slice(0, 120);
   const base = clean || fallback;
-  return /\.xlsx$/i.test(base) ? base : `${base.replace(/\.[^.]+$/, "")}.xlsx`;
+  const extension = base.lastIndexOf(".");
+  return /\.xlsx$/i.test(base) ? base : `${extension >= 0 ? base.slice(0, extension) : base}.xlsx`;
 }
 
 export function sanitizeSheetName(value: unknown, fallback = "Reporte") {
@@ -30,7 +40,6 @@ export function sanitizeSheetName(value: unknown, fallback = "Reporte") {
     // eslint-disable-next-line no-control-regex, no-useless-escape
     .replace(/[\x00-\x1F\\/\?\*\[\]\:]/g, " ")
     .replace(/\s+/g, " ")
-    .trim()
-    .replace(/^'+|'+$/g, "");
-  return (clean || fallback).slice(0, 31);
+    .trim();
+  return (trimBoundaryCharacters(clean, "'", true) || fallback).slice(0, 31);
 }

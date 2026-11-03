@@ -1,3 +1,4 @@
+/* global session: writable, catalogos: writable */
 function AppShell(route) {
   if (window.__soporteSessionHeartbeatId) {
     window.clearInterval(window.__soporteSessionHeartbeatId);

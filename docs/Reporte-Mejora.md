@@ -1,37 +1,36 @@
-> Actualizado el 29/10/2026: los resultados locales actuales incluyen la integración SQLite. El run remoto 40599606066 es histórico y pertenece al commit publicado anterior.
+# Reporte de mejora y verificación del cierre
 
-# Reporte de mejora de calidad
+## Problemas y correcciones
 
-## Resumen
+| Problema comprobado                     | Corrección                                                   | Evidencia                                    |
+| --------------------------------------- | ------------------------------------------------------------ | -------------------------------------------- |
+| Tests incluidos en el denominador c8    | Incluir solo src, conservar exclusión Renderer y umbrales    | Reporte final y package.json                 |
+| Tres comentarios CSS sin cierre         | Cerrar separadores y regenerar bundle                        | Compilación; análisis CSS posterior          |
+| Regex con retroceso superlineal         | Análisis acotado de agregaciones y recorte lineal de nombres | Regresiones SQL y nombres largos             |
+| Cargas de interfaz sin catch explícito  | Capturar rechazo y presentar mensaje                         | Regresiones proyectos/calificación/dashboard |
+| Condición repetida y retorno redundante | Simplificar conservando decisiones                           | Suite de reportes y E2E                      |
+| box-shadow duplicado                    | Conservar última declaración efectiva y regenerar CSS        | Fuente y bundle consistentes                 |
+| Avisos de estado compartido             | Documentar contexto, sin redeclarar; demostrar scope léxico  | Prueba VM y cargador de scripts              |
+| Textos y métricas contradictorios       | Documentación vigente única y antecedentes separados         | Plan, manuales, matriz y métricas            |
 
-Se añadió una puerta de calidad automatizada al sistema Electron existente. El cambio conserva la arquitectura y las funciones del producto y establece controles repetibles para compilación, pruebas, cobertura, tipos, lint y formato. No se afirma una mejora en bugs o vulnerabilidades porque no hay un resultado SonarCloud disponible.
+## Antes y después
 
-## Comparación antes y después
+Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
 
-| Métrica                              |                   Antes |                                   Después | Cambio comprobable                                                           |
-| ------------------------------------ | ----------------------: | ----------------------------------------: | ---------------------------------------------------------------------------- |
-| Casos automatizados declarados       | 25 (registro histórico) |                                        33 | 8 más que el conteo inicial documentado; el resultado inicial no se conserva |
-| Pruebas aprobadas                    |            Sin registro |                                     33/33 | Suite local completa, 29/10/2026                                             |
-| Cobertura de líneas                  |               No medida |                                    96.16% | Medición local; supera el umbral de 75%                                      |
-| Cobertura de ramas                   |               No medida |                                    81.55% | Medición local; supera el umbral de 60%                                      |
-| Cobertura de funciones               |               No medida |                                    92.31% | Medición local; supera el umbral de 55%                                      |
-| Verificación TypeScript              |               No medida |                                 0 errores | `npm run typecheck` aprobado localmente                                      |
-| Análisis ESLint                      |          No configurado |                    Configurado y aprobado | `npm run lint` aprobado localmente                                           |
-| Verificación de formato              |           No registrada |                                  Aprobada | `npm run format:check` aprobado localmente                                   |
-| Integración continua                 |              No existía | GitHub Actions en `push` y `pull_request` | Workflow activo; ejecuciones verificadas en `cierre-requisitos-sqa`          |
-| Bugs, vulnerabilidades y code smells |              No medidos |                                No medidos | Sin análisis SonarCloud registrado; no se asigna diferencia                  |
-| Protección de `main`                 |           No verificada |                             No verificada | Requiere reglas externas del repositorio                                     |
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-## Cambios realizados
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-- Se añadieron controles automáticos de compilación, pruebas, umbrales de cobertura, TypeScript, ESLint y Prettier.
-- Se guardan los informes de pruebas y cobertura como artefacto de GitHub Actions.
-- Se documentaron estrategia, límites, deuda técnica, línea base y los 33 casos automatizados.
-- Se fijaron finales de línea LF mediante `.gitattributes` para que Prettier valide igual en los equipos Windows y en Actions.
-- Se mantuvo SonarCloud condicional: no bloquea mientras el proyecto externo no esté configurado.
+La caída de 88,90 % al porcentaje c8 corregido es un cambio de denominador, no una pérdida demostrada de cobertura. No se rebajó ningún umbral. El detalle de las 36 observaciones está en [CSV](calidad/HALLAZGOS_SONAR.csv); las disposiciones remotas y riesgos abiertos, en [revisión](calidad/HALLAZGOS_SONAR.md).
 
-## Limitaciones y acciones posteriores
+## Control de cambios y límites
 
-Las consultas de negocio se prueban con dobles; el adaptador se cubre con SQLite en memoria y la semilla. No hay E2E ni una prueba manual de arranque de Electron. Para completar el quality gate del repositorio, un administrador debe exigir PR y el check exitoso del job `Build, tests and quality checks` en la rama principal. SonarCloud debe habilitarse y medirse antes de presentar métricas de bugs o code smells. La comparación de cobertura inicial no es posible porque no se midió antes.
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. Al corte del 3 de noviembre de 2026, el PR #8 estaba abierto, pendiente de revisión y sin fusionar. Antes de la entrega debe consultarse su estado actual en GitHub.
 
-El resultado exacto de cobertura y las condiciones de ejecución están en `docs/Linea-Base-Calidad.md` y `docs/calidad/EVIDENCIAS_EJECUCION.md`.
+La captura negativa histórica prueba un check Sonar rechazado, no una ejecución deliberadamente fallida del nuevo wait=true. El código y los logs actuales sí acreditan la espera explícita del scanner y su resultado. No se provocan fallos artificiales en main. Continúan pendientes la revisión/fusión autorizadas, la verificación posterior en main, la entrega en plataforma y el video obligatorio al final.
+
+## Interpretación de la mejora
+
+La [copia original de julio](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) permitía identificar 25 casos definidos, pero no resultados históricos ni cobertura inicial. Las mediciones posteriores de 28, 33 y 140 pruebas se conservan como antecedentes; el cierre documenta 146 pruebas aprobadas. La [tabla de evolución](calidad/METRICAS_CALIDAD.md) registra el alcance de cada medición y evita presentar coberturas incompatibles como una misma serie.
+
+La mejora verificable se encuentra en la automatización de las pruebas, los controles de calidad del pipeline, la incorporación de regresiones, la revisión de hallazgos y la evidencia reproducible. Se mantienen registrados los riesgos abiertos y las tareas manuales pendientes.

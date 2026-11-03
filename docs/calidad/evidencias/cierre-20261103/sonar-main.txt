@@ -1,0 +1,85 @@
+
+Explore
+
+
+Start Free
+Log in
+S
+SoporteTecnico
+Project
+
+Overview
+
+Analysis
+
+Summary
+Issues
+Security hotspots
+Deprecated
+
+Architecture
+
+
+Reporting
+
+
+Project
+
+Acsa Reyes
+0
+SoporteTecnico
+0
+Summary
+Summary
+!
+main
+
+40k Lines of code
+
+Last analysis 15 hours ago
+76977452
+View on GitHub
+
+(opens in new tab)
+Quality gate
+
+Passed
+New Code
+Overall Code
+Security
+1
+Open issues
+C
+Reliability
+24
+Open issues
+C
+Maintainability
+11
+Open issues
+A
+Accepted issues
+0
+Valid issues that were not fixed
+Coverage
+30.2%
+No conditions set
+on 14k Lines to cover
+Duplications
+3.8%
+No conditions set
+on 51k Lines
+Security hotspots
+Deprecated
+0
+© 2018-2026 SonarSource Sàrl. All rights reserved.
+Terms
+Pricing
+Privacy
+Cookie Policy
+Security
+Community
+Documentation
+Contact us
+Status
+About

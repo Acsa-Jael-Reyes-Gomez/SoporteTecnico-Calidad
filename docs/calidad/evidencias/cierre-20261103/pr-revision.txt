@@ -1,0 +1,185 @@
+Skip to content
+Navigation Menu
+Products
+Developers
+Businesses
+Resources
+Pricing
+Search
+/
+Sign in
+Sign up
+Acsa-Jael-Reyes-Gomez
+SoporteTecnico-Calidad
+Repository navigation
+Code
+Issues
+Pull requests
+1
+ (1)
+Actions
+Projects
+Security and quality
+Insights
+Integrar mejoras SQA y pruebas automatizadas
+- #7
+#7
+Merged
+Acsa-Jael-Reyes-Gomez
+merged 25 commits into
+main
+from
+integracion-sqa-github
++4,240
+-250
+Lines changed: 4240 additions & 250 deletions
+Conversation0
+ (0)
+Commits25
+ (25)
+Checks3
+ (3)
+Files changed43
+ (43)
+Conversation
+Acsa-Jael-Reyes-Gomez
+commented
+Owner
+
+Motivo:
+Fortalecer el aseguramiento de la calidad del sistema de soporte técnico mediante pruebas automatizadas, análisis estático, cobertura de código y documentación del proceso SQA.
+
+Cambios:
+
+Incorporación de pruebas de integración para autenticación, tickets y rutas.
+Mejoras en la validación, exportación de reportes y manejo de errores.
+Implementación de datos sintéticos para ejecutar pruebas sin utilizar información real.
+Mejoras en la gestión y migración de contraseñas.
+Actualización de la documentación técnica y evidencias de calidad.
+
+Verificación:
+
+ npm run build
+ npm test — 109 pruebas aprobadas, 0 fallidas.
+ npm run test:coverage — 75.38% líneas evaluadas, 65.31% ramas y 92.22% funciones.
+ npm run typecheck
+ npm run lint
+ npm run format:check
+ npm run test:e2e — Prueba de Electron aprobada.
+
+Base de datos y configuración:
+Las pruebas de integración y E2E utilizan SQLite aislado y datos sintéticos. No requieren conectarse a la base de datos de producción.
+
+Pendiente:
+Verificar la ejecución del pipeline CI/CD en GitHub Actions antes de fusionar este Pull Request.
+
+Acsa-Jael-Reyes-Gomez and others added 25 commits 
+Integrar mejoras SQA y pruebas automatizadas
+0e3064d
+Corregir carga de modulo ACL en pruebas CI de Windows
+5142c97
+Corregir ruta del modulo Security de PowerShell para CI Windows
+45d4fc1
+Evitar busqueda en PATH de herramientas de ACL en Windows
+4dc59ea
+Generar sourcemaps para vincular cobertura compilada con TypeScript
+d4a9e0f
+Ampliar pruebas de integracion de permisos y estados de rutas
+5bded13
+Corregir estado de validacion sintetico en pruebas de rutas
+4d92a95
+Atribuir cobertura de pruebas VM a archivos reales del renderer
+5956b02
+Separar umbral de cobertura backend del reporte completo para SonarQube
+3681a62
+Ejecutar cobertura completa adicional y conservar el umbral CI
+23270f0
+Importar cobertura completa de renderer y backend en SonarQube
+ce651c4
+Restaurar directorio LCOV que reconoce SonarQube
+6577e23
+Apuntar SonarQube al LCOV completo en ubicacion original
+367e6ba
+Adjuntar LCOV completo desde directorio habitual de coverage
+46d51bd
+test: cubrir modal de equipos y control de acceso del renderer
+6b48aec
+test: cubrir fallos y reintentos de carga de equipos y rutas
+0e3fa59
+fix: instrumentar ejecución real del renderer en cobertura V8 LCOV
+f82ddb4
+fix: instrumentar ejecución real del renderer en cobertura V8 LCOV
+312fd09
+fix: permitir instrumentar cada módulo de renderer independientemente
+5864b7b
+test: ejecutar validación real de rutas pendientes, errores, paginaci… …
+ed188dc
+Probar confirmacion, fallo de recarga y rechazo al validar rutas
+d30ee08
+Ampliar pruebas reales de migración segura y respaldos SQLite
+79f3700
+Corregir caracteres de control reales en pruebas de contraseñas
+5c7442b
+Corregir prueba de clasificación usando carácter Unicode inválido per… …
+9833e87
+Cubrir ramas reales de ACL, respaldos y migración con credenciales si… …
+a06e7cf
+Acsa-Jael-Reyes-Gomez requested a review from Acsa-Reyes 
+Acsa-Reyes approved these changes 
+View reviewed changes
+Acsa-Reyes approved these changes 
+View reviewed changes
+View details
+Acsa-Jael-Reyes-Gomez merged commit 7697745 into main 
+3 checks passed
+Acsa-Jael-Reyes-Gomez added a commit that referenced this pull request 
+docs: actualizar presentación a rúbrica y evidencias del PR #7
+9c62156
+ Acsa-Jael-Reyes-Gomez mentioned this pull request 
+docs: cierre académico SQA y evidencias finales verificadas #8
+ Open
+sonarqubecloud Bot
+commented
+ Quality Gate passed
+
+Issues
+ 0 New issues
+ 0 Accepted issues
+
+Measures
+ 0 Security Hotspots
+ 0.0% Coverage on New Code
+ 0.0% Duplication on New Code
+
+See analysis details on SonarQube Cloud
+
+Sign up for free to join this conversation on GitHub. Already have an account? Sign in to comment
+Reviewers
+Acsa-Reyes
+Assignees
+No one assigned
+Labels
+None yet
+Projects
+None yet
+Milestone
+No milestone
+Development
+
+Successfully merging this pull request may close these issues.
+
+None yet
+
+2 participants
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information

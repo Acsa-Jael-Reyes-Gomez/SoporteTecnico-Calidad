@@ -10,7 +10,7 @@ En el módulo **Tickets** puedes consultar y filtrar registros, crear tickets, e
 
 ## Rutas y validación
 
-En **Rutas** consulta, crea, actualiza, asigna participantes, cierra o reabre rutas. El flujo de validación permite que personal autorizado registre la validación y los equipos revisados. El rol Gerencial puede revisar rutas pendientes según sus permisos.
+En **Rutas** consulta, crea, actualiza y asigna participantes; la reapertura está sujeta a permisos y estado. El cierre manual está deshabilitado: la ruta se cierra automáticamente durante la validación. El flujo de validación permite que personal autorizado registre la validación y los equipos revisados. El rol Gerencial puede revisar rutas pendientes según sus permisos.
 
 ## Equipos en taller y envíos
 

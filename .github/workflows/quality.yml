@@ -93,8 +93,18 @@ jobs:
             coverage/sonar-coverage.txt
           if-no-files-found: warn
 
+      # El plan de SonarQube admite main y PR; los demás push conservan build/test/analyze/report.
+      # Los PR y main siempre exigen token y esperan un Quality Gate aprobado.
+      - name: ANALIZAR - validar token SonarCloud
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:SONAR_TOKEN)) {
+            throw 'Falta SONAR_TOKEN: el análisis obligatorio no puede omitirse.'
+          }
+
       - name: ANALIZAR - SonarCloud
-        if: env.SONAR_TOKEN != ''
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -102,3 +112,5 @@ jobs:
           args: >
             -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.qualitygate.wait=true
+            -Dsonar.qualitygate.timeout=300

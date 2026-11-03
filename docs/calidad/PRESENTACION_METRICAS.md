@@ -1,36 +1,15 @@
-# Resumen de métricas para exponer
+# Métricas para la exposición
 
-## Comparación de la línea base con el estado actual
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-| Indicador                 | Antes de aplicar SQA                       | Estado actual (29/10/2026)                     | Interpretación                                               |
-| ------------------------- | ------------------------------------------ | ---------------------------------------------- | ------------------------------------------------------------ |
-| Casos de prueba anotados  | 25 registrados; sin resultado de ejecución | 33 aprobados, 0 fallidos                       | La suite creció; se desconoce la tasa inicial de aprobación  |
-| Cobertura de líneas       | No medida                                  | 96.16% (umbral 75%)                            | No se calcula variación porcentual sin medición inicial      |
-| Cobertura de ramas        | No medida                                  | 81.55% (umbral 60%)                            | No se calcula variación porcentual sin medición inicial      |
-| Cobertura de funciones    | No medida                                  | 92.31% (umbral 55%)                            | No se calcula variación porcentual sin medición inicial      |
-| Build y análisis estático | No se conserva evidencia inicial           | Build, TypeScript, ESLint y Prettier aprobados | Controles actuales ejecutados localmente y en GitHub Actions |
-| Integración continua      | No había pipeline documentado              | Quality gate en `push` y `pull_request`        | Ejecuciones enlazadas abajo                                  |
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
 
-El historial Git disponible no contiene una revisión ejecutable del producto anterior al pipeline. Los datos iniciales proceden del registro histórico; no se reconstruyen resultados inexistentes. El run 40599606066 es anterior a SQLite, pero ya corresponde a una revisión que tenía el pipeline y por eso no representa el estado pre-SQA.
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-## Estado inicial documentado
+Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
 
-- 25 casos de prueba anotados en el registro histórico.
-- No se registró la tasa de pruebas aprobadas.
-- No se medía cobertura ni había una puerta CI documentada.
-- No había verificación ESLint documentada.
+La presentación vigente es `../presentacion/final/Presentacion_SQA_Final.pptx` y su PDF. Las capturas originales de 140 casos se conservan identificadas como históricas; los indicadores actuales muestran 146. No afirmar dos revisores: PR #7 contiene dos eventos de aprobación de la misma cuenta Acsa-Reyes. La protección se comprobó por API y PR #8 está pendiente de aprobación. El video es un entregable separado aún pendiente.
 
-## Evidencia remota histórica anterior a SQLite
+## Antecedentes para la exposición
 
-El run [40599606066](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40599606066) registra 28/28 pruebas y cobertura de 95.65% de líneas, 80.60% de ramas y 90.54% de funciones. Es una medición histórica de una revisión con pipeline, no la línea base pre-SQA.
-
-## Evidencia actual
-
-Los runs [40974922468](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974922468) (`push`) y [40974928285](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/40974928285) (`pull_request`) pasaron. El artefacto con cobertura y logs de análisis estático está en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
-
-## Límites de interpretación
-
-- No se midió cobertura antes de SQA; por eso no se afirma una mejora porcentual desde la línea base.
-- No hay resultados SonarCloud ni métricas verificadas de bugs, vulnerabilidades o code smells.
-- La protección de `main` no está activa; GitHub rechazó la consulta de reglas para el repositorio privado con HTTP 403.
-- El PR no tiene una revisión independiente registrada.
+Las capturas con 140 pruebas y los porcentajes previos se conservan como evidencia histórica, no como resultado de cierre. La copia original identificó 25 casos definidos sin ejecución ni cobertura conservadas. La explicación detallada está en [Historial de julio](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md). La presentación de entrega usa las cifras verificadas del PR #8 y distingue c8 de SonarQube.

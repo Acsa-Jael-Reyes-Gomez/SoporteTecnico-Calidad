@@ -1,25 +1,15 @@
-# Flujo de trabajo en GitHub
+# Flujo de revisión e integración
 
-## Cambios y pull requests
+1. Crear rama desde main y agrupar cambios relacionados.
+2. Verificar localmente compilación, todas las pruebas, E2E, cobertura, tipos, lint y formato.
+3. Publicar cambios autorizados en rama y abrir/actualizar PR; no escribir directamente en main.
+4. Esperar checks: SonarQube corre en PR y push de main, con token obligatorio y espera del gate. Los otros push conservan todos los controles locales y reportes.
+5. Obtener aprobación independiente y resolver conversaciones. Fusionar solo con autorización de la propietaria; después comprobar el push de main.
 
-1. Crea una rama corta desde `main`, por ejemplo `fix/validacion-fecha` o `docs/matriz-pruebas`.
-2. Mantén el cambio enfocado y añade pruebas cuando modifiques reglas del sistema.
-3. Abre un pull request hacia `main` y completa `.github/PULL_REQUEST_TEMPLATE.md` en español.
-4. Revisa diferencias, datos sensibles, configuración de base de datos y los checks de **Puerta de calidad**.
-5. Fusiona después de la revisión humana y cuando los checks requeridos estén aprobados.
+## Protección verificada por API
 
-## Etapas de Puerta de calidad
+Main exige PR, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados y conversaciones resueltas. Aplica también a administradores; no permite force-push ni eliminación. No se cambia esta configuración.
 
-En **Actions**, abre la ejecución asociada al pull request o al commit. El workflow presenta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR**. El artefacto `quality-reports` conserva la salida de pruebas y cobertura. El análisis estático usa TypeScript estricto, ESLint y Prettier; SonarCloud no está integrado.
+PR7 contiene dos eventos APPROVED de la misma cuenta Acsa-Reyes y fue fusionado. Al corte documentado, PR #8 tenía sus [checks técnicos aprobados](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592), y requería una revisión propia. Antes de fusionar, comprobar el estado actual y la aprobación independiente. No se intentó omitir la protección ni fusionar el PR durante el corte documentado.
 
-## Protección de `main`
-
-El administrador del repositorio debe abrir **Settings → Rules → Rulesets** o **Settings → Branches** y configurar una regla para `main`. Exige pull request y el check del job `Compilar, probar y verificar calidad` (nombre definido en `.github/workflows/quality.yml`); activa aprobación y resolución de conversaciones cuando exista otra persona revisora. Una persona no puede aprobar su propio pull request.
-
-**Bloqueo comprobado el 29/10/2026:** GitHub API respondió `403 Upgrade to GitHub Pro or make this repository public to enable this feature` al leer la protección de `main`. El repositorio es privado y no se cambió su visibilidad. Hace falta habilitar GitHub Pro para conservarlo privado con protección, o revisar y quitar datos sensibles antes de decidir hacerlo público.
-
-La ejecución verde del workflow no prueba que esta regla ya exista. Confirma el ruleset en GitHub y guarda una captura de su configuración para la entrega.
-
-## Acceso del docente
-
-El repositorio `Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad` puede ser privado. Si se mantiene privado, invita al docente desde **Settings → Collaborators** con la cuenta que indique el curso. No publiques la aplicación ni datos de conexión reales para facilitar la revisión.
+El repositorio es público para lectura del docente. La estudiante debe entregar el enlace y los artefactos en la plataforma; el acceso público no acredita esa entrega manual.

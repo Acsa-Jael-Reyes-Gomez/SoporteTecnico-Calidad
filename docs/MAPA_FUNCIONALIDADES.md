@@ -53,11 +53,11 @@ El proyecto es una aplicacion Electron con tres capas principales:
 
 ## Catalogos, usuarios y permisos
 
-| Archivo                              | Responsabilidad                                                                |
-| ------------------------------------ | ------------------------------------------------------------------------------ |
-| `src/main/ipc_core.ts`               | Carga version, catalogos y usuarios.                                           |
-| `src/renderer/modulos/compartido.js` | Guarda catalogos en memoria y los usa en formularios/tablas.                   |
-| `database.sql`                       | Datos base de roles, permisos, puestos, unidades, servicios y tipos de equipo. |
+| Archivo                                                         | Responsabilidad                                                                |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `src/main/ipc_core.ts`                                          | Carga version, catalogos y usuarios.                                           |
+| `src/renderer/modulos/compartido.js`                            | Guarda catalogos en memoria y los usa en formularios/tablas.                   |
+| `assets/database/schema.sqlite.sql` y `assets/database/seed.db` | Datos base de roles, permisos, puestos, unidades, servicios y tipos de equipo. |
 
 Canales:
 
@@ -362,12 +362,7 @@ proyecto_especial
 | `src/main/services/validation_service.ts` | Validaciones como rangos invertidos y cierre antes de apertura.       |
 | `tests/core-services.test.js`             | Pruebas que verifican periodo mensual 26-25 y validaciones de fechas. |
 
-Scripts creados para actualizar datos existentes:
-
-```text
-scripts/actualizar-fechas-periodo-2026-06-26_2026-07-25.sql
-scripts/actualizar-fechas-todos-los-tickets-2026-06-26_2026-07-25.sql
-```
+Los antiguos scripts de actualización masiva de fechas no forman parte de esta entrega. Las pruebas utilizan fechas sintéticas explícitas.
 
 ## Estilos
 
@@ -387,10 +382,10 @@ Para cambios visuales:
 
 ## Base de datos
 
-| Archivo             | Responsabilidad                                                |
-| ------------------- | -------------------------------------------------------------- |
-| `database.sql`      | Estructura y datos semilla.                                    |
-| `src/main/db/db.ts` | Conexion, migraciones ligeras y creacion de tablas auxiliares. |
+| Archivo                                                         | Responsabilidad                                                |
+| --------------------------------------------------------------- | -------------------------------------------------------------- |
+| `assets/database/schema.sqlite.sql` y `assets/database/seed.db` | Esquema versionado y semilla SQLite.                           |
+| `src/main/db/db.ts`                                             | Conexion, migraciones ligeras y creacion de tablas auxiliares. |
 
 Tablas principales:
 
@@ -414,10 +409,10 @@ notificacion_asignacion
 
 ## Pruebas
 
-| Archivo                       | Responsabilidad                                                                          |
-| ----------------------------- | ---------------------------------------------------------------------------------------- |
-| `tests/core-services.test.js` | Pruebas de servicios, validaciones, reportes, notificaciones y seguridad de exportacion. |
-| `tests/envio-history.test.js` | Pruebas relacionadas con historial/resumen de envios.                                    |
+| Archivo                       | Responsabilidad                                                                                                                        |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `tests/core-services.test.js` | Pruebas de servicios, validaciones, reportes, notificaciones y seguridad de exportacion; consultar matriz final para las demás suites. |
+| `tests/envio-history.test.js` | Pruebas relacionadas con historial/resumen de envios.                                                                                  |
 
 Comando:
 
@@ -444,7 +439,7 @@ El comando compila el proyecto, genera CSS y ejecuta las pruebas.
 | Exportar Excel                | `src/renderer/modulos/compartido.js` y `src/main/ipc_reports.ts`                     |
 | Conexion a base de datos      | `src/main/db/db.ts`                                                                  |
 | Estilos visuales              | `src/renderer/styles`                                                                |
-| Datos iniciales               | `database.sql`                                                                       |
+| Datos iniciales               | `assets/database/schema.sqlite.sql` y `assets/database/seed.db`                      |
 
 ## Reglas practicas para modificar el sistema
 
@@ -452,6 +447,6 @@ El comando compila el proyecto, genera CSS y ejecuta las pruebas.
 2. Si la pantalla necesita datos, revisa `preload.ts`.
 3. Si la funcion ya existe en `preload.ts`, busca el canal en `src/main/ipc_*.ts`.
 4. Si cambias consultas SQL, revisa tambien permisos y validaciones.
-5. Si agregas columnas o tablas, actualiza `database.sql` y la migracion ligera en `db.ts` si aplica.
+5. Si agregas columnas o tablas, actualiza `assets/database/schema.sqlite.sql` y `assets/database/seed.db` y la migracion ligera en `db.ts` si aplica.
 6. Si cambias estilos, edita CSS fuente y ejecuta `npm run build:css`.
 7. Antes de cerrar un cambio, ejecuta `npm test`.

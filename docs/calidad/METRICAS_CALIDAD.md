@@ -1,47 +1,45 @@
-## Vigencia despues del cambio a SQLite
+# Métricas de calidad del cierre
 
-La tabla inicial conserva la fotografía histórica del 27/10/2026, anterior al adaptador SQLite. La medición local actual del 29/10/2026 aparece en una sección separada y se acompaña de su log de cobertura.
+**Fecha:** 3 de noviembre de 2026. **Revisión técnica:** 8f508f5, rama del PR #8.
 
-# Métricas de calidad
+## Resultados verificados
 
-## Línea base
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-El registro histórico del proyecto indica 25 casos automatizados antes de la intervención. En ese momento no había medición de cobertura, comandos de verificación TypeScript ni pipeline CI. No se registró el resultado aprobado/fallido de aquellos 25 casos; por eso no se compara su tasa de aprobación con la actual.
+| Indicador                                  | Resultado                             | Criterio                       |
+| ------------------------------------------ | ------------------------------------- | ------------------------------ |
+| Casos node:test                            | 146 aprobados, 0 fallidos, 0 omitidos | Todos aprobados                |
+| Líneas c8                                  | 83,30 %                               | ≥75 %                          |
+| Ramas c8                                   | 70,41 %                               | ≥60 %                          |
+| Funciones c8                               | 94,66 %                               | ≥55 %                          |
+| E2E                                        | Aprobado; SQLite sintético aislado    | Persistencia comprobada        |
+| Compilación, TypeScript, ESLint, Prettier  | Aprobados                             | Exit 0                         |
+| Gate SonarQube del PR técnico              | PASSED                                | Espera obligatoria del scanner |
+| Cobertura nueva SonarQube del PR técnico   | 86,5 %                                | ≥80 %                          |
+| Duplicación nueva SonarQube del PR técnico | 0,0 %                                 | ≤3 %                           |
 
-## Medición posterior reproducida
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-Ejecución local del **27 de octubre de 2026**, Node.js 22.16.0, después de compilar el código. El comando `npm run test:coverage` produjo:
+## Alcance y denominadores
 
-| Indicador              |                              Resultado |     Umbral del pipeline | Estado   |
-| ---------------------- | -------------------------------------: | ----------------------: | -------- |
-| Casos aprobados        |                               28 de 28 |                28 de 28 | Aprobado |
-| Cobertura de líneas    |                                 95.65% |                     75% | Aprobado |
-| Cobertura de ramas     |                                 80.60% |                     60% | Aprobado |
-| Cobertura de funciones |                                 90.54% |                     55% | Aprobado |
-| TypeScript             |                              0 errores |                       0 | Aprobado |
-| ESLint                 |                Sin errores bloqueantes | Sin errores bloqueantes | Aprobado |
-| Prettier               | Todos los archivos indicados coinciden |         Sin diferencias | Aprobado |
-| Build                  |                 Finalizó correctamente |      Código de salida 0 | Aprobado |
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
 
-La cobertura la informa Node.js con instrumentación V8. No se configuró LCOV y no se envió cobertura a SonarCloud.
+El recálculo exploratorio inicial de auditoría fue 83,24 % / 69,67 % / 94,59 % sobre el código entonces existente. La tabla anterior corresponde al código corregido y a sus seis casos adicionales. No sustituir estos alcances por un único porcentaje.
 
-## Ejecución remota
+## Antecedentes
 
-El propietario confirmó el run remoto **40599606066**, workflow Quality Gate, en verde en GitHub el 27 de octubre de 2026. El run fue un `push` a `main` para el commit `fix: corregir formato de documentos SQA`; no valida las modificaciones SQLite locales que aún no estaban en ese commit. Se archivó la salida del artefacto en `docs/calidad/evidencias/run-40599606066/`.
+Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
 
-## Interpretación y límites
+| Revisión histórica                 | Pruebas        | Cobertura y alcance                                           |
+| ---------------------------------- | -------------- | ------------------------------------------------------------- |
+| Inicio documentado                 | 25 registradas | Sin cobertura equivalente conservada                          |
+| 27/10/2026                         | 28/28          | V8/c8 entonces: 95,65 / 80,60 / 90,54 %                       |
+| 29/10/2026                         | 33/33          | V8/c8 entonces: 96,16 / 81,55 / 92,31 %                       |
+| Cierre PR #7 / main anterior       | 140/140        | c8 entonces: 88,90 / 80,75 / 73,61 %; incluía tests           |
+| Sonar main previo a integrar PR #8 | Otro alcance   | 80,1 % nuevas líneas; 30,2 % global; 3,8 % duplicación global |
 
-- El aumento de 25 a 28 casos procede del registro histórico frente al conteo actual. No se atribuye una mejora de cobertura porque la cobertura inicial no se midió.
-- Las pruebas cubren principalmente servicios cargados desde `dist`, dobles de consulta y regresiones estáticas. No representan cobertura completa de Electron.
-- Las pruebas SQLite son en memoria y revisan la semilla; no hay prueba E2E de Electron, métricas SonarCloud ni protección de rama verificada.
-- Los umbrales se fijaron por debajo del resultado observado para detectar caídas futuras sin hacer que un cambio pequeño falle de forma arbitraria.
+Main conserva la medición de 20 bugs, 15 code smells y 1 vulnerabilidad hasta una integración y reanálisis posteriores. No se afirma que los hallazgos estén cerrados en main porque las correcciones se publican únicamente en PR #8. Véase [revisión individual](HALLAZGOS_SONAR.md).
 
-Consulte `docs/Linea-Base-Calidad.md` para la comparación y `docs/Matriz-Pruebas.md` para los casos.
+## Fuente de la línea base histórica
 
-## Medicion actual (29 de octubre de 2026)
-
-Despues de compilar con `npm test`, la suite registro 33 de 33 casos aprobados. `npm run test:coverage` midio 96,16% de lineas, 81,55% de ramas y 92,31% de funciones. Los tres indicadores superan los umbrales del pipeline (75%, 60% y 55%). TypeScript, ESLint y Prettier finalizaron correctamente. La medicion inicial de cobertura no existe, asi que no se calcula una mejora porcentual antes/despues.
-
-## Diferencia entre evidencia histórica y actual
-
-El artefacto histórico `40599606066` confirma 28/28 pruebas antes de SQLite. La medición actual 33/33 y 96,16% / 81,55% / 92,31% también fue verificada por GitHub Actions en los runs 40974922468 (`push`) y 40974928285 (`pull_request`). El artefacto del PR está en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
+La [revisión de la copia de julio](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) identifica 25 pruebas definidas en dos archivos, sin registros de ejecución ni cobertura inicial conservados. La tabla anterior documenta las verificaciones posteriores y aclara sus diferentes alcances. El cierre técnico y su cobertura se apoyan en las ejecuciones de GitHub Actions citadas arriba.
