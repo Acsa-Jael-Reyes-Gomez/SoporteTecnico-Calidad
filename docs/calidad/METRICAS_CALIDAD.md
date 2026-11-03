@@ -1,47 +1,35 @@
-## Vigencia despues del cambio a SQLite
+# Métricas de calidad — evidencia final y serie histórica
 
-La tabla inicial conserva la fotografía histórica del 27/10/2026, anterior al adaptador SQLite. La medición local actual del 29/10/2026 aparece en una sección separada y se acompaña de su log de cobertura.
+**Corte:** 2 de noviembre de 2026 (hora de Guatemala). Los eventos del 3 de noviembre en GitHub corresponden a UTC.
 
-# Métricas de calidad
+## Resumen de medición final
 
-## Línea base
+| Indicador | Valor verificado | Alcance |
+| --- | ---: | --- |
+| Pruebas automatizadas | 140 aprobadas / 0 fallidas | Suite final del PR #7, run 41560908801 |
+| Quality Gate | PASSED | SonarQube Cloud, PR #7 |
+| Cobertura de código nuevo | **80,1 %** | Solo nuevas líneas cubribles del PR |
+| Umbral de SonarQube | **80 %** | Sobre código nuevo |
+| Hallazgos nuevos | 0 | Quality Gate del PR |
+| Hotspots de seguridad nuevos | 0 | Quality Gate del PR |
+| Duplicación en código nuevo | 0,5 % | Quality Gate del PR |
+| E2E | Aprobado | Electron + SQLite sintético y aislado |
 
-El registro histórico del proyecto indica 25 casos automatizados antes de la intervención. En ese momento no había medición de cobertura, comandos de verificación TypeScript ni pipeline CI. No se registró el resultado aprobado/fallido de aquellos 25 casos; por eso no se compara su tasa de aprobación con la actual.
+**Fuentes:** [run del PR](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801), [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7), [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7).
 
-## Medición posterior reproducida
+## Línea base histórica y limitaciones
 
-Ejecución local del **27 de octubre de 2026**, Node.js 22.16.0, después de compilar el código. El comando `npm run test:coverage` produjo:
+El registro más antiguo disponible reporta **25 casos automatizados** sin conservación de aprobados/fallidos ni resultados de cobertura. La ejecución del **27/10/2026** registró 28/28 y 95,65 % de líneas, 80,60 % de ramas y 90,54 % de funciones, sobre una instrumentación diferente. La revisión **29/10/2026** registró 33/33 y 96,16 % de líneas, 81,55 % de ramas y 92,31 % de funciones sobre ese universo entonces evaluado.
 
-| Indicador              |                              Resultado |     Umbral del pipeline | Estado   |
-| ---------------------- | -------------------------------------: | ----------------------: | -------- |
-| Casos aprobados        |                               28 de 28 |                28 de 28 | Aprobado |
-| Cobertura de líneas    |                                 95.65% |                     75% | Aprobado |
-| Cobertura de ramas     |                                 80.60% |                     60% | Aprobado |
-| Cobertura de funciones |                                 90.54% |                     55% | Aprobado |
-| TypeScript             |                              0 errores |                       0 | Aprobado |
-| ESLint                 |                Sin errores bloqueantes | Sin errores bloqueantes | Aprobado |
-| Prettier               | Todos los archivos indicados coinciden |         Sin diferencias | Aprobado |
-| Build                  |                 Finalizó correctamente |      Código de salida 0 | Aprobado |
+**No calcular 80,1 % − 96,16 % como mejora o deterioro.** La cifra de SonarQube mide nuevas líneas del PR; la anterior fue una cobertura V8/c8 con otro conjunto de archivos. No existe una serie homogénea antes/después suficiente para atribuir una mejora porcentual de cobertura inicial.
 
-La cobertura la informa Node.js con instrumentación V8. No se configuró LCOV y no se envió cobertura a SonarCloud.
+## Umbrales implementados
 
-## Ejecución remota
+- Comando `npm run test:coverage`: líneas ≥75 %, ramas ≥60 %, funciones ≥55 % (con exclusiones instrumentadas).
+- SonarQube Cloud: cobertura del código nuevo ≥80 %.
+- TypeScript, ESLint y Prettier: no se permiten errores bloqueantes; las pruebas fallidas detienen el job.
+- SonarQube informó **Quality Gate PASSED** para el PR #7 y el pipeline reportó **success**.
 
-El propietario confirmó el run remoto **40599606066**, workflow Quality Gate, en verde en GitHub el 27 de octubre de 2026. El run fue un `push` a `main` para el commit `fix: corregir formato de documentos SQA`; no valida las modificaciones SQLite locales que aún no estaban en ese commit. Se archivó la salida del artefacto en `docs/calidad/evidencias/run-40599606066/`.
+## Pendientes de evidencia
 
-## Interpretación y límites
-
-- El aumento de 25 a 28 casos procede del registro histórico frente al conteo actual. No se atribuye una mejora de cobertura porque la cobertura inicial no se midió.
-- Las pruebas cubren principalmente servicios cargados desde `dist`, dobles de consulta y regresiones estáticas. No representan cobertura completa de Electron.
-- Las pruebas SQLite son en memoria y revisan la semilla; no hay prueba E2E de Electron, métricas SonarCloud ni protección de rama verificada.
-- Los umbrales se fijaron por debajo del resultado observado para detectar caídas futuras sin hacer que un cambio pequeño falle de forma arbitraria.
-
-Consulte `docs/Linea-Base-Calidad.md` para la comparación y `docs/Matriz-Pruebas.md` para los casos.
-
-## Medicion actual (29 de octubre de 2026)
-
-Despues de compilar con `npm test`, la suite registro 33 de 33 casos aprobados. `npm run test:coverage` midio 96,16% de lineas, 81,55% de ramas y 92,31% de funciones. Los tres indicadores superan los umbrales del pipeline (75%, 60% y 55%). TypeScript, ESLint y Prettier finalizaron correctamente. La medicion inicial de cobertura no existe, asi que no se calcula una mejora porcentual antes/despues.
-
-## Diferencia entre evidencia histórica y actual
-
-El artefacto histórico `40599606066` confirma 28/28 pruebas antes de SQLite. La medición actual 33/33 y 96,16% / 81,55% / 92,31% también fue verificada por GitHub Actions en los runs 40974922468 (`push`) y 40974928285 (`pull_request`). El artefacto del PR está en `docs/calidad/evidencias/run-40974928285/quality-reports/`.
+Confirmar estado del workflow asociado al `push` del commit de merge `7697745` en `main`, la protección efectiva de esa rama y el acceso del docente. La cifra de cobertura del PR no acredita por sí misma esas tres condiciones.
