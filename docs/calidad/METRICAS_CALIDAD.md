@@ -4,16 +4,16 @@
 
 ## Resumen de medición final
 
-| Indicador | Valor verificado | Alcance |
-| --- | ---: | --- |
-| Pruebas automatizadas | 140 aprobadas / 0 fallidas | Suite final del PR #7, run 41560908801 |
-| Quality Gate | PASSED | SonarQube Cloud, PR #7 |
-| Cobertura de código nuevo | **80,1 %** | Solo nuevas líneas cubribles del PR |
-| Umbral de SonarQube | **80 %** | Sobre código nuevo |
-| Hallazgos nuevos | 0 | Quality Gate del PR |
-| Hotspots de seguridad nuevos | 0 | Quality Gate del PR |
-| Duplicación en código nuevo | 0,5 % | Quality Gate del PR |
-| E2E | Aprobado | Electron + SQLite sintético y aislado |
+| Indicador                    |           Valor verificado | Alcance                                |
+| ---------------------------- | -------------------------: | -------------------------------------- |
+| Pruebas automatizadas        | 140 aprobadas / 0 fallidas | Suite final del PR #7, run 41560908801 |
+| Quality Gate                 |                     PASSED | SonarQube Cloud, PR #7                 |
+| Cobertura de código nuevo    |                 **80,1 %** | Solo nuevas líneas cubribles del PR    |
+| Umbral de SonarQube          |                   **80 %** | Sobre código nuevo                     |
+| Hallazgos nuevos             |                          0 | Quality Gate del PR                    |
+| Hotspots de seguridad nuevos |                          0 | Quality Gate del PR                    |
+| Duplicación en código nuevo  |                      0,5 % | Quality Gate del PR                    |
+| E2E                          |                   Aprobado | Electron + SQLite sintético y aislado  |
 
 **Fuentes:** [run del PR](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801), [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7), [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7).
 
