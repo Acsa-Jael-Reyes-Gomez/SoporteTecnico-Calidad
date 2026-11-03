@@ -71,7 +71,7 @@ npm test
 npm run test:coverage
 ```
 
-`npm test` compila y ejecuta `node:test`. El comando de cobertura ejecuta los casos sobre el `dist` compilado. Umbrales configurados: 75% líneas, 60% ramas y 55% funciones. Como referencia histórica, la ejecución local del 29/10/2026 aprobó 33/33 casos. La ejecución de cierre verificada en GitHub Actions run 41564667224 aprobó **140/140 pruebas** y registró cobertura c8: **88,90 % de líneas, 80,75 % de ramas y 73,61 % de funciones**. Son mediciones de diferentes revisiones, y no deben presentarse como incremento de cobertura homogéneo.
+`npm test` compila y ejecuta `node:test`. El comando de cobertura ejecuta los casos sobre el `dist` compilado. Umbrales configurados: 75% líneas, 60% ramas y 55% funciones. Como referencia histórica, la ejecución local del 29/10/2026 aprobó 33/33 casos. El cierre histórico anterior (antes de corregir el denominador), GitHub Actions run 41564667224, aprobó **140/140 pruebas** y registró cobertura c8: **88,90 % de líneas, 80,75 % de ramas y 73,61 % de funciones**. Son mediciones de diferentes revisiones, y no deben presentarse como incremento de cobertura homogéneo.
 
 ## Análisis estático y formato
 
@@ -83,7 +83,7 @@ TypeScript estricto y ESLint se ejecutan en CI. ESLint cubre TypeScript, los mó
 
 ## Análisis estático
 
-El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarQube Cloud está integrado. El dashboard de `main` mostró **Quality Gate PASSED**, cobertura de código nuevo **80,1 %**, duplicación nueva **0,48 %** y cero problemas nuevos. La cobertura general de SonarQube fue **30,2 %**. En PR #8 se añadió `sonar.qualitygate.wait=true` para que el job también falle ante Quality Gate fallido; el run 41677005283 comprobó 140 pruebas aprobadas y el estado `QUALITY GATE STATUS: PASSED` después de activar esa espera.
+El workflow ejecuta TypeScript estricto, ESLint y Prettier. SonarQube Cloud está integrado. Como antecedente previo a la integración de PR #8, el dashboard de `main` mostró **Quality Gate PASSED**, cobertura de código nuevo **80,1 %**, duplicación nueva **0,48 %** y cero problemas nuevos. La cobertura general de SonarQube fue **30,2 %**. En PR #8 se añadió `sonar.qualitygate.wait=true` para que el job también falle ante Quality Gate fallido; el run 41677005283 comprobó 140 pruebas aprobadas y el estado `QUALITY GATE STATUS: PASSED` después de activar esa espera.
 
 ## Flujo GitHub y puertas de calidad
 
@@ -101,3 +101,13 @@ Conservar `package-lock.json`, usar `npm ci` en CI, revisar dependencias antes d
 - **Falla TypeScript:** ejecuta `npm run typecheck` y corrige el error antes de probar.
 - **Falla cobertura:** identifica archivo/ramas sin prueba; no reduzcas los umbrales para ocultar la regresión.
 - **Error `EPERM` cargando Node:** comprueba permisos de lectura/traversal de la ruta de Node y del workspace. El primer intento aislado de esta auditoría lo encontró; la ejecución posterior con acceso al runtime pasó.
+
+## Verificación final y alcance
+
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
+
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
+
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. PR #8 permanece abierto y sin aprobación independiente; no se fusionó ni se modificó main directamente.
+
+La regla compartida de estado Renderer y el permiso CSS inline se analizan en `calidad/HALLAZGOS_SONAR.md`; no se modifica la arquitectura.

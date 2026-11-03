@@ -1,0 +1,38 @@
+[
+  {
+    "script": "test",
+    "code": 0,
+    "seconds": 14
+  },
+  {
+    "script": "test:coverage",
+    "code": 0,
+    "seconds": 11
+  },
+  {
+    "script": "test:coverage:sonar",
+    "code": 0,
+    "seconds": 10
+  },
+  {
+    "script": "test:e2e",
+    "code": 0,
+    "seconds": 9
+  },
+  {
+    "script": "typecheck",
+    "code": 0,
+    "seconds": 4
+  },
+  {
+    "script": "lint",
+    "code": 0,
+    "seconds": 8
+  },
+  {
+    "script": "format:check",
+    "code": 0,
+    "previous_code": 1,
+    "note": "Se formateó Matriz-Pruebas.md tras regenerar la trazabilidad y se reejecutó correctamente el comando."
+  }
+]

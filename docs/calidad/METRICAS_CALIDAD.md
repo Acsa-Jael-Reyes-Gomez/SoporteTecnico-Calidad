@@ -1,39 +1,41 @@
-# Métricas de calidad — evidencia final y serie histórica
+# Métricas de calidad del cierre
 
-**Corte:** 3 de noviembre de 2026 (Guatemala). Los resultados históricos conservan su fecha original.
+**Fecha:** 3 de noviembre de 2026. **Revisión técnica:** 8f508f5, rama del PR #8.
 
-## Resumen de medición final
+## Resultados verificados
 
-| Indicador                    |           Valor verificado | Alcance                                |
-| ---------------------------- | -------------------------: | -------------------------------------- |
-| Pruebas automatizadas        | 140 aprobadas / 0 fallidas | Suite final del PR #7, run 41560908801 |
-| Quality Gate                 |                     PASSED | SonarQube Cloud, PR #7                 |
-| Cobertura de código nuevo    |                 **80,1 %** | Solo nuevas líneas cubribles del PR    |
-| Umbral de SonarQube          |                   **80 %** | Sobre código nuevo                     |
-| Hallazgos nuevos             |                          0 | Quality Gate del PR                    |
-| Hotspots de seguridad nuevos |                          0 | Quality Gate del PR                    |
-| Duplicación en código nuevo  |                      0,5 % | Quality Gate del PR                    |
-| E2E                          |                   Aprobado | Electron + SQLite sintético y aislado  |
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-**Fuentes:** [run del PR](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801), [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7), [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7).
+| Indicador                                  | Resultado                             | Criterio                       |
+| ------------------------------------------ | ------------------------------------- | ------------------------------ |
+| Casos node:test                            | 146 aprobados, 0 fallidos, 0 omitidos | Todos aprobados                |
+| Líneas c8                                  | 83,30 %                               | ≥75 %                          |
+| Ramas c8                                   | 70,41 %                               | ≥60 %                          |
+| Funciones c8                               | 94,66 %                               | ≥55 %                          |
+| E2E                                        | Aprobado; SQLite sintético aislado    | Persistencia comprobada        |
+| Compilación, TypeScript, ESLint, Prettier  | Aprobados                             | Exit 0                         |
+| Gate SonarQube del PR técnico              | PASSED                                | Espera obligatoria del scanner |
+| Cobertura nueva SonarQube del PR técnico   | 86,5 %                                | ≥80 %                          |
+| Duplicación nueva SonarQube del PR técnico | 0,0 %                                 | ≤3 %                           |
 
-## Línea base histórica y limitaciones
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-El registro más antiguo disponible reporta **25 casos automatizados** sin conservación de aprobados/fallidos ni resultados de cobertura. La ejecución del **27/10/2026** registró 28/28 y 95,65 % de líneas, 80,60 % de ramas y 90,54 % de funciones, sobre una instrumentación diferente. La revisión **29/10/2026** registró 33/33 y 96,16 % de líneas, 81,55 % de ramas y 92,31 % de funciones sobre ese universo entonces evaluado.
+## Alcance y denominadores
 
-**No calcular 80,1 % − 96,16 % como mejora o deterioro.** La cifra de SonarQube mide nuevas líneas del PR; la anterior fue una cobertura V8/c8 con otro conjunto de archivos. No existe una serie homogénea antes/después suficiente para atribuir una mejora porcentual de cobertura inicial.
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
 
-## Umbrales implementados
+El recálculo exploratorio inicial de auditoría fue 83,24 % / 69,67 % / 94,59 % sobre el código entonces existente. La tabla anterior corresponde al código corregido y a sus seis casos adicionales. No sustituir estos alcances por un único porcentaje.
 
-- Comando `npm run test:coverage`: líneas ≥75 %, ramas ≥60 %, funciones ≥55 % (con exclusiones instrumentadas).
-- SonarQube Cloud: cobertura del código nuevo ≥80 %.
-- TypeScript, ESLint y Prettier: no se permiten errores bloqueantes; las pruebas fallidas detienen el job.
-- SonarQube informó **Quality Gate PASSED** para el PR #7 y el pipeline reportó **success**.
+## Antecedentes
 
-## Pendientes de evidencia
+Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
 
-El push de `main` [41562455432](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41562455432) pasó: 140/140, E2E y cobertura c8 de 88,90 % líneas, 80,75 % ramas y 73,61 % funciones. La protección está verificada por API y el repositorio es público.
+| Revisión histórica                 | Pruebas        | Cobertura y alcance                                           |
+| ---------------------------------- | -------------- | ------------------------------------------------------------- |
+| Inicio documentado                 | 25 registradas | Sin cobertura equivalente conservada                          |
+| 27/10/2026                         | 28/28          | V8/c8 entonces: 95,65 / 80,60 / 90,54 %                       |
+| 29/10/2026                         | 33/33          | V8/c8 entonces: 96,16 / 81,55 / 92,31 %                       |
+| Cierre PR #7 / main anterior       | 140/140        | c8 entonces: 88,90 / 80,75 / 73,61 %; incluía tests           |
+| Sonar main previo a integrar PR #8 | Otro alcance   | 80,1 % nuevas líneas; 30,2 % global; 3,8 % duplicación global |
 
-## Alcance global de SonarQube
-
-La API pública consultada el 03/11/2026 reporta 30,2 % de cobertura global, 3,8 % de duplicación global, 20 bugs, 1 vulnerabilidad y 15 code smells. En código nuevo reporta 80,0989 % de cobertura, 0,4816 % de duplicación y cero bugs, vulnerabilidades y code smells nuevos. El Quality Gate es OK. Los hallazgos globales permanecen como deuda técnica; la puerta de código nuevo no los elimina. Respuestas archivadas en `evidencias/cierre-20261103/sonar-metricas.json` y `sonar-quality-gate.json`.
+Main conserva la medición de 20 bugs, 15 code smells y 1 vulnerabilidad hasta una integración y reanálisis posteriores. No se afirma que los hallazgos estén cerrados en main porque las correcciones se publican únicamente en PR #8. Véase [revisión individual](HALLAZGOS_SONAR.md).

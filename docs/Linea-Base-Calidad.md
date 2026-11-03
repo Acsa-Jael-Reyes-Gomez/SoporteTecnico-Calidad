@@ -1,26 +1,15 @@
-# Línea base de calidad y criterios de comparación
+# Línea base de calidad y evolución verificable
 
 ## Registro inicial
 
-La evidencia histórica anterior a los controles SQA registra **25 casos de prueba**, sin una medición inicial de cobertura ni un registro completo de su resultado aprobado/fallido. No se inventa ningún porcentaje inicial.
+Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
 
-## Mediciones históricas posteriores
+## Resultado del cierre
 
-| Corte              | Pruebas        | Cobertura                                        | Tipo de medición              |
-| ------------------ | -------------- | ------------------------------------------------ | ----------------------------- |
-| Inicio documentado | 25 registradas | No medida                                        | Sin base comparativa completa |
-| 27/10/2026         | 28/28          | 95,65 % líneas; 80,60 % ramas; 90,54 % funciones | V8/c8 de esa revisión         |
-| 29/10/2026         | 33/33          | 96,16 % líneas; 81,55 % ramas; 92,31 % funciones | V8/c8 de esa revisión         |
-| Cierre PR #7       | 140/140        | **80,1 % de cobertura del código nuevo**         | SonarQube, alcance distinto   |
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-La medición final se acreditó en [Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) y [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
 
-## Interpretación
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-Los porcentajes V8/c8 históricos y el porcentaje SonarQube de nuevas líneas no tienen el mismo denominador, por lo que no se presenta una mejora porcentual falsa. La evolución comprobable del proceso incluye más pruebas, ejecución automática, revisión independiente y Quality Gate aprobado.
-
-Ver [Reporte de mejora](Reporte-Mejora.md) y [Métricas finales](calidad/METRICAS_CALIDAD.md).
-
-## Evidencia adicional de ejecución final
-
-El run 41564667224 validó **140 pruebas aprobadas y 0 fallidas**; c8 informó **88,90 % de líneas**, **80,75 % de ramas** y **73,61 % de funciones**. El valor **80,1 %** procede de SonarQube y mide código nuevo, mientras que la cobertura **30,2 %** del panel general de SonarQube tiene otro alcance. No son porcentajes comparables con la cobertura inicial no medida.
+La mejora comprobable es el proceso reproducible, la trazabilidad, la conservación de los 140 casos previos, seis nuevas regresiones y las correcciones identificadas en [hallazgos](calidad/HALLAZGOS_SONAR.md). No se atribuye una ganancia porcentual a una línea base no medida. La serie histórica completa está en [métricas](calidad/METRICAS_CALIDAD.md).

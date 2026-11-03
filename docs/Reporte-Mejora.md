@@ -1,35 +1,30 @@
-# Reporte de mejora del sistema de soporte técnico — cierre SQA
+# Reporte de mejora y verificación del cierre
 
-## Alcance
+## Problemas y correcciones
 
-Se aplicaron controles automatizados sobre una aplicación Electron existente. El resultado final corresponde al [PR #7 fusionado](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7), validado con [GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801) y [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
+| Problema comprobado                     | Corrección                                                   | Evidencia                                    |
+| --------------------------------------- | ------------------------------------------------------------ | -------------------------------------------- |
+| Tests incluidos en el denominador c8    | Incluir solo src, conservar exclusión Renderer y umbrales    | Reporte final y package.json                 |
+| Tres comentarios CSS sin cierre         | Cerrar separadores y regenerar bundle                        | Compilación; análisis CSS posterior          |
+| Regex con retroceso superlineal         | Análisis acotado de agregaciones y recorte lineal de nombres | Regresiones SQL y nombres largos             |
+| Cargas de interfaz sin catch explícito  | Capturar rechazo y presentar mensaje                         | Regresiones proyectos/calificación/dashboard |
+| Condición repetida y retorno redundante | Simplificar conservando decisiones                           | Suite de reportes y E2E                      |
+| box-shadow duplicado                    | Conservar última declaración efectiva y regenerar CSS        | Fuente y bundle consistentes                 |
+| Avisos de estado compartido             | Documentar contexto, sin redeclarar; demostrar scope léxico  | Prueba VM y cargador de scripts              |
+| Textos y métricas contradictorios       | Documentación vigente única y antecedentes separados         | Plan, manuales, matriz y métricas            |
 
-## Comparación sustentada
+## Antes y después
 
-| Indicador              | Línea base histórica                        | Cierre final verificado                                       |
-| ---------------------- | ------------------------------------------- | ------------------------------------------------------------- |
-| Casos registrados      | 25; sin resultados individuales conservados | 140/140 aprobados en el run final                             |
-| Cobertura              | No medida en la línea base inicial          | 80,1 % sobre código nuevo del PR; sin base homogénea anterior |
-| CI/CD verificable      | No existe resultado inicial comparable      | Pipeline del PR `success`                                     |
-| Análisis estático      | Sin resultado inicial comparable            | TypeScript, ESLint, Prettier y Quality Gate aprobados         |
-| Revisión independiente | Sin métrica inicial comparable              | Dos aprobaciones registradas en PR #7                         |
-| Fusión                 | No aplica a línea base                      | PR #7 integrado a `main` (SHA `7697745`)                      |
+Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
 
-**La ganancia comprobable** es la incorporación de un proceso repetible de controles, 140 pruebas y revisión antes del merge; no es correcto restar porcentajes de cobertura medidos sobre archivos o períodos distintos.
+**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
 
-## Calidad y riesgos
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
 
-SonarQube reportó 0 problemas nuevos, 0 nuevos hotspots de seguridad y 0,5 % de duplicación en código nuevo. La cobertura de código nuevo fue 80,1 %, superando el mínimo del Quality Gate (80 %).
+La caída de 88,90 % al porcentaje c8 corregido es un cambio de denominador, no una pérdida demostrada de cobertura. No se rebajó ningún umbral. El detalle de las 36 observaciones está en [CSV](calidad/HALLAZGOS_SONAR.csv); las disposiciones remotas y riesgos abiertos, en [revisión](calidad/HALLAZGOS_SONAR.md).
 
-La propietaria revisó una regla de protección de `main` que obliga a usar Pull Request, aprobación y el check del trabajo de calidad. En PR #8 se reforzó además el workflow con `sonar.qualitygate.wait=true` y fallo ante ausencia de `SONAR_TOKEN`; el [run 41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) comprobó `QUALITY GATE STATUS: PASSED`, 140/140 pruebas y estilo Prettier correcto; queda revisar y fusionar el PR #8. Continúan pendientes el acceso del docente y el video MP4 obligatorio.
+## Control de cambios y límites
 
-## Evidencias
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. PR #8 permanece abierto y sin aprobación independiente; no se fusionó ni se modificó main directamente.
 
-- [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7).
-- [GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801).
-- [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
-- [Informe final](Informe-Final.md) y [métricas](calidad/METRICAS_CALIDAD.md).
-
-## Evidencia de control negativo
-
-Una captura histórica de PR #7 muestra **Quality Gate FAILED** por cobertura de código nuevo **70,7 %**, inferior al **80 %** requerido. Después, el panel final de SonarQube muestra **Quality Gate PASSED** con **80,1 % de cobertura de código nuevo**. La captura negativa demuestra que SonarQube detectó y reportó la condición, pero no permite por sí sola afirmar que el job de GitHub Actions falló; por eso se fortaleció el workflow del PR #8 con espera explícita de Quality Gate.
+La captura negativa histórica prueba un check Sonar rechazado, no una ejecución deliberadamente fallida del nuevo wait=true. El código y los logs actuales sí acreditan la espera explícita del scanner y su resultado. No se provocan fallos artificiales en main. Continúan pendientes la revisión/fusión autorizadas, la verificación posterior en main, la entrega en plataforma y el video obligatorio al final.

@@ -45,6 +45,13 @@ test("SQA: paginación devuelve números y puntos suspensivos según el rango re
   vm.runInContext(declaration("compartido.js", "getPagerItems"), context);
   assert.deepEqual(Array.from(context.getPagerItems(4, 2)), [1, 2, 3, 4]);
   assert.deepEqual(Array.from(context.getPagerItems(20, 10)), [1, "...", 9, 10, 11, "...", 20]);
+  const h = rendererHarness("calificacion-y-panel.js", () => Promise.resolve({ ok: true }));
+  h.context.document.body = { appendChild() {} };
+  h.context.debounce = fn => fn;
+  vm.runInContext("const _searchableSelectInstances = new Set(); const _globalClickHandlers = new Set(); const _globalScrollHandlers = new Set(); const _globalResizeHandlers = new Set();", h.context);
+  vm.runInContext(declaration("compartido.js", "createSearchableSelect"), h.context);
+  assert.equal(h.context.createSearchableSelect([], "Seleccione").value, "");
+  assert.equal(h.context.createSearchableSelect([{ value: 0, label: "Cero" }], "Seleccione", 0).value, "0");
 });
 
 test("SQA: los scripts comparten la declaración léxica sin crear session ni catalogos implícitos", () => {

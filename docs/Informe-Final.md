@@ -1,68 +1,60 @@
-# Informe final — Pipeline CI/CD con aseguramiento de calidad integrado
+# Informe final de correcciones y verificación SQA
 
-**Sistema:** Soporte Técnico (Electron, Renderer JavaScript/CSS, Preload y Main TypeScript, SQLite)
-**Corte de evidencia:** 3 de noviembre de 2026 (Guatemala).
-**Repositorio:** https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad
+**Estudiante:** Acsa Jael Reyes Gómez. **Universidad:** Mariano Gálvez de Guatemala. **Fecha:** 3 de noviembre de 2026.
 
-## 1. Objetivo y alcance
+## Alcance y estado de integración
 
-Aplicar aseguramiento de calidad a una aplicación existente, sin reconstruirla desde cero. El workflow `.github/workflows/quality.yml` ejecuta compilación, pruebas unitarias/de integración/de regresión, prueba E2E controlada, cobertura, análisis estático y publicación de evidencias. La aplicación no usa React/Express/MySQL: se conserva la arquitectura Electron original, variante permitida en el enunciado con justificación.
+Se conserva el Sistema de Soporte Técnico existente en Electron, Renderer JavaScript/CSS, Preload/Main TypeScript y SQLite. Las correcciones se publican únicamente en la rama del [PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8). No se modificó main directamente, no se reescribió el historial y no se fusionó el PR.
 
-## 2. Resultados finales verificados
+## Errores encontrados y correcciones
 
-| Aspecto                     | Resultado                                                                             | Evidencia                                                                                                                          |
-| --------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Pruebas automatizadas       | **140 aprobadas; 0 fallidas**                                                         | [Run 41560908801](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801)                        |
-| Prueba E2E                  | Electron, Preload/IPC, autenticación, Tickets, inserción persistida en SQLite aislado | Misma ejecución, paso E2E                                                                                                          |
-| Pipeline de PR              | **completed / success**                                                               | [GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801)                         |
-| SonarQube: Quality Gate     | **PASSED**                                                                            | [Dashboard del PR #7](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7)               |
-| Cobertura de código nuevo   | **80,1 %**; mínimo del Quality Gate: 80 %                                             | Mismo dashboard                                                                                                                    |
-| Hallazgos nuevos            | 0 problemas nuevos y 0 hotspots de seguridad nuevos                                   | Mismo dashboard                                                                                                                    |
-| Duplicación de código nuevo | 0,5 %                                                                                 | Mismo dashboard                                                                                                                    |
-| Revisión manual             | 2 eventos de aprobación de una cuenta revisora                                        | [PR #7](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7)                                                    |
-| Integración a main          | PR #7 fusionado; commit `76977452bddfd4b204a51057f84e76eb9e6cc34a`                    | [Commit de merge](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/commit/76977452bddfd4b204a51057f84e76eb9e6cc34a) |
+- Cobertura inflada por incluir código de tests: el gate ahora incluye src/** y conserva la exclusión Renderer previa, con los mismos mínimos 75/60/55.
+- Tres comentarios CSS sin cierre: corregidos y bundle regenerado; se conserva la apariencia efectiva.
+- Regex susceptibles de retroceso excesivo: simplificadas en SQL y recorte de nombres. Eliminado un reemplazo DATEDIFF que no cambiaba el significado.
+- Promesas de cargas sin manejador explícito: catch con mensaje al usuario en calificación, proyectos y dashboard; no se convierten errores en éxitos.
+- Condición duplicada, ternario redundante y propiedad CSS duplicada: simplificados conservando sus resultados efectivos.
+- Alertas sobre variables compartidas: orden de carga y declaraciones demostrados; no se agregaron declaraciones que sombreen el estado. JSDoc aclara la unión numérica/string y el valor opcional del select.
+- Documentación contradictoria y manual de rutas: versión vigente sincronizada, cierre automático al validar y antecedentes separados.
 
-**Precisión de métricas:** el 80,1 % corresponde a la cobertura de _código nuevo del PR_ en SonarQube, no a la cobertura total de la aplicación. El comando `npm run test:coverage` conserva umbrales de 75 % de líneas, 60 % de ramas y 55 % de funciones para el conjunto instrumentado por c8.
+El tratamiento de cada uno de los **36 hallazgos iniciales** está en [HALLAZGOS_SONAR.csv](calidad/HALLAZGOS_SONAR.csv), con justificaciones en [HALLAZGOS_SONAR.md](calidad/HALLAZGOS_SONAR.md).
 
-## 3. Línea base y comparación
+## Pruebas y resultados
 
-El expediente histórico registra **25 casos de prueba**, pero no conserva el número de aprobados/fallidos ni una medición inicial de cobertura. Por ello no se atribuye a la intervención una ganancia porcentual de cobertura desde el origen.
+| Comprobación                   | Resultado verificado                                                           |
+| ------------------------------ | ------------------------------------------------------------------------------ |
+| Compilación                    | Aprobada                                                                       |
+| node:test                      | 146/146; cero fallidas, canceladas, omitidas y todo                            |
+| Casos originales               | 140 conservados y trazados; seis regresiones añadidas                          |
+| E2E Electron/SQLite            | Aprobado: inicio, Preload/IPC, login, Tickets, alta persistida                 |
+| Gate c8 corregido              | 83,30 % líneas; 70,41 % ramas; 94,66 % funciones                               |
+| Umbrales                       | 75 % / 60 % / 55 %, sin reducción                                              |
+| TypeScript / ESLint / Prettier | Aprobados                                                                      |
+| SonarQube PR técnico           | PASSED; 86,5 % cobertura nueva, 0,0 % duplicación nueva; cero hallazgos nuevos |
 
-| Indicador                     | Antes documentado                             | Resultado final verificado    |
-| ----------------------------- | --------------------------------------------- | ----------------------------- |
-| Casos de prueba registrados   | 25 (sin resultado histórico individual)       | 140 aprobados / 0 fallidos    |
-| Cobertura inicial equivalente | No medida                                     | 80,1 % _solo de código nuevo_ |
-| Automatización CI y SQA       | Sin resultado inicial reproducible comparable | Workflow de PR exitoso        |
-| Análisis SonarQube            | Sin métrica inicial equivalente verificable   | Quality Gate PASSED           |
-| Revisión de cambios           | Sin medición inicial comparable               | 2 aprobaciones del PR #7      |
+Fuentes: [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247), [PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y logs/API en [evidencia final](calidad/evidencias/cierre-final-20261103/). Los checks del último commit documental deben verificarse además en el PR.
 
-No se deben mezclar tasas de cobertura V8 global, c8 con exclusiones y cobertura de código nuevo de SonarQube: miden universos diferentes.
+La cobertura c8 mide código de aplicación cargado, con el Renderer excluido en ese comando, no toda la aplicación. El LCOV de SonarQube conserva un alcance distinto. Las capturas originales de 140 casos, 88,90 % c8 y 80,1 % Sonar nuevo se conservan como **antecedentes**, junto con 30,2 % Sonar global del main anterior. La línea base inicial de 25 casos no conserva cobertura comparable; no se inventa ni se calcula mejora porcentual desde ella.
 
-## 4. Controles del pipeline
+## Hallazgos abiertos y por qué
 
-1. **CONSTRUIR:** compilar aplicación Electron/TypeScript.
-2. **PROBAR:** suites automatizadas, E2E de Electron con SQLite sintético y umbrales c8.
-3. **ANALIZAR:** TypeScript, ESLint, Prettier, SonarQube Cloud y su Quality Gate.
-4. **REPORTAR:** artefacto `quality-reports`, resultados y LCOV.
+Web:S7039 permanece como riesgo documentado: style-src permite estilos inline usados por la interfaz dinámica, mientras script-src sigue restringido a self. Retirarlos requiere migración de estilos y regresión visual completa; no se debilita la CSP ni se desactiva la regla. Los avisos S2703 de estado compartido y S3403 de tipos se justifican con código y pruebas; no se tratan como fallos funcionales sin contexto.
 
-La ejecución de PR contiene evidencia de la respuesta de los controles. La API de GitHub confirmó el 03/11/2026 que `main` exige PR, una aprobación, checks actualizados y el check `Compilar, probar y verificar calidad`; aplica a administradores y exige resolver conversaciones. No permite force-push ni eliminación. La respuesta está archivada en `docs/calidad/evidencias/cierre-20261103/proteccion-main.json`. El PR #8 sin aprobación devuelve `mergeable_state: blocked`; se conserva la regla sin omitirla.
+Main aún conserva sus 36 hallazgos iniciales hasta integrar y reanalizar; no se afirma cierre remoto en una rama que no se ha modificado. La puerta de código nuevo del PR sí aprobó sin issues nuevos. La ampliación de cobertura global y de recorridos E2E sigue siendo deuda priorizable, distinta de los controles obligatorios que pasaron.
 
-## 5. Requisitos faltantes o pendientes de corroborar
+GitHub emite una advertencia no bloqueante sobre el runtime Node 20 de algunas acciones externas, ejecutadas mediante compatibilidad con Node 24. Esto no cambia Node.js 22 configurado para la aplicación; las verificaciones completaron correctamente. Se conserva el workflow funcional solicitado.
 
-- **Protección de main:** verificada por API; evidencia JSON y PR #8 bloqueado sin aprobación.
-- **Pipeline tras la fusión:** el [run 41562455432](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41562455432) de `main` pasó con 140/140 pruebas y E2E sobre `7697745`.
-- **Acceso del docente:** el repositorio es público y sus páginas se comprobaron sin sesión. Entregar su enlace y los PDF en la plataforma del curso; no se ha verificado la entrega en dicha plataforma.
-- **Presentación:** HTML editable y PDF de 10 diapositivas actualizados con capturas auténticas de Actions y SonarQube en las diapositivas 7 y 8. No se afirma que exista un PowerPoint sin archivo.
-- **Video obligatorio:** entregar MP4 de 4–5 min, al menos 720p, con narración y demostración del flujo (rama, cambio, PR, pipeline, Quality Gate, dashboard, comparativa y conclusiones). El guion no sustituye la grabación.
-- **Matriz de pruebas:** su inventario histórico de 33 casos no es la enumeración completa de los 140 casos del run final. Consultar los nombres de pruebas del artefacto `test-results.log`.
+## Archivos modificados y entregables
 
-## 6. Evidencias para anexar
+- Código: adaptador SQLite, saneamiento de exportación, reporte Excel, módulos Renderer de cargas, contratos compartidos y CSS fuente/bundle.
+- Configuración: alcance del comando c8, sin reducir umbrales ni cambiar la condición Sonar funcional de 6ccb7cc.
+- Pruebas: sqa-closeout.test.js, seis regresiones; todas las pruebas previas conservadas.
+- Documentación: README, plan SQA, matriz, línea base, reporte, manuales, mapa, métricas, flujo GitHub, revisión y estado de requisitos.
+- Trazabilidad: [inventario final](calidad/INVENTARIO_FINAL_CASOS.csv), fuente/línea, preparación y aserciones; [inventario histórico de 140](calidad/INVENTARIO_140_CASOS.csv) conservado.
+- Presentación: [PowerPoint](presentacion/final/Presentacion_SQA_Final.pptx), [PDF de diez diapositivas](presentacion/final/Presentacion_SQA_Final.pdf), [guion](presentacion/final/Guion_Exposicion_Final.pdf) y [anexo](presentacion/final/Anexo_Evidencias_Final.pdf), basados en los archivos originales de la estudiante.
+- Video: [guion y secuencia](video/Guion-Video-4-5-Minutos.md); no existe entrega MP4 declarada.
 
-- GitHub Actions: https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801
-- PR fusionado y aprobaciones: https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/7
-- SonarQube: https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7
-- Commit fusionado: https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/commit/76977452bddfd4b204a51057f84e76eb9e6cc34a
+## Cumplimiento y acciones manuales
 
-## 7. Conclusión
+La [matriz de requisitos](calidad/ESTADO-REQUISITOS.md) distingue verificado, limitación histórica y pendiente humano. Repositorio público y protección de main comprobados por API: PR, una aprobación, checks actualizados y conversaciones resueltas, incluso administradores. PR #7 registra dos eventos de aprobación de la misma cuenta Acsa-Reyes; PR #8 necesita su propia revisión.
 
-El flujo SQA del PR terminó aprobado, con 140 pruebas automatizadas, recorrido E2E y Quality Gate superado. La protección de `main` quedó verificada por API. En PR #8 se reforzó el workflow para que el trabajo falle si SonarQube reporta un Quality Gate fallido. La ejecución [41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) pasó, incluyendo `sonar.qualitygate.wait=true`, 140 pruebas y Quality Gate PASSED. Queda revisar y fusionar la documentación y entregar el video MP4.
+Pendientes: aprobación independiente del PR #8; autorización y fusión manual; comprobar el pipeline posterior en main; entregar enlaces y archivos en la plataforma académica; grabar y verificar MP4 de 4–5 minutos y al menos 720p **al final**. No se declara el proyecto al 100 % mientras falten estas acciones.

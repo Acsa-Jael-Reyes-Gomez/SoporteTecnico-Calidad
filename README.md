@@ -45,7 +45,13 @@ El umbral del comando de cobertura es 75% de líneas, 60% de ramas y 55% de func
 
 ## Pipeline y GitHub
 
-`.github/workflows/quality.yml` ejecuta las etapas **CONSTRUIR**, **PROBAR**, **ANALIZAR** y **REPORTAR** en `push` y `pull_request`. El artefacto `quality-reports` conserva resultados de pruebas, cobertura y logs de TypeScript, ESLint y Prettier. La ejecución de cierre [Actions #154](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41564667224) acreditó **140/140 pruebas aprobadas**, recorrido E2E y cobertura c8 de **88,90 % de líneas, 80,75 % de ramas y 73,61 % de funciones**. SonarQube Cloud mostró **Quality Gate PASSED** con **80,1 % de cobertura de código nuevo**. La protección de `main` fue configurada según la revisión de la propietaria en GitHub; se requiere PR, aprobación y check de calidad. Se añadió al workflow la espera del resultado de SonarQube. El run [41677005283](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41677005283) finalizó correctamente, confirmó `QUALITY GATE STATUS: PASSED` y mantuvo 140/140 pruebas aprobadas.
+`.github/workflows/quality.yml` ejecuta CONSTRUIR, PROBAR, ANALIZAR y REPORTAR en push/PR. **146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
+
+El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
+
+[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
+
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. PR #8 permanece abierto y sin aprobación independiente; no se fusionó ni se modificó main directamente.
 
 Para el flujo de ramas, revisiones y configuración de protecciones, consulta [docs/Flujo-GitHub.md](docs/Flujo-GitHub.md) y la plantilla en `.github/PULL_REQUEST_TEMPLATE.md`.
 
@@ -59,7 +65,7 @@ Para el flujo de ramas, revisiones y configuración de protecciones, consulta [d
 - [Manual de usuario](docs/Manual-Usuario.md)
 - [Reporte de mejora](docs/Reporte-Mejora.md)
 - [Evidencias de ejecución](docs/calidad/EVIDENCIAS_EJECUCION.md)
-- [Presentación académica: esquema de 10 diapositivas](docs/presentacion/Presentacion-Proyecto-SQA.md)
+- [Presentación final editable y PDF](docs/presentacion/README.md)
 - [Guion de video](docs/video/Guion-Video-4-5-Minutos.md)
 - [Presentación de métricas](docs/calidad/PRESENTACION_METRICAS.md)
 
@@ -70,5 +76,9 @@ El estado detallado de cada requisito del enunciado, incluidos los pasos externo
 - La interfaz es Electron con JavaScript, no React; el backend no es Express.
 - La base SQLite es local a cada instalación; varias computadoras no comparten automáticamente sus cambios.
 - Hay una prueba end-to-end automatizada que inicia Electron con una base temporal aislada, valida Preload/IPC, login, navegación y la creación persistida de un ticket.
-- SonarQube Cloud está conectado y mostró Quality Gate PASSED. El workflow del PR #8 se reforzó para fallar cuando el Quality Gate falle; la ejecución posterior debe verificarse.
+- SonarQube está integrado y el scanner espera su gate; consultar las métricas vigentes y los riesgos abiertos, sin confundir código nuevo con cobertura global.
 - El PR #7 obtuvo dos aprobaciones de Acsa-Reyes, tres checks aprobados y fue fusionado a `main`. Se deben seguir solicitando revisiones para los PR posteriores.
+
+## Cierre y evidencias
+
+[Informe final](docs/Informe-Final.md) · [Hallazgos Sonar](docs/calidad/HALLAZGOS_SONAR.md) · [Inventario final](docs/calidad/INVENTARIO_FINAL_CASOS.csv). Las capturas y cifras de octubre y del cierre de 140 casos se conservan como antecedentes.

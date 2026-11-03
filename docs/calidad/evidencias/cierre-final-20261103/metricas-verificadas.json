@@ -1,0 +1,17 @@
+{
+    "sha":  "8f508f56cd22d8c0904a5bd2549ddaebfda57650",
+    "run":  41690348592,
+    "sonar":  {
+                  "new_duplication":  "0.0",
+                  "gate":  "PASSED",
+                  "new_bugs":  0,
+                  "new_vulnerabilities":  0,
+                  "new_coverage":  "86.5",
+                  "new_code_smells":  0
+              },
+    "c8":  {
+               "functions":  "94.66",
+               "lines":  "83.30",
+               "branches":  "70.41"
+           }
+}
