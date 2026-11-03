@@ -10,10 +10,6 @@ Las 25 pruebas iniciales son casos registrados sin resultado completo conservado
 
 La presentación vigente es `../presentacion/final/Presentacion_SQA_Final.pptx` y su PDF. Las capturas originales de 140 casos se conservan identificadas como históricas; los indicadores actuales muestran 146. No afirmar dos revisores: PR #7 contiene dos eventos de aprobación de la misma cuenta Acsa-Reyes. La protección se comprobó por API y PR #8 está pendiente de aprobación. El video es un entregable separado aún pendiente.
 
-## Antecedente de julio de 2026 incorporado al cierre
+## Antecedentes para la exposición
 
-Según el [historial documental aportado](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md), la copia original contiene **25 casos definidos**: 22 en `tests/core-services.test.js` y 3 en `tests/envio-history.test.js`. No se conservan resultados de ejecución que acrediten aprobaciones o fallos ni un reporte inicial de cobertura. No se asigna 0 % ni se calcula una mejora porcentual entre coberturas incompatibles.
-
-La copia utiliza Electron, JavaScript y TypeScript, con MySQL mediante ODBC. En el material examinado no aparecen configuraciones de GitHub Actions o SonarQube; esta ausencia se limita a esa copia. El informe aportado analiza archivos seleccionados y no acredita una ejecución del sistema antiguo. La arquitectura actual Electron y SQLite se conserva.
-
-El resultado vigente sigue siendo **146 aprobadas, 0 fallidas**, c8 corregido **83,30 % líneas / 70,41 % ramas / 94,66 % funciones**. SonarQube del PR: **Quality Gate aprobado**, **86,5 % cobertura del código nuevo** y **0 % duplicación nueva**. Son mediciones con alcances distintos. Los resultados de 28, 33 y 140 casos y sus capturas se conservan como antecedentes. Video pendiente y PR #8 sin fusionar.
+Las capturas con 140 pruebas y los porcentajes previos se conservan como evidencia histórica, no como resultado de cierre. La copia original identificó 25 casos definidos sin ejecución ni cobertura conservadas. La explicación detallada está en [Historial de julio](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md). La presentación de entrega usa las cifras verificadas del PR #8 y distingue c8 de SonarQube.
