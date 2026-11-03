@@ -51,22 +51,3 @@ Se puede recortar la espera de CI indicando que se omitió tiempo de espera y co
 
 **Pronunciación:** pipeline: páip-lain; GitHub Actions: guít-jab ák-shons; Pull Request: pul ri-kuést; SonarQube: só-nar kiub; Quality Gate: kuóliti gueit; c8: si-éit; E2E: i-tu-i; SQLite: es-kiu-el-áit; main: mein.
 
-## Cómo montar el video en Canva
-
-Usa una presentación de video horizontal (16:9) de al menos 1280 × 720 píxeles. Importa **grabaciones de pantalla reales** y añade una pista de voz narrada por ti. Canva sirve para recortar clips, añadir títulos y exportar a MP4; las diapositivas estáticas por sí solas no sustituyen la demostración del pipeline.
-
-**Material disponible para mostrar:**
-- Repositorio público y PR #8 con sus commits, cambios y checks.
-- [Ejecución técnica aprobada](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y su reporte de cobertura.
-- [Panel SonarQube del PR #8](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=8).
-- Línea base y tabla de resultados en [Métricas de calidad](../calidad/METRICAS_CALIDAD.md).
-
-**Tomas que conviene grabar:**
-1. Repositorio y la rama de trabajo; mostrar un cambio documental real y su commit. Si haces una nueva demostración, abre un PR nuevo sin fusionarlo automáticamente y no modifiques `main` directamente.
-2. PR y sección *Checks*; abrir el job para mostrar compilación, 146 pruebas, E2E, cobertura, análisis y artefactos. Si la ejecución tarda, se puede recortar la espera, sin alterar los resultados.
-3. SonarQube del PR correcto con Quality Gate, cobertura nueva, bugs, code smells y duplicación.
-4. Tabla de evolución: 25 casos **definidos** al inicio, antecedentes de 28/33/140 y 146 aprobados al cierre. No presentar una cobertura inicial inexistente.
-
-**Montaje:** sigue el orden y los tiempos de los cinco segmentos anteriores (35 + 100 + 50 + 40 + 45 segundos = 4:30). Evita música que tape la voz, transiciones largas, datos personales y capturas demasiado pequeñas. Puedes acompañar la grabación con acercamientos a la sección relevante.
-
-**Comprobación antes de entregar:** exporta MP4, reprodúcelo completo, verifica duración entre 4:00 y 5:00, resolución mínima 720p, voz clara y métricas visibles. El guion no sustituye al video. No declares un PR fusionado hasta que GitHub lo confirme.
