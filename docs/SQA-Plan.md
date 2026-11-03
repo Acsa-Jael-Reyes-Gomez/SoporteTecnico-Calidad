@@ -1,3 +1,9 @@
+## Actualización de cierre — PR #7 (noviembre de 2026)
+
+El análisis remoto **sí quedó configurado y ejecutado**: SonarQube informó Quality Gate **PASSED** y **80,1 % de cobertura del código nuevo**, el run del PR #7 aprobó **140/140 pruebas**, se ejecutó E2E con SQLite sintético y el PR fue fusionado con dos revisiones aprobatorias. Los párrafos históricos posteriores que indican “SonarCloud no integrado” o “sin resultado remoto” describen estados previos, no la situación final. La protección obligatoria de `main`, el acceso del docente y el video MP4 aún necesitan evidencia independiente. Véase [Informe final](Informe-Final.md) y [Métricas](calidad/METRICAS_CALIDAD.md).
+
+---
+
 # Plan de aseguramiento de la calidad del software
 
 ## 1. Propósito
