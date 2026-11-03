@@ -51,7 +51,7 @@ test("migración: identifica valores inesperados sin registrar contraseñas en e
   const insert = db.prepare("INSERT INTO usuario (idUsuario, usuario, pass) VALUES (?, ?, ?)");
   insert.run(1, "empty", null);
   insert.run(2, "invalid", "$2b$12$bad");
-  insert.run(3, "control", "dato\\u0000invalido");
+  insert.run(3, "control", "dato" + String.fromCharCode(0) + "invalido");
   const result = migration.migratePlaintextPasswords(db, databasePath);
   assert.equal(result.migrated, 0);
   assert.equal(result.unchanged, 3);
@@ -88,5 +88,5 @@ test("clasificación: maneja valores nulos, números, datos binarios y contrase�
   assert.equal(migration.classifyPassword(123456), "plaintext_valid");
   assert.equal(migration.classifyPassword({ value: "clave" }), "unexpected_data");
   assert.equal(migration.classifyPassword("x".repeat(81)), "unexpected_data");
-  assert.equal(migration.classifyPassword("clave\\uFFFD"), "unexpected_data");
+  assert.equal(migration.classifyPassword("clave" + String.fromCharCode(0xfffd)), "unexpected_data");
 });
