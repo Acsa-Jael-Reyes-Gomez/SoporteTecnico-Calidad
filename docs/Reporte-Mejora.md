@@ -21,7 +21,7 @@ Se aplicaron controles automatizados sobre una aplicación Electron existente. E
 
 SonarQube reportó 0 problemas nuevos, 0 nuevos hotspots de seguridad y 0,5 % de duplicación en código nuevo. La cobertura de código nuevo fue 80,1 %, superando el mínimo del Quality Gate (80 %).
 
-La protección obligatoria de `main` continúa pendiente de evidencia; también deben verificarse el acceso del docente, la ejecución `push` posterior al merge y el video obligatorio.
+La propietaria revisó una regla de protección de `main` que obliga a usar Pull Request, aprobación y el check del trabajo de calidad. En PR #8 se reforzó además el workflow con `sonar.qualitygate.wait=true` y fallo ante ausencia de `SONAR_TOKEN`; se debe comprobar una nueva ejecución antes de fusionar. Continúan pendientes el acceso del docente y el video MP4 obligatorio.
 
 ## Evidencias
 
@@ -29,3 +29,4 @@ La protección obligatoria de `main` continúa pendiente de evidencia; también 
 - [GitHub Actions](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41560908801).
 - [SonarQube](https://sonarcloud.io/dashboard?id=Acsa-Jael-Reyes-Gomez_SoporteTecnico-Calidad&pullRequest=7).
 - [Informe final](Informe-Final.md) y [métricas](calidad/METRICAS_CALIDAD.md).
+\n## Evidencia de control negativo\n\nUna captura histórica de PR #7 muestra **Quality Gate FAILED** por cobertura de código nuevo **70,7 %**, inferior al **80 %** requerido. Después, el panel final de SonarQube muestra **Quality Gate PASSED** con **80,1 % de cobertura de código nuevo**. La captura negativa demuestra que SonarQube detectó y reportó la condición, pero no permite por sí sola afirmar que el job de GitHub Actions falló; por eso se fortaleció el workflow del PR #8 con espera explícita de Quality Gate.\n
