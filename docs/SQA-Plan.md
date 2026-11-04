@@ -35,7 +35,7 @@ Todos los tests y comandos obligatorios deben terminar en exit 0. SonarQube exig
 
 Etapas: CONSTRUIR, PROBAR, ANALIZAR y REPORTAR. Todos los push ejecutan compilación, pruebas, E2E, cobertura, tipos, lint, formato y artefactos. SonarQube corre obligatoriamente en PR y push de main; el plan limita otras ramas. Se usa sonar.qualitygate.wait=true. El upload de reportes tiene always() y ocurre antes del último análisis remoto; sus resultados se consultan además en el job y dashboard.
 
-La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. Al corte del 3 de noviembre de 2026, el PR #8 estaba abierto, pendiente de revisión y sin fusionar. Antes de la entrega debe consultarse su estado actual en GitHub.
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. El PR #8 fue aprobado y fusionado en `main` (commit `888f22a`). Después, el pipeline de `main` finalizó correctamente (workflow #230).
 
 ## Riesgos y deuda
 

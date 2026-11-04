@@ -38,7 +38,7 @@ Las 25 pruebas iniciales son casos registrados sin resultado completo conservado
 | Cierre PR #7 / main anterior       | 140/140        | c8 entonces: 88,90 / 80,75 / 73,61 %; incluía tests           |
 | Sonar main previo a integrar PR #8 | Otro alcance   | 80,1 % nuevas líneas; 30,2 % global; 3,8 % duplicación global |
 
-Main conserva la medición de 20 bugs, 15 code smells y 1 vulnerabilidad hasta una integración y reanálisis posteriores. No se afirma que los hallazgos estén cerrados en main porque las correcciones se publican únicamente en PR #8. Véase [revisión individual](HALLAZGOS_SONAR.md).
+La medición anterior de `main` registraba 20 bugs, 15 code smells y 1 vulnerabilidad. Después de fusionar el PR #8, estas cifras deben volver a consultarse en SonarQube. No se afirma que los hallazgos estén cerrados en main porque las correcciones se publican únicamente en PR #8. Véase [revisión individual](HALLAZGOS_SONAR.md).
 
 ## Fuente de la línea base histórica
 

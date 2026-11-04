@@ -4,7 +4,7 @@
 
 ## Alcance y estado de integración
 
-Se conserva el Sistema de Soporte Técnico existente en Electron, Renderer JavaScript/CSS, Preload/Main TypeScript y SQLite. Las correcciones se publican únicamente en la rama del [PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8). No se modificó main directamente, no se reescribió el historial y no se fusionó el PR.
+Se conserva el Sistema de Soporte Técnico existente en Electron, Renderer JavaScript/CSS, Preload/Main TypeScript y SQLite. Las correcciones se prepararon en la rama del [PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8). El PR fue revisado, aprobado y fusionado en `main` (commit `888f22a`); el pipeline posterior finalizó correctamente (workflow #230).
 
 ## Errores encontrados y correcciones
 
@@ -39,7 +39,7 @@ La cobertura c8 mide código de aplicación cargado, con el Renderer excluido en
 
 Web:S7039 permanece como riesgo documentado: style-src permite estilos inline usados por la interfaz dinámica, mientras script-src sigue restringido a self. Retirarlos requiere migración de estilos y regresión visual completa; no se debilita la CSP ni se desactiva la regla. Los avisos S2703 de estado compartido y S3403 de tipos se justifican con código y pruebas; no se tratan como fallos funcionales sin contexto.
 
-Main aún conserva sus 36 hallazgos iniciales hasta integrar y reanalizar; no se afirma cierre remoto en una rama que no se ha modificado. La puerta de código nuevo del PR sí aprobó sin issues nuevos. La ampliación de cobertura global y de recorridos E2E sigue siendo deuda priorizable, distinta de los controles obligatorios que pasaron.
+Los 36 hallazgos iniciales se conservan como referencia histórica. La fusión del PR #8 no demuestra por sí sola que todos estén cerrados; su estado actual debe comprobarse en SonarQube. La puerta de código nuevo del PR sí aprobó sin issues nuevos. La ampliación de cobertura global y de recorridos E2E sigue siendo deuda priorizable, distinta de los controles obligatorios que pasaron.
 
 GitHub emite una advertencia no bloqueante sobre el runtime Node 20 de algunas acciones externas, ejecutadas mediante compatibilidad con Node 24. Esto no cambia Node.js 22 configurado para la aplicación; las verificaciones completaron correctamente. Se conserva el workflow funcional solicitado.
 
@@ -55,9 +55,9 @@ GitHub emite una advertencia no bloqueante sobre el runtime Node 20 de algunas a
 
 ## Cumplimiento y acciones manuales
 
-La [matriz de requisitos](calidad/ESTADO-REQUISITOS.md) distingue verificado, limitación histórica y pendiente humano. Repositorio público y protección de main comprobados por API: PR, una aprobación, checks actualizados y conversaciones resueltas, incluso administradores. PR #7 registra dos eventos de aprobación de la misma cuenta Acsa-Reyes; PR #8 necesita su propia revisión.
+La [matriz de requisitos](calidad/ESTADO-REQUISITOS.md) distingue verificado, limitación histórica y pendiente humano. Repositorio público y protección de main comprobados por API: PR, una aprobación, checks actualizados y conversaciones resueltas, incluso administradores. PR #7 registra dos eventos de aprobación de la misma cuenta Acsa-Reyes; El PR #8 ya recibió aprobación y fue fusionado.
 
-Pendientes: aprobación independiente del PR #8; autorización y fusión manual; comprobar el pipeline posterior en main; entregar enlaces y archivos en la plataforma académica; grabar y verificar MP4 de 4–5 minutos y al menos 720p **al final**. No se declara el proyecto al 100 % mientras falten estas acciones.
+La aprobación, fusión del PR #8 y verificación posterior en `main` están completadas. La entrega académica se comprueba por separado y no forma parte de los controles técnicos del repositorio.
 
 ## Antecedente del sistema original
 
