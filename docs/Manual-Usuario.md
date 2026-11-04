@@ -1,31 +1,29 @@
 # Manual de usuario
 
-## Acceso
+## Iniciar sesión
 
-Abre **Soporte Técnico** en Windows e inicia sesión con una cuenta autorizada. La navegación y las acciones disponibles dependen del rol y permisos asociados a la cuenta. Si el acceso falla, solicita al administrador que revise usuario, rol y conexión.
+Abre el Sistema de Soporte Técnico e ingresa con tu usuario y contraseña. Las opciones disponibles dependen de los permisos de tu cuenta.
 
 ## Tickets
 
-En el módulo **Tickets** puedes consultar y filtrar registros, crear tickets, editar información, asignar técnicos, cambiar clasificación, cerrar o reabrir tickets y eliminarlos cuando tu permiso lo permite. Completa los campos obligatorios marcados en el formulario y confirma la acción desde la pantalla.
+En **Tickets** puedes registrar solicitudes, consultar su estado, asignar técnicos y actualizar la información. Según tus permisos, también puedes cerrar o reabrir tickets.
 
-## Rutas y validación
+## Rutas
 
-En **Rutas** consulta, crea, actualiza y asigna participantes; la reapertura está sujeta a permisos y estado. El cierre manual está deshabilitado: la ruta se cierra automáticamente durante la validación. El flujo de validación permite que personal autorizado registre la validación y los equipos revisados. El rol Gerencial puede revisar rutas pendientes según sus permisos.
+En **Rutas** puedes consultar las visitas de trabajo y dar seguimiento a su validación. Algunas acciones dependen del estado de la ruta y de los permisos del usuario.
 
-## Equipos en taller y envíos
+## Equipos y envíos
 
-En **Equipos** registra ingresos relacionados con tickets, actualiza resultados y registra entrega o cancelación. En **Envíos de equipo** consulta envíos, registra movimientos, cambia estados y revisa el historial con filtros de fecha. La pantalla muestra notificaciones disponibles para el rol.
+Estos módulos permiten llevar el control de equipos en taller, envíos e historial de movimientos.
 
-## Proyectos especiales, dashboard y reportes
+## Proyectos, calificaciones y reportes
 
-El módulo **Proyectos especiales** permite consultar y registrar proyectos; la aprobación está disponible para los roles autorizados. **Dashboard/Calificación** presenta indicadores y permite calificar elementos según permisos. **Reportes** consulta tickets, rutas y proyectos y ofrece exportación Excel de los resultados y filtros visibles.
+El sistema también incluye proyectos especiales, calificación de servicios y reportes que pueden exportarse a Excel.
 
 ## Recomendaciones
 
-- Revisa los datos antes de guardar o cerrar un ticket o ruta.
-- Usa filtros de búsqueda y fechas para acotar listados y reportes.
-- Mantén las credenciales privadas y cierra la sesión al terminar.
-- Si una acción no aparece, consulta al administrador: puede depender del rol.
-- Para errores de base de datos, solicita soporte al administrador de la instalación y conserva el mensaje de error para el diagnóstico.
+- Revisa los datos antes de guardar.
+- Utiliza únicamente las opciones autorizadas para tu usuario.
+- Si aparece un error, anota el mensaje y comunícalo a la persona encargada del sistema.
 
-Este manual describe funciones documentadas en el mapa del sistema; no supone que la cuenta del usuario tenga todos los permisos.
+Este manual resume el uso general; algunas pantallas pueden variar según los permisos asignados.
