@@ -12,19 +12,19 @@ La aplicación tiene tres partes:
 
 ## Dónde está cada parte
 
-| Función | Ubicación principal |
-|---|---|
-| Inicio de sesión | `src/main/ipc_auth.ts` |
-| Tickets | `src/main/ipc_tickets.ts` |
-| Rutas | `src/main/ipc_rutas.ts` |
-| Equipos en taller | `src/main/ipc_equipos.ts` |
-| Envíos | `src/main/ipc_envio_equipo.ts` |
-| Proyectos especiales | `src/main/ipc_proyectos_especiales.ts` |
-| Reportes | `src/main/ipc_reports.ts` |
-| Base de datos | `src/main/db/` |
-| Comunicación con la interfaz | `src/preload/preload.ts` |
-| Pantallas | `src/renderer/modulos/` |
-| Estilos | `src/renderer/styles/` |
+| Función                      | Ubicación principal                    |
+| ---------------------------- | -------------------------------------- |
+| Inicio de sesión             | `src/main/ipc_auth.ts`                 |
+| Tickets                      | `src/main/ipc_tickets.ts`              |
+| Rutas                        | `src/main/ipc_rutas.ts`                |
+| Equipos en taller            | `src/main/ipc_equipos.ts`              |
+| Envíos                       | `src/main/ipc_envio_equipo.ts`         |
+| Proyectos especiales         | `src/main/ipc_proyectos_especiales.ts` |
+| Reportes                     | `src/main/ipc_reports.ts`              |
+| Base de datos                | `src/main/db/`                         |
+| Comunicación con la interfaz | `src/preload/preload.ts`               |
+| Pantallas                    | `src/renderer/modulos/`                |
+| Estilos                      | `src/renderer/styles/`                 |
 
 ## Cómo revisar un cambio
 

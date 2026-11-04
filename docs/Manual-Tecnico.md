@@ -4,15 +4,15 @@
 
 El proyecto es una aplicación de escritorio hecha con **Electron**. La interfaz utiliza JavaScript y CSS; **Preload** conecta las pantallas con el proceso principal, escrito en TypeScript. Los datos se guardan en **SQLite**.
 
-| Carpeta | Contenido |
-|---|---|
-| `src/renderer/` | Pantallas y estilos |
-| `src/preload/` | Comunicación segura con Electron |
-| `src/main/` | Funciones, permisos y consultas |
-| `assets/database/` | Base inicial y esquemas |
-| `tests/` | Pruebas automatizadas |
-| `.github/workflows/` | Pipeline de calidad |
-| `docs/` | Documentación |
+| Carpeta              | Contenido                        |
+| -------------------- | -------------------------------- |
+| `src/renderer/`      | Pantallas y estilos              |
+| `src/preload/`       | Comunicación segura con Electron |
+| `src/main/`          | Funciones, permisos y consultas  |
+| `assets/database/`   | Base inicial y esquemas          |
+| `tests/`             | Pruebas automatizadas            |
+| `.github/workflows/` | Pipeline de calidad              |
+| `docs/`              | Documentación                    |
 
 ## Requisitos
 
@@ -34,6 +34,7 @@ La aplicación utiliza una base SQLite local en la carpeta de datos del usuario.
 
 ```powershell
 npm test
+npm run test:e2e
 npm run test:coverage
 npm run typecheck
 npm run lint
@@ -41,6 +42,10 @@ npm run format:check
 ```
 
 GitHub Actions ejecuta estas verificaciones automáticamente en el pipeline. Las pruebas usan datos ficticios y bases temporales para no alterar la información de uso normal.
+
+`test:coverage` aplica los mínimos de c8 al alcance configurado de `src/**`, con la exclusión de los módulos Renderer. `test:coverage:sonar` genera el archivo `coverage/lcov.info` para SonarQube. Son mediciones diferentes y sus porcentajes no se comparan directamente.
+
+En los pull requests y en `main`, SonarQube necesita `SONAR_TOKEN` y las variables `SONAR_ORGANIZATION` y `SONAR_PROJECT_KEY` del repositorio. El pipeline espera la respuesta del Quality Gate; si falta el token o el análisis falla, la verificación no aprueba.
 
 ## Si ocurre un error
 

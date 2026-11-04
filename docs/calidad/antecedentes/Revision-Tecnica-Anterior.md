@@ -1,15 +1,15 @@
-# Antecedente histórico; no estado vigente
+# Revisión técnica anterior
 
-# Revisión de código y deuda técnica
+Este documento conserva los resultados de octubre y del primer cierre de noviembre. Los resultados posteriores están en [Métricas de calidad](../METRICAS_CALIDAD.md).
 
 ## Observaciones de revisión
 
-| ID      | Hallazgo                                                                                | Severidad | Estado    | Acción                                                             |
-| ------- | --------------------------------------------------------------------------------------- | --------- | --------- | ------------------------------------------------------------------ |
-| DEF-001 | La fecha `2026-02-30` era aceptada por la normalización automática de JavaScript.       | Alta      | Corregido | Validación exacta de componentes de fecha y prueba de regresión.   |
-| OBS-001 | Las pruebas cargan servicios desde `dist`, por lo que necesitan una compilación previa. | Media     | Conocido  | El pipeline compila antes de probar.                               |
-| OBS-002 | Las regresiones de interfaz verifican texto fuente con expresiones regulares.           | Media     | Pendiente | Migrar gradualmente reglas críticas a funciones testeables.        |
-| OBS-003 | No había pruebas contra una base de datos de prueba en esa revisión histórica.                                      | Media     | Pendiente | En la arquitectura actual, utilizar SQLite temporal aislado. |
+| ID      | Hallazgo                                                                                | Severidad | Estado    | Acción                                                           |
+| ------- | --------------------------------------------------------------------------------------- | --------- | --------- | ---------------------------------------------------------------- |
+| DEF-001 | La fecha `2026-02-30` era aceptada por la normalización automática de JavaScript.       | Alta      | Corregido | Validación exacta de componentes de fecha y prueba de regresión. |
+| OBS-001 | Las pruebas cargan servicios desde `dist`, por lo que necesitan una compilación previa. | Media     | Conocido  | El pipeline compila antes de probar.                             |
+| OBS-002 | Las regresiones de interfaz verifican texto fuente con expresiones regulares.           | Media     | Pendiente | Migrar gradualmente reglas críticas a funciones testeables.      |
+| OBS-003 | No había pruebas contra una base de datos de prueba en esa revisión histórica.          | Media     | Pendiente | En la arquitectura actual, utilizar SQLite temporal aislado.     |
 
 ## Inspeccion manual local de la entrega CI/CD (29/10/2026)
 
@@ -27,11 +27,11 @@ Esta inspeccion es evidencia de revision tecnica local, no una aprobacion indepe
 
 ## Registro de deuda técnica
 
-| ID     | Deuda                                                                                  | Impacto                                                        | Prioridad | Próximo paso                                                                     |
-| ------ | -------------------------------------------------------------------------------------- | -------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------- |
-| DT-001 | La inicialización de base de datos contiene lógica amplia de esquema y compatibilidad. | Riesgo de cambios difíciles de aislar.                         | Alta      | Separar migraciones de la capa de conexión.                                      |
-| DT-002 | El código histórico ODBC conserva usos de `any`; son antecedentes del sistema anterior.    | Tipos de datos dinámicos no quedan comprobados en compilación. | Media     | Conservar esta observación solo como antecedente; el cierre usa SQLite. |
-| DT-003 | Cobertura E2E acotada a inicio, login y alta de ticket.                                | Otros módulos aún no se recorren integralmente.                | Media     | Ampliar gradualmente los recorridos E2E en SQLite aislado.                       |
+| ID     | Deuda                                                                                   | Impacto                                                        | Prioridad | Próximo paso                                                            |
+| ------ | --------------------------------------------------------------------------------------- | -------------------------------------------------------------- | --------- | ----------------------------------------------------------------------- |
+| DT-001 | La inicialización de base de datos contiene lógica amplia de esquema y compatibilidad.  | Riesgo de cambios difíciles de aislar.                         | Alta      | Separar migraciones de la capa de conexión.                             |
+| DT-002 | El código histórico ODBC conserva usos de `any`; son antecedentes del sistema anterior. | Tipos de datos dinámicos no quedan comprobados en compilación. | Media     | Conservar esta observación solo como antecedente; el cierre usa SQLite. |
+| DT-003 | Cobertura E2E acotada a inicio, login y alta de ticket.                                 | Otros módulos aún no se recorren integralmente.                | Media     | Ampliar gradualmente los recorridos E2E en SQLite aislado.              |
 
 ## Revisión manual sugerida
 
@@ -48,6 +48,6 @@ Antes de fusionar cambios, revisar que no se añadan secretos, que no se modifiq
 
 ## Verificación pública del 03/11/2026
 
-SonarQube reporta 20 bugs, 1 vulnerabilidad y 15 code smells globales. Priorizar la revisión de la vulnerabilidad y de los bugs por impacto; no se afirma su resolución. El código nuevo no agrega hallazgos según la API. La cobertura global de 30,2 % se mantiene como deuda distinta de la cobertura nueva de 80,1 %. Evidencia: `evidencias/cierre-20261103/sonar-metricas.json`.
+En esa consulta, SonarQube reportó 20 bugs, 1 vulnerabilidad y 15 code smells globales. El código nuevo no agregó hallazgos según la API. La cobertura global de 30,2 % y la cobertura nueva de 80,1 % pertenecen a esa revisión. La [evidencia JSON](../evidencias/cierre-20261103/sonar-metricas.json) conserva el resultado.
 
 El fallo de push 41678126873 provino de una restricción de SonarQube sobre ramas distintas de main. El commit 6ccb7cc ejecuta SonarQube solo en PR o main, conserva los demás controles en todos los push y sigue esperando el Quality Gate. El push 41687471160 aprobó con esa corrección.

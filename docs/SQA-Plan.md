@@ -23,14 +23,14 @@ Trabajé sobre una aplicación existente hecha con Electron, TypeScript, JavaScr
 
 ## Herramientas
 
-| Herramienta | Uso |
-|---|---|
-| node:test | Pruebas automáticas |
-| c8 | Cobertura |
-| TypeScript | Revisión de tipos |
+| Herramienta       | Uso                          |
+| ----------------- | ---------------------------- |
+| node:test         | Pruebas automáticas          |
+| c8                | Cobertura                    |
+| TypeScript        | Revisión de tipos            |
 | ESLint y Prettier | Revisión de código y formato |
-| SonarQube Cloud | Calidad del código |
-| GitHub Actions | Pipeline y reportes |
+| SonarQube Cloud   | Calidad del código           |
+| GitHub Actions    | Pipeline y reportes          |
 
 ## Requisitos para aprobar
 

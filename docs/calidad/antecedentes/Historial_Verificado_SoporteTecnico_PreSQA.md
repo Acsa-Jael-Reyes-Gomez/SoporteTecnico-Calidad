@@ -1,10 +1,10 @@
-# Procedencia y límites del antecedente
+# Antecedente del proyecto SQA
 
-Informe aportado por la estudiante el 3 de noviembre de 2026. Se incorpora su análisis documental; en este cierre no se ejecutó ni se inspeccionó nuevamente el archivo RAR original. Solo se publica este informe sin configuraciones, credenciales ni copia del sistema antiguo. Las referencias temporales son marcas de archivo.
+Este informe fue aportado el 3 de noviembre de 2026. Describe una copia anterior del sistema; no incluye una nueva ejecución de esa aplicación. Las fechas de los archivos no prueban cuándo se ejecutaron las pruebas.
 
-SHA-256 del documento aportado: `86607bb695b2b930397b186757fd35155db56992d7d71f7f40065ce535115276`. Se conserva el contenido histórico y el inventario; se omiten las sugerencias editoriales del documento fuente.
+SHA-256 del documento fuente: `86607bb695b2b930397b186757fd35155db56992d7d71f7f40065ce535115276`.
 
-# Línea base histórica verificada — SoporteTecnico (antes del proyecto SQA)
+## Origen
 
 **Origen:** copia anterior `SoporteTecnico-main`, aportada en archivo RAR. Esta revisión se limita a los archivos originales de código y documentación seleccionados; no ejecuta la aplicación antigua ni modifica el repositorio actual.
 

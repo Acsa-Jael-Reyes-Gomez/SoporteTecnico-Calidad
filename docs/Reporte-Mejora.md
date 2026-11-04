@@ -4,13 +4,13 @@
 
 El Sistema de Soporte Técnico ya existía. Mi trabajo fue agregar un proceso para comprobar su calidad y corregir problemas encontrados durante las revisiones.
 
-| Antes | Trabajo realizado |
-|---|---|
-| No había una verificación de calidad centralizada | Configuré GitHub Actions |
-| Las pruebas no cubrían de forma organizada los cambios | Organicé y amplié las pruebas automatizadas |
-| No había una medición final comparable y clara | Configuré c8 con umbrales |
-| Era más difícil revisar errores de código | Integré TypeScript, ESLint, Prettier y SonarQube |
-| Los cambios necesitaban más control | Utilicé pull requests y revisiones |
+| Antes                                                  | Trabajo realizado                                |
+| ------------------------------------------------------ | ------------------------------------------------ |
+| No había una verificación de calidad centralizada      | Configuré GitHub Actions                         |
+| Las pruebas no cubrían de forma organizada los cambios | Organicé y amplié las pruebas automatizadas      |
+| No había una medición final comparable y clara         | Configuré c8 con umbrales                        |
+| Era más difícil revisar errores de código              | Integré TypeScript, ESLint, Prettier y SonarQube |
+| Los cambios necesitaban más control                    | Utilicé pull requests y revisiones               |
 
 También se corrigieron problemas identificados en consultas, validaciones y archivos de la interfaz. Los detalles técnicos están en [Hallazgos de SonarQube](calidad/HALLAZGOS_SONAR.md).
 

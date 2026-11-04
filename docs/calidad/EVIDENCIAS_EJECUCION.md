@@ -13,5 +13,6 @@
 - [Pull request técnico #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8)
 - [Evidencias del cierre](evidencias/cierre-final-20261103/)
 - [Capturas del pipeline y SonarQube](evidencias/cierre-20261103/)
+- [Verificación local del 4 de noviembre](evidencias/verificacion-20261104/resultados.json): comandos, entorno y resultados. Los registros de [pruebas](evidencias/verificacion-20261104/pruebas.txt), [E2E](evidencias/verificacion-20261104/e2e.txt) y [cobertura](evidencias/verificacion-20261104/cobertura.txt) mantienen los mismos resultados de c8.
 
 Se conservan las evidencias originales. Los porcentajes corresponden al alcance de cada herramienta.

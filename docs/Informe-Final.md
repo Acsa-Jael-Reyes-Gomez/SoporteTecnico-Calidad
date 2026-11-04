@@ -11,16 +11,16 @@ El pipeline revisa cuatro etapas: **Build, Test, Analyze y Report**. También ut
 
 ## Resultados
 
-| Indicador | Resultado |
-|---|---:|
-| Pruebas automatizadas | 146/146 aprobadas |
-| Prueba E2E | Aprobada |
-| Cobertura de líneas c8 | 83,30 % |
-| Cobertura de ramas c8 | 70,41 % |
-| Cobertura de funciones c8 | 94,66 % |
-| Quality Gate del PR técnico | Aprobado |
-| Cobertura nueva en SonarQube | 86,5 % |
-| Duplicación nueva en SonarQube | 0,0 % |
+| Indicador                      |         Resultado |
+| ------------------------------ | ----------------: |
+| Pruebas automatizadas          | 146/146 aprobadas |
+| Prueba E2E                     |          Aprobada |
+| Cobertura de líneas c8         |           83,30 % |
+| Cobertura de ramas c8          |           70,41 % |
+| Cobertura de funciones c8      |           94,66 % |
+| Quality Gate del PR técnico    |          Aprobado |
+| Cobertura nueva en SonarQube   |            86,5 % |
+| Duplicación nueva en SonarQube |             0,0 % |
 
 Los porcentajes de c8 no representan toda la aplicación. La medición de SonarQube para código nuevo tiene otro alcance.
 

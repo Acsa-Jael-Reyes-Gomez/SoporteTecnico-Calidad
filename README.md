@@ -30,16 +30,16 @@ Los cambios a `main` se revisan mediante pull requests y verificaciones automát
 
 ## Resultados
 
-| Verificación | Resultado |
-|---|---:|
-| Pruebas automatizadas | 146 aprobadas de 146 |
-| Prueba E2E | Aprobada |
-| Cobertura de líneas (c8) | 83,30 % |
-| Cobertura de ramas (c8) | 70,41 % |
-| Cobertura de funciones (c8) | 94,66 % |
-| Quality Gate del PR técnico | Aprobado |
-| Cobertura de código nuevo en SonarQube | 86,5 % |
-| Duplicación de código nuevo | 0,0 % |
+| Verificación                           |            Resultado |
+| -------------------------------------- | -------------------: |
+| Pruebas automatizadas                  | 146 aprobadas de 146 |
+| Prueba E2E                             |             Aprobada |
+| Cobertura de líneas (c8)               |              83,30 % |
+| Cobertura de ramas (c8)                |              70,41 % |
+| Cobertura de funciones (c8)            |              94,66 % |
+| Quality Gate del PR técnico            |             Aprobado |
+| Cobertura de código nuevo en SonarQube |               86,5 % |
+| Duplicación de código nuevo            |                0,0 % |
 
 La cobertura de c8 corresponde al código incluido en esa medición, **no a toda la aplicación**. Los mínimos configurados son 75 % en líneas, 60 % en ramas y 55 % en funciones.
 
@@ -57,6 +57,7 @@ Para revisar la calidad:
 
 ```powershell
 npm test
+npm run test:e2e
 npm run test:coverage
 npm run typecheck
 npm run lint
@@ -72,6 +73,8 @@ npm run format:check
 - [Reporte de mejora](docs/Reporte-Mejora.md)
 - [Manual técnico](docs/Manual-Tecnico.md)
 - [Manual de usuario](docs/Manual-Usuario.md)
+- [Informe final](docs/Informe-Final.md)
+- [Métricas de calidad](docs/calidad/METRICAS_CALIDAD.md)
 - [Evidencias](docs/calidad/EVIDENCIAS_EJECUCION.md)
 - [Hallazgos de SonarQube](docs/calidad/HALLAZGOS_SONAR.md)
 
