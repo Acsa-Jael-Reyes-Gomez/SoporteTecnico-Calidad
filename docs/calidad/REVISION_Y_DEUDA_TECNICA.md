@@ -11,8 +11,8 @@ La disposición individual de los 36 hallazgos iniciales se conserva en [HALLAZG
 | BD de prueba                                                    | SQLite sintético en memoria y temporal implementado | No crear entorno MySQL/ODBC ajeno al stack                  |
 | Estilos inline CSP                                              | Riesgo abierto documentado, script-src restringido  | Migración de estilos aparte, con regresión visual           |
 | Cobertura global y alcance E2E                                  | Distintos del gate c8; E2E solo cubre Tickets       | Priorizar ampliación según riesgo                           |
-| PR #8                                                           | Pendiente de revisión independiente                 | No omitir aprobación ni fusionar sin autorización           |
+| PR #8                                                           | Aprobado y fusionado                 | Conservar la aprobación y el historial de fusión           |
 
-La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. Al corte del 3 de noviembre de 2026, el PR #8 estaba abierto y sin aprobación independiente; no se fusionó ni se modificó `main` directamente. El estado actual debe comprobarse antes de integrar o entregar.
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. Posteriormente, el PR #8 fue aprobado y fusionado en `main` (commit `888f22a`), y su pipeline posterior terminó correctamente (workflow #230).
 
 PR #7 recibió dos eventos de aprobación de una misma cuenta revisora. La [revisión anterior](antecedentes/Revision-Tecnica-Anterior.md) se conserva como antecedente, incluyendo observaciones ya superadas. El manual actual describe el cierre automático de rutas durante su validación.
