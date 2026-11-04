@@ -25,9 +25,9 @@ La caída de 88,90 % al porcentaje c8 corregido es un cambio de denominador, no 
 
 ## Control de cambios y límites
 
-La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. Al corte del 3 de noviembre de 2026, el PR #8 estaba abierto, pendiente de revisión y sin fusionar. Antes de la entrega debe consultarse su estado actual en GitHub.
+La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. El PR #8 fue aprobado y fusionado en `main` (commit `888f22a`). Después, el pipeline de `main` finalizó correctamente (workflow #230).
 
-La captura negativa histórica prueba un check Sonar rechazado, no una ejecución deliberadamente fallida del nuevo wait=true. El código y los logs actuales sí acreditan la espera explícita del scanner y su resultado. No se provocan fallos artificiales en main. Continúan pendientes la revisión/fusión autorizadas, la verificación posterior en main, la entrega en plataforma y el video obligatorio al final.
+La captura negativa histórica prueba un check Sonar rechazado, no una ejecución deliberadamente fallida del nuevo wait=true. El código y los logs actuales sí acreditan la espera explícita del scanner y su resultado. No se provocan fallos artificiales en main. La revisión y fusión del PR #8 y la verificación posterior en `main` ya se completaron. La entrega académica se realiza por separado.
 
 ## Interpretación de la mejora
 
