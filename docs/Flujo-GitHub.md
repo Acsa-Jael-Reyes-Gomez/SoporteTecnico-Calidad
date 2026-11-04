@@ -1,15 +1,14 @@
-# Flujo de revisión e integración
+# Cómo trabajé con GitHub
 
-1. Crear rama desde main y agrupar cambios relacionados.
-2. Verificar localmente compilación, todas las pruebas, E2E, cobertura, tipos, lint y formato.
-3. Publicar cambios autorizados en rama y abrir/actualizar PR; no escribir directamente en main.
-4. Esperar checks: SonarQube corre en PR y push de main, con token obligatorio y espera del gate. Los otros push conservan todos los controles locales y reportes.
-5. Obtener aprobación independiente y resolver conversaciones. Fusionar solo con autorización de la propietaria; después comprobar el push de main.
+Para evitar cambios directos en la rama principal, seguí este proceso:
 
-## Protección verificada por API
+1. Crear una rama para los cambios.
+2. Realizar las modificaciones y probarlas.
+3. Abrir un **pull request**.
+4. Esperar las verificaciones de GitHub Actions y SonarQube.
+5. Solicitar una revisión y resolver las observaciones.
+6. Integrar los cambios a `main` cuando estén aprobados.
 
-Main exige PR, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados y conversaciones resueltas. Aplica también a administradores; no permite force-push ni eliminación. No se cambia esta configuración.
+La rama principal tiene controles de protección y exige verificaciones antes de aceptar cambios.
 
-PR7 contiene dos eventos APPROVED de la misma cuenta Acsa-Reyes y fue fusionado. El PR #8 obtuvo aprobación y fue fusionado en `main` (commit `888f22a`). El pipeline posterior terminó correctamente (workflow #230).
-
-El repositorio es público para lectura del docente. La estudiante debe entregar el enlace y los artefactos en la plataforma; el acceso público no acredita esa entrega manual.
+El pipeline se encuentra en `.github/workflows/quality.yml`. Las ejecuciones se pueden revisar en la pestaña **Actions** del repositorio.

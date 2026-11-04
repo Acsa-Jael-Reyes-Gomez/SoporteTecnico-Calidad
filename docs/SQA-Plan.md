@@ -1,52 +1,53 @@
-# Plan de aseguramiento de la calidad del software
+# Plan de aseguramiento de la calidad
 
-**Sistema:** Soporte Técnico. **Estudiante:** Acsa Jael Reyes Gómez. **Corte:** 03/11/2026.
+**Sistema:** Soporte Técnico  
+**Estudiante:** Acsa Jael Reyes Gómez  
+**Fecha:** 3 de noviembre de 2026
 
-## Propósito y alcance
+## ¿Qué quería lograr?
 
-Detectar regresiones y hacer verificables los cambios de una aplicación existente antes de su integración. Incluye Main TypeScript, Preload, Renderer JavaScript/CSS, SQLite, pruebas y pipeline. Conserva Electron/SQLite, variante justificada permitida por el enunciado. No incluye nube, pruebas de carga ni datos operativos en los tests.
+Mi objetivo fue comprobar que los cambios en el sistema no dañaran funciones que ya estaban trabajando. Para eso preparé pruebas automáticas, revisiones de código y un pipeline en GitHub Actions.
 
-## Arquitectura y normas de referencia
+## Alcance
 
-Renderer invoca window.api; Preload expone operaciones IPC; Main valida sesión, permisos y datos y consulta SQLite. TypeScript es estricto, la base de pruebas es sintética y las consultas usan parámetros. El plan toma como referencia organizativa ISO/IEC/IEEE 29119-2 y 29119-3 y el modelo de calidad ISO/IEC 25010; no declara certificación ni cumplimiento integral de normas. Referencias: https://www.iso.org/standard/79428.html y https://www.iso.org/standard/78176.html.
+Trabajé sobre una aplicación existente hecha con Electron, TypeScript, JavaScript y SQLite. Las pruebas revisan autenticación, tickets, rutas, consultas, reportes y otras funciones. Utilicé datos ficticios y bases temporales para no modificar información real.
 
-## Actividades y herramientas
+## Cómo realicé las verificaciones
 
-1. Planificar alcance, riesgos, matriz y línea base.
-2. Ejecutar unitarias de servicios, integración con SQLite y handlers, regresiones Renderer/reportes y E2E aislado.
-3. Compilar y verificar TypeScript, ESLint y Prettier.
-4. Medir c8 y generar LCOV independiente para SonarQube.
-5. Esperar Quality Gate, conservar reportes y obtener revisión humana.
-6. Registrar defectos, falsos positivos justificados, métricas y evidencias de cierre.
+1. Revisé el estado inicial del proyecto.
+2. Organicé los casos de prueba en una matriz.
+3. Preparé pruebas unitarias, de integración y de regresión.
+4. Incorporé una prueba E2E que inicia la aplicación y registra un ticket.
+5. Configuré la compilación, las pruebas y el análisis de código en GitHub Actions.
+6. Revisé los reportes y documenté los resultados.
 
-## Casos y datos
+## Herramientas
 
-**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
+| Herramienta       | Uso                          |
+| ----------------- | ---------------------------- |
+| node:test         | Pruebas automáticas          |
+| c8                | Cobertura                    |
+| TypeScript        | Revisión de tipos            |
+| ESLint y Prettier | Revisión de código y formato |
+| SonarQube Cloud   | Calidad del código           |
+| GitHub Actions    | Pipeline y reportes          |
 
-La [matriz](Matriz-Pruebas.md) enlaza preparación y aserciones de los 146 casos. El CSV de 140 es antecedente. Las pruebas de base usan memoria o directorios temporales propios. E2E crea usuarios ficticios, autentica, abre Tickets y confirma persistencia SQLite; no cubre todas las rutas de la aplicación.
+## Requisitos para aprobar
 
-## Métricas y aceptación
+Las pruebas, la compilación y los análisis obligatorios deben terminar correctamente. La cobertura mínima de c8 es **75 % de líneas, 60 % de ramas y 55 % de funciones**. En el análisis de código nuevo de SonarQube se exige al menos **80 % de cobertura** y como máximo **3 % de duplicación**.
 
-El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
+El pipeline sigue cuatro etapas: **Build, Test, Analyze y Report**. Los cambios a `main` pasan por pull request y revisión.
 
-Todos los tests y comandos obligatorios deben terminar en exit 0. SonarQube exige sus condiciones, incluida cobertura nueva ≥80 % y duplicación nueva ≤3 %. No se omite por falta de token en PR/main. La línea base anterior a SQA es incompleta y se documenta, sin inventar porcentajes.
+## Resultados
 
-## Pipeline y revisión
+- **146 de 146 pruebas aprobadas**, sin fallas ni omisiones.
+- Prueba E2E aprobada.
+- Cobertura c8: **83,30 % líneas, 70,41 % ramas y 94,66 % funciones**.
+- Quality Gate del PR técnico: **aprobado**.
+- SonarQube en código nuevo: **86,5 % de cobertura y 0,0 % de duplicación**.
 
-Etapas: CONSTRUIR, PROBAR, ANALIZAR y REPORTAR. Todos los push ejecutan compilación, pruebas, E2E, cobertura, tipos, lint, formato y artefactos. SonarQube corre obligatoriamente en PR y push de main; el plan limita otras ramas. Se usa sonar.qualitygate.wait=true. El upload de reportes tiene always() y ocurre antes del último análisis remoto; sus resultados se consultan además en el job y dashboard.
+La cobertura de c8 no mide toda la aplicación: incluye los archivos cargados dentro del alcance configurado. Los hallazgos que siguen pendientes están en [Hallazgos de SonarQube](calidad/HALLAZGOS_SONAR.md).
 
-La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. El PR #8 fue aprobado y fusionado en `main` (commit `888f22a`). Después, el pipeline de `main` finalizó correctamente (workflow #230).
+## Evidencias
 
-## Riesgos y deuda
-
-Los hallazgos iniciales y su tratamiento individual están en [HALLAZGOS_SONAR.md](calidad/HALLAZGOS_SONAR.md). Se conserva el permiso de estilos inline por dependencia funcional, sin permitir scripts inline; requiere migración futura y pruebas visuales. Los avisos de bindings compartidos se justifican con declaraciones y orden de carga, sin apagar reglas. El gate de código nuevo no certifica ausencia de deuda global. La cobertura cargada no equivale a cobertura total.
-
-## Evidencia, responsabilidades y cierre
-
-[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
-
-La estudiante mantiene código, documentación y evidencias; la cuenta revisora aprueba de forma independiente. El repositorio público permite lectura al docente; la entrega en plataforma requiere acción manual. La [presentación vigente](presentacion/final/Presentacion_SQA_Final.pdf), guion y anexo se verifican visualmente. El video MP4 obligatorio de 4–5 minutos y al menos 720p se prepara y graba al final. No se declara completado antes de existir y reproducirse.
-
-## Línea base y trazabilidad
-
-La copia original de julio de 2026 contiene 25 casos definidos, sin resultados conservados de ejecución ni cobertura. Por ese motivo no se atribuyen aprobaciones históricas ni una mejora porcentual de cobertura sin mediciones equivalentes. La explicación y la evolución de las pruebas están en [Línea base](Linea-Base-Calidad.md) y [Historial documentado](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md).
+La [matriz de pruebas](Matriz-Pruebas.md), la [línea base](Linea-Base-Calidad.md), el [reporte de mejora](Reporte-Mejora.md) y las [evidencias de ejecución](calidad/EVIDENCIAS_EJECUCION.md) muestran lo realizado.

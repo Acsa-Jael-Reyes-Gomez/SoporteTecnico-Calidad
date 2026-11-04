@@ -1,36 +1,29 @@
-# Reporte de mejora y verificación del cierre
+# Reporte de mejora
 
-## Problemas y correcciones
+## ¿Qué mejoré?
 
-| Problema comprobado                     | Corrección                                                   | Evidencia                                    |
-| --------------------------------------- | ------------------------------------------------------------ | -------------------------------------------- |
-| Tests incluidos en el denominador c8    | Incluir solo src, conservar exclusión Renderer y umbrales    | Reporte final y package.json                 |
-| Tres comentarios CSS sin cierre         | Cerrar separadores y regenerar bundle                        | Compilación; análisis CSS posterior          |
-| Regex con retroceso superlineal         | Análisis acotado de agregaciones y recorte lineal de nombres | Regresiones SQL y nombres largos             |
-| Cargas de interfaz sin catch explícito  | Capturar rechazo y presentar mensaje                         | Regresiones proyectos/calificación/dashboard |
-| Condición repetida y retorno redundante | Simplificar conservando decisiones                           | Suite de reportes y E2E                      |
-| box-shadow duplicado                    | Conservar última declaración efectiva y regenerar CSS        | Fuente y bundle consistentes                 |
-| Avisos de estado compartido             | Documentar contexto, sin redeclarar; demostrar scope léxico  | Prueba VM y cargador de scripts              |
-| Textos y métricas contradictorios       | Documentación vigente única y antecedentes separados         | Plan, manuales, matriz y métricas            |
+El Sistema de Soporte Técnico ya existía. Mi trabajo fue agregar un proceso para comprobar su calidad y corregir problemas encontrados durante las revisiones.
 
-## Antes y después
+| Antes                                                  | Trabajo realizado                                |
+| ------------------------------------------------------ | ------------------------------------------------ |
+| No había una verificación de calidad centralizada      | Configuré GitHub Actions                         |
+| Las pruebas no cubrían de forma organizada los cambios | Organicé y amplié las pruebas automatizadas      |
+| No había una medición final comparable y clara         | Configuré c8 con umbrales                        |
+| Era más difícil revisar errores de código              | Integré TypeScript, ESLint, Prettier y SonarQube |
+| Los cambios necesitaban más control                    | Utilicé pull requests y revisiones               |
 
-Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
+También se corrigieron problemas identificados en consultas, validaciones y archivos de la interfaz. Los detalles técnicos están en [Hallazgos de SonarQube](calidad/HALLAZGOS_SONAR.md).
 
-**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
+## Resultados comprobados
 
-[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
+- **146 pruebas aprobadas de 146**, sin fallas.
+- **E2E aprobado**.
+- **83,30 %** de líneas, **70,41 %** de ramas y **94,66 %** de funciones en la medición c8.
+- **Quality Gate aprobado** para el PR técnico.
+- **86,5 %** de cobertura y **0,0 %** de duplicación en código nuevo de SonarQube.
 
-La caída de 88,90 % al porcentaje c8 corregido es un cambio de denominador, no una pérdida demostrada de cobertura. No se rebajó ningún umbral. El detalle de las 36 observaciones está en [CSV](calidad/HALLAZGOS_SONAR.csv); las disposiciones remotas y riesgos abiertos, en [revisión](calidad/HALLAZGOS_SONAR.md).
+Estas cifras corresponden a mediciones con alcances distintos. No significan que toda la aplicación esté cubierta.
 
-## Control de cambios y límites
+## Qué falta seguir mejorando
 
-La API de GitHub confirmó `main` protegida: PR obligatorio, una aprobación, check `Compilar, probar y verificar calidad`, checks actualizados, resolución de conversaciones y aplicación a administradores. No se permite force-push ni eliminación. El PR #8 fue aprobado y fusionado en `main` (commit `888f22a`). Después, el pipeline de `main` finalizó correctamente (workflow #230).
-
-La captura negativa histórica prueba un check Sonar rechazado, no una ejecución deliberadamente fallida del nuevo wait=true. El código y los logs actuales sí acreditan la espera explícita del scanner y su resultado. No se provocan fallos artificiales en main. La revisión y fusión del PR #8 y la verificación posterior en `main` ya se completaron. La entrega académica se realiza por separado.
-
-## Interpretación de la mejora
-
-La [copia original de julio](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) permitía identificar 25 casos definidos, pero no resultados históricos ni cobertura inicial. Las mediciones posteriores de 28, 33 y 140 pruebas se conservan como antecedentes; el cierre documenta 146 pruebas aprobadas. La [tabla de evolución](calidad/METRICAS_CALIDAD.md) registra el alcance de cada medición y evita presentar coberturas incompatibles como una misma serie.
-
-La mejora verificable se encuentra en la automatización de las pruebas, los controles de calidad del pipeline, la incorporación de regresiones, la revisión de hallazgos y la evidencia reproducible. Se mantienen registrados los riesgos abiertos y las tareas manuales pendientes.
+Quedan módulos que podrían tener más pruebas y algunos hallazgos técnicos que requieren seguimiento. La automatización ayuda a detectar problemas, pero no sustituye todas las revisiones manuales.

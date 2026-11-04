@@ -1,8 +1,8 @@
-# Matriz de pruebas y trazabilidad del cierre
+# Matriz de pruebas
 
-La ejecución local del 03/11/2026 aprobó **146/146 casos**, cero omitidos, y el E2E adicional. Se conservan los 140 casos previos y se añaden seis regresiones SQA. El [inventario original de 140](calidad/INVENTARIO_140_CASOS.csv) es histórico; el [inventario final](calidad/INVENTARIO_FINAL_CASOS.csv) vincula cada caso con archivo, línea, preparación y aserciones literales del código. No se inventan parámetros ausentes ni se confunden títulos con datos de entrada.
+La ejecución local del 03/11/2026 aprobó **146/146 casos**, sin fallas ni omisiones, y el E2E adicional. Se conservan los 140 casos previos y se añaden seis regresiones SQA. El [inventario original de 140](calidad/INVENTARIO_140_CASOS.csv) es histórico; el [inventario final](calidad/INVENTARIO_FINAL_CASOS.csv) permite ubicar cada caso, su preparación y sus comprobaciones en el código.
 
-Las entradas y aserciones en la tabla son extractos; el callback enlazado y sus helpers son la especificación ejecutable completa. La clasificación es orientativa según el comportamiento probado; no equivale a cobertura completa de módulos.
+La tabla resume las entradas y comprobaciones. Cada enlace lleva a la prueba completa. La clasificación indica el tipo de prueba y no significa que todo el módulo esté cubierto.
 
 | ID   | Tipo                        | Caso y fuente                                                                                                                                                   | Entrada/preparación (extracto literal)                                                                                                                                                   | Resultado esperado (aserciones, extracto literal)                                                                                                                                                                                                              | Obtenido |
 | ---- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
@@ -161,11 +161,9 @@ E2E-01: Electron real con SQLite temporal sintético; inicio, Preload/IPC, auten
 
 Las siguientes tablas se conservan como registro histórico de 33 casos; no representan el conteo actual.
 
-# Matriz de pruebas
+### Alcance de octubre
 
-## Alcance y ejecución
-
-La matriz se mantiene sincronizada con `tests/` y `scripts/test-electron-e2e.js`. Las suites incluyen pruebas unitarias de servicios, integración con SQLite en memoria, regresiones del Renderer/handlers y un flujo E2E que inicia Electron con una base aislada, autentica y crea un ticket.
+En esa revisión se probaron servicios, SQLite en memoria y regresiones de la interfaz. El recorrido E2E utilizó una base aislada para iniciar sesión y crear un ticket.
 
 Ejecución local reproducida el 29 de octubre de 2026 con Node.js 22: **33 aprobadas, 0 fallidas**, incluidas las pruebas SQLite PR-29 a PR-33. Las 28 pruebas PR-01 a PR-28 también aparecen en el artefacto remoto del run 40599606066, que corresponde al commit publicado anterior a los cambios locales SQLite. La evidencia de ambas ejecuciones se registra por separado en `docs/calidad/EVIDENCIAS_EJECUCION.md`.
 

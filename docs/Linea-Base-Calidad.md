@@ -1,21 +1,25 @@
-# Línea base de calidad y evolución verificable
+# Línea base de calidad
 
-## Registro inicial
+## Punto de partida
 
-Las 25 pruebas iniciales son casos registrados sin resultado completo conservado. Las mediciones de 28/28 y 33/33 son históricas. El cierre previo de 140/140 y c8 88,90 % / 80,75 % / 73,61 % utilizó un denominador que incluía tests; se conserva como antecedente y no se compara como mejora porcentual con el nuevo alcance. Los 80,1 % de cobertura nueva y 30,2 % global de SonarQube corresponden al main anterior, no al porcentaje c8 corregido. No hay cobertura pre-SQA homogénea para calcular una mejora desde el origen.
+En una copia anterior del sistema se encontraron **25 casos de prueba definidos**. No se conservaron resultados suficientes para saber cuántos pasaron ni una cobertura inicial comparable.
 
-## Resultado del cierre
+Por esa razón, no calculé un porcentaje de mejora desde el inicio: sería una comparación incorrecta.
 
-**146/146 pruebas aprobadas**, cero fallidas y cero omitidas; E2E aprobado. Cobertura c8 corregida: **83,30 % líneas**, **70,41 % ramas** y **94,66 % funciones**.
+## Resultados del proyecto
 
-El gate c8 incluye únicamente `src/**`, excluye pruebas y herramientas del denominador y conserva la exclusión Renderer preexistente. Mide archivos de aplicación cargados por la suite; no equivale a cobertura de toda la aplicación. Los umbrales siguen siendo 75 % líneas, 60 % ramas y 55 % funciones. El comando `test:coverage:sonar` genera un LCOV de alcance distinto; SonarQube calcula su propia cobertura global y de código nuevo.
+| Indicador                              |      Resultado final |
+| -------------------------------------- | -------------------: |
+| Pruebas                                | 146 de 146 aprobadas |
+| Prueba E2E                             |             Aprobada |
+| Líneas c8                              |              83,30 % |
+| Ramas c8                               |              70,41 % |
+| Funciones c8                           |              94,66 % |
+| Quality Gate del PR técnico            |             Aprobado |
+| Cobertura de código nuevo en SonarQube |               86,5 % |
 
-[PR técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592) y [push técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) del commit `8f508f5`: aprobados. SonarQube del PR: **PASSED**, cobertura nueva **86,5 %**, duplicación nueva **0,0 %**. El último commit documental debe consultarse en los [checks del PR #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8).
+La cobertura de c8 solo considera los archivos cargados dentro de su configuración; no representa toda la aplicación. SonarQube utiliza una medición distinta.
 
-La mejora comprobable es el proceso reproducible, la trazabilidad, la conservación de los 140 casos previos, seis nuevas regresiones y las correcciones identificadas en [hallazgos](calidad/HALLAZGOS_SONAR.md). No se atribuye una ganancia porcentual a una línea base no medida. La serie histórica completa está en [métricas](calidad/METRICAS_CALIDAD.md).
+## Qué cambió
 
-## Evidencia de la copia original
-
-En la [copia de julio de 2026](calidad/antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) se identificaron 22 casos definidos en `core-services.test.js` y tres en `envio-history.test.js`. No se conservó un resultado de ejecución. Tampoco aparecieron mediciones de cobertura o configuraciones de GitHub Actions y SonarQube en los archivos examinados; esto describe únicamente la copia revisada, no la historia completa del proyecto.
-
-La evolución registrada fue de **25 casos definidos**, luego **28/28**, **33/33**, **140/140** y finalmente **146/146 pruebas aprobadas**. Estas cifras muestran el aumento del inventario y de las verificaciones comprobadas. Las coberturas de cada etapa tienen alcances diferentes y se muestran con su contexto en [Métricas de calidad](calidad/METRICAS_CALIDAD.md).
+Ahora el proyecto tiene pruebas automáticas, medición de cobertura, análisis estático y verificaciones en GitHub Actions. Los detalles están en el [reporte de mejora](Reporte-Mejora.md) y en las [evidencias](calidad/EVIDENCIAS_EJECUCION.md).

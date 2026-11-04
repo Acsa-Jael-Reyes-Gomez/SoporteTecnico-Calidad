@@ -1,0 +1,48 @@
+{
+  "fecha": "2026-11-04",
+  "rama": "docs/retirar-presentacion-video",
+  "base": "0c77d16fef9a0402d83305d4021831da436220bc",
+  "entorno": {
+    "plataforma": "win32",
+    "node": "v22.16.0",
+    "npm": "11.11.0"
+  },
+  "comandos": {
+    "npm ci": 0,
+    "npm run build": 0,
+    "npm test": 0,
+    "npm run test:e2e": 0,
+    "npm run test:coverage": 0,
+    "npm run typecheck": 0,
+    "npm run lint": 0,
+    "npm run format:check": 0,
+    "npm run test:coverage:sonar": 0
+  },
+  "pruebas": {
+    "total": 146,
+    "aprobadas": 146,
+    "fallidas": 0,
+    "omitidas": 0,
+    "e2e": "aprobado, adicional a node:test"
+  },
+  "c8": {
+    "lineas": 83.3,
+    "ramas": 70.41,
+    "funciones": 94.66,
+    "minimos": {
+      "lineas": 75,
+      "ramas": 60,
+      "funciones": 55
+    },
+    "alcance": "src/** instrumentado; excluye src/renderer/modulos/**"
+  },
+  "lcov_sonar": {
+    "generado": true,
+    "nota": "La cobertura nueva y el Quality Gate se verifican en el analisis remoto."
+  },
+  "dependencias": {
+    "npm_ci_moderadas": 30,
+    "npm_audit_omit_dev_moderadas": 4,
+    "nota": "Avisos preexistentes; no se actualizaron dependencias en esta revision documental."
+  }
+}

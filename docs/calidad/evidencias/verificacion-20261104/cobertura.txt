@@ -1,0 +1,929 @@
+
+> soportetecnico@1.0.2 test:coverage
+> c8 --reporter=text --include src/** --exclude-after-remap --exclude src/renderer/modulos/** --check-coverage --lines 75 --branches 60 --functions 55 node --experimental-vm-modules --test tests/*.test.js
+
+TAP version 13
+# (node:6792) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: login real carga rol, permisos y unidad; logout elimina la sesión
+ok 1 - login real carga rol, permisos y unidad; logout elimina la sesión
+  ---
+  duration_ms: 83.5738
+  type: 'test'
+  ...
+# Subtest: login rechaza contraseña incorrecta, usuario inexistente e inactivo y limpia sesión previa
+ok 2 - login rechaza contraseña incorrecta, usuario inexistente e inactivo y limpia sesión previa
+  ---
+  duration_ms: 53.7364
+  type: 'test'
+  ...
+# Subtest: login rechaza entradas vacías sin crear sesión
+ok 3 - login rechaza entradas vacías sin crear sesión
+  ---
+  duration_ms: 36.0721
+  type: 'test'
+  ...
+# Subtest: permisos reales aceptan alias autorizado y rechazan permiso ausente o sesión inexistente
+ok 4 - permisos reales aceptan alias autorizado y rechazan permiso ausente o sesión inexistente
+  ---
+  duration_ms: 57.5826
+  type: 'test'
+  ...
+# Subtest: sesión vencida pierde acceso aunque el usuario tenga permiso
+ok 5 - sesión vencida pierde acceso aunque el usuario tenga permiso
+  ---
+  duration_ms: 32.7661
+  type: 'test'
+  ...
+# Subtest: revocación IPC exige ADMIN y elimina todas las sesiones del usuario objetivo
+ok 6 - revocación IPC exige ADMIN y elimina todas las sesiones del usuario objetivo
+  ---
+  duration_ms: 39.372
+  type: 'test'
+  ...
+# Subtest: login bloquea nuevos intentos tras cinco contraseñas incorrectas
+ok 7 - login bloquea nuevos intentos tras cinco contraseñas incorrectas
+  ---
+  duration_ms: 52.8034
+  type: 'test'
+  ...
+# (node:11548) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: autenticación maneja rechazos de login y conserva la sesión solo ante respuestas válidas
+ok 8 - autenticación maneja rechazos de login y conserva la sesión solo ante respuestas válidas
+  ---
+  duration_ms: 12.1609
+  type: 'test'
+  ...
+# Subtest: el arranque conserva instancia secundaria y controla errores de app.whenReady
+ok 9 - el arranque conserva instancia secundaria y controla errores de app.whenReady
+  ---
+  duration_ms: 3.2286
+  type: 'test'
+  ...
+# Subtest: equipos y envíos controlan rechazos IPC y restauran el estado de carga
+ok 10 - equipos y envíos controlan rechazos IPC y restauran el estado de carga
+  ---
+  duration_ms: 38.6687
+  type: 'test'
+  ...
+# Subtest: la carga de tickets maneja rechazos IPC y evita cargas simultáneas
+ok 11 - la carga de tickets maneja rechazos IPC y evita cargas simultáneas
+  ---
+  duration_ms: 13.8467
+  type: 'test'
+  ...
+# Subtest: las cargas de rutas controlan errores, filtros, paginación y cargas simultáneas
+ok 12 - las cargas de rutas controlan errores, filtros, paginación y cargas simultáneas
+  ---
+  duration_ms: 20.4956
+  type: 'test'
+  ...
+# Subtest: las rutas pendientes controlan cargas, paginación, errores y recuperación
+ok 13 - las rutas pendientes controlan cargas, paginación, errores y recuperación
+  ---
+  duration_ms: 24.6215
+  type: 'test'
+  ...
+# Subtest: la validacion distingue el resultado de rutas_validar y la recarga posterior
+ok 14 - la validacion distingue el resultado de rutas_validar y la recarga posterior
+  ---
+  duration_ms: 17.1788
+  type: 'test'
+  ...
+# Subtest: contraseñas en texto plano no se aceptan y bcrypt conserva la autenticación
+ok 15 - contraseñas en texto plano no se aceptan y bcrypt conserva la autenticación
+  ---
+  duration_ms: 64.8953
+  type: 'test'
+  ...
+# Subtest: clasifica correctamente los estados de contraseña sin mostrar secretos
+ok 16 - clasifica correctamente los estados de contraseña sin mostrar secretos
+  ---
+  duration_ms: 7.614
+  type: 'test'
+  ...
+# Subtest: crea, valida y conserva un respaldo antes de migrar contraseñas
+ok 17 - crea, valida y conserva un respaldo antes de migrar contraseñas
+  ---
+  duration_ms: 4002.2523
+  type: 'test'
+  ...
+# Subtest: cancela la migración y conserva la contraseña si falla la creación del respaldo
+ok 18 - cancela la migración y conserva la contraseña si falla la creación del respaldo
+  ---
+  duration_ms: 13.8994
+  type: 'test'
+  ...
+# Subtest: no modifica usuarios vacíos, hashes inválidos ni datos corruptos
+ok 19 - no modifica usuarios vacíos, hashes inválidos ni datos corruptos
+  ---
+  duration_ms: 20.5268
+  type: 'test'
+  ...
+# Subtest: rechaza respaldos con IDs o datos relevantes de usuario diferentes
+ok 20 - rechaza respaldos con IDs o datos relevantes de usuario diferentes
+  ---
+  duration_ms: 0.2796
+  type: 'test'
+  ...
+# Subtest: electron-builder excluye respaldos del instalador
+ok 21 - electron-builder excluye respaldos del instalador
+  ---
+  duration_ms: 0.5215
+  type: 'test'
+  ...
+# Subtest: la sustitución conserva el seed anterior ante una validación fallida
+ok 22 - la sustitución conserva el seed anterior ante una validación fallida
+  ---
+  duration_ms: 23.7905
+  type: 'test'
+  ...
+# Subtest: la sustitución exitosa conserva una copia de la semilla anterior
+ok 23 - la sustitución exitosa conserva una copia de la semilla anterior
+  ---
+  duration_ms: 26.3791
+  type: 'test'
+  ...
+# Subtest: un error al sustituir restaura la semilla original
+ok 24 - un error al sustituir restaura la semilla original
+  ---
+  duration_ms: 22.7793
+  type: 'test'
+  ...
+# Subtest: rollback ante error de actualización conserva todos los valores originales
+ok 25 - rollback ante error de actualización conserva todos los valores originales
+  ---
+  duration_ms: 1823.6967
+  type: 'test'
+  ...
+# Subtest: normaliza paginación conservando límites
+ok 26 - normaliza paginación conservando límites
+  ---
+  duration_ms: 0.4236
+  type: 'test'
+  ...
+# Subtest: centraliza normalización de catálogos, estados y período mensual
+ok 27 - centraliza normalización de catálogos, estados y período mensual
+  ---
+  duration_ms: 0.6001
+  type: 'test'
+  ...
+# Subtest: los desplegables confirman con Tab y los módulos muestran el período 26-25
+ok 28 - los desplegables confirman con Tab y los módulos muestran el período 26-25
+  ---
+  duration_ms: 8.2911
+  type: 'test'
+  ...
+# Subtest: gerencial consulta todas las rutas pendientes sin rango de fechas
+ok 29 - gerencial consulta todas las rutas pendientes sin rango de fechas
+  ---
+  duration_ms: 2.7831
+  type: 'test'
+  ...
+# Subtest: todas las tablas permiten redimensionar, ocultar y recuperar columnas
+ok 30 - todas las tablas permiten redimensionar, ocultar y recuperar columnas
+  ---
+  duration_ms: 3.6012
+  type: 'test'
+  ...
+# Subtest: calificación, seguimiento y reportes usan el encabezado visual de Tickets
+ok 31 - calificación, seguimiento y reportes usan el encabezado visual de Tickets
+  ---
+  duration_ms: 7.4838
+  type: 'test'
+  ...
+# Subtest: rechaza rangos de fecha invertidos
+ok 32 - rechaza rangos de fecha invertidos
+  ---
+  duration_ms: 0.675
+  type: 'test'
+  ...
+# Subtest: rechaza cierre anterior a apertura
+ok 33 - rechaza cierre anterior a apertura
+  ---
+  duration_ms: 0.3295
+  type: 'test'
+  ...
+# Subtest: deduplica referencias positivas
+ok 34 - deduplica referencias positivas
+  ---
+  duration_ms: 0.251
+  type: 'test'
+  ...
+# Subtest: valida formatos de fecha y referencias activas sin usar ODBC real
+ok 35 - valida formatos de fecha y referencias activas sin usar ODBC real
+  ---
+  duration_ms: 0.975
+  type: 'test'
+  ...
+# Subtest: normaliza límites y construye filtros de reporte parametrizados
+ok 36 - normaliza límites y construye filtros de reporte parametrizados
+  ---
+  duration_ms: 0.8753
+  type: 'test'
+  ...
+# Subtest: neutraliza fórmulas y sanea nombres de exportación
+ok 37 - neutraliza fórmulas y sanea nombres de exportación
+  ---
+  duration_ms: 0.6144
+  type: 'test'
+  ...
+# Subtest: sanea fórmulas de forma recursiva y valida permisos de sesión
+ok 38 - sanea fórmulas de forma recursiva y valida permisos de sesión
+  ---
+  duration_ms: 0.5205
+  type: 'test'
+  ...
+# Subtest: permite revocar sesiones activas
+ok 39 - permite revocar sesiones activas
+  ---
+  duration_ms: 0.3904
+  type: 'test'
+  ...
+# Subtest: no ejecuta consultas paralelas sobre una conexión ODBC 3.51
+ok 40 - no ejecuta consultas paralelas sobre una conexión ODBC 3.51
+  ---
+  duration_ms: 2.4044
+  type: 'test'
+  ...
+# Subtest: los módulos con búsqueda textual exponen el query filter y lo envían al backend
+ok 41 - los módulos con búsqueda textual exponen el query filter y lo envían al backend
+  ---
+  duration_ms: 3.8882
+  type: 'test'
+  ...
+# Subtest: la exportación de tickets conserva los filtros de la búsqueda
+ok 42 - la exportación de tickets conserva los filtros de la búsqueda
+  ---
+  duration_ms: 1.6074
+  type: 'test'
+  ...
+# Subtest: el reporte global de rutas usa una sola solicitud ODBC
+ok 43 - el reporte global de rutas usa una sola solicitud ODBC
+  ---
+  duration_ms: 1.5043
+  type: 'test'
+  ...
+# Subtest: los tres reportes visibles conservan filtros y evitan agregados frágiles de ODBC
+ok 44 - los tres reportes visibles conservan filtros y evitan agregados frágiles de ODBC
+  ---
+  duration_ms: 4.3785
+  type: 'test'
+  ...
+# Subtest: reportes de rutas y proyectos excluyen abiertos, no calificados y no aprobados
+ok 45 - reportes de rutas y proyectos excluyen abiertos, no calificados y no aprobados
+  ---
+  duration_ms: 1.6928
+  type: 'test'
+  ...
+# Subtest: reportes de tickets detallado y resumen incluyen exclusivamente tickets calificados y cerrados
+ok 46 - reportes de tickets detallado y resumen incluyen exclusivamente tickets calificados y cerrados
+  ---
+  duration_ms: 1.5905
+  type: 'test'
+  ...
+# Subtest: el reporte exportable de tickets resume por ticket único y conserva el número de ticket
+ok 47 - el reporte exportable de tickets resume por ticket único y conserva el número de ticket
+  ---
+  duration_ms: 2.2423
+  type: 'test'
+  ...
+# Subtest: las notificaciones de envíos consultan cambios incrementales sin sockets
+ok 48 - las notificaciones de envíos consultan cambios incrementales sin sockets
+  ---
+  duration_ms: 2.1632
+  type: 'test'
+  ...
+# Subtest: los técnicos reciben notificaciones por nuevas asignaciones de tickets y rutas
+ok 49 - los técnicos reciben notificaciones por nuevas asignaciones de tickets y rutas
+  ---
+  duration_ms: 4.1683
+  type: 'test'
+  ...
+# Subtest: ACL estructurada acepta solo SID actuales y privilegios explícitos completos
+ok 50 - ACL estructurada acepta solo SID actuales y privilegios explícitos completos
+  ---
+  duration_ms: 0.5462
+  type: 'test'
+  ...
+# Subtest: electron-builder excluye respaldos e informes también de extraResources
+ok 51 - electron-builder excluye respaldos e informes también de extraResources
+  ---
+  duration_ms: 0.4918
+  type: 'test'
+  ...
+# Subtest: recuperación conservadora identifica respaldo inválido y varios respaldos ambiguos
+ok 52 - recuperación conservadora identifica respaldo inválido y varios respaldos ambiguos
+  ---
+  duration_ms: 60.4383
+  type: 'test'
+  ...
+# Subtest: el bloqueo de importación impide dos procesos simultáneos
+ok 53 - el bloqueo de importación impide dos procesos simultáneos
+  ---
+  duration_ms: 3.5035
+  type: 'test'
+  ...
+# Subtest: el supervisor recibe aviso cuando gerencial valida una ruta que creó
+ok 54 - el supervisor recibe aviso cuando gerencial valida una ruta que creó
+  ---
+  duration_ms: 3.096
+  type: 'test'
+  ...
+# Subtest: el historial de envios carga completo y conserva filtros opcionales
+ok 55 - el historial de envios carga completo y conserva filtros opcionales
+  ---
+  duration_ms: 7.0324
+  type: 'test'
+  ...
+# Subtest: serializa las operaciones SQLite sobre la conexión compartida
+ok 56 - serializa las operaciones SQLite sobre la conexión compartida
+  ---
+  duration_ms: 2.2593
+  type: 'test'
+  ...
+# Subtest: el resumen de envios usa agregados compatibles con SQLite
+ok 57 - el resumen de envios usa agregados compatibles con SQLite
+  ---
+  duration_ms: 2.5202
+  type: 'test'
+  ...
+# Subtest: EquipoModal informa cuando no existe equipo sin abrir ventana
+ok 58 - EquipoModal informa cuando no existe equipo sin abrir ventana
+  ---
+  duration_ms: 7.9476
+  type: 'test'
+  ...
+# Subtest: EquipoModal presenta información real del equipo y catálogos
+ok 59 - EquipoModal presenta información real del equipo y catálogos
+  ---
+  duration_ms: 4.8747
+  type: 'test'
+  ...
+# Subtest: EquipoModal muestra fecha de salida y resultado de solución
+ok 60 - EquipoModal muestra fecha de salida y resultado de solución
+  ---
+  duration_ms: 1.9826
+  type: 'test'
+  ...
+# Subtest: EquipoModal muestra resultado sin solución y valores de respaldo
+ok 61 - EquipoModal muestra resultado sin solución y valores de respaldo
+  ---
+  duration_ms: 1.9399
+  type: 'test'
+  ...
+# Subtest: renderEquipos bloquea el acceso sin permiso antes de consultar datos
+ok 62 - renderEquipos bloquea el acceso sin permiso antes de consultar datos
+  ---
+  duration_ms: 2.1773
+  type: 'test'
+  ...
+# (node:12044) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: identifica instrucciones INSERT e ignora comentarios
+ok 63 - identifica instrucciones INSERT e ignora comentarios
+  ---
+  duration_ms: 6.2729
+  type: 'test'
+  ...
+# Subtest: reconoce INSERT dividido en varias líneas
+ok 64 - reconoce INSERT dividido en varias líneas
+  ---
+  duration_ms: 0.4338
+  type: 'test'
+  ...
+# Subtest: rechaza instrucciones INSERT incompletas
+ok 65 - rechaza instrucciones INSERT incompletas
+  ---
+  duration_ms: 1.2141
+  type: 'test'
+  ...
+# Subtest: ignora instrucciones posteriores a la sección de procedimientos
+ok 66 - ignora instrucciones posteriores a la sección de procedimientos
+  ---
+  duration_ms: 0.3342
+  type: 'test'
+  ...
+# Subtest: normaliza escapes de salto de línea y tabulación
+ok 67 - normaliza escapes de salto de línea y tabulación
+  ---
+  duration_ms: 0.6404
+  type: 'test'
+  ...
+# Subtest: convierte comillas escapadas en cadenas SQL
+ok 68 - convierte comillas escapadas en cadenas SQL
+  ---
+  duration_ms: 0.2811
+  type: 'test'
+  ...
+# Subtest: conserva texto SQL que no necesita normalización
+ok 69 - conserva texto SQL que no necesita normalización
+  ---
+  duration_ms: 0.2523
+  type: 'test'
+  ...
+# Subtest: conserva puntos y coma dentro de cadenas SQL
+ok 70 - conserva puntos y coma dentro de cadenas SQL
+  ---
+  duration_ms: 0.2857
+  type: 'test'
+  ...
+# Subtest: reconoce comillas duplicadas y cadenas con comillas dobles
+ok 71 - reconoce comillas duplicadas y cadenas con comillas dobles
+  ---
+  duration_ms: 0.2986
+  type: 'test'
+  ...
+# Subtest: normaliza retornos, barras y caracteres escapados de MySQL
+ok 72 - normaliza retornos, barras y caracteres escapados de MySQL
+  ---
+  duration_ms: 0.2642
+  type: 'test'
+  ...
+# (node:11380) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: migración: una base sin tabla de usuarios no se modifica ni genera respaldo
+ok 73 - migración: una base sin tabla de usuarios no se modifica ni genera respaldo
+  ---
+  duration_ms: 22.2028
+  type: 'test'
+  ...
+# Subtest: respaldo: rechaza ruta inexistente y verifica campos mínimos de usuarios
+ok 74 - respaldo: rechaza ruta inexistente y verifica campos mínimos de usuarios
+  ---
+  duration_ms: 34.5213
+  type: 'test'
+  ...
+# Subtest: respaldo: genera nombres únicos sin sobrescribir copias existentes
+ok 75 - respaldo: genera nombres únicos sin sobrescribir copias existentes
+  ---
+  duration_ms: 3837.4912
+  type: 'test'
+  ...
+# Subtest: migración: identifica valores inesperados sin registrar contraseñas en el informe
+ok 76 - migración: identifica valores inesperados sin registrar contraseñas en el informe
+  ---
+  duration_ms: 20.8482
+  type: 'test'
+  ...
+# Subtest: ACL: rechaza identidades sin SID, reglas heredadas, denegaciones y permisos insuficientes
+ok 77 - ACL: rechaza identidades sin SID, reglas heredadas, denegaciones y permisos insuficientes
+  ---
+  duration_ms: 0.8671
+  type: 'test'
+  ...
+# Subtest: clasificación: maneja valores nulos, números, datos binarios y contraseñas extensas
+ok 78 - clasificación: maneja valores nulos, números, datos binarios y contraseñas extensas
+  ---
+  duration_ms: 0.302
+  type: 'test'
+  ...
+# Subtest: ACL: también rechaza ausencia de reglas y verifica una regla única sin aceptar permisos parciales
+ok 79 - ACL: también rechaza ausencia de reglas y verifica una regla única sin aceptar permisos parciales
+  ---
+  duration_ms: 0.4579
+  type: 'test'
+  ...
+# Subtest: respaldo: compara cantidad, identidad y datos relevantes de usuarios
+ok 80 - respaldo: compara cantidad, identidad y datos relevantes de usuarios
+  ---
+  duration_ms: 0.4362
+  type: 'test'
+  ...
+# Subtest: migración: acepta respaldo inyectado y conserva usuarios ya migrados
+ok 81 - migración: acepta respaldo inyectado y conserva usuarios ya migrados
+  ---
+  duration_ms: 148.8082
+  type: 'test'
+  ...
+# Subtest: equipos: rechazo de API muestra error recuperable y permite reintentar
+ok 82 - equipos: rechazo de API muestra error recuperable y permite reintentar
+  ---
+  duration_ms: 28.662
+  type: 'test'
+  ...
+# Subtest: equipos: búsqueda y paginación ignoran acciones repetidas durante carga
+ok 83 - equipos: búsqueda y paginación ignoran acciones repetidas durante carga
+  ---
+  duration_ms: 6.3182
+  type: 'test'
+  ...
+# Subtest: equipos: limpiar filtros restaura fechas y ejecuta nueva consulta
+ok 84 - equipos: limpiar filtros restaura fechas y ejecuta nueva consulta
+  ---
+  duration_ms: 8.1937
+  type: 'test'
+  ...
+# Subtest: rutas: fallo de consulta muestra error sin bloquear un nuevo intento
+ok 85 - rutas: fallo de consulta muestra error sin bloquear un nuevo intento
+  ---
+  duration_ms: 9.8188
+  type: 'test'
+  ...
+# Subtest: rutas: sesión expirada restablece catálogos y muestra acceso
+ok 86 - rutas: sesión expirada restablece catálogos y muestra acceso
+  ---
+  duration_ms: 23.0472
+  type: 'test'
+  ...
+# Subtest: rutas: paginación y limpieza de filtros mantienen búsquedas operativas
+ok 87 - rutas: paginación y limpieza de filtros mantienen búsquedas operativas
+  ---
+  duration_ms: 6.8016
+  type: 'test'
+  ...
+# Subtest: validación de rutas: bloquea usuarios sin permiso antes de llamar a la API
+ok 88 - validación de rutas: bloquea usuarios sin permiso antes de llamar a la API
+  ---
+  duration_ms: 14.1611
+  type: 'test'
+  ...
+# Subtest: validación de rutas: respuesta sin éxito muestra error sin alterar datos
+ok 89 - validación de rutas: respuesta sin éxito muestra error sin alterar datos
+  ---
+  duration_ms: 10.4957
+  type: 'test'
+  ...
+# Subtest: validación de rutas: listado vacío muestra estado y paginación coherentes
+ok 90 - validación de rutas: listado vacío muestra estado y paginación coherentes
+  ---
+  duration_ms: 21.3321
+  type: 'test'
+  ...
+# Subtest: validación de rutas: muestra registros y permite cambiar de página
+ok 91 - validación de rutas: muestra registros y permite cambiar de página
+  ---
+  duration_ms: 19.5195
+  type: 'test'
+  ...
+# Subtest: validación de rutas: error de sesión reinicia credenciales y vista
+ok 92 - validación de rutas: error de sesión reinicia credenciales y vista
+  ---
+  duration_ms: 13.4805
+  type: 'test'
+  ...
+# Subtest: validación de rutas: éxito con recarga fallida avisa sin repetir la validación
+ok 93 - validación de rutas: éxito con recarga fallida avisa sin repetir la validación
+  ---
+  duration_ms: 14.9544
+  type: 'test'
+  ...
+# Subtest: validación de rutas: rechazo del servidor conserva el modal y muestra el error
+ok 94 - validación de rutas: rechazo del servidor conserva el modal y muestra el error
+  ---
+  duration_ms: 8.3889
+  type: 'test'
+  ...
+# Subtest: recupera la exportación individual cuando falla Excel interactivo
+ok 95 - recupera la exportación individual cuando falla Excel interactivo
+  ---
+  duration_ms: 758.1316
+  type: 'test'
+  ...
+# Subtest: cancelar exportación individual no genera archivo
+ok 96 - cancelar exportación individual no genera archivo
+  ---
+  duration_ms: 14.4556
+  type: 'test'
+  ...
+# Subtest: cancelar exportación de varias hojas no genera archivo
+ok 97 - cancelar exportación de varias hojas no genera archivo
+  ---
+  duration_ms: 2.6918
+  type: 'test'
+  ...
+# Subtest: exportación interactiva individual devuelve la ruta correctamente
+ok 98 - exportación interactiva individual devuelve la ruta correctamente
+  ---
+  duration_ms: 2.7982
+  type: 'test'
+  ...
+# Subtest: exportación interactiva de varias hojas devuelve la ruta correctamente
+ok 99 - exportación interactiva de varias hojas devuelve la ruta correctamente
+  ---
+  duration_ms: 2.7844
+  type: 'test'
+  ...
+# Subtest: agrega filtros parametrizados para una búsqueda válida
+ok 100 - agrega filtros parametrizados para una búsqueda válida
+  ---
+  duration_ms: 6.0561
+  type: 'test'
+  ...
+# Subtest: ignora búsquedas vacías
+ok 101 - ignora búsquedas vacías
+  ---
+  duration_ms: 0.3932
+  type: 'test'
+  ...
+# Subtest: no agrega filtros cuando no existen columnas
+ok 102 - no agrega filtros cuando no existen columnas
+  ---
+  duration_ms: 0.2659
+  type: 'test'
+  ...
+# Subtest: rechaza nombres de columnas SQL inválidos
+ok 103 - rechaza nombres de columnas SQL inválidos
+  ---
+  duration_ms: 1.009
+  type: 'test'
+  ...
+# Subtest: elimina espacios externos del texto buscado
+ok 104 - elimina espacios externos del texto buscado
+  ---
+  duration_ms: 0.3074
+  type: 'test'
+  ...
+# Subtest: valida filtros de reportes sin fechas
+ok 105 - valida filtros de reportes sin fechas
+  ---
+  duration_ms: 0.5995
+  type: 'test'
+  ...
+# Subtest: devuelve filtros vacíos cuando no se proporcionan
+ok 106 - devuelve filtros vacíos cuando no se proporcionan
+  ---
+  duration_ms: 0.2721
+  type: 'test'
+  ...
+# (node:14412) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: rutas:create persiste ruta, participante y notificación con claves válidas
+ok 107 - rutas:create persiste ruta, participante y notificación con claves válidas
+  ---
+  duration_ms: 97.3466
+  type: 'test'
+  ...
+# Subtest: rutas:create rechaza campos y referencias inválidas sin persistencia parcial
+ok 108 - rutas:create rechaza campos y referencias inválidas sin persistencia parcial
+  ---
+  duration_ms: 36.9573
+  type: 'test'
+  ...
+# Subtest: rutas:create hace rollback cuando falla una notificación después de insertar ruta y participante
+ok 109 - rutas:create hace rollback cuando falla una notificación después de insertar ruta y participante
+  ---
+  duration_ms: 37.7535
+  type: 'test'
+  ...
+# Subtest: rutas:list busca por ID y texto, filtra y limita al participante autenticado
+ok 110 - rutas:list busca por ID y texto, filtra y limita al participante autenticado
+  ---
+  duration_ms: 37.1448
+  type: 'test'
+  ...
+# Subtest: rutas:create exige permiso y sesión; rutas:close conserva cierre manual deshabilitado
+ok 111 - rutas:create exige permiso y sesión; rutas:close conserva cierre manual deshabilitado
+  ---
+  duration_ms: 27.2564
+  type: 'test'
+  ...
+# Subtest: rutas:update persiste cambios y rechaza identificador inexistente
+ok 112 - rutas:update persiste cambios y rechaza identificador inexistente
+  ---
+  duration_ms: 31.1177
+  type: 'test'
+  ...
+# Subtest: rutas:delete elimina ruta y participantes conservando integridad
+ok 113 - rutas:delete elimina ruta y participantes conservando integridad
+  ---
+  duration_ms: 24.6293
+  type: 'test'
+  ...
+# Subtest: rutas:reopen reabre ruta cerrada pendiente de validación y rechaza repetición
+ok 114 - rutas:reopen reabre ruta cerrada pendiente de validación y rechaza repetición
+  ---
+  duration_ms: 23.8435
+  type: 'test'
+  ...
+# Subtest: rutas:update valida campos, permisos y estado sin modificar datos existentes
+ok 115 - rutas:update valida campos, permisos y estado sin modificar datos existentes
+  ---
+  duration_ms: 25.3124
+  type: 'test'
+  ...
+# Subtest: rutas:delete rechaza rutas inexistentes o validadas sin eliminar participantes
+ok 116 - rutas:delete rechaza rutas inexistentes o validadas sin eliminar participantes
+  ---
+  duration_ms: 19.8422
+  type: 'test'
+  ...
+# Subtest: rutas:reopen exige identificador y no reabre rutas ya validadas
+ok 117 - rutas:reopen exige identificador y no reabre rutas ya validadas
+  ---
+  duration_ms: 19.3463
+  type: 'test'
+  ...
+# Subtest: rutas:validar y rutas:calificar exigen autorización y campos obligatorios
+ok 118 - rutas:validar y rutas:calificar exigen autorización y campos obligatorios
+  ---
+  duration_ms: 27.0738
+  type: 'test'
+  ...
+# (node:19368) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: SQA: SQL conserva agregaciones DISTINCT y DATEDIFF sin reescritura redundante
+ok 119 - SQA: SQL conserva agregaciones DISTINCT y DATEDIFF sin reescritura redundante
+  ---
+  duration_ms: 6.6255
+  type: 'test'
+  ...
+# Subtest: SQA: nombres de exportación largos conservan saneamiento, extensión y límites
+ok 120 - SQA: nombres de exportación largos conservan saneamiento, extensión y límites
+  ---
+  duration_ms: 6.9447
+  type: 'test'
+  ...
+# Subtest: SQA: paginación devuelve números y puntos suspensivos según el rango real
+ok 121 - SQA: paginación devuelve números y puntos suspensivos según el rango real
+  ---
+  duration_ms: 415.5108
+  type: 'test'
+  ...
+# Subtest: SQA: los scripts comparten la declaración léxica sin crear session ni catalogos implícitos
+ok 122 - SQA: los scripts comparten la declaración léxica sin crear session ni catalogos implícitos
+  ---
+  duration_ms: 14.759
+  type: 'test'
+  ...
+# Subtest: SQA: proyectos muestra rechazo de IPC y permite recuperación desde Buscar y Limpiar
+ok 123 - SQA: proyectos muestra rechazo de IPC y permite recuperación desde Buscar y Limpiar
+  ---
+  duration_ms: 11.1182
+  type: 'test'
+  ...
+# Subtest: SQA: calificación y dashboard controlan rechazo de IPC sin promesas sin manejar
+ok 124 - SQA: calificación y dashboard controlan rechazo de IPC sin promesas sin manejar
+  ---
+  duration_ms: 10.2655
+  type: 'test'
+  ...
+# (node:1044) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: el adaptador SQLite ejecuta CRUD con parámetros y devuelve el ID insertado
+ok 125 - el adaptador SQLite ejecuta CRUD con parámetros y devuelve el ID insertado
+  ---
+  duration_ms: 8.0765
+  type: 'test'
+  ...
+# Subtest: el adaptador transforma INSERT IGNORE y ON DUPLICATE KEY UPDATE
+ok 126 - el adaptador transforma INSERT IGNORE y ON DUPLICATE KEY UPDATE
+  ---
+  duration_ms: 1.7897
+  type: 'test'
+  ...
+# Subtest: commit conserva y rollback revierte los cambios
+ok 127 - commit conserva y rollback revierte los cambios
+  ---
+  duration_ms: 1.2027
+  type: 'test'
+  ...
+# Subtest: rechaza objetos como parámetros SQLite y conserva los errores SQL
+ok 128 - rechaza objetos como parámetros SQLite y conserva los errores SQL
+  ---
+  duration_ms: 1.9553
+  type: 'test'
+  ...
+# Subtest: el esquema ficticio conserva integridad, relaciones y fechas operativas reproducibles
+ok 129 - el esquema ficticio conserva integridad, relaciones y fechas operativas reproducibles
+  ---
+  duration_ms: 45.2722
+  type: 'test'
+  ...
+# (node:22076) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: synthetic schema provides related users, permissions and ticket without external data
+ok 130 - synthetic schema provides related users, permissions and ticket without external data
+  ---
+  duration_ms: 61.5678
+  type: 'test'
+  ...
+# Subtest: fresh fixtures reproduce data and isolate writes
+ok 131 - fresh fixtures reproduce data and isolate writes
+  ---
+  duration_ms: 31.0746
+  type: 'test'
+  ...
+# Subtest: temporary fixture owns its directory and removes database and sidecars
+ok 132 - temporary fixture owns its directory and removes database and sidecars
+  ---
+  duration_ms: 487.6723
+  type: 'test'
+  ...
+# Subtest: fixture rejects caller paths and invalid storage before opening any database
+ok 133 - fixture rejects caller paths and invalid storage before opening any database
+  ---
+  duration_ms: 0.7052
+  type: 'test'
+  ...
+# (node:20388) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: tickets:create persiste ticket, técnico y notificación con relaciones válidas
+ok 134 - tickets:create persiste ticket, técnico y notificación con relaciones válidas
+  ---
+  duration_ms: 95.6401
+  type: 'test'
+  ...
+# Subtest: tickets:create rechaza campos requeridos y referencias inexistentes sin escrituras parciales
+ok 135 - tickets:create rechaza campos requeridos y referencias inexistentes sin escrituras parciales
+  ---
+  duration_ms: 22.4594
+  type: 'test'
+  ...
+# Subtest: tickets:create revierte ticket, asignaciones y notificaciones al fallar una clave única
+ok 136 - tickets:create revierte ticket, asignaciones y notificaciones al fallar una clave única
+  ---
+  duration_ms: 24.8766
+  type: 'test'
+  ...
+# Subtest: tickets:list consulta por ID, busca texto y filtra sin inventar un endpoint de detalle
+ok 137 - tickets:list consulta por ID, busca texto y filtra sin inventar un endpoint de detalle
+  ---
+  duration_ms: 26.1809
+  type: 'test'
+  ...
+# Subtest: tickets:create rechaza permiso ausente y sesión inexistente sin persistir
+ok 138 - tickets:create rechaza permiso ausente y sesión inexistente sin persistir
+  ---
+  duration_ms: 25.2244
+  type: 'test'
+  ...
+# Subtest: tickets:update persiste campos permitidos y rechaza datos obligatorios inválidos
+ok 139 - tickets:update persiste campos permitidos y rechaza datos obligatorios inválidos
+  ---
+  duration_ms: 23.9822
+  type: 'test'
+  ...
+# Subtest: tickets:close cierra un ticket abierto y rechaza repetir el cierre
+ok 140 - tickets:close cierra un ticket abierto y rechaza repetir el cierre
+  ---
+  duration_ms: 24.6074
+  type: 'test'
+  ...
+# Subtest: tickets:delete elimina ticket y asignaciones sin dejar referencias inválidas
+ok 141 - tickets:delete elimina ticket y asignaciones sin dejar referencias inválidas
+  ---
+  duration_ms: 19.5189
+  type: 'test'
+  ...
+# Subtest: tickets:update revierte campos y asignaciones si falla una referencia después de escribir
+ok 142 - tickets:update revierte campos y asignaciones si falla una referencia después de escribir
+  ---
+  duration_ms: 23.5102
+  type: 'test'
+  ...
+# Subtest: tickets:reopen persiste reapertura y rechaza repetirla
+ok 143 - tickets:reopen persiste reapertura y rechaza repetirla
+  ---
+  duration_ms: 19.5065
+  type: 'test'
+  ...
+# Subtest: tickets:setClasificacion persiste clasificación y extraordinario; rechaza permiso y referencia inválidos
+ok 144 - tickets:setClasificacion persiste clasificación y extraordinario; rechaza permiso y referencia inválidos
+  ---
+  duration_ms: 19.3498
+  type: 'test'
+  ...
+# Subtest: tickets:calificar exige cierre y técnico; persiste calificación y bloquea repetición, reclasificación y reapertura
+ok 145 - tickets:calificar exige cierre y técnico; persiste calificación y bloquea repetición, reclasificación y reapertura
+  ---
+  duration_ms: 21.4396
+  type: 'test'
+  ...
+# Subtest: tickets:calificarAll califica solo el cerrado elegible según texto, unidad, técnico y fechas
+ok 146 - tickets:calificarAll califica solo el cerrado elegible según texto, unidad, técnico y fechas
+  ---
+  duration_ms: 21.676
+  type: 'test'
+  ...
+1..146
+# tests 146
+# suites 0
+# pass 146
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6541.0756
+---------------------------|---------|----------|---------|---------|-------------------------------
+File                       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+---------------------------|---------|----------|---------|---------|-------------------------------
+All files                  |    83.3 |    70.41 |   94.66 |    83.3 |
+ main                      |      80 |    63.11 |   86.66 |      80 |
+  ipc_auth.ts              |   91.66 |    86.48 |     100 |   91.66 | ...45,153-154,166-167,171-178
+  ipc_rutas.ts             |   65.34 |    70.45 |      20 |   65.34 | ...65,795-807,813-814,824-922
+  ipc_tickets.ts           |   88.82 |    53.04 |     100 |   88.82 | ...955-956,999-1004,1008-1009
+  password_service.ts      |    90.9 |       50 |     100 |    90.9 | 20-21
+  session_store.ts         |     100 |    88.88 |     100 |     100 | 23,76,128
+ main/db                   |   90.85 |    83.03 |     100 |   90.85 |
+  password_migration.ts    |   89.95 |    82.08 |     100 |   89.95 | ...34,336-342,350-353,356-362
+  sqlite_connection.ts     |   97.01 |    87.09 |     100 |   97.01 | 8-9
+ main/services             |   97.02 |    87.17 |     100 |   97.02 |
+  domain_utils.ts          |     100 |    69.23 |     100 |     100 | 4,19-26
+  export_security.ts       |     100 |    92.85 |     100 |     100 | 27,38
+  pagination_service.ts    |     100 |       70 |     100 |     100 | 10,14,21
+  report_export_service.ts |   88.23 |    82.35 |     100 |   88.23 | 19-21,63-64,66-68
+  report_query_service.ts  |     100 |    93.33 |     100 |     100 | 14
+  validation_service.ts    |     100 |    94.11 |     100 |     100 | 62,72
+---------------------------|---------|----------|---------|---------|-------------------------------

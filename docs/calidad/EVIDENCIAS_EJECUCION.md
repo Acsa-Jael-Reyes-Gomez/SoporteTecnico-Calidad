@@ -1,16 +1,18 @@
-# Evidencia de ejecución vigente e histórica
+# Evidencias de ejecución
 
-## Cierre técnico 03/11/2026
+## Resultados
 
-- Commit técnico: 8f508f5. [Push](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690335247) y [PR](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592): success.
-- 146/146 pruebas, cero omitidas; E2E aprobado.
-- c8 aplicación cargada: 83,30 % líneas, 70,41 % ramas, 94,66 % funciones. Umbrales conservados 75/60/55.
-- SonarQube PR: gate PASSED, 86,5 % código nuevo,0 % duplicación nueva y cero hallazgos nuevos.
-- Artefacto remoto quality-reports; copias locales y JSON en `evidencias/cierre-final-20261103/`.
-- Protección de `main` comprobada; PR #8 aprobado y fusionado (commit `888f22a`), con pipeline posterior exitoso (workflow #230).
+- **146/146 pruebas aprobadas** y prueba E2E aprobada.
+- **c8:** 83,30 % de líneas, 70,41 % de ramas y 94,66 % de funciones.
+- **SonarQube (PR técnico):** Quality Gate aprobado, 86,5 % de cobertura nueva y 0,0 % de duplicación nueva.
+- **GitHub Actions:** ejecución de `main` exitosa.
 
-## Antecedentes conservados
+## Dónde comprobarlo
 
-El [push de main 41562455432](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41562455432) aprobó 140/140 y E2E sobre 7697745. El resultado c8 de 88,90/80,75/73,61 % incluía tests en su denominador. Los runs de octubre y sus archivos se conservan como antecedentes, no como estado actual. Las capturas originales de la presentación corresponden a esa etapa y están identificadas como históricas.
+- [Pipeline de main](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41747732774)
+- [Pull request técnico #8](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/pull/8)
+- [Evidencias del cierre](evidencias/cierre-final-20261103/)
+- [Capturas del pipeline y SonarQube](evidencias/cierre-20261103/)
+- [Verificación local del 4 de noviembre](evidencias/verificacion-20261104/resultados.json): comandos, entorno y resultados. Los registros de [pruebas](evidencias/verificacion-20261104/pruebas.txt), [E2E](evidencias/verificacion-20261104/e2e.txt) y [cobertura](evidencias/verificacion-20261104/cobertura.txt) mantienen los mismos resultados de c8.
 
-Los archivos de `evidencias/cierre-20261103/` contienen las primeras comprobaciones de protección y métricas del main anterior. El PR #8 se fusionó en `main` y se comprobó el pipeline posterior (workflow #230). Consultar los checks del último SHA del PR #8 antes de solicitar su fusión.
+Se conservan las evidencias originales. Los porcentajes corresponden al alcance de cada herramienta.

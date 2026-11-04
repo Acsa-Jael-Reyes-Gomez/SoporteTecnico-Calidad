@@ -8,4 +8,4 @@ Capturas auténticas de páginas públicas sin sesión, obtenidas con Chrome. Lo
 - `proteccion-main.json`: respuesta de GitHub API con controles obligatorios.
 - `sonar-metricas.json` y `sonar-quality-gate.json`: respuestas públicas de SonarQube, incluyendo hallazgos globales y métricas nuevas.
 
-El PR #8 fue observado bloqueado sin aprobación (`mergeable_state: blocked`). No se intentó eludir la regla ni fusionar sin revisión. El repositorio se abrió sin sesión, por lo que el docente puede consultar los archivos publicados. La entrega en la plataforma del curso y el video siguen siendo acciones finales del estudiante.
+Al tomar estas capturas, el PR #8 estaba pendiente de aprobación (`mergeable_state: blocked`). Es un registro histórico de ese momento. Los resultados del cierre técnico están en las [evidencias posteriores](../cierre-final-20261103/).

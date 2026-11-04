@@ -1,31 +1,17 @@
-# Matriz de cumplimiento del Proyecto Final 2026
+# Estado de los requisitos
 
-**Corte:** 3 de noviembre de 2026. **Estado técnico:** PR #8 fusionado en `main` (`888f22a`); pipeline posterior exitoso (#230).
+| Requisito                                  | Estado                            |
+| ------------------------------------------ | --------------------------------- |
+| Sistema existente                          | Cumplido                          |
+| Pruebas unitarias, integración y regresión | Cumplido                          |
+| Prueba E2E                                 | Cumplido                          |
+| Pipeline Build, Test, Analyze y Report     | Cumplido                          |
+| ESLint y SonarQube                         | Integrados                        |
+| Umbrales de cobertura                      | Aprobados en el alcance medido    |
+| Pull requests y revisión                   | Implementados                     |
+| Plan, matriz, línea base y reporte         | Documentados                      |
+| Presentación y video                       | Se entregan fuera del repositorio |
 
-| Requisito                            | Evidencia real                                                                                                           | Estado                         | Corrección o acción necesaria                                            |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------ |
-| Aplicación existente y CRUD          | Electron/SQLite; handlers y pruebas de tickets/rutas                                                                     | Verificado en flujos probados  | Conservar variante justificada                                           |
-| SQA Plan y documentación             | Plan, manuales, matriz y reporte de esta rama                                                                            | Integrados en `main`            | Integración completada                                                |
-| Unitarias, integración y regresión   | 146/146; inventario final y fuentes                                                                                      | Verificado                     | 140 previas conservadas, seis nuevas                                     |
-| E2E opcional                         | Electron y SQLite temporal, persistencia comprobada                                                                      | Verificado                     | No equivale a todos los módulos                                          |
-| Cobertura y mínimos                  | c8 83,30 / 70,41 / 94,66 %; 75/60/55                                                                                     | Verificado                     | Alcance cargado, tests excluidos                                         |
-| Análisis estático                    | TypeScript, ESLint, Prettier y SonarQube                                                                                 | Verificado                     | Riesgos y falsos positivos justificados                                  |
-| Quality Gate obligatorio             | wait=true; PR técnico PASSED, 86,5 % nuevas líneas                                                                       | Verificado positivo            | No se provocó un fallo artificial del nuevo gate en main                 |
-| Pipeline cuatro etapas y reportes    | [Run técnico](https://github.com/Acsa-Jael-Reyes-Gomez/SoporteTecnico-Calidad/actions/runs/41690348592), quality-reports | Verificado                     | Comprobar también checks del último commit documental                    |
-| Protección main                      | API: PR, una aprobación, strict checks, conversaciones y admins                                                          | Verificado                     | No desactivar ni omitir                                                  |
-| Revisión manual                      | PR #7 aprobado y fusionado; PR #8 aprobado y fusionado                                                                        | Verificado      | Completadas                       |
-| Gestión de deuda                     | 36 claves y disposiciones documentadas                                                                                   | Verificado con riesgo abierto  | CSP estilos inline y cobertura global no se declaran resueltos           |
-| Antes/después                        | 25 casos iniciales, antecedentes 28/33/140 y cierre de 146 casos                                                         | Limitación histórica explícita | No hay cobertura pre-SQA homogénea que pueda reconstruirse legítimamente |
-| Manual de usuario real               | Rutas: cierre automático al validar; reapertura autorizada                                                               | Corregido                      | Conservar comportamiento                                                 |
-| Presentación 8–10 slides exportada   | PPTX/PDF finales de 10 diapositivas, capturas originales y notas                                                         | Verificada visualmente         | Entregar versión vigente                                                 |
-| Guion y anexo                        | Narración, pronunciación, preguntas y evidencias                                                                         | Preparados                     | No sustituyen MP4                                                        |
-| Acceso docente                       | Repositorio público comprobado sin sesión                                                                                | Lectura pública verificada     | Entrega en plataforma no comprobada                                      |
-| Video obligatorio                    | Guion/secuencia; sin MP4 declarado                                                                                       | Pendiente al final             | Grabar 4–5 minutos, mínimo 720p, reproducir y entregar                   |
-| Código/documentación finales en main | Cambios integrados en `main`                                                                               | Verificado           | Aprobación, fusión y pipeline posterior comprobados                              |
-| Docker/cloud/notificaciones/URL app  | Extras del enunciado                                                                                                     | Opcionales                     | No condicionan requisitos básicos                                        |
+**Resultados:** 146/146 pruebas aprobadas; c8: 83,30 % líneas, 70,41 % ramas y 94,66 % funciones; Quality Gate del PR técnico aprobado. La cobertura no equivale a la de toda la aplicación.
 
-La revisión de las 36 observaciones está en [hallazgos](HALLAZGOS_SONAR.md). El [informe final](../Informe-Final.md) detalla resultados, archivos, riesgos y tareas humanas. No se asigna una calificación ni se declara cumplimiento total sin la entrega audiovisual y la integración requerida.
-
-## Procedencia de la comparación
-
-El [historial de julio](antecedentes/Historial_Verificado_SoporteTecnico_PreSQA.md) acredita 25 casos definidos, no 25 aprobaciones. No se conserva una cobertura inicial comparable. Las evidencias posteriores de 28, 33 y 140 casos, así como el cierre de 146, se presentan en [Métricas de calidad](METRICAS_CALIDAD.md). Los estados de integración y entrega de esta matriz corresponden al corte indicado y deben revisarse después de cualquier fusión.
+Consulta la [matriz](../Matriz-Pruebas.md) y las [evidencias](EVIDENCIAS_EJECUCION.md).
