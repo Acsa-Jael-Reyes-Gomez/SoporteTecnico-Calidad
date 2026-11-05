@@ -1,0 +1,13 @@
+# Demostración del pipeline CI/CD
+
+Proyecto: SoporteTecnico-Calidad
+
+Objetivo: Verificar la integración continua mediante un Pull Request.
+
+Etapas:
+- Build: compilación del sistema.
+- Test: ejecución de pruebas automatizadas.
+- Analyze: análisis estático del código.
+- Quality Gate: validación de los criterios de calidad.
+
+Este cambio es únicamente de documentación.
